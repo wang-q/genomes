@@ -1,5 +1,6 @@
-# All genomes of *Bacteria* and *Archaea*, species by species
+# Bacteria
 
+All genomes of *Bacteria* and *Archaea*, species by species
 
 ## Strain info
 
