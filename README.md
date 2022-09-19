@@ -1,6 +1,8 @@
-# Bacteria
+# Genomes
 
-All genomes of *Bacteria* and *Archaea*, species by species
+## Detailed steps
+
+* [Bacteria.md](./Bacteria.md): All genomes of *Bacteria* and *Archaea*, species by species
 
 ## Software
 
@@ -79,7 +81,3 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 | Viridiplantae |       8,205 |  16,756 | 170,584 |     15,888 | 211,433 |
 | Viruses       |       1,934 |   2,525 |   7,158 |         65 |  11,682 |
 | All taxa      |      73,152 | 104,087 | 531,980 |     36,407 | 745,626 |
-
-## Detailed steps
-
-* [Bacteria.md](./Bacteria.md)
