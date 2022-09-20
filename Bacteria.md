@@ -7,6 +7,10 @@ All genomes of *Bacteria* and *Archaea*, species by species
 * [Bacteria](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2)
 * [Archaea](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2157)
 
+### Date
+
+Tue Sep 20 08:46:25 CST 2022
+
 ### List all ranks
 
 ```shell
@@ -22,49 +26,49 @@ nwr member Archaea |
 
 ```
 
-| rank             | count  |
-|------------------|--------|
-| superkingdom     | 1      |
-| phylum           | 169    |
-| class            | 121    |
-| order            | 278    |
-| family           | 711    |
-| no rank          | 6277   |
-| species          | 108809 |
-| genus            | 4808   |
-| clade            | 132    |
-| strain           | 40793  |
-| varietas         | 24     |
-| isolate          | 456    |
-| subspecies       | 652    |
-| subclass         | 5      |
-| forma            | 4      |
-| species group    | 92     |
-| species subgroup | 28     |
-| suborder         | 7      |
-| biotype          | 7      |
-| serotype         | 252    |
-| serogroup        | 138    |
-| subphylum        | 1      |
-| subgenus         | 1      |
-| tribe            | 2      |
-| pathogroup       | 5      |
-| subfamily        | 1      |
+| rank             |  count |
+|------------------|-------:|
+| superkingdom     |      1 |
+| phylum           |    170 |
+| class            |    121 |
+| order            |    279 |
+| family           |    713 |
+| no rank          |   6332 |
+| species          | 108850 |
+| genus            |   4815 |
+| clade            |    131 |
+| strain           |  40835 |
+| varietas         |     24 |
+| isolate          |    456 |
+| subspecies       |    650 |
+| subclass         |      5 |
+| forma            |      4 |
+| species group    |     92 |
+| species subgroup |     28 |
+| suborder         |      7 |
+| biotype          |      7 |
+| serotype         |    252 |
+| serogroup        |    138 |
+| subphylum        |      1 |
+| subgenus         |      1 |
+| tribe            |      2 |
+| pathogroup       |      5 |
+| subfamily        |      1 |
 
 | rank          | count |
-|---------------|-------|
-| superkingdom  | 1     |
-| phylum        | 39    |
-| no rank       | 293   |
-| species       | 3320  |
-| class         | 29    |
-| clade         | 28    |
-| order         | 49    |
-| family        | 69    |
-| genus         | 230   |
-| strain        | 353   |
-| species group | 2     |
-| isolate       | 6     |
+|---------------|------:|
+| superkingdom  |     1 |
+| phylum        |    39 |
+| no rank       |   310 |
+| species       |  3377 |
+| class         |    31 |
+| order         |    55 |
+| family        |    75 |
+| genus         |   243 |
+| clade         |    27 |
+| strain        |   353 |
+| species group |     2 |
+| isolate       |     6 |
 
 ### Species with assemblies
 
@@ -93,7 +97,7 @@ nwr member Bacteria Archaea -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#4373 genus.list
+#4376 genus.list
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -172,28 +176,28 @@ wc -l L*.tsv
 #    3 L1.tsv
 #   41 L2.tsv
 #  101 L3.tsv
-# 1601 L4.tsv
-# 1746 total
+# 1603 L4.tsv
+# 1748 total
 
 for L in L1 L2 L3 L4; do
     cat ${L}.tsv |
         tsv-summarize --sum 3
 done
-#811
-#13995
-#75893
-#26438
+#810
+#14101
+#76131
+#26573
 
 cat L3.tsv |
     tsv-join -f L2.tsv -k 1 -e |
     tsv-summarize --sum 3
-#11684
+#11676
 
 cat L4.tsv |
     tsv-join -f L2.tsv -k 1 -e |
     tsv-join -f L3.tsv -k 1 -e |
     tsv-summarize --sum 3
-#9639
+#9682
 
 ```
 
@@ -361,5 +365,35 @@ cat raw.tsv |
         ' |
     keep-header -- sort -k3,3 -k1,1 \
     > Bacteria.assembly.tsv
+
+datamash check < raw.tsv
+#35405 lines, 5 fields
+
+datamash check < Bacteria.assembly.tsv
+#35329 lines, 4 fields
+
+# find potential duplicate strains or assemblies
+cat Bacteria.assembly.tsv |
+    tsv-uniq -f 1 --repeated
+
+# Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
+# vim Bacteria.assembly.tsv
+# cp Bacteria.assembly.tsv ~/Scripts/genomes/assembly
+
+# Comment out unneeded strains
+
+# Cleaning
+rm raw*.*sv
+
+```
+
+
+```shell
+cd ~/data/Bacteria
+
+perl ~/Scripts/withncbi/taxon/assembly_prep.pl \
+    -f ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
+    -o ASSEMBLY
+
 
 ```
