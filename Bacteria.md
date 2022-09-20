@@ -296,7 +296,8 @@ echo "
         AND organism_name NOT LIKE '% sp.%'
         AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
     " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
+    tsv-filter --regex '2:^[A-Za-z ]+$' \
     >> raw.tsv
 
 # L3
@@ -320,7 +321,8 @@ echo "
         AND assembly_level IN ('Complete Genome', 'Chromosome', 'Scaffold')
         AND genome_rep IN ('Full') -- fully representative
     " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
+    tsv-filter --regex '2:^[A-Za-z ]+$' \
     >> raw.tsv
 
 # L4
@@ -344,8 +346,12 @@ echo "
         AND organism_name NOT LIKE '% sp.%'
         AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
     " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
+    tsv-filter --regex '2:^[A-Za-z ]+$' \
     >> raw.tsv
+
+datamash check < raw.tsv
+#35350 lines, 5 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -366,15 +372,15 @@ cat raw.tsv |
     keep-header -- sort -k3,3 -k1,1 \
     > Bacteria.assembly.tsv
 
-datamash check < raw.tsv
-#35405 lines, 5 fields
-
 datamash check < Bacteria.assembly.tsv
-#35329 lines, 4 fields
+#35275 lines, 4 fields
 
 # find potential duplicate strains or assemblies
 cat Bacteria.assembly.tsv |
     tsv-uniq -f 1 --repeated
+
+cat Bacteria.assembly.tsv |
+    tsv-filter --str-not-in-fld 2:ftp
 
 # Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Bacteria.assembly.tsv
@@ -387,7 +393,6 @@ rm raw*.*sv
 
 ```
 
-
 ```shell
 cd ~/data/Bacteria
 
@@ -395,5 +400,9 @@ perl ~/Scripts/withncbi/taxon/assembly_prep.pl \
     -f ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     -o ASSEMBLY
 
+# Run
+proxychains4 bash ASSEMBLY/Bacteria.assembly.rsync.sh
+
+bash ASSEMBLY/Bacteria.assembly.collect.sh
 
 ```
