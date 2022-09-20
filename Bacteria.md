@@ -265,10 +265,10 @@ cat reference.tsv |
 
 Three levels:
 
-* '>= 100 strains'
+* '>= 100 genomes'
     * assembly_level: 'Complete Genome', 'Chromosome'
     * assembly_level: NOT 'contig' AND genome_rep: 'Full'
-* '>= 3 strains'
+* '>= 2 genomes'
     * assembly_level: 'Complete Genome', 'Chromosome'
 
 
@@ -404,14 +404,24 @@ perl ~/Scripts/withncbi/taxon/assembly_prep.pl \
     -f ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     -o ASSEMBLY
 
+# Remove dirs not in the list
+find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
+    tr "/" "\t" |
+    cut -f 2 |
+    tsv-join --exclude -k 1 -f ASSEMBLY/rsync.tsv -d 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        echo Remove {}
+        rm -fr ASSEMBLY/{}
+    '
+
 # Run
 proxychains4 bash ASSEMBLY/Bacteria.assembly.rsync.sh
 
-bash ASSEMBLY/Bacteria.assembly.collect.sh
-
 # md5
 #rm ASSEMBLY/checked.list
-#touch ASSEMBLY/checked.list
 bash ASSEMBLY/Bacteria.assembly.check.sh
+
+# collect
+bash ASSEMBLY/Bacteria.assembly.collect.sh
 
 ```
