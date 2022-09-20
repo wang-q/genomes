@@ -261,6 +261,8 @@ cat reference.tsv |
 
 ## Download all assemblies
 
+### Create assembly.tsv
+
 Three levels:
 
 * '>= 100 strains'
@@ -393,6 +395,8 @@ rm raw*.*sv
 
 ```
 
+### rsync and check
+
 ```shell
 cd ~/data/Bacteria
 
@@ -404,5 +408,10 @@ perl ~/Scripts/withncbi/taxon/assembly_prep.pl \
 proxychains4 bash ASSEMBLY/Bacteria.assembly.rsync.sh
 
 bash ASSEMBLY/Bacteria.assembly.collect.sh
+
+# md5
+#rm ASSEMBLY/checked.list
+#touch ASSEMBLY/checked.list
+bash ASSEMBLY/Bacteria.assembly.check.sh
 
 ```
