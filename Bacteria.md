@@ -435,8 +435,10 @@ rsync -avP \
 
 # rsync -avP wangq@202.119.37.251:data/Bacteria/ ~/data/Bacteria
 
-```
+# rsync -avP -e "ssh -T -c chacha20-poly1305@openssh.com -o Compression=no -x" \
+#   wangq@202.119.37.251:data/Bacteria/ASSEMBLY/ ~/data/Bacteria/ASSEMBLY
 
+```
 
 ## BioSample
 
@@ -516,6 +518,3 @@ find biosample -name "SAM*.txt" |
     >> Pseudomonas.biosample.tsv
 
 ```
-
-
-/mnt/c/Users/wangq/.ssh/
