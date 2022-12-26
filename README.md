@@ -81,3 +81,19 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 | Viridiplantae |       8,218 |  16,759 | 170,895 |     15,902 | 211,774 |
 | Viruses       |       1,947 |   2,527 |   7,160 |         65 |  11,699 |
 | All taxa      |      73,256 | 104,205 | 532,929 |     36,432 | 746,822 |
+
+## Download all valid Bacteria and Archaea genomes
+
+[Bacteria.md](./Bacteria.md)
+
+## Prokaryote groups
+
+* Pseudomonas
+* MTBC
+* Tenericutes
+
+## Eukaryote groups
+
+* Trichoderma
+* Fungi
+* Protistis
