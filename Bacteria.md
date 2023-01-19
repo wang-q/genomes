@@ -7,9 +7,9 @@ All genomes of *Bacteria* and *Archaea*, species by species
 * [Bacteria](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2)
 * [Archaea](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2157)
 
-### Date
+### `date`
 
-Tue Sep 20 08:46:25 CST 2022
+Fri Jan 20 00:52:35 CST 2023
 
 ### List all ranks
 
@@ -29,26 +29,26 @@ nwr member Archaea |
 | rank             |  count |
 |------------------|-------:|
 | superkingdom     |      1 |
-| phylum           |    170 |
-| class            |    121 |
-| order            |    279 |
-| family           |    713 |
-| no rank          |   6332 |
-| species          | 108850 |
-| genus            |   4815 |
-| clade            |    131 |
-| strain           |  40835 |
+| phylum           |    173 |
+| class            |    125 |
+| order            |    293 |
+| family           |    739 |
+| no rank          |   6578 |
+| species          | 110192 |
+| genus            |   4959 |
+| clade            |    133 |
+| strain           |  41127 |
 | varietas         |     24 |
 | isolate          |    456 |
-| subspecies       |    650 |
-| subclass         |      5 |
+| subspecies       |    707 |
+| subclass         |      6 |
 | forma            |      4 |
-| species group    |     92 |
-| species subgroup |     28 |
+| species group    |     99 |
+| species subgroup |     31 |
 | suborder         |      7 |
 | biotype          |      7 |
-| serotype         |    252 |
-| serogroup        |    138 |
+| serotype         |    257 |
+| serogroup        |    143 |
 | subphylum        |      1 |
 | subgenus         |      1 |
 | tribe            |      2 |
@@ -58,14 +58,14 @@ nwr member Archaea |
 | rank          | count |
 |---------------|------:|
 | superkingdom  |     1 |
-| phylum        |    39 |
-| no rank       |   310 |
-| species       |  3377 |
-| class         |    31 |
-| order         |    55 |
-| family        |    75 |
-| genus         |   243 |
-| clade         |    27 |
+| phylum        |    42 |
+| order         |    60 |
+| no rank       |   327 |
+| species       |  3414 |
+| class         |    34 |
+| family        |    82 |
+| genus         |   257 |
+| clade         |    44 |
 | strain        |   353 |
 | species group |     2 |
 | isolate       |     6 |
@@ -97,7 +97,7 @@ nwr member Bacteria Archaea -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#4376 genus.list
+#4461 genus.list
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -174,30 +174,30 @@ done  |
 
 wc -l L*.tsv
 #    3 L1.tsv
-#   41 L2.tsv
-#  101 L3.tsv
-# 1603 L4.tsv
-# 1748 total
+#   45 L2.tsv
+#  111 L3.tsv
+# 1708 L4.tsv
+# 1867 total
 
 for L in L1 L2 L3 L4; do
     cat ${L}.tsv |
         tsv-summarize --sum 3
 done
-#810
-#14101
-#76131
-#26573
+#817
+#15391
+#80067
+#28548
 
 cat L3.tsv |
     tsv-join -f L2.tsv -k 1 -e |
     tsv-summarize --sum 3
-#11676
+#11931
 
 cat L4.tsv |
     tsv-join -f L2.tsv -k 1 -e |
     tsv-join -f L3.tsv -k 1 -e |
     tsv-summarize --sum 3
-#9682
+#10367
 
 ```
 
@@ -254,10 +254,10 @@ cat reference.tsv |
 | 198214  | Shigella flexneri 2a str. 301                                    | Gammaproteobacteria   |
 | 227377  | Coxiella burnetii RSA 493                                        | Gammaproteobacteria   |
 | 272561  | Chlamydia trachomatis D/UW-3/CX                                  | Chlamydiae            |
-| 93061   | Staphylococcus aureus subsp. aureus NCTC 8325                    | Firmicutes            |
-| 224308  | Bacillus subtilis subsp. subtilis str. 168                       | Firmicutes            |
-| 169963  | Listeria monocytogenes EGD-e                                     | Firmicutes            |
-| 83332   | Mycobacterium tuberculosis H37Rv                                 | Actinobacteria        |
+| 93061   | Staphylococcus aureus subsp. aureus NCTC 8325                    | Bacillota             |
+| 224308  | Bacillus subtilis subsp. subtilis str. 168                       | Bacillota             |
+| 169963  | Listeria monocytogenes EGD-e                                     | Bacillota             |
+| 83332   | Mycobacterium tuberculosis H37Rv                                 | Actinomycetota        |
 
 ## Download all assemblies
 
@@ -353,7 +353,7 @@ echo "
     >> raw.tsv
 
 datamash check < raw.tsv
-#35350 lines, 5 fields
+#37552 lines, 5 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -375,7 +375,7 @@ cat raw.tsv |
     > Bacteria.assembly.tsv
 
 datamash check < Bacteria.assembly.tsv
-#35275 lines, 4 fields
+#37477 lines, 4 fields
 
 # find potential duplicate strains or assemblies
 cat Bacteria.assembly.tsv |
