@@ -400,29 +400,31 @@ rm raw*.*sv
 ```shell
 cd ~/data/Bacteria
 
-perl ~/Scripts/withncbi/taxon/assembly_prep.pl \
-    -f ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
+cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    tsv-filter -v --str-in-fld 2:http
+
+nwr assembly ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     -o ASSEMBLY
 
 # Remove dirs not in the list
 find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
     tr "/" "\t" |
     cut -f 2 |
-    tsv-join --exclude -k 1 -f ASSEMBLY/rsync.tsv -d 1 |
+    tsv-join --exclude -k 1 -f ASSEMBLY/url.tsv -d 1 |
     parallel --no-run-if-empty --linebuffer -k -j 1 '
         echo Remove {}
         rm -fr ASSEMBLY/{}
     '
 
 # Run
-proxychains4 bash ASSEMBLY/Bacteria.assembly.rsync.sh
+proxychains4 bash ASSEMBLY/rsync.sh
 
 # md5
-#rm ASSEMBLY/checked.list
-bash ASSEMBLY/Bacteria.assembly.check.sh
+# rm ASSEMBLY/check.list
+bash ASSEMBLY/check.sh
 
 # collect
-bash ASSEMBLY/Bacteria.assembly.collect.sh
+bash ASSEMBLY/collect.sh
 
 ```
 
@@ -449,7 +451,7 @@ mkdir -p biosample
 
 ulimit -n `ulimit -Hn`
 
-cat ASSEMBLY/Bacteria.assembly.collect.csv |
+cat ASSEMBLY/collect.csv |
     tsv-select -H -d, -f BioSample |
     grep "^SAM" |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
