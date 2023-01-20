@@ -94,6 +94,6 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 
 ## Eukaryote groups
 
-* Trichoderma
+* [Trichoderma](groups/Trichoderma.md)
 * Fungi
-* Protistis
+* [Protistis](./groups/Protists.md)
