@@ -16,22 +16,6 @@ Genus *Trichoderma* as an example.
     * [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
     * [Generate alignments](#generate-alignments)
 
-## Preparations
-
-* Install `nwr` and create a local taxonomy and assembly database.
-
-```shell
-brew install wang-q/tap/nwr
-brew install sqlite
-
-nwr download
-nwr txdb
-
-nwr ardb
-nwr ardb --genbank
-
-```
-
 ## Strain info
 
 * [Trichoderma](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=5543)
