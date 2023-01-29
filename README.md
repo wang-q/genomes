@@ -46,6 +46,11 @@ cpanm https://github.com/wang-q/Bio-Tools-Phylo-PAML.git
 
 ```
 
+* Pangenome
+
+    * `PPanGGOLiN` is used in this project. Installation steps can be
+      found [here](https://github.com/wang-q/dotfiles/blob/master/others.sh).
+
 ### Other Packages
 
 * Pangenome
