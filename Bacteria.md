@@ -444,6 +444,8 @@ rsync -avP \
 
 ## BioSample
 
+ENA's BioSample missed many strains, so NCBI's was used.
+
 ```shell
 cd ~/data/Bacteria
 
@@ -463,7 +465,7 @@ cat ASSEMBLY/collect.csv |
     '
 
 find biosample -name "SAM*.txt" | wc -l
-# 1956
+# 38426
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -475,13 +477,13 @@ find biosample -name "SAM*.txt" |
     tsv-uniq --at-least 50 | # ignore rare attributes
     grep -v "^INSDC" |
     grep -v "^ENA" \
-    > attributes.lst
+    > ASSEMBLY/attributes.lst
 
 cat attributes.lst |
     (echo -e "BioSample" && cat) |
     tr '\n' '\t' |
     sed 's/\t$/\n/' \
-    > Pseudomonas.biosample.tsv
+    > ASSEMBLY/Bacteria.biosample.tsv
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 1 '
@@ -516,6 +518,6 @@ find biosample -name "SAM*.txt" |
                 }
             '\''
     ' \
-    >> Pseudomonas.biosample.tsv
+    >> ASSEMBLY/Bacteria.biosample.tsv
 
 ```
