@@ -192,3 +192,127 @@ cat species.count.tsv |
 | 44935      | Halomonas venusta               | 10   | 7   |
 | 386891     | Moraxella bovoculi              | 9    | 7   |
 | 1697053    | Thiopseudomonas alkaliphila     | 7    | 7   |
+
+## Download all assemblies
+
+### Create assembly.tsv
+
+```shell
+cd ~/data/Pseudomonas/summary
+
+cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    head -n 1 \
+    > Pseudomonas.assembly.tsv
+
+# Pseudomonas aeruginosa PAO1 is in the reference list
+cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    grep -F -f <(
+        cat ~/Scripts/genomes/assembly/Bacteria.reference.tsv |
+            tsv-select -H -f assembly_accession
+        ) \
+    >> Pseudomonas.assembly.tsv
+
+# Pseudomonadales and close relatives
+# Species with 2 or more complete genomes were retained.
+cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    sed '1d' |
+    tsv-join -d 3 \
+        -k 2 -f <(
+            cat species.count.tsv |
+                tsv-filter -H --ge CHR:2 |
+                sed '1d'
+        )\
+    >> Pseudomonas.assembly.tsv
+
+# Also includes representative strains of Gammaproteobacteria.
+# families not in our orders
+FAMILY=$(
+    nwr member Gammaproteobacteria -r family |
+        grep -v -i "Candidatus " |
+        grep -v -i "candidate " |
+        sed '1d' |
+        cut -f 1 |
+        nwr append stdin -r order |
+        tsv-filter --str-ne 2:"Cellvibrionales" --str-ne 2:"Oceanospirillales" --str-ne 2:"Alteromonadales" |
+        tsv-filter --str-ne 2:"Moraxellales" --str-ne 2:"Kangiellales" --str-ne 2:"Pseudomonadales" |
+        tsv-filter --str-ne 2:"NA" |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND family_id IN ($FAMILY)
+        AND species NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '% sp.%'
+        AND refseq_category IN ('representative genome')
+        AND assembly_level IN ('Complete Genome', 'Chromosome')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
+    grep -v -i "symbiont " |
+    tsv-filter --str-not-in-fld 1:"[" \
+    > tmp.tsv
+
+cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    grep -F -f tmp.tsv \
+    >> Pseudomonas.assembly.tsv
+
+# Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
+# vim Pseudomonas.assembly.tsv
+# cp Pseudomonas.assembly.tsv ~/Scripts/genomes/assembly
+
+# Comment out unneeded strains
+
+# Cleaning
+rm tmp*.*sv
+
+```
+
+### rsync and check
+
+```shell
+cd ~/data/Pseudomonas
+
+cat ~/Scripts/genomes/assembly/Pseudomonas.assembly.tsv |
+    tsv-filter -v --str-in-fld 2:http
+
+nwr assembly ~/Scripts/genomes/assembly/Pseudomonas.assembly.tsv \
+    -o ASSEMBLY
+
+# Copy downloaded files
+cat ASSEMBLY/url.tsv |
+    tsv-join -f ASSEMBLY/check.list -k 1 -e |
+    parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 4 '
+        if [ ! -d ASSEMBLY/{1} ]; then
+            if [ -d ~/data/Bacteria/ASSEMBLY/{1} ]; then
+                echo >&2 "==> {1}"
+                cp -r ~/data/Bacteria/ASSEMBLY/{1} ASSEMBLY/{1}
+            fi
+        fi
+    '
+
+# Remove dirs not in the list
+find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
+    tr "/" "\t" |
+    cut -f 2 |
+    tsv-join --exclude -k 1 -f ASSEMBLY/url.tsv -d 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        echo Remove {}
+        rm -fr ASSEMBLY/{}
+    '
+
+# Run
+proxychains4 bash ASSEMBLY/rsync.sh
+
+# md5
+# rm ASSEMBLY/check.list
+bash ASSEMBLY/check.sh
+
+# collect
+bash ASSEMBLY/collect.sh
+
+```
