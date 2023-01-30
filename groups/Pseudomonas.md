@@ -316,3 +316,453 @@ bash ASSEMBLY/check.sh
 bash ASSEMBLY/collect.sh
 
 ```
+
+### Rsync to hpcc
+
+```bash
+rsync -avP \
+    ~/data/Pseudomonas/ \
+    wangq@202.119.37.251:data/Pseudomonas
+
+# rsync -avP wangq@202.119.37.251:data/Pseudomonas/ ~/data/Pseudomonas
+
+# rsync -avP -e "ssh -T -c chacha20-poly1305@openssh.com -o Compression=no -x" \
+#   wangq@202.119.37.251:data/Pseudomonas/ASSEMBLY/ ~/data/Pseudomonas/ASSEMBLY
+
+```
+
+## BioSample
+
+```shell
+mkdir -p ~/data/Pseudomonas/biosample
+cd ~/data/Pseudomonas
+
+ulimit -n `ulimit -Hn`
+
+# Copy downloaded files
+cat ASSEMBLY/collect.csv |
+    tsv-select -H -d, -f BioSample |
+    grep "^SAM" |
+    parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 4 '
+        if [ ! -f biosample/{}.txt ]; then
+            if [ -f ~/data/Bacteria/biosample/{}.txt ]; then
+                echo >&2 "==> {}"
+                cp ~/data/Bacteria/biosample/{}.txt biosample/
+            fi
+        fi
+    '
+
+# Download from NCBI
+cat ASSEMBLY/collect.csv |
+    tsv-select -H -d, -f BioSample |
+    grep "^SAM" |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        if [ ! -s biosample/{}.txt ]; then
+            >&2 echo {}
+            curl -fsSL "https://www.ncbi.nlm.nih.gov/biosample/?term={}&report=full&format=text" -o biosample/{}.txt
+        fi
+    '
+
+find biosample -name "SAM*.txt" | wc -l
+# 2997
+
+find biosample -name "SAM*.txt" |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        cat {} |
+            perl -nl -e '\''
+                print $1 if m{\s+\/([\w_ ]+)=};
+            '\''
+    ' |
+    tsv-uniq --at-least 50 | # ignore rare attributes
+    grep -v "^INSDC" |
+    grep -v "^ENA" \
+    > ASSEMBLY/attributes.lst
+
+cat attributes.lst |
+    (echo -e "BioSample" && cat) |
+    tr '\n' '\t' |
+    sed 's/\t$/\n/' \
+    > ASSEMBLY/biosample.tsv
+
+find biosample -name "SAM*.txt" |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        >&2 echo {/.}
+        cat {} |
+            perl -nl -MPath::Tiny -e '\''
+                BEGIN {
+                    our @keys = grep {/\S/} path(q{ASSEMBLY/attributes.lst})->lines({chomp => 1});
+                    our %stat = ();
+                }
+
+                m(\s+\/([\w_ ]+)=\"(.+)\") or next;
+                my $k = $1;
+                my $v = $2;
+                if ( $v =~ m(\bNA|missing|Not applicable|not collected|not available|not provided|N\/A|not known|unknown\b)i ) {
+                    $stat{$k} = q();
+                } else {
+                    $stat{$k} = $v;
+                }
+
+                END {
+                    my @c;
+                    for my $key ( @keys ) {
+                        if (exists $stat{$key}) {
+                            push @c, $stat{$key};
+                        }
+                        else {
+                            push @c, q();
+                        }
+                    }
+                    print join(qq{\t}, q{{/.}}, @c);
+                }
+            '\''
+    ' \
+    >> ASSEMBLY/biosample.tsv
+
+```
+
+## Count and group strains
+
+### Check N50 of assemblies
+
+```shell
+cd ~/data/Pseudomonas
+
+for dir in $(find ASSEMBLY -maxdepth 1 -mindepth 1 -type d | sort); do
+    1>&2 echo "==> ${dir}"
+    name=$(basename ${dir})
+
+    find ${dir} -type f -name "*_genomic.fna.gz" |
+        grep -v "_from_" | # exclude CDS and rna
+        xargs cat |
+        faops n50 -C -S stdin |
+        (echo -e "name\t${name}" && cat) |
+        datamash transpose
+done |
+    tsv-uniq |
+    tee ASSEMBLY/n50.tsv
+
+cat ASSEMBLY/n50.tsv |
+    tsv-filter \
+        -H --or \
+        --le 4:100 \
+        --ge 2:100000 |
+    tsv-filter -H --ge 3:1000000 |
+    tr "\t" "," \
+    > ASSEMBLY/n50.pass.csv
+
+wc -l ASSEMBLY/n50*
+#  2753 ASSEMBLY/n50.pass.csv
+#  3001 ASSEMBLY/n50.tsv
+
+tsv-join \
+    ASSEMBLY/collect.csv \
+    --delimiter "," -H --key-fields 1 \
+    --filter-file ASSEMBLY/n50.pass.csv \
+    > ASSEMBLY/pass.csv
+
+wc -l ASSEMBLY/*csv
+#   3001 ASSEMBLY/collect.csv
+#   2753 ASSEMBLY/n50.pass.csv
+#   2753 ASSEMBLY/pass.csv
+
+```
+
+### Order
+
+```shell
+cd ~/data/Pseudomonas
+
+# Group by order
+cat ASSEMBLY/pass.csv |
+    sed -e '1d' |
+    tsv-select -d, -f 3 |
+    tsv-uniq |
+    nwr append stdin -r order |
+    tsv-select -f 2 |
+    tsv-uniq \
+    > summary/order.lst
+
+cat summary/order.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(cat ASSEMBLY/pass.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r order -r species |
+            grep {} |
+            tsv-select -f 1,3 |
+            tsv-uniq |
+            wc -l)
+
+        n_strains=$(cat ASSEMBLY/pass.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r order |
+            grep {} |
+            wc -l)
+
+        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 5,4,2,3 |
+    tsv-sort -k2,2 |
+    (echo -e '#tax_id\torder\t#species\t#strains' && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #tax_id | order             | #species | #strains |
+|---------|-------------------|----------|----------|
+| 135624  | Aeromonadales     | 10       | 10       |
+| 135622  | Alteromonadales   | 54       | 133      |
+| 1385    | Bacillales        | 3        | 3        |
+| 213849  | Campylobacterales | 1        | 1        |
+| 135615  | Cardiobacteriales | 1        | 1        |
+| 204458  | Caulobacterales   | 1        | 1        |
+| 1706369 | Cellvibrionales   | 2        | 4        |
+| 51291   | Chlamydiales      | 1        | 1        |
+| 85007   | Corynebacteriales | 1        | 1        |
+| 91347   | Enterobacterales  | 129      | 129      |
+| 118969  | Legionellales     | 10       | 10       |
+| 135618  | Methylococcales   | 2        | 2        |
+| 2887326 | Moraxellales      | 59       | 865      |
+| 135619  | Oceanospirillales | 14       | 28       |
+| 1240482 | Orbales           | 1        | 1        |
+| 135625  | Pasteurellales    | 21       | 21       |
+| 72274   | Pseudomonadales   | 247      | 1466     |
+| 72273   | Thiotrichales     | 12       | 12       |
+| 135623  | Vibrionales       | 35       | 35       |
+| 135614  | Xanthomonadales   | 28       | 28       |
+
+### Genus
+
+```shell
+cd ~/data/Pseudomonas
+
+# Group by order
+cat ASSEMBLY/pass.csv |
+    sed -e '1d' |
+    tsv-select -d, -f 3 |
+    tsv-uniq |
+    nwr append stdin -r genus |
+    tsv-select -f 2 |
+    tsv-uniq \
+    > summary/genus.lst
+
+cat summary/genus.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(cat ASSEMBLY/pass.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r genus -r species |
+            grep {} |
+            tsv-select -f 1,3 |
+            tsv-uniq |
+            wc -l)
+
+        n_strains=$(cat ASSEMBLY/pass.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r genus |
+            grep {} |
+            wc -l)
+
+        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 5,4,2,3 |
+    tsv-sort -k2,2 |
+    tsv-filter --ge 4:10 |
+    (echo -e '#tax_id\tgenus\t#species\t#strains' && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #tax_id | genus             | #species | #strains |
+|---------|-------------------|----------|----------|
+| 469     | Acinetobacter     | 51       | 791      |
+| 226     | Alteromonas       | 16       | 38       |
+| 544     | Citrobacter       | 10       | 10       |
+| 2745    | Halomonas         | 7        | 19       |
+| 570     | Klebsiella        | 10       | 10       |
+| 475     | Moraxella         | 6        | 72       |
+| 122277  | Pectobacterium    | 10       | 10       |
+| 53246   | Pseudoalteromonas | 19       | 33       |
+| 286     | Pseudomonas       | 227      | 1410     |
+| 613     | Serratia          | 10       | 10       |
+| 22      | Shewanella        | 16       | 58       |
+| 2901164 | Stutzerimonas     | 9        | 37       |
+| 662     | Vibrio            | 29       | 29       |
+| 338     | Xanthomonas       | 15       | 15       |
+
+### Strains
+
+```shell
+cd ~/data/Pseudomonas
+
+# list strains
+mkdir -p taxon
+
+rm taxon/* strains.lst *.tmp
+cat ASSEMBLY/pass.csv |
+    sed -e '1d' |
+    tr "," "\t" |
+    tsv-select -f 1,2,3 |
+    nwr append stdin -c 3 -r species -r genus -r family -r order |
+    parallel --col-sep "\t" --no-run-if-empty --linebuffer -k -j 4 '
+        echo {1} >> strains.lst
+
+        echo {4} >> species.tmp
+        echo {5} >> genus.tmp
+        echo {6} >> family.tmp
+
+        echo {7} >> order.tmp
+        echo {1} >> taxon/{7}
+
+        printf "%s\t%s\t%d\t%s\t%s\t%s\t%s\n" {1} {2} {3} {4} {5} {6} {7}
+    ' \
+    > strains.taxon.tsv
+
+cat species.tmp | tsv-uniq > species.lst
+cat genus.tmp | tsv-uniq > genus.lst
+cat family.tmp | tsv-uniq > family.lst
+cat order.tmp | tsv-uniq > order.lst
+
+# Omit strains without protein annotations
+for STRAIN in $(cat strains.lst); do
+    if ! compgen -G "ASSEMBLY/${STRAIN}/*_protein.faa.gz" > /dev/null; then
+        echo ${STRAIN}
+    fi
+    if ! compgen -G "ASSEMBLY/${STRAIN}/*_cds_from_genomic.fna.gz" > /dev/null; then
+        echo ${STRAIN}
+    fi
+done |
+    tsv-uniq \
+    > omit.lst
+# All OK
+
+rm *.tmp
+
+```
+
+## NCBI taxonomy
+
+Done by `bp_taxonomy2tree.pl` from BioPerl.
+
+```shell
+mkdir -p ~/data/Pseudomonas/tree
+cd ~/data/Pseudomonas/tree
+
+bp_taxonomy2tree.pl -e \
+    $(
+        cat ../genus.lst |
+            tr " " "_" |
+            parallel echo '-s {}'
+    ) \
+    > ncbi.nwk
+
+nw_display -s -b 'visibility:hidden' -w 600 -v 30 ncbi.nwk |
+    rsvg-convert -o Pseudomonas.ncbi.png
+
+```
+
+## Raw phylogenetic tree by MinHash
+
+```shell
+mkdir -p ~/data/Pseudomonas/mash
+cd ~/data/Pseudomonas/mash
+
+for strain in $(cat ../strains.lst ); do
+    2>&1 echo "==> ${strain}"
+
+    if [[ -e ${strain}.msh ]]; then
+        continue
+    fi
+
+    find ../ASSEMBLY/${strain} -name "*_genomic.fna.gz" |
+        grep -v "_from_" |
+        xargs cat |
+        mash sketch -k 21 -s 100000 -p 8 - -I "${strain}" -o ${strain}
+done
+
+mash triangle -E -p 8 -l <(
+    cat ../strains.lst | parallel echo "{}.msh"
+    ) \
+    > dist.tsv
+
+# fill matrix with lower triangle
+tsv-select -f 1-3 dist.tsv |
+    (tsv-select -f 2,1,3 dist.tsv && cat) |
+    (
+        cut -f 1 dist.tsv |
+            tsv-uniq |
+            parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
+        cat
+    ) \
+    > dist_full.tsv
+
+cat dist_full.tsv |
+    Rscript -e '
+        library(readr);
+        library(tidyr);
+        library(ape);
+        pair_dist <- read_tsv(file("stdin"), col_names=F);
+        tmp <- pair_dist %>%
+            pivot_wider( names_from = X2, values_from = X3, values_fill = list(X3 = 1.0) )
+        tmp <- as.matrix(tmp)
+        mat <- tmp[,-1]
+        rownames(mat) <- tmp[,1]
+
+        dist_mat <- as.dist(mat)
+        clusters <- hclust(dist_mat, method = "ward.D2")
+        tree <- as.phylo(clusters)
+        write.tree(phy=tree, file="tree.nwk")
+
+        group <- cutree(clusters, h=0.4) # k=5
+        groups <- as.data.frame(group)
+        groups$ids <- rownames(groups)
+        rownames(groups) <- NULL
+        groups <- groups[order(groups$group), ]
+        write_tsv(groups, "groups.tsv")
+    '
+
+```
+
+### Tweak the mash tree
+
+```shell
+mkdir -p ~/data/Pseudomonas/tree
+cd ~/data/Pseudomonas/tree
+
+nw_reroot ../mash/tree.nwk Baci_subti_subtilis_168 Sta_aure_aureus_NCTC_8325 |
+    nw_order -c n - \
+    > mash.reroot.newick
+
+# rank::col
+ARRAY=(
+    'order::7'
+    'family::6'
+    'genus::5'
+    'species::4'
+)
+
+rm mash.condensed.map
+CUR_TREE=mash.reroot.newick
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick mash.${GROUP_NAME}.newick
+    cat condense.map >> mash.condensed.map
+
+    CUR_TREE=mash.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 600 -v 20 mash.species.newick |
+    rsvg-convert -o Pseudomonas.mash.png
+
+```
