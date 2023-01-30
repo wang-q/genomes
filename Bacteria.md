@@ -239,6 +239,8 @@ cat reference.tsv |
     ' |
     mlr --itsv --omd cat
 
+cp reference.tsv ~/Scripts/genomes/assembly/Bacteria.reference.tsv
+
 ```
 
 | #tax_id | organism_name                                                    | phylum                |
