@@ -273,7 +273,6 @@ Three levels:
 * '>= 2 genomes'
     * assembly_level: 'Complete Genome', 'Chromosome'
 
-
 ```shell
 cd ~/data/Bacteria/summary
 
@@ -485,7 +484,7 @@ cat attributes.lst |
     (echo -e "BioSample" && cat) |
     tr '\n' '\t' |
     sed 's/\t$/\n/' \
-    > ASSEMBLY/Bacteria.biosample.tsv
+    > ASSEMBLY/biosample.tsv
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 1 '
@@ -493,7 +492,7 @@ find biosample -name "SAM*.txt" |
         cat {} |
             perl -nl -MPath::Tiny -e '\''
                 BEGIN {
-                    our @keys = grep {/\S/} path(q{attributes.lst})->lines({chomp => 1});
+                    our @keys = grep {/\S/} path(q{ASSEMBLY/attributes.lst})->lines({chomp => 1});
                     our %stat = ();
                 }
 
@@ -520,6 +519,6 @@ find biosample -name "SAM*.txt" |
                 }
             '\''
     ' \
-    >> ASSEMBLY/Bacteria.biosample.tsv
+    >> ASSEMBLY/biosample.tsv
 
 ```
