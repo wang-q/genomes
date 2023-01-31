@@ -74,18 +74,18 @@ tar xvfz 3093482
 Ref.:
 
 1. Nature Microbiology volume 2, pages 1533–1542 (2017)
-    * Save Supplementary Table 6 to `hmm/bac120.tsv`
+    * Save Supplementary Table 6 to `data/bac120.tsv`
 2. Nature Biotechnology volume 36, pages 996–1004 (2018)
 
 ```shell
 mkdir -p ~/data/HMM/bac120
 cd ~/data/HMM/bac120
 
-cp ~/Scripts/withncbi/hmm/bac120.tsv ~/data/HMM/bac120/
+cp ~/Scripts/genomes/data/bac120.tsv ~/data/HMM/bac120/
 
 mkdir -p HMM
 
-cat ~/Scripts/withncbi/hmm/bac120.tsv |
+cat ~/Scripts/genomes/data/bac120.tsv |
     sed '1d' |
     tsv-select -f 1 |
     grep '^TIGR' |
@@ -93,7 +93,7 @@ cat ~/Scripts/withncbi/hmm/bac120.tsv |
         tar --directory HMM -xzvf ../TIGRFAM/TIGRFAMs_14.0_HMM.tar.gz {}.HMM
     '
 
-cat ~/Scripts/withncbi/hmm/bac120.tsv |
+cat ~/Scripts/genomes/data/bac120.tsv |
     sed '1d' |
     tsv-select -f 1 |
     grep -v '^TIGR' |
