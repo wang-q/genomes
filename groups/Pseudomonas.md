@@ -11,6 +11,9 @@ changes in Gammaproteobacteria. We include both old and new orders.
 * Old ones: Cellvibrionales, Oceanospirillales, Pseudomonadales, and Alteromonadales
 * New ones: Moraxellales, Kangiellales, and Pseudomonadales
 
+Another recent [paper](https://doi.org/10.1099/ijsem.0.005542) proposed that an outlier clade of P.
+aeruginosa (containing PA7) split into a new species, Pseudomonas paraeruginosa.
+
 ### List all ranks
 
 ```shell
@@ -74,7 +77,6 @@ nwr member Pseudomonas Acinetobacter -r "species group" -r "species subgroup" |
 | 1232139 | P. oleovorans/pseudoalcaligenes group    | species subgroup |
 | 251695  | P. syringae group genomosp. 1            | species subgroup |
 | 251698  | P. syringae group genomosp. 2            | species subgroup |
-
 
 ### Species with assemblies
 
@@ -425,6 +427,12 @@ find biosample -name "SAM*.txt" |
 
 ### Check N50 of assemblies
 
+* Some strains were anomalously labeled and identified by the `mash` tree.
+    * Pseudom_flu_GCF_900636635_1
+    * Pseudom_chl_GCF_001023535_1
+    * Pseudom_syr_GCF_004006335_1
+    * Pseudom_puti_GCF_003228315_1 and Pseudom_puti_GCF_020172705_1
+
 ```shell
 cd ~/data/Pseudomonas
 
@@ -458,13 +466,18 @@ wc -l ASSEMBLY/n50*
 tsv-join \
     ASSEMBLY/collect.csv \
     --delimiter "," -H --key-fields 1 \
-    --filter-file ASSEMBLY/n50.pass.csv \
+    --filter-file ASSEMBLY/n50.pass.csv |
+    tsv-filter --delimiter "," -H --str-not-in-fld 1:GCF_900636635 |
+    tsv-filter --delimiter "," -H --str-not-in-fld 1:GCF_001023535 |
+    tsv-filter --delimiter "," -H --str-not-in-fld 1:GCF_004006335 |
+    tsv-filter --delimiter "," -H --str-not-in-fld 1:GCF_003228315 |
+    tsv-filter --delimiter "," -H --str-not-in-fld 1:GCF_020172705 \
     > ASSEMBLY/pass.csv
 
 wc -l ASSEMBLY/*csv
 #   3001 ASSEMBLY/collect.csv
 #   2753 ASSEMBLY/n50.pass.csv
-#   2753 ASSEMBLY/pass.csv
+#   2748 ASSEMBLY/pass.csv
 
 ```
 
@@ -529,7 +542,7 @@ cat summary/order.lst |
 | 135619  | Oceanospirillales | 14       | 28       |
 | 1240482 | Orbales           | 1        | 1        |
 | 135625  | Pasteurellales    | 21       | 21       |
-| 72274   | Pseudomonadales   | 247      | 1466     |
+| 72274   | Pseudomonadales   | 247      | 1461     |
 | 72273   | Thiotrichales     | 12       | 12       |
 | 135623  | Vibrionales       | 35       | 35       |
 | 135614  | Xanthomonadales   | 28       | 28       |
@@ -588,7 +601,7 @@ cat summary/genus.lst |
 | 475     | Moraxella         | 6        | 72       |
 | 122277  | Pectobacterium    | 10       | 10       |
 | 53246   | Pseudoalteromonas | 19       | 33       |
-| 286     | Pseudomonas       | 227      | 1410     |
+| 286     | Pseudomonas       | 227      | 1405     |
 | 613     | Serratia          | 10       | 10       |
 | 22      | Shewanella        | 16       | 58       |
 | 2901164 | Stutzerimonas     | 9        | 37       |
@@ -608,22 +621,25 @@ cat ASSEMBLY/pass.csv |
     sed -e '1d' |
     tr "," "\t" |
     tsv-select -f 1,2,3 |
-    nwr append stdin -c 3 -r species -r genus -r family -r order |
+    nwr append stdin -c 3 -r species -r "species group" -r genus -r family -r order |
     parallel --col-sep "\t" --no-run-if-empty --linebuffer -k -j 4 '
         echo {1} >> strains.lst
 
         echo {4} >> species.tmp
-        echo {5} >> genus.tmp
-        echo {6} >> family.tmp
+        echo {5} >> species_group.tmp
+        echo {6} >> genus.tmp
+        echo {7} >> family.tmp
 
-        echo {7} >> order.tmp
+        echo {8} >> order.tmp
         echo {1} >> taxon/{7}
 
-        printf "%s\t%s\t%d\t%s\t%s\t%s\t%s\n" {1} {2} {3} {4} {5} {6} {7}
-    ' \
+        printf "%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\n" {1} {2} {3} {4} {5} {6} {7} {8}
+    ' |
+    sed 's/Pseudomonas paraeruginosa/Pseudomonas aeruginosa/g' \
     > strains.taxon.tsv
 
 cat species.tmp | tsv-uniq > species.lst
+cat species_group.tmp | tsv-uniq > species_group.lst
 cat genus.tmp | tsv-uniq > genus.lst
 cat family.tmp | tsv-uniq > family.lst
 cat order.tmp | tsv-uniq > order.lst
@@ -740,9 +756,10 @@ nw_reroot ../mash/tree.nwk Baci_subti_subtilis_168 Sta_aure_aureus_NCTC_8325 |
 
 # rank::col
 ARRAY=(
-    'order::7'
-    'family::6'
-    'genus::5'
+    'order::8'
+    'family::7'
+    'genus::6'
+    'species_group::5'
     'species::4'
 )
 
