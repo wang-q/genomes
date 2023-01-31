@@ -989,3 +989,189 @@ cat PROTEINS/all.info.tsv |
 #12881968
 
 ```
+
+## Phylogenetics with bac120
+
+### Find corresponding proteins by `hmmsearch`
+
+* Download HMM models as described in [`hmm/README.md`](../hmm/README.md)
+
+* The `E_VALUE` was manually adjusted to 1e-20 to reach a balance between sensitivity and
+  speciality.
+
+```shell
+E_VALUE=1e-20
+
+cd ~/data/Pseudomonas
+
+# Find all genes
+for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
+    >&2 echo "==> marker [${marker}]"
+
+    mkdir -p PROTEINS/${marker}
+
+    for FAMILY in $(cat family.lst); do
+        >&2 echo "==> FAMILY [${FAMILY}]"
+
+        cat taxon/${FAMILY} |
+            parallel --no-run-if-empty --linebuffer -k -j 8 "
+                gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
+                    hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw ~/data/HMM/bac120/HMM/${marker}.HMM - |
+                    grep '>>' |
+                    perl -nl -e ' m{>>\s+(\S+)} and printf qq{%s\t%s\n}, \$1, {}; '
+            " \
+            > PROTEINS/${marker}/${FAMILY}.replace.tsv
+    done
+
+    echo
+done
+
+```
+
+### Align and concat marker genes to create species tree
+
+```shell script
+cd ~/data/Pseudomonas
+
+cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        for FAMILY in $(cat family.lst); do
+            cat PROTEINS/{}/${FAMILY}.replace.tsv
+        done |
+            wc -l
+    ' |
+    tsv-summarize --quantile 1:0.25,0.5,0.75
+# 2741.75 2745    4019.75
+
+cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo {}
+        for FAMILY in $(cat family.lst); do
+            cat PROTEINS/{}/${FAMILY}.replace.tsv
+        done |
+            wc -l
+    ' |
+    paste - - |
+    tsv-filter --invert --ge 2:2000 --le 2:3500 |
+    cut -f 1 \
+    > PROTEINS/bac120.omit.lst
+
+# Extract sequences
+# Multiple copies slow down the alignment process
+cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+    grep -v -Fx -f PROTEINS/bac120.omit.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        >&2 echo "==> marker [{}]"
+
+        for FAMILY in $(cat family.lst); do
+            cat PROTEINS/{}/${FAMILY}.replace.tsv
+        done \
+            > PROTEINS/{}/{}.replace.tsv
+
+        faops some PROTEINS/all.uniq.fa.gz <(
+            cat PROTEINS/{}/{}.replace.tsv |
+                cut -f 1 |
+                tsv-uniq
+            ) stdout \
+            > PROTEINS/{}/{}.pro.fa
+    '
+
+# Align each markers with muscle
+cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        >&2 echo "==> marker [{}]"
+        if [ ! -s PROTEINS/{}/{}.pro.fa ]; then
+            exit
+        fi
+        if [ -s PROTEINS/{}/{}.aln.fa ]; then
+            exit
+        fi
+
+        muscle -quiet -in PROTEINS/{}/{}.pro.fa -out PROTEINS/{}/{}.aln.fa
+    '
+
+for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
+    >&2 echo "==> marker [${marker}]"
+    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+
+    # 1 name to many names
+    cat PROTEINS/${marker}/${marker}.replace.tsv |
+        parallel --no-run-if-empty --linebuffer -k -j 4 "
+            faops replace -s PROTEINS/${marker}/${marker}.aln.fa <(echo {}) stdout
+        " \
+        > PROTEINS/${marker}/${marker}.replace.fa
+done
+
+# Concat marker genes
+for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
+    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+
+    # sequences in one line
+    faops filter -l 0 PROTEINS/${marker}/${marker}.replace.fa stdout
+
+    # empty line for .fas
+    echo
+done \
+    > PROTEINS/bac120.aln.fas
+
+fasops concat PROTEINS/bac120.aln.fas strains.lst -o PROTEINS/bac120.aln.fa
+
+# Trim poorly aligned regions with `TrimAl`
+trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
+
+faops size PROTEINS/bac120.*.fa |
+    tsv-uniq -f 2 |
+    cut -f 2
+#49772
+#25586
+
+# To make it faster
+FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
+
+```
+
+### Tweak the concat tree
+
+```shell script
+cd ~/data/Pseudomonas/tree
+
+nw_reroot ../PROTEINS/bac120.trim.newick Baci_subti_subtilis_168 Sta_aure_aureus_NCTC_8325 |
+    nw_order -c n - \
+    > bac120.reroot.newick
+
+rm bac120.condensed.map
+
+# rank::col
+ARRAY=(
+#    'order::8'
+#    'family::7'
+    'genus::6'
+    'species_group::5'
+    'species::4'
+)
+
+rm bac120.condensed.map
+CUR_TREE=bac120.reroot.newick
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick bac120.${GROUP_NAME}.newick
+    cat condense.map >> bac120.condensed.map
+
+    CUR_TREE=bac120.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 600 -v 20 bac120.species.newick |
+    rsvg-convert -o Pseudomonas.bac120.png
+
+```
+
