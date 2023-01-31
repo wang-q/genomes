@@ -2,19 +2,21 @@
 
 Genus *Trichoderma* as an example.
 
-[TOC levels=1-3]: # ""
+<!-- toc -->
 
-- [Build alignments across a eukaryotic taxonomy rank](#build-alignments-across-a-eukaryotic-taxonomy-rank)
-    * [Preparations](#preparations)
-    * [Strain info](#strain-info)
-        + [List all ranks](#list-all-ranks)
-        + [Species with assemblies](#species-with-assemblies)
-    * [Trichoderma: assembly](#trichoderma-assembly)
-    * [Filter strains by N50](#filter-strains-by-n50)
-    * [Raw phylogenetic tree by MinHash](#raw-phylogenetic-tree-by-minhash)
-    * [Groups and targets](#groups-and-targets)
-    * [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
-    * [Generate alignments](#generate-alignments)
+- [Strain info](#strain-info)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+- [Download all assemblies](#download-all-assemblies)
+- [Count and group strains](#count-and-group-strains)
+- [NCBI taxonomy](#ncbi-taxonomy)
+- [Raw phylogenetic tree by MinHash](#raw-phylogenetic-tree-by-minhash)
+    * [Tweak the mash tree](#tweak-the-mash-tree)
+- [Groups and targets](#groups-and-targets)
+- [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
+- [Generate alignments](#generate-alignments)
+
+<!-- tocstop -->
 
 ## Strain info
 
@@ -295,7 +297,6 @@ wc -l ASSEMBLY/Trichoderma.assembly*csv
 #   66 ASSEMBLY/Trichoderma.assembly.pass.csv
 
 ```
-
 
 * strains
 

@@ -1,5 +1,30 @@
 # *Pseudomonas* HGT
 
+<!-- toc -->
+
+- [Strain info](#strain-info)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+- [Download all assemblies](#download-all-assemblies)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [rsync and check](#rsync-and-check)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+- [BioSample](#biosample)
+- [Count and group strains](#count-and-group-strains)
+    * [Check N50 of assemblies](#check-n50-of-assemblies)
+    * [Order](#order)
+    * [Genus](#genus)
+    * [Strains](#strains)
+- [NCBI taxonomy](#ncbi-taxonomy)
+- [Raw phylogenetic tree by MinHash](#raw-phylogenetic-tree-by-minhash)
+    * [Tweak the mash tree](#tweak-the-mash-tree)
+- [Collect proteins](#collect-proteins)
+    * [`all.pro.fa`](#allprofa)
+    * [`all.replace.fa`](#allreplacefa)
+    * [`all.info.tsv`](#allinfotsv)
+
+<!-- tocstop -->
+
 ## Strain info
 
 * [Pseudomonas](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=286)

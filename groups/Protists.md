@@ -2,19 +2,21 @@
 
 Eukaryota without Plants, Metazoa, and Fungi
 
-[TOC levels=1-3]: # ""
+<!-- toc -->
 
-- [Aligning various genera from Protists](#aligning-various-genera-from-protists)
-    - [Strain info](#strain-info)
-    - [NCBI Assembly](#ncbi-assembly)
-    - [Count strains](#count-strains)
-    - [Raw phylogenetic tree by MinHash](#raw-phylogenetic-tree-by-minhash)
-    - [Groups and targets](#groups-and-targets)
-    - [Protists: prepare](#protists-prepare)
-    - [plasmodium: run](#plasmodium-run)
-    - [Protists: run](#protists-run)
+* [Species with assemblies](#species-with-assemblies)
 
-## Strain info
+- [Download all assemblies](#download-all-assemblies)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [rsync and check](#rsync-and-check)
+- [Count strains](#count-strains)
+- [Raw phylogenetic tree by MinHash](#raw-phylogenetic-tree-by-minhash)
+- [Groups and targets](#groups-and-targets)
+- [Protists: prepare](#protists-prepare)
+- [plasmodium: run](#plasmodium-run)
+- [Protists: run](#protists-run)
+
+<!-- tocstop -->
 
 ### Species with assemblies
 
@@ -212,16 +214,16 @@ cat genus.count.tsv |
             * Ectocarpus 外子藻属
             * Undaria 裙带菜属
         * Oomycota 卵菌门
-          * Aphanomyces   丝囊霉属
-          * Elongisporangium
-          * Globisporangium
-          * Hyaloperonospora
-          * Plasmopara 单轴霉属
-          * Phytophthora 疫霉属
-          * Pythium 腐霉属
-          * Albugo
-          * Peronospora 霜霉属
-          * Phytopythium
+            * Aphanomyces 丝囊霉属
+            * Elongisporangium
+            * Globisporangium
+            * Hyaloperonospora
+            * Plasmopara 单轴霉属
+            * Phytophthora 疫霉属
+            * Pythium 腐霉属
+            * Albugo
+            * Peronospora 霜霉属
+            * Phytopythium
 * Viridiplantae 绿色植物
     * Chlorophyta (green algae)
     * Streptophyta 链形植物
@@ -229,7 +231,6 @@ cat genus.count.tsv |
 ## Download all assemblies
 
 ### Create assembly.tsv
-
 
 ```shell
 cd ~/data/Protists/summary

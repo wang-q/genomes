@@ -2,6 +2,21 @@
 
 All genomes of *Bacteria* and *Archaea*, species by species
 
+<!-- toc -->
+
+- [Strain info](#strain-info)
+    * [`date`](#date)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+    * [Model organisms](#model-organisms)
+- [Download all assemblies](#download-all-assemblies)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [rsync and check](#rsync-and-check)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+- [BioSample](#biosample)
+
+<!-- tocstop -->
+
 ## Strain info
 
 * [Bacteria](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2)

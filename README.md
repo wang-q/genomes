@@ -1,5 +1,20 @@
 # Genomes
 
+<!-- toc -->
+
+- [Detailed steps](#detailed-steps)
+- [Software](#software)
+    * [Install `nwr` and initiate local databases](#install-nwr-and-initiate-local-databases)
+    * [Packages managed by Homebrew](#packages-managed-by-homebrew)
+    * [Other Packages](#other-packages)
+- [Strain info](#strain-info)
+    * [NCBI statistics](#ncbi-statistics)
+- [Download all valid Bacteria and Archaea genomes](#download-all-valid-bacteria-and-archaea-genomes)
+- [Prokaryote groups](#prokaryote-groups)
+- [Eukaryote groups](#eukaryote-groups)
+
+<!-- tocstop -->
+
 ## Detailed steps
 
 * [Bacteria.md](./Bacteria.md): All genomes of *Bacteria* and *Archaea*, species by species
@@ -61,7 +76,6 @@ cpanm https://github.com/wang-q/Bio-Tools-Phylo-PAML.git
 
 * [Bacteria](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2)
 * [Archaea](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2157)
-
 
 ### NCBI statistics
 
