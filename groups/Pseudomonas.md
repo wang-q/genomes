@@ -354,6 +354,11 @@ rsync -avP \
     ~/data/Pseudomonas/ \
     wangq@202.119.37.251:data/Pseudomonas
 
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/Pseudomonas/ \
+    wangq@58.213.64.36:data/Pseudomonas
+
 # rsync -avP wangq@202.119.37.251:data/Pseudomonas/ ~/data/Pseudomonas
 
 # rsync -avP -e "ssh -T -c chacha20-poly1305@openssh.com -o Compression=no -x" \
