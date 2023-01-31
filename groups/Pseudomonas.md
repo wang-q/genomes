@@ -39,6 +39,9 @@ changes in Gammaproteobacteria. We include both old and new orders.
 Another recent [paper](https://doi.org/10.1099/ijsem.0.005542) proposed that an outlier clade of P.
 aeruginosa (containing PA7) split into a new species, Pseudomonas paraeruginosa.
 
+Similarly, a recent [paper](https://doi.org/10.1016/j.syapm.2021.126289) suggested that some species
+of Pseudomonas should be transferred to Halopseudomonas and Stutzerimonas.
+
 ### List all ranks
 
 ```shell
