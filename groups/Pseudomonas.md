@@ -1247,8 +1247,8 @@ for S in $(cat typical.lst); do
     done
 done
 
-for S in $(cat typical.lst); do
-    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort); do
+for S in $(cat typical.lst | head -n 1); do
+    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort | head -n 1); do
         >&2 echo "==> ${f}"
         if [ -e ${f}.tsv ]; then
             >&2 echo ${f}
