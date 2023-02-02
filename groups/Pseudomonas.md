@@ -1247,17 +1247,17 @@ for S in $(cat typical.lst); do
     done
 done
 
-for S in $(cat typical.lst | head -n 1); do
-    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort | head -n 1); do
-        >&2 echo "==> ${f}"
-        if [ -e ${f}.tsv ]; then
-            >&2 echo ${f}
-            continue
-        fi
-
-        interproscan.sh --cpu 12 -dp -f tsv,json -i ${f} --output-file-base ${f}
-    done
-done
+#for S in $(cat typical.lst | head -n 1); do
+#    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort | head -n 1); do
+#        >&2 echo "==> ${f}"
+#        if [ -e ${f}.tsv ]; then
+#            >&2 echo ${f}
+#            continue
+#        fi
+#
+#        interproscan.sh --cpu 12 -dp -f tsv,json -i ${f} --output-file-base ${f}
+#    done
+#done
 
 find STRAINS -type f -name "*.json" | sort |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
@@ -1314,7 +1314,7 @@ done |
 
 # All other strains should have only 1 family member
 cp STRAINS/universal.tsv STRAINS/family-1.tsv
-for S in $(cat typical.lst | grep -v "_aeru_"); do
+for S in $(cat typical.lst | grep -v "_aeruginosa_"); do
     if [ ! -s STRAINS/${S}/family-count.tsv ]; then
         continue
     fi
@@ -1328,7 +1328,7 @@ done
 
 # All P_aeru strains should have multiple family members
 cp STRAINS/family-1.tsv STRAINS/family-n.tsv
-for S in $(cat typical.lst | grep "_aeru_"); do
+for S in $(cat typical.lst | grep "_aeruginosa_"); do
     if [ ! -s STRAINS/${S}/family-count.tsv ]; then
         continue
     fi
@@ -1341,15 +1341,117 @@ for S in $(cat typical.lst | grep "_aeru_"); do
     mv STRAINS/family-tmp.tsv STRAINS/family-n.tsv
 done
 
-wc -l STRAINS/Pseudom_aeru_PAO1/family.tsv STRAINS/universal.tsv STRAINS/family-1.tsv STRAINS/family-n.tsv
-#  4084 STRAINS/Pseudom_aeru_PAO1/family.tsv
-#  1567 STRAINS/universal.tsv
-#   972 STRAINS/family-1.tsv
-#    14 STRAINS/family-n.tsv
+wc -l STRAINS/Pseudom_aeruginosa_PAO1/family.tsv STRAINS/universal.tsv STRAINS/family-1.tsv STRAINS/family-n.tsv
+#  3971 STRAINS/Pseudom_aeruginosa_PAO1/family.tsv
+#  1511 STRAINS/universal.tsv
+#   940 STRAINS/family-1.tsv
+#    12 STRAINS/family-n.tsv
 
 cat STRAINS/family-n.tsv |
     tsv-select -f 1,2 |
+    tsv-sort |
     (echo -e "#family\tcount" && cat) |
     mlr --itsv --omd cat
+
+```
+
+| #family   | count                                         |
+|-----------|-----------------------------------------------|
+| IPR000223 | Peptidase S26A, signal peptidase I            |
+| IPR000813 | 7Fe ferredoxin                                |
+| IPR001353 | Proteasome, subunit alpha/beta                |
+| IPR001404 | Heat shock protein Hsp90 family               |
+| IPR004361 | Glyoxalase I                                  |
+| IPR005999 | Glycerol kinase                               |
+| IPR006684 | Acyl-CoA thioester hydrolase YbgC/YbaW family |
+| IPR007416 | YggL 50S ribosome-binding protein             |
+| IPR008621 | Cbb3-type cytochrome oxidase component        |
+| IPR011757 | Lytic transglycosylase MltB                   |
+| IPR014311 | Guanine deaminase                             |
+| IPR037532 | Peptidoglycan D,D-transpeptidase FtsI         |
+
+
+### IPR007416 - YggL 50S ribosome-binding protein
+
+<https://www.ebi.ac.uk/interpro/entry/InterPro/IPR007416/>
+
+* Pfam:     PF04320 - YggL_50S_bp
+* PANTHER:  PTHR38778 - CYTOPLASMIC PROTEIN-RELATED (PTHR38778)
+
+
+
+
+```shell
+cd ~/data/Pseudomonas
+
+cat STRAINS/Pseudom_aeruginosa_PAO1/*.tsv |
+    grep "IPR007416"
+
+mkdir -p Targets/YggL/HMM
+
+curl -L https://www.ebi.ac.uk/interpro/wwwapi//entry/pfam/PF04320?annotation=hmm |
+    gzip -dc \
+    > Targets/YggL/HMM/YggL_50S_bp.hmm
+curl -L www.pantherdb.org/panther/exportHmm.jsp?acc=PTHR38778 \
+    > Targets/YggL/HMM/PTHR38778.hmm
+
+# Ribosomal protein L10 and S8
+curl -L https://www.ebi.ac.uk/interpro/wwwapi//entry/pfam/PF00466?annotation=hmm |
+    gzip -dc \
+    > Targets/YggL/HMM/Ribosomal_L10.hmm
+curl -L https://www.ebi.ac.uk/interpro/wwwapi//entry/pfam/PF00410?annotation=hmm |
+    gzip -dc \
+    > Targets/YggL/HMM/Ribosomal_S8.hmm
+
+E_VALUE=1e-20
+for domain in YggL_50S_bp PTHR38778 Ribosomal_L10 Ribosomal_S8 ; do
+    >&2 echo "==> domain [${domain}]"
+
+    if [ -e Targets/YggL/${domain}.replace.tsv ]; then
+        continue;
+    fi
+
+    for FAMILY in $(cat family.lst); do
+        >&2 echo "==> FAMILY [${FAMILY}]"
+
+        cat taxon/${FAMILY} |
+            parallel --no-run-if-empty --linebuffer -k -j 8 "
+                gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
+                    hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw Targets/YggL/HMM/${domain}.hmm - |
+                    grep '>>' |
+                    perl -nl -e '
+                        m{>>\s+(\S+)} or next;
+                        \$n = \$1;
+                        \$s = \$n;
+                        \$s =~ s/\.\d+//;
+                        printf qq{%s\t%s_%s\n}, \$n, {}, \$s;
+                    '
+            "
+    done \
+        > Targets/YggL/${domain}.replace.tsv
+
+    >&2 echo
+done
+
+tsv-join Targets/YggL/YggL_50S_bp.replace.tsv \
+    -f Targets/YggL/PTHR38778.replace.tsv \
+    > Targets/YggL/YggL.replace.tsv
+
+wc -l Targets/YggL/*.tsv
+#  2364 Targets/YggL/PTHR38778.replace.tsv
+#  2687 Targets/YggL/Ribosomal_L10.replace.tsv
+#  2745 Targets/YggL/Ribosomal_S8.replace.tsv
+#  2363 Targets/YggL/YggL.replace.tsv
+#  2368 Targets/YggL/YggL_50S_bp.replace.tsv
+
+faops some PROTEINS/all.replace.fa.gz <(tsv-select -f 2 Targets/YggL/YggL.replace.tsv) Targets/YggL/YggL.fa
+
+muscle -in Targets/YggL/YggL.fa -out Targets/YggL/YggL.aln.fa
+
+FastTree Targets/YggL/YggL.aln.fa > Targets/YggL/YggL.aln.newick
+
+nw_reroot Targets/YggL/YggL.aln.newick $(nw_labels Targets/YggL/YggL.aln.newick | grep -E "Baci_subti|Sta_aure") |
+    nw_order -c n - \
+    > Targets/YggL/YggL.reoot.newick
 
 ```
