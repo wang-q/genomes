@@ -5,7 +5,6 @@ All genomes of *Bacteria* and *Archaea*, species by species
 <!-- toc -->
 
 - [Strain info](#strain-info)
-    * [`date`](#date)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
     * [Model organisms](#model-organisms)
@@ -21,10 +20,6 @@ All genomes of *Bacteria* and *Archaea*, species by species
 
 * [Bacteria](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2)
 * [Archaea](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2157)
-
-### `date`
-
-Fri Jan 20 00:52:35 CST 2023
 
 ### List all ranks
 
@@ -46,16 +41,16 @@ nwr member Archaea |
 | superkingdom     |      1 |
 | phylum           |    173 |
 | class            |    125 |
-| order            |    293 |
-| family           |    739 |
-| no rank          |   6578 |
-| species          | 110192 |
-| genus            |   4959 |
+| order            |    295 |
+| family           |    747 |
+| no rank          |   6601 |
+| species          | 110253 |
+| genus            |   4972 |
 | clade            |    133 |
-| strain           |  41127 |
+| strain           |  41193 |
 | varietas         |     24 |
 | isolate          |    456 |
-| subspecies       |    707 |
+| subspecies       |    708 |
 | subclass         |      6 |
 | forma            |      4 |
 | species group    |     99 |
@@ -75,8 +70,8 @@ nwr member Archaea |
 | superkingdom  |     1 |
 | phylum        |    42 |
 | order         |    60 |
-| no rank       |   327 |
-| species       |  3414 |
+| no rank       |   328 |
+| species       |  3416 |
 | class         |    34 |
 | family        |    82 |
 | genus         |   257 |
@@ -112,7 +107,7 @@ nwr member Bacteria Archaea -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#4461 genus.list
+#4470 genus.list
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -189,30 +184,30 @@ done  |
 
 wc -l L*.tsv
 #    3 L1.tsv
-#   45 L2.tsv
-#  111 L3.tsv
-# 1708 L4.tsv
-# 1867 total
+#   43 L2.tsv
+#  114 L3.tsv
+# 1726 L4.tsv
+# 1886 total
 
 for L in L1 L2 L3 L4; do
     cat ${L}.tsv |
         tsv-summarize --sum 3
 done
 #817
-#15391
-#80067
-#28548
+#15299
+#80298
+#28693
 
 cat L3.tsv |
     tsv-join -f L2.tsv -k 1 -e |
     tsv-summarize --sum 3
-#11931
+#13131
 
 cat L4.tsv |
     tsv-join -f L2.tsv -k 1 -e |
     tsv-join -f L3.tsv -k 1 -e |
     tsv-summarize --sum 3
-#10367
+#10436
 
 ```
 
@@ -246,10 +241,10 @@ cat reference.tsv |
     nwr append stdin -r phylum -r class |
     tsv-select -H -f 1,2,phylum,class |
     parallel --col-sep "\t" -j 1 '
-        if [[ "{3}" != "Proteobacteria" ]]; then
-            printf "%s\t%s\t%s\n" {1} {2} {3}
-        else
+        if [[ "{3}" == "Proteobacteria" || "{3}" == "Pseudomonadota" ]]; then
             printf "%s\t%s\t%s\n" {1} {2} {4}
+        else
+            printf "%s\t%s\t%s\n" {1} {2} {3}
         fi
     ' |
     mlr --itsv --omd cat
