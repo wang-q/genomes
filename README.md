@@ -2,7 +2,7 @@
 
 <!-- toc -->
 
-- [Detailed steps](#detailed-steps)
+- [`date`](#date)
 - [Software](#software)
     * [Install `nwr` and initiate local databases](#install-nwr-and-initiate-local-databases)
     * [Packages managed by Homebrew](#packages-managed-by-homebrew)
@@ -15,9 +15,9 @@
 
 <!-- tocstop -->
 
-## Detailed steps
+## `date`
 
-* [Bacteria.md](./Bacteria.md): All genomes of *Bacteria* and *Archaea*, species by species
+Thu Feb 9 05:00:03 CST 2023
 
 ## Software
 
@@ -103,7 +103,7 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 
 ## Download all valid Bacteria and Archaea genomes
 
-[Bacteria.md](./Bacteria.md)
+[Bacteria.md](./Bacteria.md): All genomes of *Bacteria* and *Archaea*, species by species
 
 ## Prokaryote groups
 
