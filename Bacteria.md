@@ -422,7 +422,7 @@ cat Bacteria.assembly.tsv |
     tsv-filter --str-not-in-fld 2:ftp
 
 cat Bacteria.assembly.tsv |
-    tsv-filter --str-in-fld 1:genomosp
+    tsv-filter --or --str-in-fld 1:genomosp --str-in-fld 1:genomovar
 
 # Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Bacteria.assembly.tsv
@@ -459,11 +459,11 @@ find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
 # Run
 proxychains4 bash ASSEMBLY/rsync.sh
 
-# md5
+# Check md5
 # rm ASSEMBLY/check.list
 bash ASSEMBLY/check.sh
 
-# collect
+# Collect
 bash ASSEMBLY/collect.sh
 
 ```
@@ -474,6 +474,11 @@ bash ASSEMBLY/collect.sh
 rsync -avP \
     ~/data/Bacteria/ \
     wangq@202.119.37.251:data/Bacteria
+
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/Bacteria/ \
+    wangq@58.213.64.36:data/Bacteria
 
 # rsync -avP wangq@202.119.37.251:data/Bacteria/ ~/data/Bacteria
 
