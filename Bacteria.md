@@ -473,6 +473,7 @@ cat ASSEMBLY/temp.list |
     parallel --no-run-if-empty --linebuffer -k -j 1 '
         if [[ -f {} ]]; then
             echo Remove {}
+            rm {}
         fi
     '
 
