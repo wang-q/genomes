@@ -85,11 +85,11 @@ nwr member Archaea |
 Four levels:
 
 * '>= 100 genomes'
-    * With strain ID
-    * assembly_level: 'Complete Genome', 'Chromosome'
-    * genome_rep: 'Full'
+    1. With strain ID
+    2. assembly_level: 'Complete Genome', 'Chromosome'
+    3. genome_rep: 'Full'
 * '>= 2 genomes'
-    * assembly_level: 'Complete Genome', 'Chromosome'
+    4. assembly_level: 'Complete Genome', 'Chromosome'
 
 ```shell
 mkdir -p ~/data/Bacteria/summary
@@ -141,7 +141,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         HAVING count >= 100
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
-done  |
+done |
     tsv-sort -k2,2 \
     > L2.tsv
 
@@ -160,7 +160,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         HAVING count >= 100
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
-done  |
+done |
     tsv-sort -k2,2 \
     > L3.tsv
 
@@ -178,7 +178,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         HAVING count >= 2
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
-done  |
+done |
     tsv-sort -k2,2 \
     > L4.tsv
 
@@ -186,8 +186,8 @@ wc -l L*.tsv
 #    3 L1.tsv
 #   43 L2.tsv
 #  114 L3.tsv
-# 1726 L4.tsv
-# 1886 total
+# 1734 L4.tsv
+# 1894 total
 
 for L in L1 L2 L3 L4; do
     cat ${L}.tsv |
@@ -195,20 +195,45 @@ for L in L1 L2 L3 L4; do
 done
 #817
 #15299
-#80298
-#28693
+#80300
+#28732
 
 cat L3.tsv |
     tsv-join -f L2.tsv -k 1 -e |
     tsv-summarize --sum 3
-#13131
+#13133
 
 cat L4.tsv |
     tsv-join -f L2.tsv -k 1 -e |
     tsv-join -f L3.tsv -k 1 -e |
     tsv-summarize --sum 3
-#10436
+#10473
 
+```
+
+* Some species are divided into several separate species
+
+```shell
+cd ~/data/Bacteria/summary
+
+nwr member Pseudomonas -r species |
+    grep -v " sp." |
+    grep -E "syringae|genomosp"
+#251701  Pseudomonas syringae group genomosp. 3  species Bacteria
+#251699  Pseudomonas syringae group genomosp. 7  species Bacteria
+#317659  Pseudomonas syringae pv. coryli species Bacteria
+#317     Pseudomonas syringae    species Bacteria
+
+echo "
+    SELECT
+        *
+    FROM ar
+    WHERE 1=1
+        AND species_id IN (251701,251699,317659)
+        AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
+    GROUP BY species_id
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 ```
 
 ### Model organisms
@@ -310,7 +335,7 @@ echo "
         AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-filter --regex '2:^[A-Za-z ]+$' \
+    tsv-filter -H --regex '2:^[A-Z]' \
     >> raw.tsv
 
 # L3
@@ -335,7 +360,7 @@ echo "
         AND genome_rep IN ('Full') -- fully representative
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-filter --regex '2:^[A-Za-z ]+$' \
+    tsv-filter -H --regex '2:^[A-Z]' \
     >> raw.tsv
 
 # L4
@@ -360,11 +385,11 @@ echo "
         AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-filter --regex '2:^[A-Za-z ]+$' \
+    tsv-filter -H --regex '2:^[A-Z]' \
     >> raw.tsv
 
 datamash check < raw.tsv
-#37552 lines, 5 fields
+#38788 lines, 5 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -382,11 +407,12 @@ cat raw.tsv |
         $seen{$F[5]} > 1 and next;
         printf qq{%s\t%s\t%s\t%s\n}, $F[5], $F[3], $F[1], $F[4];
         ' |
-    keep-header -- sort -k3,3 -k1,1 \
+    keep-header -- sort -k3,3 -k1,1 |
+    tsv-filter -H --regex '1:^[A-Z]' \
     > Bacteria.assembly.tsv
 
 datamash check < Bacteria.assembly.tsv
-#37477 lines, 4 fields
+#38662 lines, 4 fields
 
 # find potential duplicate strains or assemblies
 cat Bacteria.assembly.tsv |
@@ -394,6 +420,9 @@ cat Bacteria.assembly.tsv |
 
 cat Bacteria.assembly.tsv |
     tsv-filter --str-not-in-fld 2:ftp
+
+cat Bacteria.assembly.tsv |
+    tsv-filter --str-in-fld 1:genomosp
 
 # Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Bacteria.assembly.tsv
