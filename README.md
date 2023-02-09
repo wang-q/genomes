@@ -47,6 +47,7 @@ brew install brewsci/bio/trimal
 brew install datamash
 brew install miller
 brew install wang-q/tap/tsv-utils
+brew install wang-q/tap/faops
 
 brew install librsvg
 brew install jq
