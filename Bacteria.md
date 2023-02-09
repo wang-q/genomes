@@ -520,8 +520,9 @@ cat ASSEMBLY/collect.csv |
         fi
     '
 
+# Allowing samples not in the list
 find biosample -name "SAM*.txt" | wc -l
-# 38426
+# 39817
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -530,12 +531,12 @@ find biosample -name "SAM*.txt" |
                 print $1 if m{\s+\/([\w_ ]+)=};
             '\''
     ' |
-    tsv-uniq --at-least 50 | # ignore rare attributes
+    tsv-uniq --at-least 500 | # ignore rare attributes
     grep -v "^INSDC" |
     grep -v "^ENA" \
     > ASSEMBLY/attributes.lst
 
-cat attributes.lst |
+cat ASSEMBLY/attributes.lst |
     (echo -e "BioSample" && cat) |
     tr '\n' '\t' |
     sed 's/\t$/\n/' \
