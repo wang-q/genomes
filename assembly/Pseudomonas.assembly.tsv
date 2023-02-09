@@ -30,6 +30,7 @@ Acin_bau_AYE_GCF_000069245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/06
 Acin_bau_BJAB07104_GCF_000419385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/419/385/GCF_000419385.1_ASM41938v1	Acinetobacter baumannii	Complete Genome
 Acin_bau_BJAB0715_GCF_000419405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/419/405/GCF_000419405.1_ASM41940v1	Acinetobacter baumannii	Complete Genome
 Acin_bau_BJAB0868_GCF_000419425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/419/425/GCF_000419425.1_ASM41942v1	Acinetobacter baumannii	Complete Genome
+Acin_bau_Canada_BC_5_GCF_028370175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/370/175/GCF_028370175.1_ASM2837017v1	Acinetobacter baumannii	Complete Genome
 Acin_bau_D1279779_GCF_000186665_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/186/665/GCF_000186665.3_ASM18666v4	Acinetobacter baumannii	Complete Genome
 Acin_bau_DU202_GCF_000498375_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/498/375/GCF_000498375.2_ASM49837v2	Acinetobacter baumannii	Complete Genome
 Acin_bau_GCF_000695855_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/695/855/GCF_000695855.3_ASM69585v3	Acinetobacter baumannii	Complete Genome
@@ -531,6 +532,8 @@ Acin_bau_GCF_026409185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/409/18
 Acin_bau_GCF_026409205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/409/205/GCF_026409205.1_ASM2640920v1	Acinetobacter baumannii	Complete Genome
 Acin_bau_GCF_027239755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/239/755/GCF_027239755.1_ASM2723975v1	Acinetobacter baumannii	Complete Genome
 Acin_bau_GCF_027558855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/558/855/GCF_027558855.1_ASM2755885v1	Acinetobacter baumannii	Complete Genome
+Acin_bau_GCF_028201495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/201/495/GCF_028201495.1_ASM2820149v1	Acinetobacter baumannii	Complete Genome
+Acin_bau_GCF_028464005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/464/005/GCF_028464005.1_ASM2846400v1	Acinetobacter baumannii	Complete Genome
 Acin_bau_GCF_900088705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/088/705/GCF_900088705.1_26872B01	Acinetobacter baumannii	Complete Genome
 Acin_bau_GCF_900093475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/093/475/GCF_900093475.1_36734_D01_2	Acinetobacter baumannii	Complete Genome
 Acin_bau_GCF_900478145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/478/145/GCF_900478145.1_34555_D01	Acinetobacter baumannii	Complete Genome
@@ -766,6 +769,7 @@ Acin_schi_GCF_007833615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/007/833/6
 Acin_schi_GCF_010918635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/918/635/GCF_010918635.1_ASM1091863v1	Acinetobacter schindleri	Complete Genome
 Acin_schi_GCF_010918895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/918/895/GCF_010918895.1_ASM1091889v1	Acinetobacter schindleri	Complete Genome
 Acin_schi_GCF_010919095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/919/095/GCF_010919095.1_ASM1091909v1	Acinetobacter schindleri	Complete Genome
+Acin_schi_GCF_027942235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/942/235/GCF_027942235.1_ASM2794223v1	Acinetobacter schindleri	Complete Genome
 Acin_sei_GCF_014717515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/717/515/GCF_014717515.1_ASM1471751v1	Acinetobacter seifertii	Complete Genome
 Acin_sei_GCF_014718355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/718/355/GCF_014718355.1_ASM1471835v1	Acinetobacter seifertii	Complete Genome
 Acin_sei_GCF_014719215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/719/215/GCF_014719215.1_ASM1471921v1	Acinetobacter seifertii	Complete Genome
@@ -871,8 +875,8 @@ Halomo_hydrot_GCF_011399095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/3
 Halomo_meri_GCF_009846525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/846/525/GCF_009846525.1_ASM984652v1	Halomonas meridiana	Complete Genome
 Halomo_meri_GCF_011398715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/398/715/GCF_011398715.1_ASM1139871v1	Halomonas meridiana	Complete Genome
 Halomo_meri_GCF_011764625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/764/625/GCF_011764625.1_ASM1176462v1	Halomonas meridiana	Complete Genome
-Halomo_pie_GCF_012427705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/012/427/705/GCF_012427705.1_ASM1242770v1	Halomonas piezotolerans	Complete Genome
-Halomo_pie_GCF_019443265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/443/265/GCF_019443265.1_ASM1944326v1	Halomonas piezotolerans	Complete Genome
+Halomo_piez_GCF_012427705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/012/427/705/GCF_012427705.1_ASM1242770v1	Halomonas piezotolerans	Complete Genome
+Halomo_piez_GCF_019443265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/443/265/GCF_019443265.1_ASM1944326v1	Halomonas piezotolerans	Complete Genome
 Halomo_tit_GCF_006542315_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/006/542/315/GCF_006542315.2_ASM654231v2	Halomonas titanicae	Complete Genome
 Halomo_tit_GCF_013347205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/347/205/GCF_013347205.1_ASM1334720v1	Halomonas titanicae	Complete Genome
 Halomo_tit_GCF_014697095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/697/095/GCF_014697095.1_ASM1469709v1	Halomonas titanicae	Complete Genome
@@ -893,6 +897,10 @@ Marinob_nau_ATCC_49840_GCF_000284615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/
 Marinob_nau_VT8_GCF_000015365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/015/365/GCF_000015365.1_ASM1536v1	Marinobacter nauticus	Complete Genome
 Marinob_sala_GCF_002116735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/116/735/GCF_002116735.1_ASM211673v1	Marinobacter salarius	Complete Genome
 Marinob_sala_GCF_003986605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/986/605/GCF_003986605.1_ASM398660v1	Marinobacter salarius	Complete Genome
+Marinom_mediterranea_GCF_028472785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/472/785/GCF_028472785.1_ASM2847278v1	Marinomonas mediterranea	Complete Genome
+Marinom_mediterranea_GCF_028472805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/472/805/GCF_028472805.1_ASM2847280v1	Marinomonas mediterranea	Complete Genome
+Marinom_mediterranea_MMB_1_GCF_000192865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/192/865/GCF_000192865.1_ASM19286v1	Marinomonas mediterranea	Complete Genome
+Marinom_mediterranea_MMB_1_GCF_028472825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/472/825/GCF_028472825.1_ASM2847282v1	Marinomonas mediterranea	Complete Genome
 Marinom_prim_GCF_003285205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/285/205/GCF_003285205.1_ASM328520v1	Marinomonas primoryensis	Chromosome
 Marinom_prim_GCF_013372285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/372/285/GCF_013372285.1_ASM1337228v1	Marinomonas primoryensis	Complete Genome
 Mora_bovis_GCF_003287015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/287/015/GCF_003287015.1_ASM328701v1	Moraxella bovis	Complete Genome
@@ -969,8 +977,8 @@ Mora_osl_GCF_016888885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/888/88
 Mora_osl_GCF_020041925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/041/925/GCF_020041925.1_ASM2004192v1	Moraxella osloensis	Complete Genome
 Pseudoa_agariv_DSM_14585_GCF_002310855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/310/855/GCF_002310855.1_ASM231085v1	Pseudoalteromonas agarivorans	Complete Genome
 Pseudoa_agariv_GCF_003668795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/668/795/GCF_003668795.1_ASM366879v1	Pseudoalteromonas agarivorans	Complete Genome
-Pseudoa_ali_GCF_001999225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/999/225/GCF_001999225.1_ASM199922v1	Pseudoalteromonas aliena	Complete Genome
-Pseudoa_ali_SW19_GCF_014905615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/905/615/GCF_014905615.1_ASM1490561v1	Pseudoalteromonas aliena	Chromosome
+Pseudoa_alie_GCF_001999225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/999/225/GCF_001999225.1_ASM199922v1	Pseudoalteromonas aliena	Complete Genome
+Pseudoa_alie_SW19_GCF_014905615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/905/615/GCF_014905615.1_ASM1490561v1	Pseudoalteromonas aliena	Chromosome
 Pseudoa_carr_GCF_004328865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/328/865/GCF_004328865.1_ASM432886v1	Pseudoalteromonas carrageenovora	Complete Genome
 Pseudoa_carr_IAM_12662_GCF_014925295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/925/295/GCF_014925295.1_ASM1492529v1	Pseudoalteromonas carrageenovora	Chromosome
 Pseudoa_carr_IAM_12662_GCF_900239935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/239/935/GCF_900239935.1_PCAR91_V1	Pseudoalteromonas carrageenovora	Chromosome
@@ -1000,6 +1008,7 @@ Pseudoa_transluci_GCF_000026085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/0
 Pseudoa_transluci_KMM_520_GCF_001465295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/465/295/GCF_001465295.1_ASM146529v1	Pseudoalteromonas translucida	Complete Genome
 Pseudoa_tun_GCF_002310815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/310/815/GCF_002310815.1_ASM231081v1	Pseudoalteromonas tunicata	Complete Genome
 Pseudoa_tun_GCF_003568825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/568/825/GCF_003568825.1_ASM356882v1	Pseudoalteromonas tunicata	Complete Genome
+Pseudom_GCF_900235905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/905/GCF_900235905.1_CFBP6411	Pseudomonas syringae group genomosp. 3	Complete Genome
 Pseudom_aeruginosa_19BR_GCF_000223945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/223/945/GCF_000223945.1_ASM22394v2	Pseudomonas aeruginosa	Chromosome
 Pseudom_aeruginosa_213BR_GCF_000223965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/223/965/GCF_000223965.1_ASM22396v2	Pseudomonas aeruginosa	Chromosome
 Pseudom_aeruginosa_39016_GCF_000148745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/148/745/GCF_000148745.1_ASM14874v1	Pseudomonas aeruginosa	Chromosome
@@ -1577,6 +1586,14 @@ Pseudom_aeruginosa_GCF_027594965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/
 Pseudom_aeruginosa_GCF_027594985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/594/985/GCF_027594985.1_ASM2759498v1	Pseudomonas aeruginosa	Complete Genome
 Pseudom_aeruginosa_GCF_027595005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/595/005/GCF_027595005.1_ASM2759500v1	Pseudomonas aeruginosa	Complete Genome
 Pseudom_aeruginosa_GCF_027595025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/595/025/GCF_027595025.1_ASM2759502v1	Pseudomonas aeruginosa	Complete Genome
+Pseudom_aeruginosa_GCF_028403965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/403/965/GCF_028403965.1_ASM2840396v1	Pseudomonas aeruginosa	Complete Genome
+Pseudom_aeruginosa_GCF_028403985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/403/985/GCF_028403985.1_ASM2840398v1	Pseudomonas aeruginosa	Complete Genome
+Pseudom_aeruginosa_GCF_028404005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/404/005/GCF_028404005.1_ASM2840400v1	Pseudomonas aeruginosa	Complete Genome
+Pseudom_aeruginosa_GCF_028404025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/404/025/GCF_028404025.1_ASM2840402v1	Pseudomonas aeruginosa	Complete Genome
+Pseudom_aeruginosa_GCF_028404045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/404/045/GCF_028404045.1_ASM2840404v1	Pseudomonas aeruginosa	Complete Genome
+Pseudom_aeruginosa_GCF_028404065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/404/065/GCF_028404065.1_ASM2840406v1	Pseudomonas aeruginosa	Complete Genome
+Pseudom_aeruginosa_GCF_028404085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/404/085/GCF_028404085.1_ASM2840408v1	Pseudomonas aeruginosa	Complete Genome
+Pseudom_aeruginosa_GCF_028404105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/404/105/GCF_028404105.1_ASM2840410v1	Pseudomonas aeruginosa	Complete Genome
 Pseudom_aeruginosa_GCF_900070375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/070/375/GCF_900070375.1_PAO1OR	Pseudomonas aeruginosa	Complete Genome
 Pseudom_aeruginosa_GCF_900095805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/095/805/GCF_900095805.1_PA14Or	Pseudomonas aeruginosa	Complete Genome
 Pseudom_aeruginosa_GCF_900149285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/149/285/GCF_900149285.1_PcyII-10	Pseudomonas aeruginosa	Complete Genome
@@ -1962,6 +1979,7 @@ Pseudom_fragi_GCF_002205455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/2
 Pseudom_fragi_GCF_015476275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/476/275/GCF_015476275.1_ASM1547627v1	Pseudomonas fragi	Complete Genome
 Pseudom_fragi_GCF_015767515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/767/515/GCF_015767515.1_ASM1576751v1	Pseudomonas fragi	Complete Genome
 Pseudom_fragi_GCF_025426255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/426/255/GCF_025426255.1_ASM2542625v1	Pseudomonas fragi	Complete Genome
+Pseudom_fragi_GCF_027982875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/982/875/GCF_027982875.1_ASM2798287v1	Pseudomonas fragi	Chromosome
 Pseudom_fragi_GCF_900105835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/105/835/GCF_900105835.1_IMG-taxon_2667527431_annotated_assembly	Pseudomonas fragi	Chromosome
 Pseudom_frederiksb_GCF_001874645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/874/645/GCF_001874645.1_ASM187464v1	Pseudomonas frederiksbergensis	Complete Genome
 Pseudom_frederiksb_GCF_001952935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/952/935/GCF_001952935.1_ASM195293v1	Pseudomonas frederiksbergensis	Complete Genome
@@ -2201,6 +2219,9 @@ Pseudom_putida_GCF_026428315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/
 Pseudom_putida_GCF_026625125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/625/125/GCF_026625125.1_ASM2662512v1	Pseudomonas putida	Complete Genome
 Pseudom_putida_GCF_026898135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/898/135/GCF_026898135.1_ASM2689813v1	Pseudomonas putida	Complete Genome
 Pseudom_putida_GCF_027595085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/595/085/GCF_027595085.1_ASM2759508v1	Pseudomonas putida	Complete Genome
+Pseudom_putida_GCF_027886605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/886/605/GCF_027886605.1_ASM2788660v1	Pseudomonas putida	Complete Genome
+Pseudom_putida_GCF_027886645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/886/645/GCF_027886645.1_ASM2788664v1	Pseudomonas putida	Complete Genome
+Pseudom_putida_GCF_027886665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/886/665/GCF_027886665.1_ASM2788666v1	Pseudomonas putida	Complete Genome
 Pseudom_putida_GCF_900104105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/104/105/GCF_900104105.1_IMG-taxon_2600255318_annotated_assembly	Pseudomonas putida	Scaffold
 Pseudom_putida_GCF_900156185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/156/185/GCF_900156185.1_IMG-taxon_2681812805_annotated_assembly	Pseudomonas putida	Chromosome
 Pseudom_putida_GCF_900167985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/167/985/GCF_900167985.1_IMG-taxon_2667527229_annotated_assembly	Pseudomonas putida	Chromosome
@@ -2356,262 +2377,272 @@ Pseudom_synx_GCF_003852025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/85
 Pseudom_synx_GCF_900105675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/105/675/GCF_900105675.1_IMG-taxon_2667527385_annotated_assembly	Pseudomonas synxantha	Chromosome
 Pseudom_synx_GCF_900497645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/497/645/GCF_900497645.1_NCIMB10586.c1	Pseudomonas synxantha	Complete Genome
 Pseudom_synx_GCF_901482615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/901/482/615/GCF_901482615.1_45076_A01	Pseudomonas synxantha	Complete Genome
-Pseudom_syr_BRIP34876_GCF_000334035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/334/035/GCF_000334035.1_34876_v2.0	Pseudomonas syringae	Scaffold
-Pseudom_syr_BRIP34881_GCF_000334055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/334/055/GCF_000334055.1_34881_v2.0	Pseudomonas syringae	Scaffold
-Pseudom_syr_BRIP39023_GCF_000333995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/333/995/GCF_000333995.1_BRIP39023v2.0	Pseudomonas syringae	Scaffold
-Pseudom_syr_CC1557_GCF_000452705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/705/GCF_000452705.1_ASM45270v3	Pseudomonas syringae	Complete Genome
-Pseudom_syr_CC440_GCF_000452605_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/605/GCF_000452605.2_ASM45260v3	Pseudomonas syringae	Complete Genome
-Pseudom_syr_Cit_7_GCF_000145825_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/145/825/GCF_000145825.2_ASM14582v2	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_002699845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/699/845/GCF_002699845.1_ASM269984v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_002699885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/699/885/GCF_002699885.1_ASM269988v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_002699905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/699/905/GCF_002699905.1_ASM269990v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_003699505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/505/GCF_003699505.1_ASM369950v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_003699875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/875/GCF_003699875.1_ASM369987v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_003700015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/015/GCF_003700015.1_ASM370001v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_003858595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/858/595/GCF_003858595.1_ASM385859v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_004006335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/006/335/GCF_004006335.1_ASM400633v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_004323795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/323/795/GCF_004323795.1_ASM432379v1	Pseudomonas syringae	Chromosome
-Pseudom_syr_GCF_009898285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/285/GCF_009898285.1_ASM989828v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_009898315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/315/GCF_009898315.1_ASM989831v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_009898355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/355/GCF_009898355.1_ASM989835v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_009898615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/615/GCF_009898615.1_ASM989861v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_009898635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/635/GCF_009898635.1_ASM989863v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_009898705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/705/GCF_009898705.1_ASM989870v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_009898765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/765/GCF_009898765.1_ASM989876v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_014524645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/524/645/GCF_014524645.1_ASM1452464v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_014841295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/841/295/GCF_014841295.1_ASM1484129v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_014841345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/841/345/GCF_014841345.1_ASM1484134v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_014842615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/842/615/GCF_014842615.1_ASM1484261v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/175/GCF_016307175.1_ASM1630717v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/275/GCF_016307275.1_ASM1630727v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/305/GCF_016307305.1_ASM1630730v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/325/GCF_016307325.1_ASM1630732v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/425/GCF_016307425.1_ASM1630742v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/465/GCF_016307465.1_ASM1630746v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/705/GCF_016307705.1_ASM1630770v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/745/GCF_016307745.1_ASM1630774v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/755/GCF_016307755.1_ASM1630775v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/765/GCF_016307765.1_ASM1630776v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/795/GCF_016307795.1_ASM1630779v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/845/GCF_016307845.1_ASM1630784v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/855/GCF_016307855.1_ASM1630785v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/905/GCF_016307905.1_ASM1630790v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/925/GCF_016307925.1_ASM1630792v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/945/GCF_016307945.1_ASM1630794v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/955/GCF_016307955.1_ASM1630795v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/965/GCF_016307965.1_ASM1630796v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016307995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/995/GCF_016307995.1_ASM1630799v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/015/GCF_016308015.1_ASM1630801v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/045/GCF_016308045.1_ASM1630804v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/065/GCF_016308065.1_ASM1630806v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/075/GCF_016308075.1_ASM1630807v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/085/GCF_016308085.1_ASM1630808v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/105/GCF_016308105.1_ASM1630810v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/145/GCF_016308145.1_ASM1630814v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/175/GCF_016308175.1_ASM1630817v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/205/GCF_016308205.1_ASM1630820v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/215/GCF_016308215.1_ASM1630821v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/245/GCF_016308245.1_ASM1630824v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/255/GCF_016308255.1_ASM1630825v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/285/GCF_016308285.1_ASM1630828v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/305/GCF_016308305.1_ASM1630830v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016308315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/315/GCF_016308315.1_ASM1630831v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_016694755_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/694/755/GCF_016694755.2_ASM1669475v2	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_018388485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/388/485/GCF_018388485.1_ASM1838848v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_018388505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/388/505/GCF_018388505.1_ASM1838850v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_018388525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/388/525/GCF_018388525.1_ASM1838852v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_018394375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/394/375/GCF_018394375.1_ASM1839437v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_018604405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/604/405/GCF_018604405.1_ASM1860440v1	Pseudomonas syringae	Chromosome
-Pseudom_syr_GCF_019904335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/904/335/GCF_019904335.1_ASM1990433v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_023278085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/278/085/GCF_023278085.1_ASM2327808v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_025985485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/985/485/GCF_025985485.1_ASM2598548v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_026261625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/261/625/GCF_026261625.1_ASM2626162v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_026261685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/261/685/GCF_026261685.1_ASM2626168v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_026261705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/261/705/GCF_026261705.1_ASM2626170v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_900105295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/105/295/GCF_900105295.1_IMG-taxon_2687453698_annotated_assembly	Pseudomonas syringae	Chromosome
-Pseudom_syr_GCF_900106705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/106/705/GCF_900106705.1_IMG-taxon_2687453747_annotated_assembly	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_900107345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/107/345/GCF_900107345.1_IMG-taxon_2687453749_annotated_assembly	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_900113535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/113/535/GCF_900113535.1_IMG-taxon_2687453722_annotated_assembly	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_900115275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/115/275/GCF_900115275.1_IMG-taxon_2687453695_annotated_assembly	Pseudomonas syringae	Scaffold
-Pseudom_syr_GCF_900235815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/815/GCF_900235815.1_CFBP3840	Pseudomonas syringae	Complete Genome
-Pseudom_syr_GCF_900289125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/289/125/GCF_900289125.1_CFBP2116_finsihed_replicons	Pseudomonas syringae	Complete Genome
-Pseudom_syr_ICMP_11168_GCF_001467285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/467/285/GCF_001467285.1_ASM146728v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_ICMP_13102_GCF_001466945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/466/945/GCF_001466945.1_ASM146694v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_UB246_GCF_000452865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/865/GCF_000452865.1_UB246_042011_1.0	Pseudomonas syringae	Scaffold
-Pseudom_syr_UB303_GCF_000452565_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/565/GCF_000452565.2_ASM45256v3	Pseudomonas syringae	Complete Genome
-Pseudom_syr_UMAF0158_GCF_001281365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/281/365/GCF_001281365.1_ASM128136v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_USA011_GCF_000452525_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/525/GCF_000452525.3_ASM45252v4	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_aceris_GCF_001400655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/655/GCF_001400655.1_PacICMP2802	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_aceris_GCF_003700545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/545/GCF_003700545.1_ASM370054v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_aceris_GCF_003700575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/575/GCF_003700575.1_ASM370057v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_aceris_GCF_003701675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/675/GCF_003701675.1_ASM370167v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_aceris_M302273_GCF_000145925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/145/925/GCF_000145925.1_ASM14592v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_CFBP_7286_GCF_000245415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/415/GCF_000245415.1_ASM24541v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_CH2010_6_GCF_000245475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/475/GCF_000245475.1_ASM24547v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_001910465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/910/465/GCF_001910465.1_ASM191046v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_001910495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/910/495/GCF_001910495.1_ASM191049v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_001910545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/910/545/GCF_001910545.1_ASM191054v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_001910555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/910/555/GCF_001910555.1_ASM191055v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_001913215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/913/215/GCF_001913215.1_ASM191321v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_GCF_001913235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/913/235/GCF_001913235.1_ASM191323v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_GCF_002024285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/024/285/GCF_002024285.1_ASM202428v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_GCF_002024305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/024/305/GCF_002024305.1_ASM202430v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_GCF_002111665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/665/GCF_002111665.1_ASM211166v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/675/GCF_002111675.1_ASM211167v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/685/GCF_002111685.1_ASM211168v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/695/GCF_002111695.1_ASM211169v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/745/GCF_002111745.1_ASM211174v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/755/GCF_002111755.1_ASM211175v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/785/GCF_002111785.1_ASM211178v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/835/GCF_002111835.1_ASM211183v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/865/GCF_002111865.1_ASM211186v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/875/GCF_002111875.1_ASM211187v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/925/GCF_002111925.1_ASM211192v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002111995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/995/GCF_002111995.1_ASM211199v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002112085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/112/085/GCF_002112085.1_ASM211208v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002113905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/113/905/GCF_002113905.1_ASM211390v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002113925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/113/925/GCF_002113925.1_ASM211392v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002174875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/174/875/GCF_002174875.1_ASM217487v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002174995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/174/995/GCF_002174995.1_ASM217499v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/055/GCF_002175055.1_ASM217505v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/075/GCF_002175075.1_ASM217507v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/085/GCF_002175085.1_ASM217508v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/135/GCF_002175135.1_ASM217513v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/145/GCF_002175145.1_ASM217514v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/175/GCF_002175175.1_ASM217517v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/185/GCF_002175185.1_ASM217518v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/215/GCF_002175215.1_ASM217521v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/225/GCF_002175225.1_ASM217522v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002175245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/245/GCF_002175245.1_ASM217524v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002763655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/763/655/GCF_002763655.1_ASM276365v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_GCF_002890365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/890/365/GCF_002890365.1_ASM289036v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002890475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/890/475/GCF_002890475.1_ASM289047v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_002890485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/890/485/GCF_002890485.1_ASM289048v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_003665415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/665/415/GCF_003665415.1_ASM366541v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_GCF_003700235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/235/GCF_003700235.1_ASM370023v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_003700405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/405/GCF_003700405.1_ASM370040v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_003701015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/015/GCF_003701015.1_ASM370101v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_003701075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/075/GCF_003701075.1_ASM370107v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_003701535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/535/GCF_003701535.1_ASM370153v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_003701645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/645/GCF_003701645.1_ASM370164v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_GCF_023167685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/167/685/GCF_023167685.1_ASM2316768v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_ICMP_18708_GCF_000344355_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/344/355/GCF_000344355.2_ASM34435v2	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_ICMP_18801_GCF_000416945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/945/GCF_000416945.1_ASM41694v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_18883_GCF_000416785_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/785/GCF_000416785.2_ASM41678v2	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_18884_GCF_000648735_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/648/735/GCF_000648735.3_ASM64873v3	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_ICMP_18886_GCF_000416925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/925/GCF_000416925.1_ASM41692v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19068_GCF_000416705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/705/GCF_000416705.1_ASM41670v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19071_GCF_000416485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/485/GCF_000416485.1_ASM41648v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19073_GCF_000416505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/505/GCF_000416505.1_ASM41650v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19094_GCF_000416745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/745/GCF_000416745.1_ASM41674v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19095_GCF_000416765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/765/GCF_000416765.1_ASM41676v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19097_GCF_000416725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/725/GCF_000416725.1_ASM41672v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19099_GCF_000416805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/805/GCF_000416805.1_ASM41680v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19100_GCF_000416825_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/825/GCF_000416825.2_ASM41682v2	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19101_GCF_000416585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/585/GCF_000416585.1_ASM41658v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19102_GCF_000416845_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/845/GCF_000416845.2_ASM41684v2	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_19497_GCF_001467225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/467/225/GCF_001467225.1_ASM146722v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_ICMP_9617_GCF_000658965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/658/965/GCF_000658965.1_ASM65896v1	Pseudomonas syringae	Chromosome
-Pseudom_syr_pv_actinidiae_ICMP_9853_GCF_000344335_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/344/335/GCF_000344335.2_ASM34433v2	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidiae_ICMP_9855_GCF_000416665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/665/GCF_000416665.1_ASM41666v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_KW41_GCF_000245435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/435/GCF_000245435.1_ASM24543v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_M302091_GCF_000145865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/145/865/GCF_000145865.1_ASM14586v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_PA459_GCF_000245455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/455/GCF_000245455.1_ASM24545v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidiae_Shaanxi_M228_GCF_000344475_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/344/475/GCF_000344475.3_ASM34447v3	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_actinidifoliorum_GCF_001497555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/497/555/GCF_001497555.1_ASM149755v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidifoliorum_GCF_001497595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/497/595/GCF_001497595.1_ASM149759v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_actinidifoliorum_ICMP_18803_GCF_015680915_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/680/915/GCF_015680915.2_ASM1568091v2	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_aptata_GCF_001401335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/335/GCF_001401335.1_PttICMP459	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_aptata_GCF_003699535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/535/GCF_003699535.1_ASM369953v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_atrofaciens_GCF_001400125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/125/GCF_001400125.1_PafICMP4394	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_atrofaciens_GCF_003047185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/047/185/GCF_003047185.1_ASM304718v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_atrofaciens_GCF_003699335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/335/GCF_003699335.1_ASM369933v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_atrofaciens_GCF_003699595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/595/GCF_003699595.1_ASM369959v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_atrofaciens_GCF_003700175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/175/GCF_003700175.1_ASM370017v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_avellanae_ISPaVe013_GCF_000302795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/302/795/GCF_000302795.1_Pav013_1.0	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_avellanae_ISPaVe037_GCF_000302815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/302/815/GCF_000302815.1_Pav037_1.0	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_avii_GCF_003702345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/702/345/GCF_003702345.1_ASM370234v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_avii_GCF_900235835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/835/GCF_900235835.1_CFBP3846	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_broussonetiae_GCF_001400715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/715/GCF_001400715.1_PbrICMP13650	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_castaneae_GCF_001400285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/285/GCF_001400285.1_PcsICMP9419	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_cerasicola_GCF_001400215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/215/GCF_001400215.1_PceICMP17524	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_cerasicola_GCF_002699945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/699/945/GCF_002699945.1_ASM269994v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_cerasicola_GCF_002700065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/700/065/GCF_002700065.1_ASM270006v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_cerasicola_GCF_900235885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/885/GCF_900235885.1_CFBP6109	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_cilantro_GCF_001293775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/293/775/GCF_001293775.1_Pci0788_9	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_daphniphylli_GCF_001400275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/275/GCF_001400275.1_PdaICMP9757	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_dysoxyli_GCF_009898305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/305/GCF_009898305.1_ASM989830v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_lapsa_GCF_001400495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/495/GCF_001400495.1_PlpICMP3947	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_lapsa_GCF_001482725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/482/725/GCF_001482725.1_ASM148272v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_lapsa_GCF_003698895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/698/895/GCF_003698895.1_ASM369889v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_lapsa_GCF_003699285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/285/GCF_003699285.1_ASM369928v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_papulans_GCF_000935795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/935/795/GCF_000935795.1_PSPCFBP1754-G1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_papulans_GCF_001401005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/005/GCF_001401005.1_PppICMP4048	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_papulans_GCF_003699185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/185/GCF_003699185.1_ASM369918v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_papulans_GCF_003699835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/835/GCF_003699835.1_ASM369983v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_papulans_GCF_003702795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/702/795/GCF_003702795.1_ASM370279v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_pisi_GCF_003698965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/698/965/GCF_003698965.1_ASM369896v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_pisi_GCF_003699005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/005/GCF_003699005.1_ASM369900v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_pisi_GCF_003699035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/035/GCF_003699035.1_ASM369903v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_pisi_GCF_003699325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/325/GCF_003699325.1_ASM369932v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_pisi_GCF_003700675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/675/GCF_003700675.1_ASM370067v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_pisi_GCF_003703105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/703/105/GCF_003703105.1_ASM370310v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_pisi_PP1_GCF_000452445_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/445/GCF_000452445.2_ASM45244v3	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_solidagae_GCF_001401055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/055/GCF_001401055.1_PsoICMP16925	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_solidagae_GCF_003701885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/885/GCF_003701885.1_ASM370188v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_solidagae_GCF_003701925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/925/GCF_003701925.1_ASM370192v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_spinaceae_GCF_001401065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/065/GCF_001401065.1_PspICMP16929	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_spinaceae_GCF_003701855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/855/GCF_003701855.1_ASM370185v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_B301D_GCF_000988485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/988/485/GCF_000988485.1_ASM98848v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_syringae_B64_GCF_000331385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/331/385/GCF_000331385.1_PSSB64v1.0	Pseudomonas syringae	Chromosome
-Pseudom_syr_pv_syringae_B728a_GCF_000012245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/012/245/GCF_000012245.1_ASM1224v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_syringae_GCF_000738515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/738/515/GCF_000738515.1_Alf3_v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_001293665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/293/665/GCF_001293665.1_PsA2	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_001401075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/075/GCF_001401075.1_PsyICMP3023	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_002611605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/611/605/GCF_002611605.1_ASM261160v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_002611615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/611/615/GCF_002611615.1_ASM261161v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_002736945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/736/945/GCF_002736945.1_ASM273694v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_002736965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/736/965/GCF_002736965.1_ASM273696v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_002905815_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/905/815/GCF_002905815.2_ASM290581v2	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_syringae_GCF_003412505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/505/GCF_003412505.1_ASM341250v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/515/GCF_003412515.1_ASM341251v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/595/GCF_003412595.1_ASM341259v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/645/GCF_003412645.1_ASM341264v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/655/GCF_003412655.1_ASM341265v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/685/GCF_003412685.1_ASM341268v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/695/GCF_003412695.1_ASM341269v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/715/GCF_003412715.1_ASM341271v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/735/GCF_003412735.1_ASM341273v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/765/GCF_003412765.1_ASM341276v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/775/GCF_003412775.1_ASM341277v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/785/GCF_003412785.1_ASM341278v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/805/GCF_003412805.1_ASM341280v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/845/GCF_003412845.1_ASM341284v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003412935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/935/GCF_003412935.1_ASM341293v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003413265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/413/265/GCF_003413265.1_ASM341326v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003698995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/698/995/GCF_003698995.1_ASM369899v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003700375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/375/GCF_003700375.1_ASM370037v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_003702385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/702/385/GCF_003702385.1_ASM370238v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_013416855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/416/855/GCF_013416855.1_ASM1341685v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_014493635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/493/635/GCF_014493635.1_ASM1449363v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_014493645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/493/645/GCF_014493645.1_ASM1449364v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_023232315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/315/GCF_023232315.1_ASM2323231v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_023232345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/345/GCF_023232345.1_ASM2323234v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_023232485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/485/GCF_023232485.1_ASM2323248v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_023232525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/525/GCF_023232525.1_ASM2323252v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_023232545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/545/GCF_023232545.1_ASM2323254v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_023232565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/565/GCF_023232565.1_ASM2323256v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_023232595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/595/GCF_023232595.1_ASM2323259v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_GCF_023277945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/277/945/GCF_023277945.1_ASM2327794v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_syringae_GCF_900235825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/825/GCF_900235825.1_CFBP4215	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_syringae_GCF_900235865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/865/GCF_900235865.1_CFBP2118	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_syringae_HS191_GCF_000988395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/988/395/GCF_000988395.1_ASM98839v1	Pseudomonas syringae	Complete Genome
-Pseudom_syr_pv_syringae_PD2774_GCF_001466875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/466/875/GCF_001466875.1_ASM146687v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_syringae_SM_GCF_000412165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/412/165/GCF_000412165.1_PSSSMv1.0	Pseudomonas syringae	Chromosome
-Pseudom_syr_pv_theae_GCF_001401255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/255/GCF_001401255.1_PthICMP3923	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_theae_GCF_003702275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/702/275/GCF_003702275.1_ASM370227v1	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_theae_ICMP_3923_GCF_000416465_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/465/GCF_000416465.2_ASM41646v2	Pseudomonas syringae	Scaffold
-Pseudom_syr_pv_theae_NCPPB_2598_GCF_000245395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/395/GCF_000245395.1_ASM24539v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_BRIP34876_GCF_000334035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/334/035/GCF_000334035.1_34876_v2.0	Pseudomonas syringae	Scaffold
+Pseudom_syringae_BRIP34881_GCF_000334055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/334/055/GCF_000334055.1_34881_v2.0	Pseudomonas syringae	Scaffold
+Pseudom_syringae_BRIP39023_GCF_000333995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/333/995/GCF_000333995.1_BRIP39023v2.0	Pseudomonas syringae	Scaffold
+Pseudom_syringae_CC1557_GCF_000452705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/705/GCF_000452705.1_ASM45270v3	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_CC440_GCF_000452605_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/605/GCF_000452605.2_ASM45260v3	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_Cit_7_GCF_000145825_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/145/825/GCF_000145825.2_ASM14582v2	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_002699845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/699/845/GCF_002699845.1_ASM269984v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_002699885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/699/885/GCF_002699885.1_ASM269988v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_002699905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/699/905/GCF_002699905.1_ASM269990v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_003699505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/505/GCF_003699505.1_ASM369950v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_003699875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/875/GCF_003699875.1_ASM369987v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_003700015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/015/GCF_003700015.1_ASM370001v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_003858595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/858/595/GCF_003858595.1_ASM385859v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_004006335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/006/335/GCF_004006335.1_ASM400633v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_004323795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/323/795/GCF_004323795.1_ASM432379v1	Pseudomonas syringae	Chromosome
+Pseudom_syringae_GCF_009898285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/285/GCF_009898285.1_ASM989828v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_009898315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/315/GCF_009898315.1_ASM989831v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_009898355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/355/GCF_009898355.1_ASM989835v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_009898615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/615/GCF_009898615.1_ASM989861v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_009898635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/635/GCF_009898635.1_ASM989863v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_009898705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/705/GCF_009898705.1_ASM989870v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_009898765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/765/GCF_009898765.1_ASM989876v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_014524645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/524/645/GCF_014524645.1_ASM1452464v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_014841295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/841/295/GCF_014841295.1_ASM1484129v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_014841345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/841/345/GCF_014841345.1_ASM1484134v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_014842615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/842/615/GCF_014842615.1_ASM1484261v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/175/GCF_016307175.1_ASM1630717v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/275/GCF_016307275.1_ASM1630727v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/305/GCF_016307305.1_ASM1630730v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/325/GCF_016307325.1_ASM1630732v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/425/GCF_016307425.1_ASM1630742v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/465/GCF_016307465.1_ASM1630746v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/705/GCF_016307705.1_ASM1630770v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/745/GCF_016307745.1_ASM1630774v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/755/GCF_016307755.1_ASM1630775v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/765/GCF_016307765.1_ASM1630776v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/795/GCF_016307795.1_ASM1630779v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/845/GCF_016307845.1_ASM1630784v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/855/GCF_016307855.1_ASM1630785v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/905/GCF_016307905.1_ASM1630790v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/925/GCF_016307925.1_ASM1630792v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/945/GCF_016307945.1_ASM1630794v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/955/GCF_016307955.1_ASM1630795v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/965/GCF_016307965.1_ASM1630796v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016307995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/307/995/GCF_016307995.1_ASM1630799v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/015/GCF_016308015.1_ASM1630801v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/045/GCF_016308045.1_ASM1630804v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/065/GCF_016308065.1_ASM1630806v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/075/GCF_016308075.1_ASM1630807v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/085/GCF_016308085.1_ASM1630808v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/105/GCF_016308105.1_ASM1630810v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/145/GCF_016308145.1_ASM1630814v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/175/GCF_016308175.1_ASM1630817v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/205/GCF_016308205.1_ASM1630820v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/215/GCF_016308215.1_ASM1630821v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/245/GCF_016308245.1_ASM1630824v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/255/GCF_016308255.1_ASM1630825v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/285/GCF_016308285.1_ASM1630828v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/305/GCF_016308305.1_ASM1630830v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016308315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/308/315/GCF_016308315.1_ASM1630831v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_016694755_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/694/755/GCF_016694755.2_ASM1669475v2	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_018388485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/388/485/GCF_018388485.1_ASM1838848v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_018388505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/388/505/GCF_018388505.1_ASM1838850v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_018388525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/388/525/GCF_018388525.1_ASM1838852v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_018394375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/394/375/GCF_018394375.1_ASM1839437v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_018604405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/604/405/GCF_018604405.1_ASM1860440v1	Pseudomonas syringae	Chromosome
+Pseudom_syringae_GCF_019904335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/904/335/GCF_019904335.1_ASM1990433v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_023278085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/278/085/GCF_023278085.1_ASM2327808v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_025985485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/985/485/GCF_025985485.1_ASM2598548v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_026261625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/261/625/GCF_026261625.1_ASM2626162v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_026261685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/261/685/GCF_026261685.1_ASM2626168v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_026261705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/261/705/GCF_026261705.1_ASM2626170v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_900105295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/105/295/GCF_900105295.1_IMG-taxon_2687453698_annotated_assembly	Pseudomonas syringae	Chromosome
+Pseudom_syringae_GCF_900106705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/106/705/GCF_900106705.1_IMG-taxon_2687453747_annotated_assembly	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_900107345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/107/345/GCF_900107345.1_IMG-taxon_2687453749_annotated_assembly	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_900113535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/113/535/GCF_900113535.1_IMG-taxon_2687453722_annotated_assembly	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_900115275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/115/275/GCF_900115275.1_IMG-taxon_2687453695_annotated_assembly	Pseudomonas syringae	Scaffold
+Pseudom_syringae_GCF_900235815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/815/GCF_900235815.1_CFBP3840	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_GCF_900289125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/289/125/GCF_900289125.1_CFBP2116_finsihed_replicons	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_ICMP_11168_GCF_001467285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/467/285/GCF_001467285.1_ASM146728v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_ICMP_13102_GCF_001466945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/466/945/GCF_001466945.1_ASM146694v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_UB246_GCF_000452865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/865/GCF_000452865.1_UB246_042011_1.0	Pseudomonas syringae	Scaffold
+Pseudom_syringae_UB303_GCF_000452565_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/565/GCF_000452565.2_ASM45256v3	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_UMAF0158_GCF_001281365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/281/365/GCF_001281365.1_ASM128136v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_USA011_GCF_000452525_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/525/GCF_000452525.3_ASM45252v4	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_helianthi_GCF_022557235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/557/235/GCF_022557235.1_ASM2255723v1	Pseudomonas syringae group genomosp. 7	Complete Genome
+Pseudom_syringae_pv_tagetis_GCF_022557255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/557/255/GCF_022557255.1_ASM2255725v1	Pseudomonas syringae group genomosp. 7	Complete Genome
+Pseudom_syringae_pv_aceris_GCF_001400655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/655/GCF_001400655.1_PacICMP2802	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_aceris_GCF_003700545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/545/GCF_003700545.1_ASM370054v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_aceris_GCF_003700575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/575/GCF_003700575.1_ASM370057v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_aceris_GCF_003701675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/675/GCF_003701675.1_ASM370167v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_aceris_M302273_GCF_000145925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/145/925/GCF_000145925.1_ASM14592v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_CFBP_7286_GCF_000245415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/415/GCF_000245415.1_ASM24541v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_CH2010_6_GCF_000245475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/475/GCF_000245475.1_ASM24547v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_001910465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/910/465/GCF_001910465.1_ASM191046v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_001910495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/910/495/GCF_001910495.1_ASM191049v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_001910545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/910/545/GCF_001910545.1_ASM191054v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_001910555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/910/555/GCF_001910555.1_ASM191055v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_001913215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/913/215/GCF_001913215.1_ASM191321v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_GCF_001913235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/913/235/GCF_001913235.1_ASM191323v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_GCF_002024285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/024/285/GCF_002024285.1_ASM202428v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_GCF_002024305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/024/305/GCF_002024305.1_ASM202430v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_GCF_002111665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/665/GCF_002111665.1_ASM211166v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/675/GCF_002111675.1_ASM211167v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/685/GCF_002111685.1_ASM211168v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/695/GCF_002111695.1_ASM211169v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/745/GCF_002111745.1_ASM211174v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/755/GCF_002111755.1_ASM211175v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/785/GCF_002111785.1_ASM211178v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/835/GCF_002111835.1_ASM211183v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/865/GCF_002111865.1_ASM211186v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/875/GCF_002111875.1_ASM211187v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/925/GCF_002111925.1_ASM211192v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002111995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/111/995/GCF_002111995.1_ASM211199v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002112085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/112/085/GCF_002112085.1_ASM211208v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002113905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/113/905/GCF_002113905.1_ASM211390v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002113925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/113/925/GCF_002113925.1_ASM211392v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002174875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/174/875/GCF_002174875.1_ASM217487v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002174995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/174/995/GCF_002174995.1_ASM217499v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/055/GCF_002175055.1_ASM217505v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/075/GCF_002175075.1_ASM217507v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/085/GCF_002175085.1_ASM217508v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/135/GCF_002175135.1_ASM217513v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/145/GCF_002175145.1_ASM217514v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/175/GCF_002175175.1_ASM217517v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/185/GCF_002175185.1_ASM217518v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/215/GCF_002175215.1_ASM217521v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/225/GCF_002175225.1_ASM217522v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002175245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/175/245/GCF_002175245.1_ASM217524v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002763655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/763/655/GCF_002763655.1_ASM276365v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_GCF_002890365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/890/365/GCF_002890365.1_ASM289036v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002890475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/890/475/GCF_002890475.1_ASM289047v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_002890485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/890/485/GCF_002890485.1_ASM289048v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_003665415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/665/415/GCF_003665415.1_ASM366541v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_GCF_003700235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/235/GCF_003700235.1_ASM370023v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_003700405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/405/GCF_003700405.1_ASM370040v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_003701015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/015/GCF_003701015.1_ASM370101v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_003701075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/075/GCF_003701075.1_ASM370107v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_003701535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/535/GCF_003701535.1_ASM370153v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_003701645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/645/GCF_003701645.1_ASM370164v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_GCF_023167685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/167/685/GCF_023167685.1_ASM2316768v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_GCF_028215955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/215/955/GCF_028215955.1_ASM2821595v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_ICMP_18708_GCF_000344355_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/344/355/GCF_000344355.2_ASM34435v2	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_ICMP_18801_GCF_000416945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/945/GCF_000416945.1_ASM41694v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_18883_GCF_000416785_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/785/GCF_000416785.2_ASM41678v2	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_18884_GCF_000648735_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/648/735/GCF_000648735.3_ASM64873v3	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_ICMP_18886_GCF_000416925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/925/GCF_000416925.1_ASM41692v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19068_GCF_000416705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/705/GCF_000416705.1_ASM41670v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19071_GCF_000416485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/485/GCF_000416485.1_ASM41648v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19073_GCF_000416505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/505/GCF_000416505.1_ASM41650v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19094_GCF_000416745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/745/GCF_000416745.1_ASM41674v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19095_GCF_000416765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/765/GCF_000416765.1_ASM41676v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19097_GCF_000416725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/725/GCF_000416725.1_ASM41672v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19099_GCF_000416805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/805/GCF_000416805.1_ASM41680v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19100_GCF_000416825_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/825/GCF_000416825.2_ASM41682v2	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19101_GCF_000416585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/585/GCF_000416585.1_ASM41658v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19102_GCF_000416845_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/845/GCF_000416845.2_ASM41684v2	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_19497_GCF_001467225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/467/225/GCF_001467225.1_ASM146722v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_ICMP_9617_GCF_000658965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/658/965/GCF_000658965.1_ASM65896v1	Pseudomonas syringae	Chromosome
+Pseudom_syringae_pv_actinidiae_ICMP_9853_GCF_000344335_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/344/335/GCF_000344335.2_ASM34433v2	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidiae_ICMP_9855_GCF_000416665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/665/GCF_000416665.1_ASM41666v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_KW41_GCF_000245435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/435/GCF_000245435.1_ASM24543v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_M302091_GCF_000145865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/145/865/GCF_000145865.1_ASM14586v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_PA459_GCF_000245455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/455/GCF_000245455.1_ASM24545v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidiae_Shaanxi_M228_GCF_000344475_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/344/475/GCF_000344475.3_ASM34447v3	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_actinidifoliorum_GCF_001497555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/497/555/GCF_001497555.1_ASM149755v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidifoliorum_GCF_001497595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/497/595/GCF_001497595.1_ASM149759v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_actinidifoliorum_ICMP_18803_GCF_015680915_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/680/915/GCF_015680915.2_ASM1568091v2	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_aptata_GCF_001401335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/335/GCF_001401335.1_PttICMP459	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_aptata_GCF_003699535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/535/GCF_003699535.1_ASM369953v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_atrofaciens_GCF_001400125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/125/GCF_001400125.1_PafICMP4394	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_atrofaciens_GCF_003047185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/047/185/GCF_003047185.1_ASM304718v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_atrofaciens_GCF_003699335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/335/GCF_003699335.1_ASM369933v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_atrofaciens_GCF_003699595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/595/GCF_003699595.1_ASM369959v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_atrofaciens_GCF_003700175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/175/GCF_003700175.1_ASM370017v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_avellanae_ISPaVe013_GCF_000302795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/302/795/GCF_000302795.1_Pav013_1.0	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_avellanae_ISPaVe037_GCF_000302815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/302/815/GCF_000302815.1_Pav037_1.0	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_avii_GCF_003702345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/702/345/GCF_003702345.1_ASM370234v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_avii_GCF_900235835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/835/GCF_900235835.1_CFBP3846	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_broussonetiae_GCF_001400715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/715/GCF_001400715.1_PbrICMP13650	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_castaneae_GCF_001400285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/285/GCF_001400285.1_PcsICMP9419	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_cerasicola_GCF_001400215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/215/GCF_001400215.1_PceICMP17524	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_cerasicola_GCF_002699945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/699/945/GCF_002699945.1_ASM269994v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_cerasicola_GCF_002700065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/700/065/GCF_002700065.1_ASM270006v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_cerasicola_GCF_900235885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/885/GCF_900235885.1_CFBP6109	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_cilantro_GCF_001293775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/293/775/GCF_001293775.1_Pci0788_9	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_daphniphylli_GCF_001400275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/275/GCF_001400275.1_PdaICMP9757	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_dysoxyli_GCF_009898305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/898/305/GCF_009898305.1_ASM989830v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_lapsa_GCF_001400495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/400/495/GCF_001400495.1_PlpICMP3947	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_lapsa_GCF_001482725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/482/725/GCF_001482725.1_ASM148272v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_lapsa_GCF_003698895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/698/895/GCF_003698895.1_ASM369889v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_lapsa_GCF_003699285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/285/GCF_003699285.1_ASM369928v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_maculicola_ES4326_GCF_000145845_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/145/845/GCF_000145845.2_ASM14584v2	Pseudomonas syringae group genomosp. 3	Complete Genome
+Pseudom_syringae_pv_maculicola_GCF_016599655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/599/655/GCF_016599655.1_ASM1659965v1	Pseudomonas syringae group genomosp. 3	Complete Genome
+Pseudom_syringae_pv_papulans_GCF_000935795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/935/795/GCF_000935795.1_PSPCFBP1754-G1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_papulans_GCF_001401005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/005/GCF_001401005.1_PppICMP4048	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_papulans_GCF_003699185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/185/GCF_003699185.1_ASM369918v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_papulans_GCF_003699835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/835/GCF_003699835.1_ASM369983v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_papulans_GCF_003702795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/702/795/GCF_003702795.1_ASM370279v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_pisi_GCF_003698965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/698/965/GCF_003698965.1_ASM369896v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_pisi_GCF_003699005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/005/GCF_003699005.1_ASM369900v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_pisi_GCF_003699035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/035/GCF_003699035.1_ASM369903v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_pisi_GCF_003699325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/699/325/GCF_003699325.1_ASM369932v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_pisi_GCF_003700675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/675/GCF_003700675.1_ASM370067v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_pisi_GCF_003703105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/703/105/GCF_003703105.1_ASM370310v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_pisi_PP1_GCF_000452445_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/452/445/GCF_000452445.2_ASM45244v3	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_solidagae_GCF_001401055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/055/GCF_001401055.1_PsoICMP16925	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_solidagae_GCF_003701885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/885/GCF_003701885.1_ASM370188v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_solidagae_GCF_003701925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/925/GCF_003701925.1_ASM370192v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_spinaceae_GCF_001401065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/065/GCF_001401065.1_PspICMP16929	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_spinaceae_GCF_003701855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/701/855/GCF_003701855.1_ASM370185v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_B301D_GCF_000988485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/988/485/GCF_000988485.1_ASM98848v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_syringae_B64_GCF_000331385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/331/385/GCF_000331385.1_PSSB64v1.0	Pseudomonas syringae	Chromosome
+Pseudom_syringae_pv_syringae_B728a_GCF_000012245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/012/245/GCF_000012245.1_ASM1224v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_syringae_GCF_000738515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/738/515/GCF_000738515.1_Alf3_v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_001293665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/293/665/GCF_001293665.1_PsA2	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_001401075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/075/GCF_001401075.1_PsyICMP3023	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_002611605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/611/605/GCF_002611605.1_ASM261160v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_002611615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/611/615/GCF_002611615.1_ASM261161v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_002736945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/736/945/GCF_002736945.1_ASM273694v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_002736965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/736/965/GCF_002736965.1_ASM273696v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_002905815_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/905/815/GCF_002905815.2_ASM290581v2	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_syringae_GCF_003412505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/505/GCF_003412505.1_ASM341250v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/515/GCF_003412515.1_ASM341251v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/595/GCF_003412595.1_ASM341259v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/645/GCF_003412645.1_ASM341264v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/655/GCF_003412655.1_ASM341265v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/685/GCF_003412685.1_ASM341268v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/695/GCF_003412695.1_ASM341269v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/715/GCF_003412715.1_ASM341271v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/735/GCF_003412735.1_ASM341273v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/765/GCF_003412765.1_ASM341276v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/775/GCF_003412775.1_ASM341277v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/785/GCF_003412785.1_ASM341278v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/805/GCF_003412805.1_ASM341280v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/845/GCF_003412845.1_ASM341284v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003412935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/412/935/GCF_003412935.1_ASM341293v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003413265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/413/265/GCF_003413265.1_ASM341326v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003698995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/698/995/GCF_003698995.1_ASM369899v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003700375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/700/375/GCF_003700375.1_ASM370037v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_003702385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/702/385/GCF_003702385.1_ASM370238v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_013416855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/416/855/GCF_013416855.1_ASM1341685v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_014493635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/493/635/GCF_014493635.1_ASM1449363v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_014493645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/493/645/GCF_014493645.1_ASM1449364v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_023232315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/315/GCF_023232315.1_ASM2323231v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_023232345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/345/GCF_023232345.1_ASM2323234v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_023232485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/485/GCF_023232485.1_ASM2323248v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_023232525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/525/GCF_023232525.1_ASM2323252v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_023232545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/545/GCF_023232545.1_ASM2323254v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_023232565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/565/GCF_023232565.1_ASM2323256v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_023232595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/232/595/GCF_023232595.1_ASM2323259v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_GCF_023277945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/277/945/GCF_023277945.1_ASM2327794v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_syringae_GCF_900235825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/825/GCF_900235825.1_CFBP4215	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_syringae_GCF_900235865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/235/865/GCF_900235865.1_CFBP2118	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_syringae_HS191_GCF_000988395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/988/395/GCF_000988395.1_ASM98839v1	Pseudomonas syringae	Complete Genome
+Pseudom_syringae_pv_syringae_PD2774_GCF_001466875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/466/875/GCF_001466875.1_ASM146687v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_syringae_SM_GCF_000412165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/412/165/GCF_000412165.1_PSSSMv1.0	Pseudomonas syringae	Chromosome
+Pseudom_syringae_pv_theae_GCF_001401255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/401/255/GCF_001401255.1_PthICMP3923	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_theae_GCF_003702275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/702/275/GCF_003702275.1_ASM370227v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_theae_ICMP_3923_GCF_000416465_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/416/465/GCF_000416465.2_ASM41646v2	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_theae_NCPPB_2598_GCF_000245395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/245/395/GCF_000245395.1_ASM24539v1	Pseudomonas syringae	Scaffold
+Pseudom_syringae_pv_tomato_DC3000_GCF_000007805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/805/GCF_000007805.1_ASM780v1	Pseudomonas syringae group genomosp. 3	Complete Genome
+Pseudom_syringae_pv_tomato_GCF_002966555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/966/555/GCF_002966555.1_ASM296655v1	Pseudomonas syringae group genomosp. 3	Complete Genome
+Pseudom_syringae_pv_tomato_GCF_009800185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/800/185/GCF_009800185.1_ASM980018v1	Pseudomonas syringae group genomosp. 3	Chromosome
+Pseudom_syringae_pv_tomato_GCF_009800205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/800/205/GCF_009800205.1_ASM980020v1	Pseudomonas syringae group genomosp. 3	Chromosome
+Pseudom_syringae_pv_tomato_GCF_009800225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/800/225/GCF_009800225.1_ASM980022v1	Pseudomonas syringae group genomosp. 3	Complete Genome
 Pseudom_tae_GCF_900475285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/475/285/GCF_900475285.1_43222_B01	Pseudomonas taetrolens	Complete Genome
 Pseudom_tae_GCF_900637735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/637/735/GCF_900637735.1_52579_B01	Pseudomonas taetrolens	Complete Genome
 Pseudom_thiv_GCF_003293325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/293/325/GCF_003293325.1_ASM329332v1	Pseudomonas thivervalensis	Chromosome
@@ -2619,6 +2650,7 @@ Pseudom_thiv_GCF_003293395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/29
 Pseudom_thiv_GCF_900102295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/102/295/GCF_900102295.1_IMG-taxon_2639762509_annotated_assembly	Pseudomonas thivervalensis	Chromosome
 Pseudom_toh_GCF_012767755_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/012/767/755/GCF_012767755.2_ASM1276775v2	Pseudomonas tohonis	Complete Genome
 Pseudom_toh_GCF_025642275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/642/275/GCF_025642275.1_ASM2564227v1	Pseudomonas tohonis	Complete Genome
+Pseudom_toh_GCF_027915295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/915/295/GCF_027915295.1_ASM2791529v1	Pseudomonas tohonis	Complete Genome
 Pseudom_tol_GCF_002072675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/072/675/GCF_002072675.1_ASM207267v1	Pseudomonas tolaasii	Chromosome
 Pseudom_tol_GCF_019285655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/285/655/GCF_019285655.1_ASM1928565v1	Pseudomonas tolaasii	Complete Genome
 Pseudom_tremae_GCF_023278105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/278/105/GCF_023278105.1_ASM2327810v1	Pseudomonas tremae	Complete Genome
@@ -2723,7 +2755,6 @@ Stu_stut_DSM_10701_GCF_000279165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/
 Stu_stut_DSM_4166_GCF_000195105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/195/105/GCF_000195105.1_ASM19510v1	Stutzerimonas stutzeri	Complete Genome
 Stu_stut_GCF_000219605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/219/605/GCF_000219605.1_ASM21960v1	Stutzerimonas stutzeri	Complete Genome
 Stu_stut_GCF_000590475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/590/475/GCF_000590475.1_ASM59047v1	Stutzerimonas stutzeri	Complete Genome
-Stu_stut_GCF_000661915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/661/915/GCF_000661915.1_ASM66191v1	Stutzerimonas stutzeri	Complete Genome
 Stu_stut_GCF_001038645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/038/645/GCF_001038645.1_ASM103864v1	Stutzerimonas stutzeri	Complete Genome
 Stu_stut_GCF_001648195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/648/195/GCF_001648195.1_ASM164819v1	Stutzerimonas stutzeri	Complete Genome
 Stu_stut_GCF_003008495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/008/495/GCF_003008495.1_ASM300849v1	Stutzerimonas stutzeri	Complete Genome
@@ -2836,7 +2867,7 @@ Gla_parasu_GCF_017352235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/352/
 Gri_holl_GCF_001558255_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/558/255/GCF_001558255.2_ASM155825v2	Grimontia hollisae	Complete Genome
 Hae_aeg_GCF_900475885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/475/885/GCF_900475885.1_49595_C01	Haemophilus aegyptius	Complete Genome
 Hae_haemolyticus_GCF_900477945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/477/945/GCF_900477945.1_45473_H02	Haemophilus haemolyticus	Complete Genome
-Hae_infl_GCF_000931575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/931/575/GCF_000931575.1_ASM93157v1	Haemophilus influenzae	Complete Genome
+Hae_inf_GCF_000931575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/931/575/GCF_000931575.1_ASM93157v1	Haemophilus influenzae	Complete Genome
 Hae_parah_GCF_016889385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/889/385/GCF_016889385.1_ASM1688938v1	Haemophilus parahaemolyticus	Complete Genome
 Haf_alvei_GCF_011617105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/617/105/GCF_011617105.1_ASM1161710v1	Hafnia alvei	Complete Genome
 Haf_paralv_GCF_020150375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/150/375/GCF_020150375.1_ASM2015037v1	Hafnia paralvei	Complete Genome
@@ -2854,6 +2885,7 @@ Klu_asco_GCF_023195735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/195/73
 Klu_intermedia_GCF_009649915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/649/915/GCF_009649915.1_ASM964991v1	Kluyvera intermedia	Complete Genome
 Kos_cow_GCF_025758125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/758/125/GCF_025758125.1_ASM2575812v1	Kosakonia cowanii	Complete Genome
 Kos_oryzae_GCF_001658025_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/658/025/GCF_001658025.2_ASM165802v2	Kosakonia oryzae	Complete Genome
+Kos_pseudosa_GCF_015167415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/167/415/GCF_015167415.1_ASM1516741v1	Kosakonia pseudosacchari	Complete Genome
 Kos_radic_GCF_008330085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/008/330/085/GCF_008330085.1_ASM833008v1	Kosakonia radicincitans	Complete Genome
 Kos_sacchari_GCF_001683395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/683/395/GCF_001683395.1_ASM168339v1	Kosakonia sacchari	Complete Genome
 Lec_adec_GCF_001518835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/518/835/GCF_001518835.1_ASM151883v1	Leclercia adecarboxylata	Complete Genome
@@ -2920,6 +2952,7 @@ Prov_stua_GCF_023547145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/547/1
 Pseudox_mex_GCF_014397415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/397/415/GCF_014397415.1_ASM1439741v1	Pseudoxanthomonas mexicana	Complete Genome
 Rah_acer_GCF_022637475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/637/475/GCF_022637475.1_ASM2263747v1	Rahnella aceris	Complete Genome
 Rah_aquatil_CIP_78_65_ATCC_33071_GCF_000241955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/241/955/GCF_000241955.1_ASM24195v1	Rahnella aquatilis	Chromosome
+Raoulte_ele_GCF_006711645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/006/711/645/GCF_006711645.1_ASM671164v1	Raoultella electrica	Complete Genome
 Raoulte_planti_GCF_022637595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/637/595/GCF_022637595.1_ASM2263759v1	Raoultella planticola	Complete Genome
 Raoulte_terrig_GCF_012029655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/012/029/655/GCF_012029655.1_ASM1202965v1	Raoultella terrigena	Complete Genome
 Rhoda_deni_GCF_021545825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/545/825/GCF_021545825.1_ASM2154582v1	Rhodanobacter denitrificans	Complete Genome
@@ -2990,6 +3023,7 @@ Xa_oryzae_pv_oryzicola_GCF_008370835_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/
 Xa_phas_pv_dieffenbachiae_LMG_695_GCF_001564415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/564/415/GCF_001564415.1_ASM156441v1	Xanthomonas phaseoli	Chromosome
 Xa_pru_GCF_025266575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/266/575/GCF_025266575.1_ASM2526657v1	Xanthomonas prunicola	Complete Genome
 Xa_transluce_pv_undulosa_GCF_017301775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/301/775/GCF_017301775.1_ASM1730177v1	Xanthomonas translucens	Complete Genome
+Xa_vas_campestris_pv_musacearum_NCPPB_4379_GCF_000277895_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/277/895/GCF_000277895.2_ASM27789v2	Xanthomonas vasicola	Complete Genome
 Xa_vesica_ATCC_35937_GCF_001908725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/908/725/GCF_001908725.1_ASM190872v1	Xanthomonas vesicatoria	Complete Genome
 Xe_nematop_GCF_014295015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/295/015/GCF_014295015.1_ASM1429501v1	Xenorhabdus nematophila	Complete Genome
 Xy_fast_Temecula1_GCF_000007245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/245/GCF_000007245.1_ASM724v1	Xylella fastidiosa	Complete Genome
