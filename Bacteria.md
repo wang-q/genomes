@@ -466,6 +466,16 @@ bash ASSEMBLY/check.sh
 # Collect
 bash ASSEMBLY/collect.sh
 
+# Temporary files, possibly caused by an interrupted rsync process
+find ASSEMBLY/ -type f -name ".*" > ASSEMBLY/temp.list
+
+cat ASSEMBLY/temp.list |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        if [[ -f {} ]]; then
+            echo Remove {}
+        fi
+    '
+
 ```
 
 ### Rsync to hpcc
