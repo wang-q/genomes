@@ -70,7 +70,7 @@ nwr member Pseudomonas Acinetobacter -r "species group" -r "species subgroup" |
 | rank             | count |
 |------------------|-------|
 | genus            | 1     |
-| species          | 425   |
+| species          | 426   |
 | strain           | 724   |
 | subspecies       | 13    |
 | no rank          | 121   |
@@ -179,18 +179,19 @@ cat species.count.tsv |
 
 | species_id | species                         | RS   | CHR |
 |------------|---------------------------------|------|-----|
-| 287        | P. aeruginosa                   | 7458 | 640 |
-| 470        | A. baumannii                    | 7191 | 528 |
+| 287        | P. aeruginosa                   | 7526 | 648 |
+| 470        | A. baumannii                    | 7313 | 531 |
 | 33069      | P. viridiflava                  | 1541 | 9   |
-| 317        | P. syringae                     | 612  | 50  |
+| 317        | P. syringae                     | 615  | 51  |
 | 48296      | A. pittii                       | 385  | 35  |
 | 294        | P. fluorescens                  | 262  | 40  |
-| 303        | P. putida                       | 223  | 67  |
+| 303        | P. putida                       | 226  | 70  |
 | 480        | Moraxella catarrhalis           | 209  | 16  |
-| 106654     | A. nosocomialis                 | 173  | 11  |
-| 316        | Stutzerimonas stutzeri          | 141  | 28  |
+| 106654     | A. nosocomialis                 | 174  | 11  |
+| 316        | Stutzerimonas stutzeri          | 140  | 27  |
 | 29438      | P. savastanoi                   | 120  | 5   |
 | 38313      | Shewanella algae                | 112  | 24  |
+| 251701     | P. syringae group genomosp. 3   | 109  | 8   |
 | 587753     | P. chlororaphis                 | 107  | 61  |
 | 756892     | A. indicus                      | 102  | 21  |
 | 47877      | P. amygdali                     | 90   | 10  |
@@ -206,7 +207,7 @@ cat species.count.tsv |
 | 40214      | A. johnsonii                    | 47   | 19  |
 | 28090      | A. lwoffii                      | 47   | 11  |
 | 76759      | P. monteilii                    | 47   | 9   |
-| 296        | P. fragi                        | 40   | 7   |
+| 296        | P. fragi                        | 41   | 8   |
 | 476        | Moraxella bovis                 | 39   | 37  |
 | 202956     | A. towneri                      | 32   | 8   |
 | 930166     | P. brassicacearum               | 31   | 9   |
@@ -335,15 +336,26 @@ find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
         rm -fr ASSEMBLY/{}
     '
 
-# Run
-proxychains4 bash ASSEMBLY/rsync.sh
-
-# md5
+# Check md5
 # rm ASSEMBLY/check.list
 bash ASSEMBLY/check.sh
 
-# collect
+# Run
+proxychains4 bash ASSEMBLY/rsync.sh
+
+# Collect
 bash ASSEMBLY/collect.sh
+
+# Temporary files, possibly caused by an interrupted rsync process
+find ASSEMBLY/ -type f -name ".*" > ASSEMBLY/temp.list
+
+cat ASSEMBLY/temp.list |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        if [[ -f {} ]]; then
+            echo Remove {}
+            rm {}
+        fi
+    '
 
 ```
 
@@ -399,7 +411,7 @@ cat ASSEMBLY/collect.csv |
     '
 
 find biosample -name "SAM*.txt" | wc -l
-# 2997
+# 3031
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -493,8 +505,8 @@ cat ASSEMBLY/n50.tsv |
     > ASSEMBLY/n50.pass.csv
 
 wc -l ASSEMBLY/n50*
-#  2753 ASSEMBLY/n50.pass.csv
-#  3001 ASSEMBLY/n50.tsv
+#  2787 ASSEMBLY/n50.pass.csv
+#  3035 ASSEMBLY/n50.tsv
 
 tsv-join \
     ASSEMBLY/collect.csv \
@@ -508,9 +520,9 @@ tsv-join \
     > ASSEMBLY/pass.csv
 
 wc -l ASSEMBLY/*csv
-#   3001 ASSEMBLY/collect.csv
-#   2753 ASSEMBLY/n50.pass.csv
-#   2748 ASSEMBLY/pass.csv
+#   3035 ASSEMBLY/collect.csv
+#   2787 ASSEMBLY/n50.pass.csv
+#   2782 ASSEMBLY/pass.csv
 
 ```
 
@@ -526,7 +538,8 @@ cat ASSEMBLY/pass.csv |
     tsv-uniq |
     nwr append stdin -r order |
     tsv-select -f 2 |
-    tsv-uniq \
+    tsv-uniq |
+    sort \
     > summary/order.lst
 
 cat summary/order.lst |
@@ -568,17 +581,17 @@ cat summary/order.lst |
 | 1706369 | Cellvibrionales   | 2        | 4        |
 | 51291   | Chlamydiales      | 1        | 1        |
 | 85007   | Corynebacteriales | 1        | 1        |
-| 91347   | Enterobacterales  | 129      | 129      |
+| 91347   | Enterobacterales  | 131      | 131      |
 | 118969  | Legionellales     | 10       | 10       |
 | 135618  | Methylococcales   | 2        | 2        |
-| 2887326 | Moraxellales      | 59       | 865      |
-| 135619  | Oceanospirillales | 14       | 28       |
+| 2887326 | Moraxellales      | 60       | 869      |
+| 135619  | Oceanospirillales | 16       | 32       |
 | 1240482 | Orbales           | 1        | 1        |
 | 135625  | Pasteurellales    | 21       | 21       |
-| 72274   | Pseudomonadales   | 247      | 1461     |
+| 72274   | Pseudomonadales   | 254      | 1484     |
 | 72273   | Thiotrichales     | 12       | 12       |
 | 135623  | Vibrionales       | 35       | 35       |
-| 135614  | Xanthomonadales   | 28       | 28       |
+| 135614  | Xanthomonadales   | 29       | 29       |
 
 ### Genus
 
@@ -592,7 +605,8 @@ cat ASSEMBLY/pass.csv |
     tsv-uniq |
     nwr append stdin -r genus |
     tsv-select -f 2 |
-    tsv-uniq \
+    tsv-uniq |
+    sort \
     > summary/genus.lst
 
 cat summary/genus.lst |
@@ -626,7 +640,7 @@ cat summary/genus.lst |
 
 | #tax_id | genus             | #species | #strains |
 |---------|-------------------|----------|----------|
-| 469     | Acinetobacter     | 51       | 791      |
+| 469     | Acinetobacter     | 52       | 795      |
 | 226     | Alteromonas       | 16       | 38       |
 | 544     | Citrobacter       | 10       | 10       |
 | 2745    | Halomonas         | 7        | 19       |
@@ -634,12 +648,12 @@ cat summary/genus.lst |
 | 475     | Moraxella         | 6        | 72       |
 | 122277  | Pectobacterium    | 10       | 10       |
 | 53246   | Pseudoalteromonas | 19       | 33       |
-| 286     | Pseudomonas       | 227      | 1405     |
+| 286     | Pseudomonas       | 234      | 1429     |
 | 613     | Serratia          | 10       | 10       |
 | 22      | Shewanella        | 16       | 58       |
-| 2901164 | Stutzerimonas     | 9        | 37       |
+| 2901164 | Stutzerimonas     | 9        | 36       |
 | 662     | Vibrio            | 29       | 29       |
-| 338     | Xanthomonas       | 15       | 15       |
+| 338     | Xanthomonas       | 16       | 16       |
 
 ### Strains
 
@@ -649,36 +663,24 @@ cd ~/data/Pseudomonas
 # list strains
 mkdir -p taxon
 
-rm taxon/* strains.lst *.tmp
+rm taxon/* summary/strains.lst *.tmp
 cat ASSEMBLY/pass.csv |
     sed -e '1d' |
     tr "," "\t" |
     tsv-select -f 1,2,3 |
-    nwr append stdin -c 3 -r species -r "species group" -r genus -r family -r order |
+    nwr append stdin -c 3 -r species -r genus -r family -r order |
     parallel --col-sep "\t" --no-run-if-empty --linebuffer -k -j 4 '
-        echo {1} >> strains.lst
+        echo {1} >> summary/strains.lst
 
-        echo {4} >> species.tmp
-        echo {5} >> species_group.tmp
-        echo {6} >> genus.tmp
-        echo {7} >> family.tmp
-
-        echo {8} >> order.tmp
         echo {1} >> taxon/{7}
 
-        printf "%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\n" {1} {2} {3} {4} {5} {6} {7} {8}
+        printf "%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\n" {1} {2} {3} {4} {5} {6} {7}
     ' |
     sed 's/Pseudomonas paraeruginosa/Pseudomonas aeruginosa/g' \
     > strains.taxon.tsv
 
-cat species.tmp | tsv-uniq > species.lst
-cat species_group.tmp | tsv-uniq > species_group.lst
-cat genus.tmp | tsv-uniq > genus.lst
-cat family.tmp | tsv-uniq > family.lst
-cat order.tmp | tsv-uniq > order.lst
-
 # Omit strains without protein annotations
-for STRAIN in $(cat strains.lst); do
+for STRAIN in $(cat summary/strains.lst); do
     if ! compgen -G "ASSEMBLY/${STRAIN}/*_protein.faa.gz" > /dev/null; then
         echo ${STRAIN}
     fi
@@ -688,9 +690,9 @@ for STRAIN in $(cat strains.lst); do
 done |
     tsv-uniq \
     > omit.lst
-# All OK
 
-rm *.tmp
+wc -l omit.lst
+# All OK
 
 ```
 
@@ -704,13 +706,13 @@ cd ~/data/Pseudomonas/tree
 
 bp_taxonomy2tree.pl -e \
     $(
-        cat ../genus.lst |
+        cat ../summary/genus.lst |
             tr " " "_" |
             parallel echo '-s {}'
     ) \
     > ncbi.nwk
 
-nw_display -s -b 'visibility:hidden' -w 600 -v 30 ncbi.nwk |
+nw_display -s -b 'visibility:hidden' -w 600 -v 20 ncbi.nwk |
     rsvg-convert -o Pseudomonas.ncbi.png
 
 ```
@@ -721,12 +723,24 @@ nw_display -s -b 'visibility:hidden' -w 600 -v 30 ncbi.nwk |
 mkdir -p ~/data/Pseudomonas/mash
 cd ~/data/Pseudomonas/mash
 
-for strain in $(cat ../strains.lst ); do
-    2>&1 echo "==> ${strain}"
+# Remove .msh files not in the list
+find . -maxdepth 1 -mindepth 1 -type f -name "*.msh" |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        basename {} .msh
+    ' |
+    tsv-join --exclude -k 1 -f ../ASSEMBLY/url.tsv -d 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        echo Remove {}
+        rm {}.msh
+    '
 
+# Compute MinHash
+for strain in $(cat ../summary/strains.lst ); do
     if [[ -e ${strain}.msh ]]; then
         continue
     fi
+
+    2>&1 echo "==> ${strain}"
 
     find ../ASSEMBLY/${strain} -name "*_genomic.fna.gz" |
         grep -v "_from_" |
@@ -735,7 +749,7 @@ for strain in $(cat ../strains.lst ); do
 done
 
 mash triangle -E -p 8 -l <(
-    cat ../strains.lst | parallel echo "{}.msh"
+    cat ../summary/strains.lst | parallel echo "{}.msh"
     ) \
     > dist.tsv
 
@@ -1370,16 +1384,12 @@ cat STRAINS/family-n.tsv |
 | IPR014311 | Guanine deaminase                             |
 | IPR037532 | Peptidoglycan D,D-transpeptidase FtsI         |
 
-
 ### IPR007416 - YggL 50S ribosome-binding protein
 
 <https://www.ebi.ac.uk/interpro/entry/InterPro/IPR007416/>
 
 * Pfam:     PF04320 - YggL_50S_bp
 * PANTHER:  PTHR38778 - CYTOPLASMIC PROTEIN-RELATED (PTHR38778)
-
-
-
 
 ```shell
 cd ~/data/Pseudomonas
