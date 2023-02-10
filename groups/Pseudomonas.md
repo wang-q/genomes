@@ -22,6 +22,19 @@
     * [`all.pro.fa`](#allprofa)
     * [`all.replace.fa`](#allreplacefa)
     * [`all.info.tsv`](#allinfotsv)
+- [Phylogenetics with bac120](#phylogenetics-with-bac120)
+    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Tweak the concat tree](#tweak-the-concat-tree)
+- [InterProScan on all proteins of typical strains](#interproscan-on-all-proteins-of-typical-strains)
+    * [Typical strains](#typical-strains)
+    * [`interproscan.sh`](#interproscansh)
+    * [P. aeruginosa](#p-aeruginosa)
+    * [P. putida](#p-putida)
+    * [P. syringae](#p-syringae)
+    * [A. baumannii](#a-baumannii)
+- [Protein families](#protein-families)
+    * [IPR007416 - YggL 50S ribosome-binding protein](#ipr007416---yggl-50s-ribosome-binding-protein)
 
 <!-- tocstop -->
 
@@ -1165,7 +1178,7 @@ rm bac120.condensed.map
 ARRAY=(
 #    'order::7'
 #    'family::6'
-    'genus::5'
+#    'genus::5'
     'species::4'
 )
 
@@ -1185,7 +1198,7 @@ for item in "${ARRAY[@]}" ; do
 done
 
 # png
-nw_display -s -b 'visibility:hidden' -w 600 -v 20 bac120.species.newick |
+nw_display -s -b 'visibility:hidden' -w 800 -v 20 bac120.species.newick |
     rsvg-convert -o Pseudomonas.bac120.png
 
 ```
@@ -1211,9 +1224,17 @@ nw_display -s -b 'visibility:hidden' -w 600 -v 20 bac120.species.newick |
     * 113 - Pseudomonas protegens Pf-5
     * 117 - Pseudomonas entomophila L48
 
-Pseudomonas fluorescens SBW25 was removed from refseq
+    * Pseudomonas fluorescens SBW25 was removed from refseq
 
-Pseudomonas aeruginosa CF39S is Pseudom_aeruginosa_GCF_011466835_1
+    * Pseudomonas aeruginosa CF39S is Pseudom_aeruginosa_GCF_011466835_1
+
+* Typical strains of Acin_bau was listed
+  in [here](https://www.biorxiv.org/content/10.1101/2022.02.27.482139v3.full)
+    * ATCC17978-VUB
+    * ATCC19606-VUB
+    * DSM30011-VUB https://www.ncbi.nlm.nih.gov/assembly/GCF_001936675.2
+        * Assembly level: Scaffold
+    * AB5075-VUB https://www.ncbi.nlm.nih.gov/assembly/GCF_016919505.2
 
 ```shell
 cd ~/data/Pseudomonas
@@ -1228,7 +1249,12 @@ faops size ASSEMBLY/Pseudom_aeruginosa_PAO1/*_protein.faa.gz |
 
 cat summary/species.count.tsv |
     tsv-filter -H --or --ge RS:50 --ge CHR:10 |
-    tsv-filter -H --or --str-in-fld species:Pseudomonas --str-in-fld species:Halopseudomonas --str-in-fld species:Stutzerimonas |
+    tsv-filter -H --or \
+        --str-in-fld species:Pseudomonas \
+        --str-in-fld species:Halopseudomonas \
+        --str-in-fld species:Stutzerimonas \
+        --str-in-fld species:Azotobacter \
+        --str-in-fld species:Acinetobacter |
     mlr --itsv --omd cat
 
 for ABBR in \
@@ -1246,6 +1272,18 @@ for ABBR in \
     Pseudom_coro_ \
     Pseudom_synx_ \
     Pseudom_entomophila_ \
+    Acin_bau_ \
+    Acin_pit_ \
+    Acin_nos_ \
+    Acin_indicus_ \
+    Acin_junii_ \
+    Acin_urs_ \
+    Acin_bere_ \
+    Acin_sei_ \
+    Acin_radior_ \
+    Acin_haemolyticus_ \
+    Acin_johnsonii_ \
+    Acin_lwo_ \
     ; do
     cat ASSEMBLY/pass.csv |
         grep ${ABBR} |
@@ -1282,6 +1320,19 @@ for S in \
     Pseudom_coro_pv_oryzae_1_6_GCF_000156995_2 \
     Pseudom_synx_GCF_003851555_1 \
     Pseudom_entomophila_L48_GCF_000026105_1 \
+    Acin_bau_GCF_008632635_1 \
+    Acin_bau_ATCC_17978_GCF_004794235_2 \
+    Acin_bau_ATCC_19606_CIP_70_34_JCM_6841_GCF_019331655_1 \
+    Acin_bau_GCF_016919505_2 \
+    Acin_pit_PHEA_2 \
+    Acin_nos_M2_GCF_005281455_1 \
+    Acin_indicus_GCF_009914475_1 \
+    Acin_junii_GCF_018336855_1 \
+    Acin_bere_GCF_016576965_1 \
+    Acin_sei_GCF_016064815_1 \
+    Acin_radior_GCF_003258335_1 \
+    Acin_haemolyticus_GCF_003323815_1 \
+    Acin_lwo_GCF_019343495_1 \
     ; do
     echo ${S}
 done \
@@ -1353,8 +1404,9 @@ for S in $(cat summary/typical.lst); do
         > STRAINS/${S}/family.tsv
 done
 
+# Pseudom
 COUNT=
-for S in $(cat summary/typical.lst); do
+for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)"); do
     if [ ! -s STRAINS/${S}/family.tsv ]; then
         continue
     fi
@@ -1366,8 +1418,8 @@ for S in $(cat summary/typical.lst); do
 done
 echo $COUNT
 
-# families in all strains
-for S in $(cat summary/typical.lst); do
+# families in almost all strains
+for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)"); do
     cat STRAINS/${S}/family-count.tsv
 done |
     tsv-summarize -g 1,2 --count |
@@ -1375,51 +1427,81 @@ done |
     tsv-filter -H --istr-not-in-fld 2:"putative" |
     tsv-filter -H --istr-not-in-fld 2:"Uncharacterised" |
     tsv-filter -H --istr-not-in-fld 2:" DUF" |
-    tsv-filter --ge 3:$COUNT \
-    > STRAINS/universal.tsv
+    tsv-filter --ge 3:$((COUNT - 1)) \
+    > STRAINS/Pseudom-universal.tsv
+
+# Acin
+COUNT=
+for S in $(cat summary/typical.lst | grep -E "^(Acin)"); do
+    if [ ! -s STRAINS/${S}/family.tsv ]; then
+        continue
+    fi
+    cat STRAINS/${S}/family.tsv |
+        tsv-summarize -g 2,3 --count \
+        > STRAINS/${S}/family-count.tsv
+
+    COUNT=$((COUNT + 1))
+done
+echo $COUNT
+
+# families in almost all strains
+for S in $(cat summary/typical.lst | grep -E "^(Acin)"); do
+    cat STRAINS/${S}/family-count.tsv
+done |
+    tsv-summarize -g 1,2 --count |
+    tsv-filter -H --istr-not-in-fld 2:"probable" |
+    tsv-filter -H --istr-not-in-fld 2:"putative" |
+    tsv-filter -H --istr-not-in-fld 2:"Uncharacterised" |
+    tsv-filter -H --istr-not-in-fld 2:" DUF" |
+    tsv-filter --ge 3:$((COUNT - 1)) \
+    > STRAINS/Acin-universal.tsv
+
 ```
 
-### Pseudomonas aeruginosa
+### P. aeruginosa
 
 ```shell
+PREFIX=Pseudom_aeruginosa
+
 cd ~/data/Pseudomonas
 
 # All other strains should have only 1 family member
-cp STRAINS/universal.tsv STRAINS/Pseudom_aeruginosa-1.tsv
-for S in $(cat summary/typical.lst | grep -v "_aeruginosa_"); do
+cp STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv
+for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep -v "${PREFIX}_"); do
     if [ ! -s STRAINS/${S}/family-count.tsv ]; then
         continue
     fi
     cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/Pseudom_aeruginosa-1.tsv |
-        tsv-filter --eq 3:1 \
+        tsv-join -k 1 -f STRAINS/${PREFIX}-1.tsv |
+        tsv-filter --le 3:1 \
         > STRAINS/family-tmp.tsv
 
-    mv STRAINS/family-tmp.tsv STRAINS/Pseudom_aeruginosa-1.tsv
+    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-1.tsv
 done
 
-# All Pseudom_aeruginosa strains should have multiple family members
-cp STRAINS/Pseudom_aeruginosa-1.tsv STRAINS/Pseudom_aeruginosa-n.tsv
-for S in $(cat summary/typical.lst | grep "_aeruginosa_"); do
+# All ${PREFIX} strains should have multiple family members
+cp STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
+for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep "${PREFIX}_"); do
     if [ ! -s STRAINS/${S}/family-count.tsv ]; then
         continue
     fi
     cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/Pseudom_aeruginosa-n.tsv |
+        tsv-join -k 1 -f STRAINS/${PREFIX}-n.tsv |
         tsv-filter --gt 3:1 \
         > STRAINS/family-tmp.tsv
 
     wc -l < STRAINS/family-tmp.tsv
-    mv STRAINS/family-tmp.tsv STRAINS/Pseudom_aeruginosa-n.tsv
+    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-n.tsv
 done
 
-wc -l STRAINS/Pseudom_aeruginosa_PAO1/family.tsv STRAINS/universal.tsv STRAINS/Pseudom_aeruginosa-1.tsv STRAINS/Pseudom_aeruginosa-n.tsv
+wc -l STRAINS/Pseudom_aeruginosa_PAO1/family.tsv \
+    STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
 #  3971 STRAINS/Pseudom_aeruginosa_PAO1/family.tsv
-#  1474 STRAINS/universal.tsv
-#   871 STRAINS/Pseudom_aeruginosa-1.tsv
+#  1707 STRAINS/Pseudom-universal.tsv
+#   912 STRAINS/Pseudom_aeruginosa-1.tsv
 #     9 STRAINS/Pseudom_aeruginosa-n.tsv
 
-cat STRAINS/Pseudom_aeruginosa-n.tsv |
+cat STRAINS/${PREFIX}-n.tsv |
     tsv-select -f 1,2 |
     tsv-sort |
     (echo -e "#family\tcount" && cat) |
@@ -1438,6 +1520,122 @@ cat STRAINS/Pseudom_aeruginosa-n.tsv |
 | IPR011757 | Lytic transglycosylase MltB                   |
 | IPR014311 | Guanine deaminase                             |
 | IPR037532 | Peptidoglycan D,D-transpeptidase FtsI         |
+
+### P. putida
+
+```shell
+PREFIX=Pseudom_putida
+
+cd ~/data/Pseudomonas
+
+# All other strains should have only 1 family member
+cp STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv
+for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep -v "${PREFIX}_"); do
+    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
+        continue
+    fi
+    cat STRAINS/${S}/family-count.tsv |
+        tsv-join -k 1 -f STRAINS/${PREFIX}-1.tsv |
+        tsv-filter --le 3:1 \
+        > STRAINS/family-tmp.tsv
+
+    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-1.tsv
+done
+
+# All ${PREFIX} strains should have multiple family members
+cp STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
+for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep "${PREFIX}_"); do
+    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
+        continue
+    fi
+    cat STRAINS/${S}/family-count.tsv |
+        tsv-join -k 1 -f STRAINS/${PREFIX}-n.tsv |
+        tsv-filter --gt 3:1 \
+        > STRAINS/family-tmp.tsv
+
+    wc -l < STRAINS/family-tmp.tsv
+    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-n.tsv
+done
+
+wc -l STRAINS/Pseudom_putida_KT2440_GCF_000007565_2/family.tsv \
+    STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
+#  3731 STRAINS/Pseudom_putida_KT2440_GCF_000007565_2/family.tsv
+#  1707 STRAINS/Pseudom-universal.tsv
+#   860 STRAINS/Pseudom_putida-1.tsv
+#     7 STRAINS/Pseudom_putida-n.tsv
+
+cat STRAINS/${PREFIX}-n.tsv |
+    tsv-select -f 1,2 |
+    tsv-sort |
+    (echo -e "#family\tcount" && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #family   | count                                                      |
+|-----------|------------------------------------------------------------|
+| IPR001783 | Lumazine-binding protein                                   |
+| IPR002033 | Sec-independent periplasmic protein translocase TatC       |
+| IPR002446 | Lipocalin, bacterial                                       |
+| IPR011342 | Shikimate dehydrogenase                                    |
+| IPR012794 | Beta-ketoadipate transcriptional regulator, PcaR/PcaU/PobR |
+| IPR018448 | Sec-independent protein translocase protein TatB           |
+| IPR018550 | Lipid A 3-O-deacylase-related                              |
+
+### P. syringae
+
+### A. baumannii
+
+```shell
+PREFIX=Acin_bau
+
+cd ~/data/Pseudomonas
+
+# All other strains should have only 1 family member
+cp STRAINS/Acin-universal.tsv STRAINS/${PREFIX}-1.tsv
+for S in $(cat summary/typical.lst | grep -E "^(Acin)" | grep -v "${PREFIX}_"); do
+    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
+        continue
+    fi
+    cat STRAINS/${S}/family-count.tsv |
+        tsv-join -k 1 -f STRAINS/${PREFIX}-1.tsv |
+        tsv-filter --le 3:1 \
+        > STRAINS/family-tmp.tsv
+
+    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-1.tsv
+done
+
+# All ${PREFIX} strains should have multiple family members
+cp STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
+for S in $(cat summary/typical.lst | grep -E "^(Acin)" | grep "${PREFIX}_"); do
+    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
+        continue
+    fi
+    cat STRAINS/${S}/family-count.tsv |
+        tsv-join -k 1 -f STRAINS/${PREFIX}-n.tsv |
+        tsv-filter --gt 3:1 \
+        > STRAINS/family-tmp.tsv
+
+    wc -l < STRAINS/family-tmp.tsv
+    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-n.tsv
+done
+
+wc -l STRAINS/Acin_bau_GCF_008632635_1/family.tsv \
+    STRAINS/Acin-universal.tsv STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
+#  2525 STRAINS/Acin_bau_GCF_008632635_1/family.tsv
+#  1342 STRAINS/Acin-universal.tsv
+#   890 STRAINS/Acin_bau-1.tsv
+#     0 STRAINS/Acin_bau-n.tsv
+
+cat STRAINS/${PREFIX}-n.tsv |
+    tsv-select -f 1,2 |
+    tsv-sort |
+    (echo -e "#family\tcount" && cat) |
+    mlr --itsv --omd cat
+
+```
+
+## Protein families
 
 ### IPR007416 - YggL 50S ribosome-binding protein
 
