@@ -753,7 +753,7 @@ mash triangle -E -p 8 -l <(
     ) \
     > dist.tsv
 
-# fill matrix with lower triangle
+# Fill matrix with lower triangle
 tsv-select -f 1-3 dist.tsv |
     (tsv-select -f 2,1,3 dist.tsv && cat) |
     (
@@ -803,10 +803,9 @@ nw_reroot ../mash/tree.nwk Baci_subti_subtilis_168 Sta_aure_aureus_NCTC_8325 |
 
 # rank::col
 ARRAY=(
-    'order::8'
-    'family::7'
-    'genus::6'
-    'species_group::5'
+    'order::7'
+    'family::6'
+    'genus::5'
     'species::4'
 )
 
@@ -844,17 +843,17 @@ find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
     sort |
     grep 'ASSEMBLY/' |
     wc -l
-# 3000
+# 3034
 
 find ASSEMBLY -type f -name "*_protein.faa.gz" |
     wc -l
-# 3000
+# 3034
 
-cat strains.lst |
+cat summary/strains.lst |
     wc -l
-# 2747
+# 2781
 
-for STRAIN in $(cat strains.lst); do
+for STRAIN in $(cat summary/strains.lst); do
     gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
 done |
     pigz -p4 \
@@ -878,19 +877,19 @@ gzip -dcf PROTEINS/all.pro.fa.gz |
 gzip -dcf PROTEINS/all.pro.fa.gz |
     grep "^>" |
     wc -l
-#12881967
+#13058330
 
 gzip -dcf PROTEINS/all.pro.fa.gz |
     grep "^>" |
     tsv-uniq |
     wc -l
-#4524852
+#4567759
 
 # annotations may be different
 gzip -dcf PROTEINS/all.uniq.fa.gz |
     grep "^>" |
     wc -l
-#4436511
+#4475736
 
 # ribonuclease
 gzip -dcf PROTEINS/all.pro.fa.gz |
@@ -910,8 +909,8 @@ gzip -dcf PROTEINS/all.pro.fa.gz |
 ```shell
 cd ~/data/Pseudomonas
 
-rm PROTEINS/all.strain.tsv
-for STRAIN in $(cat strains.lst); do
+rm PROTEINS/all.strain.tsv PROTEINS/all.replace.fa.gz
+for STRAIN in $(cat summary/strains.lst); do
     gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
         grep "^>" |
         cut -d" " -f 1 |
@@ -926,17 +925,20 @@ for STRAIN in $(cat strains.lst); do
 
     cut -f 2,3 PROTEINS/${STRAIN}.replace.tsv >> PROTEINS/all.strain.tsv
 
-    faops replace -s ASSEMBLY/${STRAIN}/*_protein.faa.gz <(cut -f 1,2 PROTEINS/${STRAIN}.replace.tsv) stdout
+    faops replace -s \
+        ASSEMBLY/${STRAIN}/*_protein.faa.gz \
+        <(cut -f 1,2 PROTEINS/${STRAIN}.replace.tsv) \
+        stdout |
+        pigz -p4 \
+        >> PROTEINS/all.replace.fa.gz
 
     rm PROTEINS/${STRAIN}.replace.tsv
-done |
-    pigz -p4 \
-    > PROTEINS/all.replace.fa.gz
+done
 
 gzip -dcf PROTEINS/all.replace.fa.gz |
     grep "^>" |
     wc -l
-#12881967
+#13058330
 
 (echo -e "#name\tstrain" && cat PROTEINS/all.strain.tsv)  \
     > temp &&
@@ -955,7 +957,7 @@ rm PROTEINS/all.replace.sizes
 ```shell
 cd ~/data/Pseudomonas
 
-for STRAIN in $(cat strains.lst); do
+for STRAIN in $(cat summary/strains.lst); do
     gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
         grep "^>" |
         sed "s/^>//" |
@@ -972,7 +974,7 @@ done \
 
 cat PROTEINS/all.annotation.tsv |
     wc -l
-#12881967
+#13058330
 
 (echo -e "#name\tannotation" && cat PROTEINS/all.annotation.tsv) \
     > temp &&
@@ -1000,7 +1002,7 @@ tsv-join \
 
 cat PROTEINS/all.info.tsv |
     wc -l
-#12881968
+#13058331
 
 ```
 
@@ -1024,17 +1026,17 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
 
     mkdir -p PROTEINS/${marker}
 
-    for FAMILY in $(cat family.lst); do
-        >&2 echo "==> FAMILY [${FAMILY}]"
+    for ORDER in $(cat summary/order.lst); do
+        >&2 echo "==> ORDER [${ORDER}]"
 
-        cat taxon/${FAMILY} |
+        cat taxon/${ORDER} |
             parallel --no-run-if-empty --linebuffer -k -j 8 "
                 gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
                     hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw ~/data/HMM/bac120/HMM/${marker}.HMM - |
                     grep '>>' |
                     perl -nl -e ' m{>>\s+(\S+)} and printf qq{%s\t%s\n}, \$1, {}; '
             " \
-            > PROTEINS/${marker}/${FAMILY}.replace.tsv
+            > PROTEINS/${marker}/${ORDER}.replace.tsv
     done
 
     echo
@@ -1049,19 +1051,19 @@ cd ~/data/Pseudomonas
 
 cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        for FAMILY in $(cat family.lst); do
-            cat PROTEINS/{}/${FAMILY}.replace.tsv
+        for ORDER in $(cat summary/order.lst); do
+            cat PROTEINS/{}/${ORDER}.replace.tsv
         done |
             wc -l
     ' |
     tsv-summarize --quantile 1:0.25,0.5,0.75
-# 2741.75 2745    4019.75
+# 2776    2779    4068
 
 cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo {}
-        for FAMILY in $(cat family.lst); do
-            cat PROTEINS/{}/${FAMILY}.replace.tsv
+        for ORDER in $(cat summary/order.lst); do
+            cat PROTEINS/{}/${ORDER}.replace.tsv
         done |
             wc -l
     ' |
@@ -1077,8 +1079,8 @@ cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         >&2 echo "==> marker [{}]"
 
-        for FAMILY in $(cat family.lst); do
-            cat PROTEINS/{}/${FAMILY}.replace.tsv
+        for ORDER in $(cat summary/order.lst); do
+            cat PROTEINS/{}/${ORDER}.replace.tsv
         done \
             > PROTEINS/{}/{}.replace.tsv
 
@@ -1132,7 +1134,7 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
 done \
     > PROTEINS/bac120.aln.fas
 
-fasops concat PROTEINS/bac120.aln.fas strains.lst -o PROTEINS/bac120.aln.fa
+fasops concat PROTEINS/bac120.aln.fas summary/strains.lst -o PROTEINS/bac120.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
@@ -1140,8 +1142,8 @@ trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
 faops size PROTEINS/bac120.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#49772
-#25586
+#50203
+#25591
 
 # To make it faster
 FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
@@ -1161,10 +1163,9 @@ rm bac120.condensed.map
 
 # rank::col
 ARRAY=(
-#    'order::8'
-#    'family::7'
-    'genus::6'
-    'species_group::5'
+#    'order::7'
+#    'family::6'
+    'genus::5'
     'species::4'
 )
 
@@ -1191,6 +1192,8 @@ nw_display -s -b 'visibility:hidden' -w 600 -v 20 bac120.species.newick |
 
 ## InterProScan on all proteins of typical strains
 
+### Typical strains
+
 * Typical (Popular) strains in [pseudomonas.com](https://www.pseudomonas.com/strain/list)
     * 107 - Pseudomonas aeruginosa PAO1
     * 109 - Pseudomonas aeruginosa UCBPP-PA14
@@ -1210,6 +1213,8 @@ nw_display -s -b 'visibility:hidden' -w 600 -v 20 bac120.species.newick |
 
 Pseudomonas fluorescens SBW25 was removed from refseq
 
+Pseudomonas aeruginosa CF39S is Pseudom_aeruginosa_GCF_011466835_1
+
 ```shell
 cd ~/data/Pseudomonas
 
@@ -1221,33 +1226,80 @@ faops size ASSEMBLY/Pseudom_aeruginosa_PAO1/*_protein.faa.gz |
     tsv-summarize --sum 2
 #1858983
 
+cat summary/species.count.tsv |
+    tsv-filter -H --or --ge RS:50 --ge CHR:10 |
+    tsv-filter -H --or --str-in-fld species:Pseudomonas --str-in-fld species:Halopseudomonas --str-in-fld species:Stutzerimonas |
+    mlr --itsv --omd cat
+
+for ABBR in \
+    Pseudom_aeruginosa_ \
+    Pseudom_viridif_ \
+    Pseudom_syringae_ \
+    Pseudom_fluo_ \
+    Pseudom_putida_ \
+    Stu_stut_ \
+    Pseudom_savas_ \
+    Pseudom_chl_ \
+    Pseudom_amyg_ \
+    Pseudom_proteg_ \
+    Pseudom_fulva_ \
+    Pseudom_coro_ \
+    Pseudom_synx_ \
+    Pseudom_entomophila_ \
+    ; do
+    cat ASSEMBLY/pass.csv |
+        grep ${ABBR} |
+        grep -E "Reference|Representative"
+
+done |
+    cut -d, -f 1
+
 mkdir -p STRAINS
 
-#    Pseudom_fluo_SBW25_GCF_000009225_2 \
 for S in \
     Pseudom_aeruginosa_PAO1 \
-    Pseudom_putida_KT2440_GCF_000007565_2 \
-    Pseudom_chl_aureofaciens_30_84_GCF_000281915_1 \
-    Pseudom_entomophila_L48_GCF_000026105_1 \
-    Pseudom_proteg_Pf_5_GCF_000012265_1 \
-    Pseudom_savas_pv_phaseolicola_1448A_GCF_000012205_1 \
-    Stu_stut_A1501_GCF_000013785_1 \
-    Pseudom_syr_pv_syringae_B728a_GCF_000012245_1 \
     Pseudom_aeruginosa_UCBPP_PA14_GCF_000014625_1 \
     Pseudom_aeruginosa_PA7_GCF_000017205_1 \
     Pseudom_aeruginosa_PAK_GCF_000568855_2 \
+    Pseudom_aeruginosa_GCF_011466835_1 \
     Pseudom_aeruginosa_LESB58_GCF_000026645_1 \
+    Pseudom_viridif_GCF_900184295_1 \
+    Pseudom_syringae_pv_tomato_DC3000_GCF_000007805_1 \
+    Pseudom_syringae_pv_syringae_B728a_GCF_000012245_1 \
+    Pseudom_syringae_pv_tagetis_GCF_022557255_1 \
+    Pseudom_syringae_GCF_018394375_1 \
+    Pseudom_fluo_GCF_900215245_1 \
+    Pseudom_putida_KT2440_GCF_000007565_2 \
+    Pseudom_putida_NBRC_14164_GCF_000412675_1 \
+    Stu_stut_A1501_GCF_000013785_1 \
+    Pseudom_savas_pv_phaseolicola_1448A_GCF_000012205_1 \
+    Pseudom_savas_GCF_020917325_1 \
+    Pseudom_chl_aureofaciens_30_84_GCF_000281915_1 \
+    Pseudom_chl_GCF_014524625_1 \
+    Pseudom_amyg_pv_tabaci_ATCC_11528_GCF_000145945_2 \
+    Pseudom_proteg_Pf_5_GCF_000012265_1 \
+    Pseudom_proteg_CHA0_GCF_900560965_1 \
+    Pseudom_coro_pv_oryzae_1_6_GCF_000156995_2 \
+    Pseudom_synx_GCF_003851555_1 \
+    Pseudom_entomophila_L48_GCF_000026105_1 \
     ; do
     echo ${S}
 done \
-    > typical.lst
+    > summary/typical.lst
 
-for S in $(cat typical.lst); do
+```
+
+### `interproscan.sh`
+
+```shell
+cd ~/data/Pseudomonas
+
+for S in $(cat summary/typical.lst); do
     mkdir -p STRAINS/${S}
     faops split-about ASSEMBLY/${S}/*_protein.faa.gz 200000 STRAINS/${S}/
 done
 
-for S in $(cat typical.lst); do
+for S in $(cat summary/typical.lst); do
     for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort); do
         >&2 echo "==> ${f}"
         if [ -e ${f}.tsv ]; then
@@ -1261,7 +1313,7 @@ for S in $(cat typical.lst); do
     done
 done
 
-#for S in $(cat typical.lst | head -n 1); do
+#for S in $(cat summary/typical.lst | head -n 1); do
 #    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort | head -n 1); do
 #        >&2 echo "==> ${f}"
 #        if [ -e ${f}.tsv ]; then
@@ -1282,7 +1334,7 @@ find STRAINS -type f -name "*.json" | sort |
     '
 
 # same protein may have multiple families
-for S in $(cat typical.lst); do
+for S in $(cat summary/typical.lst); do
     for f in $(find STRAINS/${S} -maxdepth 1 -type f -name "[0-9]*.json.gz" | sort); do
         >&2 echo "==> ${f}"
         gzip -dcf ${f} |
@@ -1302,7 +1354,7 @@ for S in $(cat typical.lst); do
 done
 
 COUNT=
-for S in $(cat typical.lst); do
+for S in $(cat summary/typical.lst); do
     if [ ! -s STRAINS/${S}/family.tsv ]; then
         continue
     fi
@@ -1315,7 +1367,7 @@ done
 echo $COUNT
 
 # families in all strains
-for S in $(cat typical.lst); do
+for S in $(cat summary/typical.lst); do
     cat STRAINS/${S}/family-count.tsv
 done |
     tsv-summarize -g 1,2 --count |
@@ -1325,43 +1377,49 @@ done |
     tsv-filter -H --istr-not-in-fld 2:" DUF" |
     tsv-filter --ge 3:$COUNT \
     > STRAINS/universal.tsv
+```
+
+### Pseudomonas aeruginosa
+
+```shell
+cd ~/data/Pseudomonas
 
 # All other strains should have only 1 family member
-cp STRAINS/universal.tsv STRAINS/family-1.tsv
-for S in $(cat typical.lst | grep -v "_aeruginosa_"); do
+cp STRAINS/universal.tsv STRAINS/Pseudom_aeruginosa-1.tsv
+for S in $(cat summary/typical.lst | grep -v "_aeruginosa_"); do
     if [ ! -s STRAINS/${S}/family-count.tsv ]; then
         continue
     fi
     cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/family-1.tsv |
+        tsv-join -k 1 -f STRAINS/Pseudom_aeruginosa-1.tsv |
         tsv-filter --eq 3:1 \
         > STRAINS/family-tmp.tsv
 
-    mv STRAINS/family-tmp.tsv STRAINS/family-1.tsv
+    mv STRAINS/family-tmp.tsv STRAINS/Pseudom_aeruginosa-1.tsv
 done
 
-# All P_aeru strains should have multiple family members
-cp STRAINS/family-1.tsv STRAINS/family-n.tsv
-for S in $(cat typical.lst | grep "_aeruginosa_"); do
+# All Pseudom_aeruginosa strains should have multiple family members
+cp STRAINS/Pseudom_aeruginosa-1.tsv STRAINS/Pseudom_aeruginosa-n.tsv
+for S in $(cat summary/typical.lst | grep "_aeruginosa_"); do
     if [ ! -s STRAINS/${S}/family-count.tsv ]; then
         continue
     fi
     cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/family-n.tsv |
+        tsv-join -k 1 -f STRAINS/Pseudom_aeruginosa-n.tsv |
         tsv-filter --gt 3:1 \
         > STRAINS/family-tmp.tsv
 
     wc -l < STRAINS/family-tmp.tsv
-    mv STRAINS/family-tmp.tsv STRAINS/family-n.tsv
+    mv STRAINS/family-tmp.tsv STRAINS/Pseudom_aeruginosa-n.tsv
 done
 
-wc -l STRAINS/Pseudom_aeruginosa_PAO1/family.tsv STRAINS/universal.tsv STRAINS/family-1.tsv STRAINS/family-n.tsv
+wc -l STRAINS/Pseudom_aeruginosa_PAO1/family.tsv STRAINS/universal.tsv STRAINS/Pseudom_aeruginosa-1.tsv STRAINS/Pseudom_aeruginosa-n.tsv
 #  3971 STRAINS/Pseudom_aeruginosa_PAO1/family.tsv
-#  1511 STRAINS/universal.tsv
-#   940 STRAINS/family-1.tsv
-#    12 STRAINS/family-n.tsv
+#  1474 STRAINS/universal.tsv
+#   871 STRAINS/Pseudom_aeruginosa-1.tsv
+#     9 STRAINS/Pseudom_aeruginosa-n.tsv
 
-cat STRAINS/family-n.tsv |
+cat STRAINS/Pseudom_aeruginosa-n.tsv |
     tsv-select -f 1,2 |
     tsv-sort |
     (echo -e "#family\tcount" && cat) |
@@ -1371,15 +1429,12 @@ cat STRAINS/family-n.tsv |
 
 | #family   | count                                         |
 |-----------|-----------------------------------------------|
-| IPR000223 | Peptidase S26A, signal peptidase I            |
-| IPR000813 | 7Fe ferredoxin                                |
 | IPR001353 | Proteasome, subunit alpha/beta                |
 | IPR001404 | Heat shock protein Hsp90 family               |
 | IPR004361 | Glyoxalase I                                  |
 | IPR005999 | Glycerol kinase                               |
 | IPR006684 | Acyl-CoA thioester hydrolase YbgC/YbaW family |
 | IPR007416 | YggL 50S ribosome-binding protein             |
-| IPR008621 | Cbb3-type cytochrome oxidase component        |
 | IPR011757 | Lytic transglycosylase MltB                   |
 | IPR014311 | Guanine deaminase                             |
 | IPR037532 | Peptidoglycan D,D-transpeptidase FtsI         |
@@ -1421,10 +1476,10 @@ for domain in YggL_50S_bp PTHR38778 Ribosomal_L10 Ribosomal_S8 ; do
         continue;
     fi
 
-    for FAMILY in $(cat family.lst); do
-        >&2 echo "==> FAMILY [${FAMILY}]"
+    for ORDER in $(cat summary/order.lst); do
+        >&2 echo "==> ORDER [${ORDER}]"
 
-        cat taxon/${FAMILY} |
+        cat taxon/${ORDER} |
             parallel --no-run-if-empty --linebuffer -k -j 8 "
                 gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
                     hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw Targets/YggL/HMM/${domain}.hmm - |
@@ -1448,11 +1503,11 @@ tsv-join Targets/YggL/YggL_50S_bp.replace.tsv \
     > Targets/YggL/YggL.replace.tsv
 
 wc -l Targets/YggL/*.tsv
-#  2364 Targets/YggL/PTHR38778.replace.tsv
-#  2687 Targets/YggL/Ribosomal_L10.replace.tsv
-#  2745 Targets/YggL/Ribosomal_S8.replace.tsv
-#  2363 Targets/YggL/YggL.replace.tsv
-#  2368 Targets/YggL/YggL_50S_bp.replace.tsv
+#  2397 Targets/YggL/PTHR38778.replace.tsv
+#  2721 Targets/YggL/Ribosomal_L10.replace.tsv
+#  2779 Targets/YggL/Ribosomal_S8.replace.tsv
+#  2396 Targets/YggL/YggL.replace.tsv
+#  2401 Targets/YggL/YggL_50S_bp.replace.tsv
 
 faops some PROTEINS/all.replace.fa.gz <(tsv-select -f 2 Targets/YggL/YggL.replace.tsv) Targets/YggL/YggL.fa
 
