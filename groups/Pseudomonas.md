@@ -61,56 +61,45 @@ of Pseudomonas should be transferred to Halopseudomonas and Stutzerimonas.
 mkdir -p ~/data/Pseudomonas
 cd ~/data/Pseudomonas
 
-nwr member Pseudomonas |
+nwr member Pseudomonas Acinetobacter Stenotrophomonas Burkholderia |
     grep -v " sp." |
     tsv-summarize -H -g 3 --count |
     mlr --itsv --omd cat
 
-nwr member Acinetobacter |
-    grep -v " sp." |
-    tsv-summarize -H -g 3 --count |
-    mlr --itsv --omd cat
-
-nwr member Pseudomonas Acinetobacter -r "species group" -r "species subgroup" |
+nwr member Pseudomonas Acinetobacter Stenotrophomonas Burkholderia -r "species group" -r "species subgroup" |
     tsv-select -f 1-3 |
     keep-header -- tsv-sort -k3,3 -k2,2 |
     sed 's/Pseudomonas /P. /g' |
     sed 's/Acinetobacter /A. /g' |
+    sed 's/Stenotrophomonas /S. /g' |
+    sed 's/Burkholderia /B. /g' |
     mlr --itsv --omd cat
 
 ```
 
 | rank             | count |
 |------------------|-------|
-| genus            | 1     |
-| species          | 426   |
-| strain           | 724   |
-| subspecies       | 13    |
-| no rank          | 121   |
-| species group    | 5     |
-| species subgroup | 4     |
-| isolate          | 1     |
-
-| rank             | count |
-|------------------|-------|
-| genus            | 1     |
-| species          | 117   |
-| species group    | 2     |
-| species subgroup | 3     |
-| strain           | 1110  |
-| no rank          | 2     |
-| subspecies       | 1     |
-| isolate          | 2     |
+| genus            | 4     |
+| species          | 627   |
+| strain           | 2174  |
+| subspecies       | 15    |
+| no rank          | 140   |
+| species group    | 10    |
+| species subgroup | 7     |
+| isolate          | 4     |
 
 | #tax_id | sci_name                                 | rank             |
 |---------|------------------------------------------|------------------|
 | 2839056 | A. Taxon 24                              | species group    |
 | 909768  | A. calcoaceticus/baumannii complex       | species group    |
+| 87882   | B. cepacia complex                       | species group    |
 | 136841  | P. aeruginosa group                      | species group    |
 | 136842  | P. chlororaphis group                    | species group    |
 | 136843  | P. fluorescens group                     | species group    |
 | 136845  | P. putida group                          | species group    |
 | 136849  | P. syringae group                        | species group    |
+| 995085  | S. maltophilia group                     | species group    |
+| 111527  | pseudomallei group                       | species group    |
 | 2839060 | A. Taxon 24C                             | species subgroup |
 | 2839057 | A. Taxon 24D                             | species subgroup |
 | 2839061 | A. Taxon 24E                             | species subgroup |
@@ -121,10 +110,28 @@ nwr member Pseudomonas Acinetobacter -r "species group" -r "species subgroup" |
 
 ### Species with assemblies
 
-Check also the order Pseudomonadales.
+* Order Pseudomonadales
+    * Old ones: Cellvibrionales, Oceanospirillales, Pseudomonadales, and Alteromonadales
+    * New ones: Moraxellales, Kangiellales, and Pseudomonadales
+    * Pseudomonas aeruginosa
+    * Acinetobacter baumannii
 
-* Old ones: Cellvibrionales, Oceanospirillales, Pseudomonadales, and Alteromonadales
-* New ones: Moraxellales, Kangiellales, and Pseudomonadales
+* Order Xanthomonadales
+    * Stenotrophomonas maltophilia
+
+* Order Burkholderiales: It is classified as Betaproteobacteria, but is actually close to
+  Pseudomonas
+    * Burkholderia cepacia
+    * Bordetella pertussis
+
+* Order Legionellales
+    * Coxiella burnetii
+
+* Order Enterobacterales
+    * Escherichia coli
+    * Klebsiella pneumoniae
+    * Salmonella enterica
+    * Shigella flexneri
 
 ```shell
 mkdir -p ~/data/Pseudomonas/summary
@@ -134,6 +141,8 @@ SPECIES=$(
     nwr member \
         Cellvibrionales Oceanospirillales Alteromonadales \
         Moraxellales Kangiellales Pseudomonadales \
+        Xanthomonadales \
+        Burkholderiales \
         -r species |
         grep -v -i "Candidatus " |
         grep -v -i "candidate " |
@@ -181,61 +190,55 @@ done |
     > species.count.tsv
 
 cat species.count.tsv |
-    tsv-filter -H --ge CHR:5 |
-    tsv-filter -H --invert --str-in-fld species:Pseudomonas --lt RS:30 |
-    tsv-filter -H --invert --str-in-fld species:Acinetobacter --lt RS:30 |
+    tsv-filter -H --ge CHR:20 |
+    tsv-filter -H --invert --str-in-fld species:Pseudomonas --lt RS:50 |
+    tsv-filter -H --invert --str-in-fld species:Acinetobacter --lt RS:50 |
     sed 's/Pseudomonas /P. /g' |
     sed 's/Acinetobacter /A. /g' |
+    sed 's/Stenotrophomonas /S. /g' |
+    sed 's/Burkholderia /Bu. /g' |
+    sed 's/Bordetella /Bo. /g' |
     mlr --itsv --omd cat
 
 ```
 
-| species_id | species                         | RS   | CHR |
-|------------|---------------------------------|------|-----|
-| 287        | P. aeruginosa                   | 7526 | 648 |
-| 470        | A. baumannii                    | 7313 | 531 |
-| 33069      | P. viridiflava                  | 1541 | 9   |
-| 317        | P. syringae                     | 615  | 51  |
-| 48296      | A. pittii                       | 385  | 35  |
-| 294        | P. fluorescens                  | 262  | 40  |
-| 303        | P. putida                       | 226  | 70  |
-| 480        | Moraxella catarrhalis           | 209  | 16  |
-| 106654     | A. nosocomialis                 | 174  | 11  |
-| 316        | Stutzerimonas stutzeri          | 140  | 27  |
-| 29438      | P. savastanoi                   | 120  | 5   |
-| 38313      | Shewanella algae                | 112  | 24  |
-| 251701     | P. syringae group genomosp. 3   | 109  | 8   |
-| 587753     | P. chlororaphis                 | 107  | 61  |
-| 756892     | A. indicus                      | 102  | 21  |
-| 47877      | P. amygdali                     | 90   | 10  |
-| 380021     | P. protegens                    | 83   | 27  |
-| 47880      | P. fulva                        | 75   | 5   |
-| 40215      | A. junii                        | 71   | 11  |
-| 108980     | A. ursingii                     | 68   | 6   |
-| 106648     | A. bereziniae                   | 63   | 5   |
-| 1530123    | A. seifertii                    | 60   | 25  |
-| 40216      | A. radioresistens               | 60   | 5   |
-| 29430      | A. haemolyticus                 | 57   | 14  |
-| 62322      | Shewanella baltica              | 48   | 12  |
-| 40214      | A. johnsonii                    | 47   | 19  |
-| 28090      | A. lwoffii                      | 47   | 11  |
-| 76759      | P. monteilii                    | 47   | 9   |
-| 296        | P. fragi                        | 41   | 8   |
-| 476        | Moraxella bovis                 | 39   | 37  |
-| 202956     | A. towneri                      | 32   | 8   |
-| 930166     | P. brassicacearum               | 31   | 9   |
-| 78327      | P. mosselii                     | 30   | 6   |
-| 332186     | Shewanella xiamenensis          | 30   | 5   |
-| 28108      | Alteromonas macleodii           | 26   | 16  |
-| 43657      | Pseudoalteromonas luteoviolacea | 25   | 5   |
-| 34062      | Moraxella osloensis             | 23   | 10  |
-| 43662      | Pseudoalteromonas piscicida     | 19   | 6   |
-| 314275     | Alteromonas mediterranea        | 17   | 16  |
-| 24         | Shewanella putrefaciens         | 15   | 9   |
-| 2968969    | Stutzerimonas frequens          | 15   | 5   |
-| 44935      | Halomonas venusta               | 10   | 7   |
-| 386891     | Moraxella bovoculi              | 9    | 7   |
-| 1697053    | Thiopseudomonas alkaliphila     | 7    | 7   |
+| species_id | species                    | RS   | CHR |
+|------------|----------------------------|------|-----|
+| 287        | P. aeruginosa              | 7526 | 648 |
+| 470        | A. baumannii               | 7313 | 531 |
+| 28450      | Bu. pseudomallei           | 1782 | 154 |
+| 520        | Bo. pertussis              | 878  | 593 |
+| 40324      | S. maltophilia             | 731  | 89  |
+| 317        | P. syringae                | 615  | 51  |
+| 95486      | Bu. cenocepacia            | 522  | 71  |
+| 87883      | Bu. multivorans            | 477  | 79  |
+| 347        | Xanthomonas oryzae         | 413  | 140 |
+| 48296      | A. pittii                  | 385  | 35  |
+| 305        | Ralstonia solanacearum     | 305  | 123 |
+| 294        | P. fluorescens             | 262  | 40  |
+| 292        | Bu. cepacia                | 241  | 20  |
+| 303        | P. putida                  | 226  | 70  |
+| 346        | Xanthomonas citri          | 217  | 111 |
+| 339        | Xanthomonas campestris     | 171  | 54  |
+| 85698      | Achromobacter xylosoxidans | 147  | 23  |
+| 56448      | Xanthomonas arboricola     | 146  | 20  |
+| 2371       | Xylella fastidiosa         | 142  | 47  |
+| 316        | Stutzerimonas stutzeri     | 140  | 27  |
+| 38313      | Shewanella algae           | 112  | 24  |
+| 587753     | P. chlororaphis            | 107  | 61  |
+| 756892     | A. indicus                 | 102  | 21  |
+| 13373      | Bu. mallei                 | 99   | 34  |
+| 518        | Bo. bronchiseptica         | 97   | 25  |
+| 519        | Bo. parapertussis          | 94   | 90  |
+| 343        | Xanthomonas translucens    | 94   | 33  |
+| 380021     | P. protegens               | 83   | 27  |
+| 35814      | Bo. holmesii               | 80   | 66  |
+| 57975      | Bu. thailandensis          | 73   | 25  |
+| 337        | Bu. glumae                 | 67   | 51  |
+| 1530123    | A. seifertii               | 60   | 25  |
+| 164546     | Cupriavidus taiwanensis    | 43   | 38  |
+| 476        | Moraxella bovis            | 39   | 37  |
+| 1444770    | Xylella taiwanensis        | 32   | 22  |
 
 ## Download all assemblies
 
@@ -268,10 +271,10 @@ cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
         )\
     >> Pseudomonas.assembly.tsv
 
-# Also includes representative strains of Gammaproteobacteria.
+# Also includes representative strains of Proteobacteria.
 # families not in our orders
 FAMILY=$(
-    nwr member Gammaproteobacteria -r family |
+    nwr member Proteobacteria -r family |
         grep -v -i "Candidatus " |
         grep -v -i "candidate " |
         sed '1d' |
@@ -279,6 +282,8 @@ FAMILY=$(
         nwr append stdin -r order |
         tsv-filter --str-ne 2:"Cellvibrionales" --str-ne 2:"Oceanospirillales" --str-ne 2:"Alteromonadales" |
         tsv-filter --str-ne 2:"Moraxellales" --str-ne 2:"Kangiellales" --str-ne 2:"Pseudomonadales" |
+        tsv-filter --str-ne 2:"Xanthomonadales" |
+        tsv-filter --str-ne 2:"Burkholderiales" |
         tsv-filter --str-ne 2:"NA" |
         cut -f 1 |
         tr "\n" "," |
@@ -293,6 +298,7 @@ echo "
         AND family_id IN ($FAMILY)
         AND species NOT LIKE '% sp.%'
         AND organism_name NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '%symbiont %'
         AND refseq_category IN ('representative genome')
         AND assembly_level IN ('Complete Genome', 'Chromosome')
     " |
@@ -1427,7 +1433,7 @@ done |
     tsv-filter -H --istr-not-in-fld 2:"putative" |
     tsv-filter -H --istr-not-in-fld 2:"Uncharacterised" |
     tsv-filter -H --istr-not-in-fld 2:" DUF" |
-    tsv-filter --ge 3:$((COUNT - 1)) \
+    tsv-filter --ge 3:$((COUNT - 2)) \
     > STRAINS/Pseudom-universal.tsv
 
 # Acin
