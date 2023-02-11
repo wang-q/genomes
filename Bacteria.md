@@ -578,3 +578,39 @@ find biosample -name "SAM*.txt" |
     >> ASSEMBLY/biosample.tsv
 
 ```
+
+## Raw phylogenetic tree by MinHash
+
+```shell
+mkdir -p ~/data/Bacteria/mash
+cd ~/data/Bacteria/mash
+
+# Remove .msh files not in the list
+find . -maxdepth 1 -mindepth 1 -type f -name "*.msh" |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        basename {} .msh
+    ' |
+    tsv-join --exclude -k 1 -f ../ASSEMBLY/url.tsv -d 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        echo Remove {}
+        rm {}.msh
+    '
+
+# Compute MinHash
+cat ../ASSEMBLY/url.tsv |
+    cut -f 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        if [[ -e {}.msh ]]; then
+            exit
+        fi
+
+        2>&1 echo "==> {}"
+
+        find ../ASSEMBLY/{} -name "*_genomic.fna.gz" |
+            grep -v "_from_" |
+            xargs cat |
+            mash sketch -k 21 -s 100000 -p 2 - -I "{}" -o {}
+    '
+
+```
+
