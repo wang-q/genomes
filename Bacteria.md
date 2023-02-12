@@ -1,6 +1,8 @@
 # Bacteria
 
-All genomes of *Bacteria* and *Archaea*, species by species
+All genomes of *Bacteria* and *Archaea*, species by species.
+
+Download all genomes and analyze representative strains.
 
 <!-- toc -->
 
@@ -13,6 +15,24 @@ All genomes of *Bacteria* and *Archaea*, species by species
     * [rsync and check](#rsync-and-check)
     * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
+- [Count species and strains](#count-species-and-strains)
+- [MinHash](#minhash)
+    * [Compute MinHash](#compute-minhash)
+    * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
+    * [Tweak the mash tree](#tweak-the-mash-tree)
+    * [Redundant strains within species](#redundant-strains-within-species)
+- [Collect proteins](#collect-proteins)
+    * [`all.pro.fa`](#allprofa)
+    * [`all.replace.fa`](#allreplacefa)
+    * [`all.info.tsv`](#allinfotsv)
+- [Phylogenetics with bac120](#phylogenetics-with-bac120)
+    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Tweak the concat tree](#tweak-the-concat-tree)
+- [Proteobacteria](#proteobacteria)
+    * [Strains](#strains)
+    * [Raw Phylo-tree](#raw-phylo-tree)
+    * [Tweak the mash tree](#tweak-the-mash-tree-1)
 
 <!-- tocstop -->
 
@@ -579,7 +599,127 @@ find biosample -name "SAM*.txt" |
 
 ```
 
-## Raw phylogenetic tree by MinHash
+## Count species and strains
+
+```shell
+cd ~/data/Bacteria
+
+echo "
+    SELECT
+        COUNT(DISTINCT species_id)
+    FROM ar
+    WHERE 1=1
+        AND species NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '% sp.%'
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
+#19169
+
+echo "
+    SELECT
+        COUNT(DISTINCT species_id)
+    FROM ar
+    WHERE 1=1
+        AND species NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '% sp.%'
+        AND assembly_level IN ('Complete Genome', 'Chromosome')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
+#6580
+
+echo "
+    SELECT
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND species NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '%symbiont %'
+        AND refseq_category IN ('reference genome', 'representative genome')
+        AND assembly_level IN ('Complete Genome', 'Chromosome')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
+    tsv-filter --str-not-in-fld 1:"[" \
+    > summary/assembly_accession.lst
+
+wc -l summary/assembly_accession.lst
+#5275 assembly_accession.lst
+
+cat ASSEMBLY/collect.csv |
+    tsv-select -H -d, -f Taxid |
+    sed '1d' |
+    tsv-uniq |
+    nwr append stdin -r species |
+    tsv-select -f 2 |
+    tsv-uniq |
+    wc -l
+#1689
+
+cat ASSEMBLY/collect.csv |
+    tsv-filter -H -d, --or \
+        --istr-eq "RefSeq_category:reference genome" --istr-eq "RefSeq_category:representative genome" |
+    grep -v "symbiont " |
+    tsv-select -H -d, -f name |
+    sed '1d' \
+    > summary/representative_assembly.lst
+
+wc -l summary/representative_assembly.lst
+#1432 summary/representative_assembly.lst
+
+cat ASSEMBLY/collect.csv |
+    sed -e '1d' |
+    tr "," "\t" |
+    tsv-select -f 1,3 |
+    nwr append stdin -c 2 -r species -r genus -r family -r order \
+    > summary/strains.taxon.tsv
+
+cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    tsv-summarize -H -g 3 --count |
+    tsv-filter -H --gt 2:200 |
+    mlr --itsv --omd cat
+
+```
+
+| organism                      | count |
+|-------------------------------|------:|
+| Acinetobacter baumannii       |   531 |
+| Bacillus cereus               |   413 |
+| Bacillus subtilis             |   261 |
+| Bacillus toyonensis           |   238 |
+| Bacillus velezensis           |   278 |
+| Bacteroides ovatus            |   201 |
+| Bifidobacterium longum        |   224 |
+| Bordetella pertussis          |   593 |
+| Campylobacter coli            |   240 |
+| Campylobacter jejuni          |   284 |
+| Cronobacter sakazakii         |   208 |
+| Enterobacter hormaechei       |   270 |
+| Enterococcus faecium          |   313 |
+| Erwinia amylovora             |   211 |
+| Escherichia coli              |  2739 |
+| Helicobacter pylori           |   395 |
+| Klebsiella michiganensis      |   211 |
+| Klebsiella pneumoniae         |  1611 |
+| Klebsiella variicola          |   252 |
+| Lactiplantibacillus plantarum |   211 |
+| Limosilactobacillus reuteri   |   249 |
+| Listeria monocytogenes        |   354 |
+| Mycobacterium tuberculosis    |   546 |
+| Mycobacteroides abscessus     |   946 |
+| Pseudomonas aeruginosa        |   648 |
+| Pseudomonas syringae          |   257 |
+| Rhizobium leguminosarum       |   372 |
+| Salmonella enterica           |  1377 |
+| Shigella sonnei               |  1113 |
+| Staphylococcus aureus         |  1124 |
+| Staphylococcus haemolyticus   |   221 |
+| Stenotrophomonas maltophilia  |   373 |
+| Streptococcus pneumoniae      |   208 |
+| Streptococcus pyogenes        |   263 |
+
+## MinHash
+
+### Compute MinHash
 
 ```shell
 mkdir -p ~/data/Bacteria/mash
@@ -614,7 +754,95 @@ cat ../ASSEMBLY/url.tsv |
 
 ```
 
-### NR
+### Raw phylo-tree of representative assemblies
+
+```shell
+mkdir -p ~/data/Bacteria/tree
+cd ~/data/Bacteria/tree
+
+mash triangle -E -p 8 -l <(
+    cat ../summary/representative_assembly.lst |
+        parallel --no-run-if-empty --linebuffer -k -j 1 '
+            if [[ -e ../mash/{}.msh ]]; then
+                echo "../mash/{}.msh"
+            fi
+        '
+    ) \
+    > mash.dist.tsv
+
+# Fill matrix with lower triangle
+tsv-select -f 1-3 mash.dist.tsv |
+    (tsv-select -f 2,1,3 mash.dist.tsv && cat) |
+    (
+        cut -f 1 mash.dist.tsv |
+            tsv-uniq |
+            parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
+        cat
+    ) \
+    > mash.dist_full.tsv
+
+cat mash.dist_full.tsv |
+    Rscript -e '
+        library(readr);
+        library(tidyr);
+        library(ape);
+        pair_dist <- read_tsv(file("stdin"), col_names=F);
+        tmp <- pair_dist %>%
+            pivot_wider( names_from = X2, values_from = X3, values_fill = list(X3 = 1.0) )
+        tmp <- as.matrix(tmp)
+        mat <- tmp[,-1]
+        rownames(mat) <- tmp[,1]
+
+        dist_mat <- as.dist(mat)
+        clusters <- hclust(dist_mat, method = "ward.D2")
+        tree <- as.phylo(clusters)
+        write.tree(phy=tree, file="tree.nwk")
+
+        group <- cutree(clusters, h=0.4) # k=5
+        groups <- as.data.frame(group)
+        groups$ids <- rownames(groups)
+        rownames(groups) <- NULL
+        groups <- groups[order(groups$group), ]
+        write_tsv(groups, "groups.tsv")
+    '
+
+```
+
+### Tweak the mash tree
+
+```shell
+cd ~/data/Bacteria/tree
+
+# rank::col
+ARRAY=(
+    'order::6'
+    'family::5'
+#    'genus::4'
+    'species::3'
+)
+
+rm mash.condensed.map
+CUR_TREE=tree.nwk
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick mash.${GROUP_NAME}.newick
+    cat condense.map >> mash.condensed.map
+
+    CUR_TREE=mash.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.species.newick |
+    rsvg-convert -o Bacteria.mash.png
+
+```
+
+### Redundant strains within species
 
 ```shell
 cd ~/data/Bacteria
@@ -701,5 +929,492 @@ find NR -name "redundant.lst" -size +0 | wc -l
 
 find NR -name "redundant.lst" -empty | wc -l
 #564
+
+```
+
+## Collect proteins
+
+### `all.pro.fa`
+
+```shell script
+cd ~/data/Bacteria
+
+mkdir -p PROTEINS
+
+for STRAIN in $(cat summary/representative_assembly.lst); do
+    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
+done |
+    pigz -p4 \
+    > PROTEINS/all.pro.fa.gz
+
+gzip -dcf PROTEINS/all.pro.fa.gz |
+    perl -nl -e '
+        BEGIN { our %seen; our $h; }
+
+        if (/^>/) {
+            $h = (split(" ", $_))[0];
+            $seen{$h}++;
+            $_ = $h;
+        }
+        print if $seen{$h} == 1;
+    ' |
+    pigz -p4 \
+    > PROTEINS/all.uniq.fa.gz
+
+# counting proteins
+gzip -dcf PROTEINS/all.pro.fa.gz |
+    grep "^>" |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+gzip -dcf PROTEINS/all.pro.fa.gz |
+    grep "^>" |
+    tsv-uniq |
+    wc -l |
+    numfmt --to=si
+#5.1M
+
+# annotations may be different
+gzip -dcf PROTEINS/all.uniq.fa.gz |
+    grep "^>" |
+    wc -l |
+    numfmt --to=si
+#5.1M
+
+# ribonuclease
+gzip -dcf PROTEINS/all.pro.fa.gz |
+    grep "ribonuclease" |
+    grep -v "deoxyribonuclease" |
+    perl -nl -e 's/^>\w+\.\d+\s+//g; print' |
+    perl -nl -e 's/\s+\[.+?\]$//g; print' |
+    perl -nl -e 's/MULTISPECIES: //g; print' |
+    sort |
+    uniq -c |
+    sort -nr
+
+```
+
+### `all.replace.fa`
+
+```shell
+cd ~/data/Bacteria
+
+rm PROTEINS/all.strain.tsv PROTEINS/all.replace.fa.gz
+for STRAIN in $(cat summary/representative_assembly.lst); do
+    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
+        grep "^>" |
+        cut -d" " -f 1 |
+        sed "s/^>//" |
+        STRAIN=${STRAIN} perl -nl -e '
+            $n = $_;
+            $s = $n;
+            $s =~ s/\.\d+//;
+            printf qq{%s\t%s_%s\t%s\n}, $n, $ENV{STRAIN}, $s, $ENV{STRAIN};
+        ' \
+    > PROTEINS/${STRAIN}.replace.tsv
+
+    cut -f 2,3 PROTEINS/${STRAIN}.replace.tsv >> PROTEINS/all.strain.tsv
+
+    faops replace -s \
+        ASSEMBLY/${STRAIN}/*_protein.faa.gz \
+        <(cut -f 1,2 PROTEINS/${STRAIN}.replace.tsv) \
+        stdout |
+        pigz -p4 \
+        >> PROTEINS/all.replace.fa.gz
+
+    rm PROTEINS/${STRAIN}.replace.tsv
+done
+
+gzip -dcf PROTEINS/all.replace.fa.gz |
+    grep "^>" |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+(echo -e "#name\tstrain" && cat PROTEINS/all.strain.tsv)  \
+    > temp &&
+    mv temp PROTEINS/all.strain.tsv
+
+faops size PROTEINS/all.replace.fa.gz > PROTEINS/all.replace.sizes
+
+(echo -e "#name\tsize" && cat PROTEINS/all.replace.sizes) > PROTEINS/all.size.tsv
+
+rm PROTEINS/all.replace.sizes
+
+```
+
+### `all.info.tsv`
+
+```shell
+cd ~/data/Bacteria
+
+for STRAIN in $(cat summary/representative_assembly.lst); do
+    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
+        grep "^>" |
+        sed "s/^>//" |
+        perl -nl -e '/\[.+\[/ and s/\[/\(/; print' |
+        perl -nl -e '/\].+\]/ and s/\]/\)/; print' |
+        perl -nl -e 's/\s+\[.+?\]$//g; print' |
+        perl -nl -e 's/MULTISPECIES: //g; print' |
+        STRAIN=${STRAIN} perl -nl -e '
+            /^(\w+)\.\d+\s+(.+)$/ or next;
+            printf qq{%s_%s\t%s\n}, $ENV{STRAIN}, $1, $2;
+        '
+done \
+    > PROTEINS/all.annotation.tsv
+
+cat PROTEINS/all.annotation.tsv |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+(echo -e "#name\tannotation" && cat PROTEINS/all.annotation.tsv) \
+    > temp &&
+    mv temp PROTEINS/all.annotation.tsv
+
+# check differences
+cat PROTEINS/all.size.tsv |
+    grep -F -f <(cut -f 1 PROTEINS/all.annotation.tsv) -v
+
+tsv-join \
+    PROTEINS/all.strain.tsv \
+    --data-fields 1 \
+    -f PROTEINS/all.size.tsv \
+    --key-fields 1 \
+    --append-fields 2 \
+    > PROTEINS/all.strain_size.tsv
+
+tsv-join \
+    PROTEINS/all.strain_size.tsv \
+    --data-fields 1 \
+    -f PROTEINS/all.annotation.tsv \
+    --key-fields 1 \
+    --append-fields 2 \
+    > PROTEINS/all.info.tsv
+
+cat PROTEINS/all.info.tsv |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+```
+
+## Phylogenetics with bac120
+
+### Find corresponding proteins by `hmmsearch`
+
+* Download HMM models as described in [`HMM.md`](HMM.md)
+
+* The `E_VALUE` was manually adjusted to 1e-20 to reach a balance between sensitivity and
+  speciality.
+
+```shell
+E_VALUE=1e-20
+
+cd ~/data/Bacteria
+
+# Find all genes
+for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
+    >&2 echo "==> marker [${marker}]"
+
+    mkdir -p PROTEINS/${marker}
+
+    cat summary/representative_assembly.lst |
+        parallel --no-run-if-empty --linebuffer -k -j 8 "
+            gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
+                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw ~/data/HMM/bac120/HMM/${marker}.HMM - |
+                grep '>>' |
+                perl -nl -e ' m{>>\s+(\S+)} and printf qq{%s\t%s\n}, \$1, {}; '
+        " \
+        > PROTEINS/${marker}/replace.tsv
+
+    >&2 echo
+
+done
+
+```
+
+### Align and concat marker genes to create species tree
+
+```shell script
+cd ~/data/Bacteria
+
+cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        cat PROTEINS/{}/replace.tsv |
+            wc -l
+    ' |
+    tsv-summarize --quantile 1:0.25,0.5,0.75
+# 1385    1429    2168.25
+
+cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo {}
+        cat PROTEINS/{}/replace.tsv |
+            wc -l
+    ' |
+    paste - - |
+    tsv-filter --invert --ge 2:1000 --le 2:2000 |
+    cut -f 1 \
+    > PROTEINS/bac120.omit.lst
+
+# Extract sequences
+# Multiple copies slow down the alignment process
+cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+    grep -v -Fx -f PROTEINS/bac120.omit.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        >&2 echo "==> marker [{}]"
+
+        cat PROTEINS/{}/replace.tsv \
+            > PROTEINS/{}/{}.replace.tsv
+
+        faops some PROTEINS/all.uniq.fa.gz <(
+            cat PROTEINS/{}/{}.replace.tsv |
+                cut -f 1 |
+                tsv-uniq
+            ) stdout \
+            > PROTEINS/{}/{}.pro.fa
+    '
+
+# Align each markers with muscle
+cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        >&2 echo "==> marker [{}]"
+        if [ ! -s PROTEINS/{}/{}.pro.fa ]; then
+            exit
+        fi
+        if [ -s PROTEINS/{}/{}.aln.fa ]; then
+            exit
+        fi
+
+        muscle -quiet -in PROTEINS/{}/{}.pro.fa -out PROTEINS/{}/{}.aln.fa
+    '
+
+for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
+    >&2 echo "==> marker [${marker}]"
+    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+
+    # 1 name to many names
+    cat PROTEINS/${marker}/${marker}.replace.tsv |
+        parallel --no-run-if-empty --linebuffer -k -j 4 "
+            faops replace -s PROTEINS/${marker}/${marker}.aln.fa <(echo {}) stdout
+        " \
+        > PROTEINS/${marker}/${marker}.replace.fa
+done
+
+# Concat marker genes
+for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
+    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+
+    # sequences in one line
+    faops filter -l 0 PROTEINS/${marker}/${marker}.replace.fa stdout
+
+    # empty line for .fas
+    echo
+done \
+    > PROTEINS/bac120.aln.fas
+
+fasops concat PROTEINS/bac120.aln.fas summary/strains.lst -o PROTEINS/bac120.aln.fa
+
+# Trim poorly aligned regions with `TrimAl`
+trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
+
+faops size PROTEINS/bac120.*.fa |
+    tsv-uniq -f 2 |
+    cut -f 2
+#50203
+#25591
+
+# To make it faster
+FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
+
+```
+
+### Tweak the concat tree
+
+```shell script
+cd ~/data/Pseudomonas/tree
+
+nw_reroot ../PROTEINS/bac120.trim.newick Baci_subti_subtilis_168 Sta_aure_aureus_NCTC_8325 |
+    nw_order -c n - \
+    > bac120.reroot.newick
+
+rm bac120.condensed.map
+
+# rank::col
+ARRAY=(
+#    'order::7'
+#    'family::6'
+#    'genus::5'
+    'species::4'
+)
+
+rm bac120.condensed.map
+CUR_TREE=bac120.reroot.newick
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick bac120.${GROUP_NAME}.newick
+    cat condense.map >> bac120.condensed.map
+
+    CUR_TREE=bac120.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 800 -v 20 bac120.species.newick |
+    rsvg-convert -o Pseudomonas.bac120.png
+
+```
+
+## Proteobacteria
+
+Pseudomonadota == Proteobacteria
+
+### Strains
+
+```shell
+mkdir -p ~/data/Bacteria/Proteobacteria
+cd ~/data/Bacteria/Proteobacteria
+
+FAMILY=$(
+    nwr member Proteobacteria -r family |
+        sed '1d' |
+        cut -f 1 |
+        nwr append stdin -r order |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        organism_name,
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND family_id IN ($FAMILY)
+        AND species NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '% sp.%'
+        AND refseq_category IN ('reference genome', 'representative genome')
+        AND assembly_level IN ('Complete Genome', 'Chromosome')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
+    grep -v -i "symbiont " |
+    tsv-filter --str-not-in-fld 1:"[" \
+    > tmp.tsv
+
+cat ../ASSEMBLY/collect.csv |
+    grep -F -f <(cut -f 2 tmp.tsv) |
+    tsv-select -d, -f 1,3 |
+    tr "," "\t" |
+    nwr append stdin -c 2 -r species -r genus -r family -r order |
+    sed 's/Pseudomonas paraeruginosa/Pseudomonas aeruginosa/g' \
+    > strains.taxon.tsv
+
+wc -l strains.taxon.tsv
+#715 strains.taxon.tsv
+
+```
+
+### Raw Phylo-tree
+
+```shell
+cd ~/data/Bacteria/Proteobacteria
+
+mash triangle -E -p 8 -l <(
+    cat strains.taxon.tsv |
+        cut -f 1 |
+        parallel --no-run-if-empty --linebuffer -k -j 1 '
+            if [[ -e ../mash/{}.msh ]]; then
+                echo "../mash/{}.msh"
+            fi
+        ' |
+        (echo -e "../mash/Baci_subti_subtilis_168.msh" && cat) |
+        (echo -e "../mash/Sta_aure_aureus_NCTC_8325.msh" && cat)
+    ) \
+    > mash.dist.tsv
+
+# Fill matrix with lower triangle
+tsv-select -f 1-3 mash.dist.tsv |
+    (tsv-select -f 2,1,3 dist.tsv && cat) |
+    (
+        cut -f 1 mash.dist.tsv |
+            tsv-uniq |
+            parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
+        cat
+    ) \
+    > mash.dist_full.tsv
+
+cat mash.dist_full.tsv |
+    Rscript -e '
+        library(readr);
+        library(tidyr);
+        library(ape);
+        pair_dist <- read_tsv(file("stdin"), col_names=F);
+        tmp <- pair_dist %>%
+            pivot_wider( names_from = X2, values_from = X3, values_fill = list(X3 = 1.0) )
+        tmp <- as.matrix(tmp)
+        mat <- tmp[,-1]
+        rownames(mat) <- tmp[,1]
+
+        dist_mat <- as.dist(mat)
+        clusters <- hclust(dist_mat, method = "ward.D2")
+        tree <- as.phylo(clusters)
+        write.tree(phy=tree, file="tree.nwk")
+
+        group <- cutree(clusters, h=0.4) # k=5
+        groups <- as.data.frame(group)
+        groups$ids <- rownames(groups)
+        rownames(groups) <- NULL
+        groups <- groups[order(groups$group), ]
+        write_tsv(groups, "groups.tsv")
+    '
+
+```
+
+### Tweak the mash tree
+
+```shell
+cd ~/data/Bacteria/Proteobacteria
+
+nw_reroot tree.nwk Baci_subti_subtilis_168 Sta_aure_aureus_NCTC_8325 |
+    nw_order -c n - \
+    > mash.reroot.newick
+
+# rank::col
+ARRAY=(
+    'order::6'
+    'family::5'
+    'genus::4'
+    'species::3'
+)
+
+rm mash.condensed.map
+CUR_TREE=mash.reroot.newick
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick mash.${GROUP_NAME}.newick
+    cat condense.map >> mash.condensed.map
+
+    CUR_TREE=mash.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.species.newick |
+    rsvg-convert -o Proteobacteria.mash.png
 
 ```
