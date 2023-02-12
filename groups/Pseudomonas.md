@@ -430,7 +430,7 @@ cat ASSEMBLY/collect.csv |
     '
 
 find biosample -name "SAM*.txt" | wc -l
-# 3031
+# 6212
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -442,13 +442,13 @@ find biosample -name "SAM*.txt" |
     tsv-uniq --at-least 50 | # ignore rare attributes
     grep -v "^INSDC" |
     grep -v "^ENA" \
-    > ASSEMBLY/attributes.lst
+    > summary/attributes.lst
 
-cat attributes.lst |
+cat summary/attributes.lst |
     (echo -e "BioSample" && cat) |
     tr '\n' '\t' |
     sed 's/\t$/\n/' \
-    > ASSEMBLY/biosample.tsv
+    > summary/biosample.tsv
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 1 '
@@ -483,7 +483,7 @@ find biosample -name "SAM*.txt" |
                 }
             '\''
     ' \
-    >> ASSEMBLY/biosample.tsv
+    >> summary/biosample.tsv
 
 ```
 
@@ -524,8 +524,20 @@ cat ASSEMBLY/n50.tsv |
     > ASSEMBLY/n50.pass.csv
 
 wc -l ASSEMBLY/n50*
-#  2787 ASSEMBLY/n50.pass.csv
-#  3035 ASSEMBLY/n50.tsv
+#  5789 ASSEMBLY/n50.pass.csv
+#  6217 ASSEMBLY/n50.tsv
+
+# Omit strains without protein annotations
+for STRAIN in $(cat ASSEMBLY/n50.pass.csv | cut -d, -f 1); do
+    if ! compgen -G "ASSEMBLY/${STRAIN}/*_protein.faa.gz" > /dev/null; then
+        echo ${STRAIN}
+    fi
+    if ! compgen -G "ASSEMBLY/${STRAIN}/*_cds_from_genomic.fna.gz" > /dev/null; then
+        echo ${STRAIN}
+    fi
+done |
+    tsv-uniq
+# All OK
 
 tsv-join \
     ASSEMBLY/collect.csv \
@@ -539,9 +551,9 @@ tsv-join \
     > ASSEMBLY/pass.csv
 
 wc -l ASSEMBLY/*csv
-#   3035 ASSEMBLY/collect.csv
-#   2787 ASSEMBLY/n50.pass.csv
-#   2782 ASSEMBLY/pass.csv
+#   6217 ASSEMBLY/collect.csv
+#   5789 ASSEMBLY/n50.pass.csv
+#   5784 ASSEMBLY/pass.csv
 
 ```
 
@@ -589,28 +601,45 @@ cat summary/order.lst |
 
 ```
 
-| #tax_id | order             | #species | #strains |
-|---------|-------------------|----------|----------|
-| 135624  | Aeromonadales     | 10       | 10       |
-| 135622  | Alteromonadales   | 54       | 133      |
-| 1385    | Bacillales        | 3        | 3        |
-| 213849  | Campylobacterales | 1        | 1        |
-| 135615  | Cardiobacteriales | 1        | 1        |
-| 204458  | Caulobacterales   | 1        | 1        |
-| 1706369 | Cellvibrionales   | 2        | 4        |
-| 51291   | Chlamydiales      | 1        | 1        |
-| 85007   | Corynebacteriales | 1        | 1        |
-| 91347   | Enterobacterales  | 131      | 131      |
-| 118969  | Legionellales     | 10       | 10       |
-| 135618  | Methylococcales   | 2        | 2        |
-| 2887326 | Moraxellales      | 60       | 869      |
-| 135619  | Oceanospirillales | 16       | 32       |
-| 1240482 | Orbales           | 1        | 1        |
-| 135625  | Pasteurellales    | 21       | 21       |
-| 72274   | Pseudomonadales   | 254      | 1484     |
-| 72273   | Thiotrichales     | 12       | 12       |
-| 135623  | Vibrionales       | 35       | 35       |
-| 135614  | Xanthomonadales   | 29       | 29       |
+| #tax_id | order               | #species | #strains |
+|---------|---------------------|----------|----------|
+| 225057  | Acidithiobacillales | 4        | 4        |
+| 135624  | Aeromonadales       | 10       | 10       |
+| 135622  | Alteromonadales     | 54       | 133      |
+| 1385    | Bacillales          | 3        | 3        |
+| 2024979 | Bacteriovoracales   | 2        | 2        |
+| 213481  | Bdellovibrionales   | 2        | 2        |
+| 1779134 | Bradymonadales      | 1        | 1        |
+| 80840   | Burkholderiales     | 231      | 2007     |
+| 213849  | Campylobacterales   | 40       | 40       |
+| 135615  | Cardiobacteriales   | 1        | 1        |
+| 204458  | Caulobacterales     | 7        | 7        |
+| 1706369 | Cellvibrionales     | 2        | 4        |
+| 51291   | Chlamydiales        | 1        | 1        |
+| 85007   | Corynebacteriales   | 1        | 1        |
+| 213118  | Desulfobacterales   | 2        | 2        |
+| 213115  | Desulfovibrionales  | 4        | 4        |
+| 69541   | Desulfuromonadales  | 5        | 5        |
+| 91347   | Enterobacterales    | 131      | 131      |
+| 356     | Hyphomicrobiales    | 64       | 64       |
+| 118969  | Legionellales       | 10       | 10       |
+| 135618  | Methylococcales     | 2        | 2        |
+| 2887326 | Moraxellales        | 60       | 869      |
+| 29      | Myxococcales        | 6        | 6        |
+| 206351  | Neisseriales        | 21       | 21       |
+| 32003   | Nitrosomonadales    | 2        | 2        |
+| 135619  | Oceanospirillales   | 16       | 32       |
+| 1240482 | Orbales             | 1        | 1        |
+| 135625  | Pasteurellales      | 21       | 21       |
+| 72274   | Pseudomonadales     | 254      | 1484     |
+| 204455  | Rhodobacterales     | 21       | 21       |
+| 206389  | Rhodocyclales       | 5        | 5        |
+| 204441  | Rhodospirillales    | 19       | 19       |
+| 766     | Rickettsiales       | 16       | 16       |
+| 204457  | Sphingomonadales    | 12       | 12       |
+| 72273   | Thiotrichales       | 12       | 12       |
+| 135623  | Vibrionales         | 35       | 35       |
+| 135614  | Xanthomonadales     | 141      | 792      |
 
 ### Genus
 
@@ -659,20 +688,39 @@ cat summary/genus.lst |
 
 | #tax_id | genus             | #species | #strains |
 |---------|-------------------|----------|----------|
+| 222     | Achromobacter     | 9        | 89       |
+| 12916   | Acidovorax        | 5        | 28       |
 | 469     | Acinetobacter     | 52       | 795      |
+| 507     | Alcaligenes       | 2        | 23       |
 | 226     | Alteromonas       | 16       | 38       |
+| 517     | Bordetella        | 23       | 807      |
+| 374     | Bradyrhizobium    | 13       | 13       |
+| 32008   | Burkholderia      | 103      | 692      |
+| 194     | Campylobacter     | 27       | 27       |
 | 544     | Citrobacter       | 10       | 10       |
+| 283     | Comamonas         | 5        | 19       |
+| 106589  | Cupriavidus       | 14       | 70       |
+| 80865   | Delftia           | 4        | 14       |
 | 2745    | Halomonas         | 7        | 19       |
+| 963     | Herbaspirillum    | 7        | 12       |
 | 570     | Klebsiella        | 10       | 10       |
+| 68      | Lysobacter        | 5        | 18       |
 | 475     | Moraxella         | 6        | 72       |
+| 846     | Oxalobacter       | 3        | 12       |
+| 93217   | Pandoraea         | 5        | 16       |
+| 1822464 | Paraburkholderia  | 10       | 24       |
 | 122277  | Pectobacterium    | 10       | 10       |
+| 44013   | Polynucleobacter  | 4        | 22       |
 | 53246   | Pseudoalteromonas | 19       | 33       |
 | 286     | Pseudomonas       | 234      | 1429     |
+| 48736   | Ralstonia         | 17       | 141      |
 | 613     | Serratia          | 10       | 10       |
 | 22      | Shewanella        | 16       | 58       |
+| 40323   | Stenotrophomonas  | 11       | 249      |
 | 2901164 | Stutzerimonas     | 9        | 36       |
 | 662     | Vibrio            | 29       | 29       |
-| 338     | Xanthomonas       | 16       | 16       |
+| 338     | Xanthomonas       | 108      | 441      |
+| 2370    | Xylella           | 13       | 69       |
 
 ### Strains
 
@@ -698,21 +746,6 @@ cat ASSEMBLY/pass.csv |
     sed 's/Pseudomonas paraeruginosa/Pseudomonas aeruginosa/g' \
     > strains.taxon.tsv
 
-# Omit strains without protein annotations
-for STRAIN in $(cat summary/strains.lst); do
-    if ! compgen -G "ASSEMBLY/${STRAIN}/*_protein.faa.gz" > /dev/null; then
-        echo ${STRAIN}
-    fi
-    if ! compgen -G "ASSEMBLY/${STRAIN}/*_cds_from_genomic.fna.gz" > /dev/null; then
-        echo ${STRAIN}
-    fi
-done |
-    tsv-uniq \
-    > omit.lst
-
-wc -l omit.lst
-# All OK
-
 ```
 
 ## NCBI taxonomy
@@ -731,7 +764,7 @@ bp_taxonomy2tree.pl -e \
     ) \
     > ncbi.nwk
 
-nw_display -s -b 'visibility:hidden' -w 600 -v 20 ncbi.nwk |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 ncbi.nwk |
     rsvg-convert -o Pseudomonas.ncbi.png
 
 ```
@@ -739,51 +772,34 @@ nw_display -s -b 'visibility:hidden' -w 600 -v 20 ncbi.nwk |
 ## Raw phylogenetic tree by MinHash
 
 ```shell
-mkdir -p ~/data/Pseudomonas/mash
-cd ~/data/Pseudomonas/mash
-
-# Remove .msh files not in the list
-find . -maxdepth 1 -mindepth 1 -type f -name "*.msh" |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        basename {} .msh
-    ' |
-    tsv-join --exclude -k 1 -f ../ASSEMBLY/url.tsv -d 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        echo Remove {}
-        rm {}.msh
-    '
-
-# Compute MinHash
-for strain in $(cat ../summary/strains.lst ); do
-    if [[ -e ${strain}.msh ]]; then
-        continue
-    fi
-
-    2>&1 echo "==> ${strain}"
-
-    find ../ASSEMBLY/${strain} -name "*_genomic.fna.gz" |
-        grep -v "_from_" |
-        xargs cat |
-        mash sketch -k 21 -s 100000 -p 8 - -I "${strain}" -o ${strain}
-done
+mkdir -p ~/data/Pseudomonas/tree
+cd ~/data/Pseudomonas/tree
 
 mash triangle -E -p 8 -l <(
-    cat ../summary/strains.lst | parallel echo "{}.msh"
+    cat ../strains.taxon.tsv |
+        cut -f 1 |
+        (echo -e "Baci_subti_subtilis_168" && cat) |
+        (echo -e "Sta_aure_aureus_NCTC_8325" && cat) |
+        parallel --no-run-if-empty --linebuffer -k -j 1 '
+            if [[ -e ../../Bacteria/mash/{}.msh ]]; then
+                echo "../../Bacteria/mash/{}.msh"
+            fi
+        '
     ) \
-    > dist.tsv
+    > mash.dist.tsv
 
 # Fill matrix with lower triangle
-tsv-select -f 1-3 dist.tsv |
-    (tsv-select -f 2,1,3 dist.tsv && cat) |
+tsv-select -f 1-3 mash.dist.tsv |
+    (tsv-select -f 2,1,3 mash.dist.tsv && cat) |
     (
-        cut -f 1 dist.tsv |
+        cut -f 1 mash.dist.tsv |
             tsv-uniq |
             parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
         cat
     ) \
-    > dist_full.tsv
+    > mash.dist_full.tsv
 
-cat dist_full.tsv |
+cat mash.dist_full.tsv |
     Rscript -e '
         library(readr);
         library(tidyr);
@@ -1587,6 +1603,66 @@ cat STRAINS/${PREFIX}-n.tsv |
 | IPR012794 | Beta-ketoadipate transcriptional regulator, PcaR/PcaU/PobR |
 | IPR018448 | Sec-independent protein translocase protein TatB           |
 | IPR018550 | Lipid A 3-O-deacylase-related                              |
+
+### P. protegens
+
+```shell
+PREFIX=Pseudom_proteg
+
+cd ~/data/Pseudomonas
+
+# All other strains should have only 1 family member
+cp STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv
+for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep -v "${PREFIX}_"); do
+    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
+        continue
+    fi
+    cat STRAINS/${S}/family-count.tsv |
+        tsv-join -k 1 -f STRAINS/${PREFIX}-1.tsv |
+        tsv-filter --le 3:1 \
+        > STRAINS/family-tmp.tsv
+
+    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-1.tsv
+done
+
+# All ${PREFIX} strains should have multiple family members
+cp STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
+for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep "${PREFIX}_"); do
+    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
+        continue
+    fi
+    cat STRAINS/${S}/family-count.tsv |
+        tsv-join -k 1 -f STRAINS/${PREFIX}-n.tsv |
+        tsv-filter --gt 3:1 \
+        > STRAINS/family-tmp.tsv
+
+    wc -l < STRAINS/family-tmp.tsv
+    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-n.tsv
+done
+
+wc -l STRAINS/Pseudom_proteg_Pf_5_GCF_000012265_1/family.tsv \
+    STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
+#  4104 STRAINS/Pseudom_proteg_Pf_5_GCF_000012265_1/family.tsv
+#  1707 STRAINS/Pseudom-universal.tsv
+#   853 STRAINS/Pseudom_proteg-1.tsv
+#     6 STRAINS/Pseudom_proteg-n.tsv
+
+cat STRAINS/${PREFIX}-n.tsv |
+    tsv-select -f 1,2 |
+    tsv-sort |
+    (echo -e "#family\tcount" && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #family   | count                                    |
+|-----------|------------------------------------------|
+| IPR000926 | GTP cyclohydrolase II, RibA              |
+| IPR004794 | Riboflavin biosynthesis protein RibD     |
+| IPR009246 | Ethanolamine ammonia-lyase small subunit |
+| IPR010099 | Epimerase family protein SDR39U1         |
+| IPR010628 | Ethanolamine ammonia-lyase heavy chain   |
+| IPR011842 | Coenzyme PQQ biosynthesis protein B      |
 
 ### P. syringae
 
