@@ -614,3 +614,92 @@ cat ../ASSEMBLY/url.tsv |
 
 ```
 
+### NR
+
+```shell
+cd ~/data/Bacteria
+
+mkdir NR
+
+cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    tsv-summarize -H -g 3 --count |
+    tsv-filter -H --ge 2:2 \
+    > NR/species.tsv
+
+tsv-summarize NR/species.tsv -H --count --sum count
+#count   count_sum
+#1689    38659
+
+# each species
+cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 5 |
+while read SPECIES; do
+    1>&2 echo "==> ${SPECIES}"
+
+    SPECIES_=$(
+        echo "${SPECIES}" |
+            tr " " "_"
+    )
+
+    mkdir -p NR/${SPECIES_}
+
+    cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+        tsv-filter --str-eq "3:${SPECIES}" |
+        tsv-select -f 1 \
+        > "NR/${SPECIES_}/assembly.lst"
+
+    1>&2 echo "    mash distances"
+
+    if [[ ! -f "NR/${SPECIES_}/mash.dist.tsv" ]]; then
+        mash triangle -E -p 8 -l <(
+            cat "NR/${SPECIES_}/assembly.lst" |
+                parallel --no-run-if-empty --linebuffer -k -j 1 '
+                    if [[ -e mash/{}.msh ]]; then
+                        echo "mash/{}.msh"
+                    fi
+                '
+            ) \
+            > "NR/${SPECIES_}/mash.dist.tsv"
+    fi
+
+    1>&2 echo "    List NR"
+
+    cat "NR/${SPECIES_}/mash.dist.tsv" |
+        tsv-filter --ff-str-ne 1:2 --le 3:0.01 \
+        > "NR/${SPECIES_}/redundant.tsv"
+
+    cat "NR/${SPECIES_}/redundant.tsv" |
+        perl -nla -F"\t" -MGraph::Undirected -e '
+            BEGIN {
+                our $g = Graph::Undirected->new;
+            }
+
+            $g->add_edge($F[0], $F[1]);
+
+            END {
+                for my $cc ( $g->connected_components ) {
+                    print join qq{\t}, sort @{$cc};
+                }
+            }
+        ' \
+        > "NR/${SPECIES_}/connected_components.tsv"
+
+    cat "NR/${SPECIES_}/connected_components.tsv" |
+        perl -nla -F"\t" -e 'shift @F; printf qq{%s\n}, $_ for @F' \
+        > "NR/${SPECIES_}/redundant.lst"
+
+    cat "NR/${SPECIES_}/assembly.lst" |
+        tsv-join --exclude -f "NR/${SPECIES_}/redundant.lst" \
+        > "NR/${SPECIES_}/NR.lst"
+
+done
+
+find NR -name "NR.lst" | xargs cat | wc -l
+#8934
+
+find NR -name "redundant.lst" -size +0 | wc -l
+#1125
+
+find NR -name "redundant.lst" -empty | wc -l
+#564
+
+```
