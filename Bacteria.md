@@ -919,72 +919,67 @@ cat summary/genus.lst |
 
 | #tax_id | genus               | #species | #strains |
 |---------|---------------------|----------|----------|
-| 222     | Achromobacter       | 10       | 125      |
-| 469     | Acinetobacter       | 52       | 804      |
-| 642     | Aeromonas           | 26       | 275      |
+| 469     | Acinetobacter       | 52       | 795      |
+| 642     | Aeromonas           | 26       | 269      |
 | 357     | Agrobacterium       | 16       | 160      |
 | 239934  | Akkermansia         | 2        | 175      |
-| 1386    | Bacillus            | 194      | 2068     |
-| 816     | Bacteroides         | 42       | 714      |
-| 1678    | Bifidobacterium     | 83       | 780      |
+| 1386    | Bacillus            | 193      | 1875     |
+| 816     | Bacteroides         | 42       | 657      |
+| 1678    | Bifidobacterium     | 83       | 769      |
 | 517     | Bordetella          | 23       | 807      |
-| 64895   | Borreliella         | 15       | 120      |
 | 234     | Brucella            | 95       | 278      |
-| 32008   | Burkholderia        | 103      | 707      |
-| 194     | Campylobacter       | 107      | 641      |
+| 32008   | Burkholderia        | 103      | 692      |
+| 194     | Campylobacter       | 107      | 598      |
 | 810     | Chlamydia           | 122      | 260      |
 | 544     | Citrobacter         | 16       | 208      |
 | 1870884 | Clostridioides      | 19       | 151      |
-| 1485    | Clostridium         | 62       | 304      |
-| 102106  | Collinsella         | 4        | 112      |
+| 1485    | Clostridium         | 61       | 273      |
+| 102106  | Collinsella         | 4        | 110      |
 | 1716    | Corynebacterium     | 83       | 358      |
-| 413496  | Cronobacter         | 8        | 210      |
+| 413496  | Cronobacter         | 8        | 184      |
 | 1912216 | Cutibacterium       | 79       | 119      |
-| 547     | Enterobacter        | 31       | 837      |
-| 1350    | Enterococcus        | 32       | 675      |
-| 551     | Erwinia             | 15       | 234      |
-| 561     | Escherichia         | 191      | 2912     |
+| 547     | Enterobacter        | 30       | 778      |
+| 1350    | Enterococcus        | 32       | 672      |
+| 551     | Erwinia             | 15       | 227      |
+| 561     | Escherichia         | 191      | 2910     |
 | 237     | Flavobacterium      | 11       | 119      |
-| 262     | Francisella         | 50       | 202      |
-| 724     | Haemophilus         | 16       | 217      |
+| 262     | Francisella         | 50       | 185      |
+| 724     | Haemophilus         | 16       | 212      |
 | 209     | Helicobacter        | 82       | 423      |
-| 570     | Klebsiella          | 72       | 2526     |
-| 2759736 | Lacticaseibacillus  | 24       | 267      |
+| 570     | Klebsiella          | 72       | 2430     |
+| 2759736 | Lacticaseibacillus  | 23       | 219      |
 | 2767842 | Lactiplantibacillus | 14       | 228      |
-| 1578    | Lactobacillus       | 64       | 537      |
-| 1357    | Lactococcus         | 26       | 195      |
+| 1578    | Lactobacillus       | 59       | 245      |
+| 1357    | Lactococcus         | 26       | 186      |
 | 445     | Legionella          | 19       | 132      |
-| 171     | Leptospira          | 104      | 201      |
-| 2767887 | Ligilactobacillus   | 11       | 127      |
-| 2742598 | Limosilactobacillus | 16       | 306      |
+| 171     | Leptospira          | 27       | 108      |
+| 2767887 | Ligilactobacillus   | 11       | 115      |
+| 2742598 | Limosilactobacillus | 16       | 144      |
 | 1637    | Listeria            | 103      | 388      |
 | 75984   | Mannheimia          | 15       | 116      |
 | 1763    | Mycobacterium       | 202      | 708      |
-| 670516  | Mycobacteroides     | 18       | 957      |
-| 2995234 | Mycoplasmoides      | 36       | 136      |
-| 2767358 | Mycoplasmopsis      | 29       | 108      |
+| 670516  | Mycobacteroides     | 18       | 948      |
 | 482     | Neisseria           | 35       | 310      |
-| 53335   | Pantoea             | 17       | 158      |
-| 375288  | Parabacteroides     | 9        | 145      |
+| 53335   | Pantoea             | 17       | 156      |
+| 375288  | Parabacteroides     | 9        | 138      |
 | 745     | Pasteurella         | 17       | 145      |
-| 909656  | Phocaeicola         | 6        | 153      |
-| 2800373 | Priestia            | 11       | 136      |
+| 2800373 | Priestia            | 10       | 134      |
 | 583     | Proteus             | 7        | 132      |
-| 286     | Pseudomonas         | 271      | 1672     |
+| 286     | Pseudomonas         | 234      | 1434     |
 | 48736   | Ralstonia           | 17       | 141      |
-| 379     | Rhizobium           | 39       | 414      |
+| 379     | Rhizobium           | 39       | 413      |
 | 590     | Salmonella          | 479      | 1389     |
 | 613     | Serratia            | 21       | 191      |
-| 620     | Shigella            | 25       | 1243     |
-| 1279    | Staphylococcus      | 98       | 1948     |
-| 40323   | Stenotrophomonas    | 11       | 383      |
-| 1301    | Streptococcus       | 183      | 1286     |
+| 620     | Shigella            | 24       | 174      |
+| 1279    | Staphylococcus      | 97       | 1899     |
+| 40323   | Stenotrophomonas    | 11       | 249      |
+| 1301    | Streptococcus       | 183      | 1279     |
 | 1883    | Streptomyces        | 68       | 163      |
-| 104267  | Tenacibaculum       | 7        | 128      |
+| 104267  | Tenacibaculum       | 7        | 113      |
 | 157     | Treponema           | 30       | 141      |
-| 662     | Vibrio              | 76       | 627      |
+| 662     | Vibrio              | 76       | 625      |
 | 338     | Xanthomonas         | 108      | 441      |
-| 629     | Yersinia            | 65       | 368      |
+| 629     | Yersinia            | 58       | 250      |
 
 ## MinHash
 
@@ -1113,22 +1108,24 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.species.newick |
 
 ## Non-redundant strains within species
 
+This [paper](https://doi.org/10.1038/s41467-018-07641-9) showed that >95% intra-species ANI values.
+
 ```shell
 cd ~/data/Bacteria
 
 mkdir NR
 
-cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+cat summary/strains.taxon.tsv |
     tsv-summarize -H -g 3 --count |
     tsv-filter -H --ge 2:2 \
     > NR/species.tsv
 
 tsv-summarize NR/species.tsv -H --count --sum count
 #count   count_sum
-#1689    38659
+#1651    35135
 
 # each species
-cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 5 |
+cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 10 |
 while read SPECIES; do
     1>&2 echo "==> ${SPECIES}"
 
@@ -1139,7 +1136,7 @@ while read SPECIES; do
 
     mkdir -p NR/${SPECIES_}
 
-    cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    cat summary/strains.taxon.tsv |
         tsv-filter --str-eq "3:${SPECIES}" |
         tsv-select -f 1 \
         > "NR/${SPECIES_}/assembly.lst"
@@ -1203,11 +1200,8 @@ while read SPECIES; do
 
 done
 
-find NR -name "NR.lst" | xargs cat | wc -l
-#8934
-
 find NR -name "redundant.lst" -size +0 | wc -l
-#1125
+#1093
 
 find NR -name "redundant.lst" -empty | wc -l
 #564
@@ -1217,6 +1211,9 @@ find NR -name "NR.lst" |
     sort |
     uniq \
     > summary/NR.lst
+
+wc -l summary/NR.lst
+#8475 summary/NR.lst
 
 ```
 
@@ -1228,9 +1225,9 @@ cd ~/data/Bacteria
 cat summary/genus.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         n_species=$(
-            cat ASSEMBLY/collect.csv |
+            cat summary/collect.pass.csv |
                 sed "1d" |
-                grep -F -f <( cat summary/NR.lst summary/representative_assembly.lst | sort | uniq ) |
+                grep -F -w -f <( cat summary/NR.lst summary/representative_assembly.lst | sort | uniq ) |
                 tsv-select -d, -f 3 |
                 nwr append stdin -r genus -r species |
                 grep {} |
@@ -1240,9 +1237,9 @@ cat summary/genus.lst |
         )
 
         n_strains=$(
-            cat ASSEMBLY/collect.csv |
+            cat summary/collect.pass.csv |
                 sed "1d" |
-                grep -F -f <( cat summary/NR.lst summary/representative_assembly.lst | sort | uniq ) |
+                grep -F -w -f <( cat summary/NR.lst summary/representative_assembly.lst | sort | uniq ) |
                 tsv-select -d, -f 3 |
                 nwr append stdin -r genus |
                 grep {} |
@@ -1262,41 +1259,37 @@ cat summary/genus.lst |
 
 | #tax_id | genus               | #species | #strains |
 |---------|---------------------|----------|----------|
-| 469     | Acinetobacter       | 37       | 245      |
-| 642     | Aeromonas           | 15       | 169      |
+| 469     | Acinetobacter       | 37       | 244      |
+| 642     | Aeromonas           | 14       | 166      |
 | 357     | Agrobacterium       | 14       | 79       |
-| 1386    | Bacillus            | 97       | 389      |
-| 816     | Bacteroides         | 30       | 221      |
-| 1678    | Bifidobacterium     | 46       | 279      |
-| 34098   | Blattabacterium     | 5        | 52       |
-| 32199   | Buchnera            | 55       | 55       |
-| 32008   | Burkholderia        | 33       | 124      |
-| 194     | Campylobacter       | 54       | 107      |
+| 1386    | Bacillus            | 97       | 359      |
+| 816     | Bacteroides         | 30       | 207      |
+| 1678    | Bifidobacterium     | 46       | 275      |
+| 32008   | Burkholderia        | 33       | 123      |
+| 194     | Campylobacter       | 54       | 106      |
 | 544     | Citrobacter         | 15       | 91       |
-| 1485    | Clostridium         | 48       | 134      |
-| 102106  | Collinsella         | 3        | 55       |
+| 1485    | Clostridium         | 48       | 123      |
+| 102106  | Collinsella         | 3        | 54       |
 | 1716    | Corynebacterium     | 51       | 96       |
-| 547     | Enterobacter        | 18       | 255      |
-| 1350    | Enterococcus        | 18       | 83       |
-| 561     | Escherichia         | 21       | 197      |
-| 724     | Haemophilus         | 12       | 79       |
+| 547     | Enterobacter        | 18       | 247      |
+| 1350    | Enterococcus        | 18       | 82       |
+| 561     | Escherichia         | 20       | 181      |
+| 724     | Haemophilus         | 12       | 80       |
 | 209     | Helicobacter        | 55       | 289      |
-| 570     | Klebsiella          | 18       | 130      |
-| 1578    | Lactobacillus       | 36       | 112      |
-| 1357    | Lactococcus         | 12       | 53       |
-| 2767887 | Ligilactobacillus   | 9        | 50       |
-| 2742598 | Limosilactobacillus | 7        | 96       |
-| 909656  | Phocaeicola         | 5        | 56       |
-| 286     | Pseudomonas         | 174      | 557      |
-| 379     | Rhizobium           | 31       | 160      |
+| 570     | Klebsiella          | 18       | 121      |
+| 1578    | Lactobacillus       | 35       | 100      |
+| 1357    | Lactococcus         | 12       | 52       |
+| 2742598 | Limosilactobacillus | 7        | 51       |
+| 286     | Pseudomonas         | 161      | 511      |
+| 379     | Rhizobium           | 31       | 159      |
 | 1827    | Rhodococcus         | 18       | 54       |
 | 590     | Salmonella          | 37       | 73       |
 | 613     | Serratia            | 14       | 69       |
 | 1279    | Staphylococcus      | 41       | 100      |
-| 40323   | Stenotrophomonas    | 9        | 159      |
-| 1301    | Streptococcus       | 70       | 374      |
-| 1883    | Streptomyces        | 57       | 88       |
-| 662     | Vibrio              | 57       | 366      |
+| 40323   | Stenotrophomonas    | 9        | 132      |
+| 1301    | Streptococcus       | 70       | 370      |
+| 1883    | Streptomyces        | 56       | 87       |
+| 662     | Vibrio              | 57       | 364      |
 | 338     | Xanthomonas         | 55       | 83       |
 
 ## Collect proteins
@@ -1777,18 +1770,28 @@ for S in \
     ; do
     echo ${S}
 done \
-    > typical.lst
+    > typical.manual.lst
 
 # Target genus
 GENUS=(
+    # Pseudomonadales
     Pseudomonas
     Halopseudomonas
     Stutzerimonas
     Azotobacter
 
+    # Moraxellales
     Acinetobacter
+
+    # Enterobacterales
+    Serratia
+
+    # Xanthomonadales
     Stenotrophomonas
+
+    # Burkholderiales
     Burkholderia
+
     Bordetella
 )
 #GENUS=$(IFS=, ; echo "${GENUS[*]}")
@@ -1815,9 +1818,9 @@ echo "
     tsv-filter --str-not-in-fld 1:"[" \
     > tmp.lst
 
-cat ../ASSEMBLY/collect.csv |
+cat ../summary/collect.pass.csv |
     grep -F -f tmp.lst |
-    grep -F -w -f <(cat typical.lst ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
+    grep -F -w -f <(cat typical.manual.lst ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
     sort |
@@ -1826,7 +1829,7 @@ cat ../ASSEMBLY/collect.csv |
     > strains.taxon.tsv
 
 wc -l strains.taxon.tsv
-#1136
+#1134
 
 ```
 
@@ -1838,10 +1841,10 @@ cd ~/data/Bacteria
 for S in $(cat STRAINS/strains.taxon.tsv | cut -f 1); do
     >&2 echo "==> ${S}"
     mkdir -p STRAINS/${S}
-    faops split-about ASSEMBLY/${S}/*_protein.faa.gz 1000000 STRAINS/${S}/
+    faops split-about ASSEMBLY/${S}/*_protein.faa.gz 5000000 STRAINS/${S}/ # all in one
 done
 
-cat STRAINS/strains.taxon.tsv | cut -f 1 | head -n 100 | tail -n 100 |
+cat STRAINS/strains.taxon.tsv | cut -f 1 | head -n 200 | tail -n 200 | # max job number is 200
 while read S; do
     for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort); do
         >&2 echo "==> ${f}"
