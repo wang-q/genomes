@@ -503,6 +503,64 @@ cat ASSEMBLY/temp.list |
 
 ```
 
+### Check N50 of assemblies
+
+```shell
+cd ~/data/Bacteria
+
+cat ASSEMBLY/collect.csv | # head |
+    sed '1d' |
+    tsv-select -d "," -f 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        1>&2 echo "==> {}"
+
+        find ASSEMBLY/{} -type f -name "*_genomic.fna.gz" |
+            grep -v "_from_" | # exclude CDS and rna
+            xargs cat |
+            faops n50 -C -S stdin |
+            (echo -e "name\t{}" && cat) |
+            datamash transpose
+    ' |
+    tsv-uniq | # keep the first header
+    tee ASSEMBLY/n50.tsv
+
+cat ASSEMBLY/n50.tsv |
+    tsv-filter \
+        -H --or \
+        --le 4:100 \
+        --ge 2:100000 |
+    tsv-filter -H --ge 3:1000000 |
+    tr "\t" "," \
+    > ASSEMBLY/n50.pass.csv
+
+wc -l ASSEMBLY/n50* ASSEMBLY/collect.csv
+#   35159 ASSEMBLY/n50.pass.csv
+#   38660 ASSEMBLY/n50.tsv
+#   38660 ASSEMBLY/collect.csv
+
+# Omit strains without protein annotations
+for STRAIN in $(cat ASSEMBLY/n50.pass.csv | cut -d, -f 1); do
+    if ! compgen -G "ASSEMBLY/${STRAIN}/*_protein.faa.gz" > /dev/null; then
+        echo ${STRAIN}
+    fi
+    if ! compgen -G "ASSEMBLY/${STRAIN}/*_cds_from_genomic.fna.gz" > /dev/null; then
+        echo ${STRAIN}
+    fi
+done |
+    tsv-uniq
+# All OK
+
+tsv-join \
+    ASSEMBLY/collect.csv \
+    --delimiter "," -H --key-fields 1 \
+    --filter-file ASSEMBLY/n50.pass.csv \
+    > summary/collect.pass.csv
+
+wc -l summary/collect.pass.csv
+#35159 summary/collect.pass.csv
+
+```
+
 ### Rsync to hpcc
 
 ```bash
