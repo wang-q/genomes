@@ -49,6 +49,8 @@ changes in Gammaproteobacteria. We include both old and new orders.
 * Old ones: Cellvibrionales, Oceanospirillales, Pseudomonadales, and Alteromonadales
 * New ones: Moraxellales, Kangiellales, and Pseudomonadales
 
+![msystems.00543-20-f0003.jpeg](..%2Fimages%2Fmsystems.00543-20-f0003.jpeg)
+
 Another recent [paper](https://doi.org/10.1099/ijsem.0.005542) proposed that an outlier clade of P.
 aeruginosa (containing PA7) split into a new species, Pseudomonas paraeruginosa.
 
@@ -61,38 +63,39 @@ of Pseudomonas should be transferred to Halopseudomonas and Stutzerimonas.
 mkdir -p ~/data/Pseudomonas
 cd ~/data/Pseudomonas
 
-nwr member Pseudomonas Acinetobacter Stenotrophomonas Burkholderia |
+nwr member Pseudomonas Acinetobacter Stenotrophomonas Burkholderia Bordetella |
     grep -v " sp." |
     tsv-summarize -H -g 3 --count |
     mlr --itsv --omd cat
 
-nwr member Pseudomonas Acinetobacter Stenotrophomonas Burkholderia -r "species group" -r "species subgroup" |
+nwr member Pseudomonas Acinetobacter Stenotrophomonas Burkholderia Bordetella -r "species group" -r "species subgroup" |
     tsv-select -f 1-3 |
     keep-header -- tsv-sort -k3,3 -k2,2 |
     sed 's/Pseudomonas /P. /g' |
     sed 's/Acinetobacter /A. /g' |
     sed 's/Stenotrophomonas /S. /g' |
-    sed 's/Burkholderia /B. /g' |
+    sed 's/Burkholderia /Bu. /g' |
+    sed 's/Bordetella /Bo. /g' |
     mlr --itsv --omd cat
 
 ```
 
 | rank             | count |
 |------------------|-------|
-| genus            | 4     |
-| species          | 627   |
-| strain           | 2174  |
+| genus            | 5     |
+| species          | 655   |
+| strain           | 2323  |
 | subspecies       | 15    |
-| no rank          | 140   |
+| no rank          | 141   |
 | species group    | 10    |
 | species subgroup | 7     |
-| isolate          | 4     |
+| isolate          | 5     |
 
 | #tax_id | sci_name                                 | rank             |
 |---------|------------------------------------------|------------------|
 | 2839056 | A. Taxon 24                              | species group    |
 | 909768  | A. calcoaceticus/baumannii complex       | species group    |
-| 87882   | B. cepacia complex                       | species group    |
+| 87882   | Bu. cepacia complex                      | species group    |
 | 136841  | P. aeruginosa group                      | species group    |
 | 136842  | P. chlororaphis group                    | species group    |
 | 136843  | P. fluorescens group                     | species group    |
@@ -119,8 +122,7 @@ nwr member Pseudomonas Acinetobacter Stenotrophomonas Burkholderia -r "species g
 * Order Xanthomonadales
     * Stenotrophomonas maltophilia
 
-* Order Burkholderiales: It is classified as Betaproteobacteria, but is actually close to
-  Pseudomonas
+* Order Burkholderiales: It is classified as Betaproteobacteria, but is close Gammaproteobacteria
     * Burkholderia cepacia
     * Bordetella pertussis
 
