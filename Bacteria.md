@@ -7,34 +7,36 @@ Download all genomes and analyze representative strains.
 <!-- toc -->
 
 - [Strain info](#strain-info)
-    * [List all ranks](#list-all-ranks)
-    * [Species with assemblies](#species-with-assemblies)
-    * [Model organisms](#model-organisms)
+  * [List all ranks](#list-all-ranks)
+  * [Species with assemblies](#species-with-assemblies)
+  * [Model organisms](#model-organisms)
 - [Download all assemblies](#download-all-assemblies)
-    * [Create assembly.tsv](#create-assemblytsv)
-    * [rsync and check](#rsync-and-check)
-    * [Rsync to hpcc](#rsync-to-hpcc)
+  * [Create assembly.tsv](#create-assemblytsv)
+  * [rsync and check](#rsync-and-check)
+  * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
 - [Count species and strains](#count-species-and-strains)
-    * [Order](#order)
-    * [Genus](#genus)
+  * [Order](#order)
+  * [Genus](#genus)
 - [MinHash](#minhash)
-    * [Compute MinHash](#compute-minhash)
-    * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
-    * [Tweak the mash tree](#tweak-the-mash-tree)
+  * [Compute MinHash](#compute-minhash)
+  * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
+  * [Tweak the mash tree](#tweak-the-mash-tree)
 - [Non-redundant strains within species](#non-redundant-strains-within-species)
-    * [Genus](#genus-1)
+  * [Genus](#genus-1)
 - [Collect proteins](#collect-proteins)
-    * [`all.pro.fa`](#allprofa)
-    * [`all.replace.fa`](#allreplacefa)
-    * [`all.info.tsv`](#allinfotsv)
+  * [`all.pro.fa`](#allprofa)
+  * [`all.replace.fa`](#allreplacefa)
+  * [`all.info.tsv`](#allinfotsv)
 - [Phylogenetics with bac120](#phylogenetics-with-bac120)
-    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
-    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-    * [Tweak the concat tree](#tweak-the-concat-tree)
+  * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+  * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+  * [Tweak the concat tree](#tweak-the-concat-tree)
 - [Early divergence of Bacteria](#early-divergence-of-bacteria)
-    * [Terrabacteria group](#terrabacteria-group)
-    * [Proteobacteria](#proteobacteria)
+  * [Terrabacteria group](#terrabacteria-group)
+  * [Proteobacteria](#proteobacteria)
+- [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
+  * [`interproscan.sh`](#interproscansh)
 
 <!-- tocstop -->
 
@@ -1672,5 +1674,149 @@ cat ../ASSEMBLY/collect.csv |
 
 wc -l strains.taxon.tsv
 #4905 strains.taxon.tsv
+
+```
+
+## InterProScan on all proteins of representative and typical strains
+
+```shell
+mkdir -p ~/data/Bacteria/STRAINS
+cd ~/data/Bacteria/STRAINS
+
+# Typical strains
+for S in \
+    Pseudom_aeruginosa_PAO1 \
+    Pseudom_aeruginosa_UCBPP_PA14_GCF_000014625_1 \
+    Pseudom_aeruginosa_PA7_GCF_000017205_1 \
+    Pseudom_aeruginosa_PAK_GCF_000568855_2 \
+    Pseudom_aeruginosa_GCF_011466835_1 \
+    Pseudom_aeruginosa_LESB58_GCF_000026645_1 \
+    Pseudom_viridif_GCF_900184295_1 \
+    Pseudom_syringae_pv_tomato_DC3000_GCF_000007805_1 \
+    Pseudom_syringae_pv_syringae_B728a_GCF_000012245_1 \
+    Pseudom_fluo_GCF_900215245_1 \
+    Pseudom_putida_KT2440_GCF_000007565_2 \
+    Pseudom_putida_NBRC_14164_GCF_000412675_1 \
+    Stu_stut_A1501_GCF_000013785_1 \
+    Pseudom_chl_aureofaciens_30_84_GCF_000281915_1 \
+    Pseudom_amyg_pv_tabaci_ATCC_11528_GCF_000145945_2 \
+    Pseudom_proteg_Pf_5_GCF_000012265_1 \
+    Pseudom_proteg_CHA0_GCF_900560965_1 \
+    Pseudom_entomophila_L48_GCF_000026105_1 \
+    Acin_bau_GCF_008632635_1 \
+    Acin_bau_ATCC_17978_GCF_004794235_2 \
+    Acin_bau_ATCC_19606_CIP_70_34_JCM_6841_GCF_019331655_1 \
+    ; do
+    echo ${S}
+done \
+    > typical.lst
+
+# Target genus
+GENUS=(
+    Pseudomonas
+    Halopseudomonas
+    Stutzerimonas
+    Azotobacter
+
+    Acinetobacter
+    Stenotrophomonas
+    Burkholderia
+    Bordetella
+)
+#GENUS=$(IFS=, ; echo "${GENUS[*]}")
+
+for G in "${GENUS[@]}"; do
+echo "
+    SELECT
+        organism_name,
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND genus IN ('$GENUS')
+        AND species NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '% sp.%'
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
+done |
+    grep -v -i "symbiont " |
+    tsv-filter --str-not-in-fld 1:"[" \
+    > tmp.tsv
+
+cat ../ASSEMBLY/collect.csv |
+    grep -F -f <(cut -f 2 tmp.tsv) |
+    grep -F -f <(cat typical.lst ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
+    tsv-select -d, -f 1,3 |
+    tr "," "\t" |
+    tsv-uniq |
+    nwr append stdin -c 2 -r species -r genus -r family -r order \
+    > strains.taxon.tsv
+
+wc -l strains.taxon.tsv
+
+```
+
+### `interproscan.sh`
+
+```shell
+cd ~/data/Bacteria
+
+for S in $(cat STRAINS/strains.taxon.tsv | cut -f 1); do
+    mkdir -p STRAINS/${S}
+    faops split-about ASSEMBLY/${S}/*_protein.faa.gz 200000 STRAINS/${S}/
+done
+
+for S in $(cat STRAINS/strains.taxon.tsv | cut -f 1); do
+    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort); do
+        >&2 echo "==> ${f}"
+        if [ -e ${f}.tsv ]; then
+            >&2 echo ${f}
+            continue
+        fi
+
+        bsub -q mpi -n 24 -J "${f}" "
+            interproscan.sh --cpu 24 -dp -f tsv,json -i ${f} --output-file-base ${f}
+        "
+    done
+done
+
+#for S in $(cat summary/typical.lst | head -n 1); do
+#    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort | head -n 1); do
+#        >&2 echo "==> ${f}"
+#        if [ -e ${f}.tsv ]; then
+#            >&2 echo ${f}
+#            continue
+#        fi
+#
+#        interproscan.sh --cpu 12 -dp -f tsv,json -i ${f} --output-file-base ${f}
+#    done
+#done
+
+find STRAINS -type f -name "*.json" | sort |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        if [ $(({#} % 10)) -eq "0" ]; then
+            >&2 printf "."
+        fi
+        pigz -p 3 {}
+    '
+
+# same protein may have multiple families
+for S in $(cat STRAINS/strains.taxon.tsv | cut -f 1); do
+    for f in $(find STRAINS/${S} -maxdepth 1 -type f -name "[0-9]*.json.gz" | sort); do
+        >&2 echo "==> ${f}"
+        gzip -dcf ${f} |
+            jq .results |
+            jq -r -c '
+                .[] |
+                .xref as $name |
+                .matches[] |
+                .signature.entry |
+                select(.type == "FAMILY") |
+                [$name[0].name, .accession, .description] |
+                @tsv
+            ' |
+            tsv-uniq
+    done \
+        > STRAINS/${S}/family.tsv
+done
 
 ```
