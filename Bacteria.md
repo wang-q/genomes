@@ -617,13 +617,13 @@ find biosample -name "SAM*.txt" |
     tsv-uniq --at-least 500 | # ignore rare attributes
     grep -v "^INSDC" |
     grep -v "^ENA" \
-    > ASSEMBLY/attributes.lst
+    > summary/attributes.lst
 
-cat ASSEMBLY/attributes.lst |
+cat summary/attributes.lst |
     (echo -e "BioSample" && cat) |
     tr '\n' '\t' |
     sed 's/\t$/\n/' \
-    > ASSEMBLY/biosample.tsv
+    > summary/biosample.tsv
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 1 '
@@ -631,7 +631,7 @@ find biosample -name "SAM*.txt" |
         cat {} |
             perl -nl -MPath::Tiny -e '\''
                 BEGIN {
-                    our @keys = grep {/\S/} path(q{ASSEMBLY/attributes.lst})->lines({chomp => 1});
+                    our @keys = grep {/\S/} path(q{summary/attributes.lst})->lines({chomp => 1});
                     our %stat = ();
                 }
 
@@ -658,7 +658,7 @@ find biosample -name "SAM*.txt" |
                 }
             '\''
     ' \
-    >> ASSEMBLY/biosample.tsv
+    >> summary/biosample.tsv
 
 ```
 
@@ -734,10 +734,10 @@ cat summary/collect.pass.csv |
     grep -v "symbiont " |
     tsv-select -H -d, -f name |
     sed '1d' \
-    > summary/representative_assembly.lst
+    > summary/representative.lst
 
-wc -l summary/representative_assembly.lst
-#1396 summary/representative_assembly.lst
+wc -l summary/representative.lst
+#1396 summary/representative.lst
 
 cat summary/collect.pass.csv |
     sed -e '1d' |
@@ -1025,7 +1025,7 @@ mkdir -p ~/data/Bacteria/tree
 cd ~/data/Bacteria/tree
 
 mash triangle -E -p 8 -l <(
-    cat ../summary/representative_assembly.lst |
+    cat ../summary/representative.lst |
         parallel --no-run-if-empty --linebuffer -k -j 1 '
             if [[ -e ../mash/{}.msh ]]; then
                 echo "../mash/{}.msh"
@@ -1180,7 +1180,7 @@ while read SPECIES; do
     cat "NR/${SPECIES_}/connected_components.tsv" |
         perl -nla -MPath::Tiny -F"\t" -e '
             BEGIN {
-                our %rep = map { ($_, 1) } path(q{summary/representative_assembly.lst})->lines({chomp => 1});
+                our %rep = map { ($_, 1) } path(q{summary/representative.lst})->lines({chomp => 1});
             }
 
             # Representative strains are preferred
@@ -1227,7 +1227,7 @@ cat summary/genus.lst |
         n_species=$(
             cat summary/collect.pass.csv |
                 sed "1d" |
-                grep -F -w -f <( cat summary/NR.lst summary/representative_assembly.lst | sort | uniq ) |
+                grep -F -w -f <( cat summary/NR.lst summary/representative.lst | sort | uniq ) |
                 tsv-select -d, -f 3 |
                 nwr append stdin -r genus -r species |
                 grep {} |
@@ -1239,7 +1239,7 @@ cat summary/genus.lst |
         n_strains=$(
             cat summary/collect.pass.csv |
                 sed "1d" |
-                grep -F -w -f <( cat summary/NR.lst summary/representative_assembly.lst | sort | uniq ) |
+                grep -F -w -f <( cat summary/NR.lst summary/representative.lst | sort | uniq ) |
                 tsv-select -d, -f 3 |
                 nwr append stdin -r genus |
                 grep {} |
@@ -1301,7 +1301,7 @@ cd ~/data/Bacteria
 
 mkdir -p PROTEINS
 
-for STRAIN in $(cat summary/representative_assembly.lst); do
+for STRAIN in $(cat summary/representative.lst); do
     gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
 done |
     pigz -p4 \
@@ -1361,7 +1361,7 @@ gzip -dcf PROTEINS/all.pro.fa.gz |
 cd ~/data/Bacteria
 
 rm PROTEINS/all.strain.tsv PROTEINS/all.replace.fa.gz
-for STRAIN in $(cat summary/representative_assembly.lst); do
+for STRAIN in $(cat summary/representative.lst); do
     gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
         grep "^>" |
         cut -d" " -f 1 |
@@ -1409,7 +1409,7 @@ rm PROTEINS/all.replace.sizes
 ```shell
 cd ~/data/Bacteria
 
-for STRAIN in $(cat summary/representative_assembly.lst); do
+for STRAIN in $(cat summary/representative.lst); do
     gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
         grep "^>" |
         sed "s/^>//" |
@@ -1480,7 +1480,7 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
 
     mkdir -p PROTEINS/${marker}
 
-    cat summary/representative_assembly.lst |
+    cat summary/representative.lst |
         parallel --no-run-if-empty --linebuffer -k -j 8 "
             gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
                 hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw ~/data/HMM/bac120/HMM/${marker}.HMM - |
@@ -1587,7 +1587,7 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
 done \
     > PROTEINS/bac120.aln.fas
 
-fasops concat PROTEINS/bac120.aln.fas summary/representative_assembly.lst -o PROTEINS/bac120.aln.fa
+fasops concat PROTEINS/bac120.aln.fas summary/representative.lst -o PROTEINS/bac120.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
@@ -1680,7 +1680,7 @@ echo "
 
 cat ../ASSEMBLY/collect.csv |
     grep -F -f <(cut -f 2 tmp.tsv) |
-    grep -F -f <(cat ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
+    grep -F -f <(cat ../summary/NR.lst ../summary/representative.lst | sort | uniq) |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
     nwr append stdin -c 2 -r species -r genus -r family -r order |
@@ -1727,7 +1727,7 @@ echo "
 
 cat ../ASSEMBLY/collect.csv |
     grep -F -f <(cut -f 2 tmp.tsv) |
-    grep -F -f <(cat ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
+    grep -F -f <(cat ../summary/NR.lst ../summary/representative.lst | sort | uniq) |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
     nwr append stdin -c 2 -r species -r genus -r family -r order \
@@ -1783,11 +1783,11 @@ GENUS=(
     # Moraxellales
     Acinetobacter
 
-    # Enterobacterales
-    Serratia
-
     # Xanthomonadales
     Stenotrophomonas
+
+    # Enterobacterales
+    Serratia
 
     # Burkholderiales
     Burkholderia
@@ -1820,7 +1820,7 @@ echo "
 
 cat ../summary/collect.pass.csv |
     grep -F -f tmp.lst |
-    grep -F -w -f <(cat typical.manual.lst ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
+    grep -F -w -f <(cat typical.manual.lst ../summary/NR.lst ../summary/representative.lst | sort | uniq) |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
     sort |
