@@ -7,36 +7,37 @@ Download all genomes and analyze representative strains.
 <!-- toc -->
 
 - [Strain info](#strain-info)
-  * [List all ranks](#list-all-ranks)
-  * [Species with assemblies](#species-with-assemblies)
-  * [Model organisms](#model-organisms)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+    * [Model organisms](#model-organisms)
 - [Download all assemblies](#download-all-assemblies)
-  * [Create assembly.tsv](#create-assemblytsv)
-  * [rsync and check](#rsync-and-check)
-  * [Rsync to hpcc](#rsync-to-hpcc)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [rsync and check](#rsync-and-check)
+    * [Check N50 of assemblies](#check-n50-of-assemblies)
+    * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
 - [Count species and strains](#count-species-and-strains)
-  * [Order](#order)
-  * [Genus](#genus)
+    * [Order](#order)
+    * [Genus](#genus)
 - [MinHash](#minhash)
-  * [Compute MinHash](#compute-minhash)
-  * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
-  * [Tweak the mash tree](#tweak-the-mash-tree)
+    * [Compute MinHash](#compute-minhash)
+    * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
+    * [Tweak the mash tree](#tweak-the-mash-tree)
 - [Non-redundant strains within species](#non-redundant-strains-within-species)
-  * [Genus](#genus-1)
+    * [Genus](#genus-1)
 - [Collect proteins](#collect-proteins)
-  * [`all.pro.fa`](#allprofa)
-  * [`all.replace.fa`](#allreplacefa)
-  * [`all.info.tsv`](#allinfotsv)
+    * [`all.pro.fa`](#allprofa)
+    * [`all.replace.fa`](#allreplacefa)
+    * [`all.info.tsv`](#allinfotsv)
 - [Phylogenetics with bac120](#phylogenetics-with-bac120)
-  * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
-  * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-  * [Tweak the concat tree](#tweak-the-concat-tree)
+    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Tweak the concat tree](#tweak-the-concat-tree)
 - [Early divergence of Bacteria](#early-divergence-of-bacteria)
-  * [Terrabacteria group](#terrabacteria-group)
-  * [Proteobacteria](#proteobacteria)
+    * [Terrabacteria group](#terrabacteria-group)
+    * [Proteobacteria](#proteobacteria)
 - [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-  * [`interproscan.sh`](#interproscansh)
+    * [`interproscan.sh`](#interproscansh)
 
 <!-- tocstop -->
 
@@ -717,7 +718,17 @@ cat ASSEMBLY/collect.csv |
     wc -l
 #1689
 
-cat ASSEMBLY/collect.csv |
+cat summary/collect.pass.csv |
+    tsv-select -H -d, -f Taxid |
+    sed '1d' |
+    tsv-uniq |
+    nwr append stdin -r species |
+    tsv-select -f 2 |
+    tsv-uniq |
+    wc -l
+#1656
+
+cat summary/collect.pass.csv |
     tsv-filter -H -d, --or \
         --istr-eq "RefSeq_category:reference genome" --istr-eq "RefSeq_category:representative genome" |
     grep -v "symbiont " |
@@ -726,9 +737,9 @@ cat ASSEMBLY/collect.csv |
     > summary/representative_assembly.lst
 
 wc -l summary/representative_assembly.lst
-#1432 summary/representative_assembly.lst
+#1396 summary/representative_assembly.lst
 
-cat ASSEMBLY/collect.csv |
+cat summary/collect.pass.csv |
     sed -e '1d' |
     tr "," "\t" |
     tsv-select -f 1,3 |
@@ -785,7 +796,7 @@ cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
 cd ~/data/Bacteria
 
 # Group by order
-cat ASSEMBLY/collect.csv |
+cat summary/collect.pass.csv |
     sed -e '1d' |
     tsv-select -d, -f 3 |
     tsv-uniq |
@@ -798,7 +809,7 @@ cat ASSEMBLY/collect.csv |
 
 cat summary/order.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        n_species=$(cat ASSEMBLY/collect.csv |
+        n_species=$(cat summary/collect.pass.csv |
             sed "1d" |
             tsv-select -d, -f 3 |
             nwr append stdin -r order -r species |
@@ -807,7 +818,7 @@ cat summary/order.lst |
             tsv-uniq |
             wc -l)
 
-        n_strains=$(cat ASSEMBLY/collect.csv |
+        n_strains=$(cat summary/collect.pass.csv |
             sed "1d" |
             tsv-select -d, -f 3 |
             nwr append stdin -r order |
@@ -827,39 +838,38 @@ cat summary/order.lst |
 
 | #tax_id | order               | #species | #strains |
 |---------|---------------------|----------|----------|
-| 135624  | Aeromonadales       | 27       | 277      |
+| 135624  | Aeromonadales       | 27       | 271      |
 | 135622  | Alteromonadales     | 56       | 135      |
-| 1385    | Bacillales          | 503      | 4854     |
-| 171549  | Bacteroidales       | 102      | 1127     |
-| 85004   | Bifidobacteriales   | 89       | 797      |
-| 80840   | Burkholderiales     | 233      | 2060     |
-| 213849  | Campylobacterales   | 204      | 1090     |
+| 1385    | Bacillales          | 500      | 4610     |
+| 171549  | Bacteroidales       | 102      | 996      |
+| 85004   | Bifidobacteriales   | 89       | 786      |
+| 80840   | Burkholderiales     | 233      | 2014     |
+| 213849  | Campylobacterales   | 204      | 1047     |
 | 51291   | Chlamydiales        | 123      | 262      |
-| 84999   | Coriobacteriales    | 4        | 112      |
-| 85007   | Corynebacteriales   | 350      | 2170     |
-| 91347   | Enterobacterales    | 1128     | 10949    |
-| 186802  | Eubacteriales       | 144      | 571      |
-| 200644  | Flavobacteriales    | 79       | 500      |
-| 356     | Hyphomicrobiales    | 260      | 1096     |
-| 186826  | Lactobacillales     | 463      | 3980     |
+| 84999   | Coriobacteriales    | 4        | 110      |
+| 85007   | Corynebacteriales   | 350      | 2161     |
+| 91347   | Enterobacterales    | 1055     | 9503     |
+| 186802  | Eubacteriales       | 143      | 540      |
+| 200644  | Flavobacteriales    | 73       | 426      |
+| 356     | Hyphomicrobiales    | 260      | 1095     |
+| 186826  | Lactobacillales     | 457      | 3447     |
 | 118969  | Legionellales       | 32       | 177      |
-| 1643688 | Leptospirales       | 104      | 201      |
-| 85006   | Micrococcales       | 66       | 196      |
-| 2887326 | Moraxellales        | 60       | 878      |
-| 2085    | Mycoplasmatales     | 71       | 235      |
-| 2790996 | Mycoplasmoidales    | 45       | 167      |
+| 1643688 | Leptospirales       | 27       | 108      |
+| 85006   | Micrococcales       | 64       | 194      |
+| 2887326 | Moraxellales        | 60       | 869      |
+| 2085    | Mycoplasmatales     | 24       | 115      |
 | 206351  | Neisseriales        | 54       | 350      |
-| 135625  | Pasteurellales      | 91       | 633      |
+| 135625  | Pasteurellales      | 91       | 628      |
 | 85009   | Propionibacteriales | 90       | 163      |
-| 72274   | Pseudomonadales     | 291      | 1727     |
+| 72274   | Pseudomonadales     | 254      | 1489     |
 | 204455  | Rhodobacterales     | 39       | 177      |
 | 766     | Rickettsiales       | 97       | 219      |
-| 136     | Spirochaetales      | 69       | 334      |
+| 136     | Spirochaetales      | 61       | 212      |
 | 85011   | Streptomycetales    | 69       | 165      |
-| 72273   | Thiotrichales       | 54       | 286      |
+| 72273   | Thiotrichales       | 54       | 269      |
 | 48461   | Verrucomicrobiales  | 2        | 175      |
-| 135623  | Vibrionales         | 88       | 662      |
-| 135614  | Xanthomonadales     | 141      | 926      |
+| 135623  | Vibrionales         | 88       | 660      |
+| 135614  | Xanthomonadales     | 141      | 792      |
 
 ### Genus
 
@@ -867,7 +877,7 @@ cat summary/order.lst |
 cd ~/data/Bacteria
 
 # Group by genus
-cat ASSEMBLY/collect.csv |
+cat summary/collect.pass.csv |
     sed -e '1d' |
     tsv-select -d, -f 3 |
     tsv-uniq |
@@ -880,7 +890,7 @@ cat ASSEMBLY/collect.csv |
 
 cat summary/genus.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        n_species=$(cat ASSEMBLY/collect.csv |
+        n_species=$(cat summary/collect.pass.csv |
             sed "1d" |
             tsv-select -d, -f 3 |
             nwr append stdin -r genus -r species |
@@ -889,7 +899,7 @@ cat summary/genus.lst |
             tsv-uniq |
             wc -l)
 
-        n_strains=$(cat ASSEMBLY/collect.csv |
+        n_strains=$(cat summary/collect.pass.csv |
             sed "1d" |
             tsv-select -d, -f 3 |
             nwr append stdin -r genus |
@@ -1783,33 +1793,40 @@ GENUS=(
 )
 #GENUS=$(IFS=, ; echo "${GENUS[*]}")
 
-for G in "${GENUS[@]}"; do
+GENUS_ID=$(
+    for G in "${GENUS[@]}"; do echo $G; done |
+        nwr append stdin --id -r genus |
+        cut -f 3 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
 echo "
     SELECT
-        organism_name,
-        assembly_accession
+        DISTINCT assembly_accession
     FROM ar
     WHERE 1=1
-        AND genus IN ('$GENUS')
+        AND genus_id IN ($GENUS_ID)
         AND species NOT LIKE '% sp.%'
         AND organism_name NOT LIKE '% sp.%'
     " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
-done |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
     grep -v -i "symbiont " |
     tsv-filter --str-not-in-fld 1:"[" \
-    > tmp.tsv
+    > tmp.lst
 
 cat ../ASSEMBLY/collect.csv |
-    grep -F -f <(cut -f 2 tmp.tsv) |
-    grep -F -f <(cat typical.lst ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
+    grep -F -f tmp.lst |
+    grep -F -w -f <(cat typical.lst ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
+    sort |
     tsv-uniq |
     nwr append stdin -c 2 -r species -r genus -r family -r order \
     > strains.taxon.tsv
 
 wc -l strains.taxon.tsv
+#1136
 
 ```
 
@@ -1819,11 +1836,13 @@ wc -l strains.taxon.tsv
 cd ~/data/Bacteria
 
 for S in $(cat STRAINS/strains.taxon.tsv | cut -f 1); do
+    >&2 echo "==> ${S}"
     mkdir -p STRAINS/${S}
-    faops split-about ASSEMBLY/${S}/*_protein.faa.gz 200000 STRAINS/${S}/
+    faops split-about ASSEMBLY/${S}/*_protein.faa.gz 1000000 STRAINS/${S}/
 done
 
-for S in $(cat STRAINS/strains.taxon.tsv | cut -f 1); do
+cat STRAINS/strains.taxon.tsv | cut -f 1 | head -n 100 | tail -n 100 |
+while read S; do
     for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort); do
         >&2 echo "==> ${f}"
         if [ -e ${f}.tsv ]; then
@@ -1836,18 +1855,6 @@ for S in $(cat STRAINS/strains.taxon.tsv | cut -f 1); do
         "
     done
 done
-
-#for S in $(cat summary/typical.lst | head -n 1); do
-#    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort | head -n 1); do
-#        >&2 echo "==> ${f}"
-#        if [ -e ${f}.tsv ]; then
-#            >&2 echo ${f}
-#            continue
-#        fi
-#
-#        interproscan.sh --cpu 12 -dp -f tsv,json -i ${f} --output-file-base ${f}
-#    done
-#done
 
 find STRAINS -type f -name "*.json" | sort |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
