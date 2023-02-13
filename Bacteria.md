@@ -16,11 +16,14 @@ Download all genomes and analyze representative strains.
     * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
 - [Count species and strains](#count-species-and-strains)
+    * [Order](#order)
+    * [Genus](#genus)
 - [MinHash](#minhash)
     * [Compute MinHash](#compute-minhash)
     * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
     * [Tweak the mash tree](#tweak-the-mash-tree)
-    * [Redundant strains within species](#redundant-strains-within-species)
+- [Non-redundant strains within species](#non-redundant-strains-within-species)
+    * [Genus](#genus-1)
 - [Collect proteins](#collect-proteins)
     * [`all.pro.fa`](#allprofa)
     * [`all.replace.fa`](#allreplacefa)
@@ -29,10 +32,9 @@ Download all genomes and analyze representative strains.
     * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
     * [Tweak the concat tree](#tweak-the-concat-tree)
-- [Proteobacteria](#proteobacteria)
-    * [Strains](#strains)
-    * [Raw Phylo-tree](#raw-phylo-tree)
-    * [Tweak the mash tree](#tweak-the-mash-tree-1)
+- [Early divergence of Bacteria](#early-divergence-of-bacteria)
+    * [Terrabacteria group](#terrabacteria-group)
+    * [Proteobacteria](#proteobacteria)
 
 <!-- tocstop -->
 
@@ -717,6 +719,203 @@ cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
 | Streptococcus pneumoniae      |   208 |
 | Streptococcus pyogenes        |   263 |
 
+### Order
+
+```shell
+cd ~/data/Bacteria
+
+# Group by order
+cat ASSEMBLY/collect.csv |
+    sed -e '1d' |
+    tsv-select -d, -f 3 |
+    tsv-uniq |
+    nwr append stdin -r order |
+    tsv-select -f 2 |
+    tsv-uniq |
+    grep -v "NA" |
+    sort \
+    > summary/order.lst
+
+cat summary/order.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(cat ASSEMBLY/collect.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r order -r species |
+            grep {} |
+            tsv-select -f 1,3 |
+            tsv-uniq |
+            wc -l)
+
+        n_strains=$(cat ASSEMBLY/collect.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r order |
+            grep {} |
+            wc -l)
+
+        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 5,4,2,3 |
+    tsv-sort -k2,2 |
+    tsv-filter --ge 4:100 |
+    (echo -e '#tax_id\torder\t#species\t#strains' && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #tax_id | order               | #species | #strains |
+|---------|---------------------|----------|----------|
+| 135624  | Aeromonadales       | 27       | 277      |
+| 135622  | Alteromonadales     | 56       | 135      |
+| 1385    | Bacillales          | 503      | 4854     |
+| 171549  | Bacteroidales       | 102      | 1127     |
+| 85004   | Bifidobacteriales   | 89       | 797      |
+| 80840   | Burkholderiales     | 233      | 2060     |
+| 213849  | Campylobacterales   | 204      | 1090     |
+| 51291   | Chlamydiales        | 123      | 262      |
+| 84999   | Coriobacteriales    | 4        | 112      |
+| 85007   | Corynebacteriales   | 350      | 2170     |
+| 91347   | Enterobacterales    | 1128     | 10949    |
+| 186802  | Eubacteriales       | 144      | 571      |
+| 200644  | Flavobacteriales    | 79       | 500      |
+| 356     | Hyphomicrobiales    | 260      | 1096     |
+| 186826  | Lactobacillales     | 463      | 3980     |
+| 118969  | Legionellales       | 32       | 177      |
+| 1643688 | Leptospirales       | 104      | 201      |
+| 85006   | Micrococcales       | 66       | 196      |
+| 2887326 | Moraxellales        | 60       | 878      |
+| 2085    | Mycoplasmatales     | 71       | 235      |
+| 2790996 | Mycoplasmoidales    | 45       | 167      |
+| 206351  | Neisseriales        | 54       | 350      |
+| 135625  | Pasteurellales      | 91       | 633      |
+| 85009   | Propionibacteriales | 90       | 163      |
+| 72274   | Pseudomonadales     | 291      | 1727     |
+| 204455  | Rhodobacterales     | 39       | 177      |
+| 766     | Rickettsiales       | 97       | 219      |
+| 136     | Spirochaetales      | 69       | 334      |
+| 85011   | Streptomycetales    | 69       | 165      |
+| 72273   | Thiotrichales       | 54       | 286      |
+| 48461   | Verrucomicrobiales  | 2        | 175      |
+| 135623  | Vibrionales         | 88       | 662      |
+| 135614  | Xanthomonadales     | 141      | 926      |
+
+### Genus
+
+```shell
+cd ~/data/Bacteria
+
+# Group by genus
+cat ASSEMBLY/collect.csv |
+    sed -e '1d' |
+    tsv-select -d, -f 3 |
+    tsv-uniq |
+    nwr append stdin -r genus |
+    tsv-select -f 2 |
+    tsv-uniq |
+    grep -v "NA" |
+    sort \
+    > summary/genus.lst
+
+cat summary/genus.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(cat ASSEMBLY/collect.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r genus -r species |
+            grep {} |
+            tsv-select -f 1,3 |
+            tsv-uniq |
+            wc -l)
+
+        n_strains=$(cat ASSEMBLY/collect.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r genus |
+            grep {} |
+            wc -l)
+
+        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 5,4,2,3 |
+    tsv-sort -k2,2 |
+    tsv-filter --ge 4:100 |
+    (echo -e '#tax_id\tgenus\t#species\t#strains' && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #tax_id | genus               | #species | #strains |
+|---------|---------------------|----------|----------|
+| 222     | Achromobacter       | 10       | 125      |
+| 469     | Acinetobacter       | 52       | 804      |
+| 642     | Aeromonas           | 26       | 275      |
+| 357     | Agrobacterium       | 16       | 160      |
+| 239934  | Akkermansia         | 2        | 175      |
+| 1386    | Bacillus            | 194      | 2068     |
+| 816     | Bacteroides         | 42       | 714      |
+| 1678    | Bifidobacterium     | 83       | 780      |
+| 517     | Bordetella          | 23       | 807      |
+| 64895   | Borreliella         | 15       | 120      |
+| 234     | Brucella            | 95       | 278      |
+| 32008   | Burkholderia        | 103      | 707      |
+| 194     | Campylobacter       | 107      | 641      |
+| 810     | Chlamydia           | 122      | 260      |
+| 544     | Citrobacter         | 16       | 208      |
+| 1870884 | Clostridioides      | 19       | 151      |
+| 1485    | Clostridium         | 62       | 304      |
+| 102106  | Collinsella         | 4        | 112      |
+| 1716    | Corynebacterium     | 83       | 358      |
+| 413496  | Cronobacter         | 8        | 210      |
+| 1912216 | Cutibacterium       | 79       | 119      |
+| 547     | Enterobacter        | 31       | 837      |
+| 1350    | Enterococcus        | 32       | 675      |
+| 551     | Erwinia             | 15       | 234      |
+| 561     | Escherichia         | 191      | 2912     |
+| 237     | Flavobacterium      | 11       | 119      |
+| 262     | Francisella         | 50       | 202      |
+| 724     | Haemophilus         | 16       | 217      |
+| 209     | Helicobacter        | 82       | 423      |
+| 570     | Klebsiella          | 72       | 2526     |
+| 2759736 | Lacticaseibacillus  | 24       | 267      |
+| 2767842 | Lactiplantibacillus | 14       | 228      |
+| 1578    | Lactobacillus       | 64       | 537      |
+| 1357    | Lactococcus         | 26       | 195      |
+| 445     | Legionella          | 19       | 132      |
+| 171     | Leptospira          | 104      | 201      |
+| 2767887 | Ligilactobacillus   | 11       | 127      |
+| 2742598 | Limosilactobacillus | 16       | 306      |
+| 1637    | Listeria            | 103      | 388      |
+| 75984   | Mannheimia          | 15       | 116      |
+| 1763    | Mycobacterium       | 202      | 708      |
+| 670516  | Mycobacteroides     | 18       | 957      |
+| 2995234 | Mycoplasmoides      | 36       | 136      |
+| 2767358 | Mycoplasmopsis      | 29       | 108      |
+| 482     | Neisseria           | 35       | 310      |
+| 53335   | Pantoea             | 17       | 158      |
+| 375288  | Parabacteroides     | 9        | 145      |
+| 745     | Pasteurella         | 17       | 145      |
+| 909656  | Phocaeicola         | 6        | 153      |
+| 2800373 | Priestia            | 11       | 136      |
+| 583     | Proteus             | 7        | 132      |
+| 286     | Pseudomonas         | 271      | 1672     |
+| 48736   | Ralstonia           | 17       | 141      |
+| 379     | Rhizobium           | 39       | 414      |
+| 590     | Salmonella          | 479      | 1389     |
+| 613     | Serratia            | 21       | 191      |
+| 620     | Shigella            | 25       | 1243     |
+| 1279    | Staphylococcus      | 98       | 1948     |
+| 40323   | Stenotrophomonas    | 11       | 383      |
+| 1301    | Streptococcus       | 183      | 1286     |
+| 1883    | Streptomyces        | 68       | 163      |
+| 104267  | Tenacibaculum       | 7        | 128      |
+| 157     | Treponema           | 30       | 141      |
+| 662     | Vibrio              | 76       | 627      |
+| 338     | Xanthomonas         | 108      | 441      |
+| 629     | Yersinia            | 65       | 368      |
+
 ## MinHash
 
 ### Compute MinHash
@@ -842,7 +1041,7 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.species.newick |
 
 ```
 
-### Redundant strains within species
+## Non-redundant strains within species
 
 ```shell
 cd ~/data/Bacteria
@@ -893,9 +1092,9 @@ while read SPECIES; do
 
     cat "NR/${SPECIES_}/mash.dist.tsv" |
         tsv-filter --ff-str-ne 1:2 --le 3:0.01 \
-        > "NR/${SPECIES_}/redundant.tsv"
+        > "NR/${SPECIES_}/redundant.dist.tsv"
 
-    cat "NR/${SPECIES_}/redundant.tsv" |
+    cat "NR/${SPECIES_}/redundant.dist.tsv" |
         perl -nla -F"\t" -MGraph::Undirected -e '
             BEGIN {
                 our $g = Graph::Undirected->new;
@@ -912,7 +1111,20 @@ while read SPECIES; do
         > "NR/${SPECIES_}/connected_components.tsv"
 
     cat "NR/${SPECIES_}/connected_components.tsv" |
-        perl -nla -F"\t" -e 'shift @F; printf qq{%s\n}, $_ for @F' \
+        perl -nla -MPath::Tiny -F"\t" -e '
+            BEGIN {
+                our %rep = map { ($_, 1) } path(q{summary/representative_assembly.lst})->lines({chomp => 1});
+            }
+
+            # Representative strains are preferred
+            if ( grep { $rep{$_} } @F ) {
+                @F = grep { ! $rep{$_} } @F
+            }
+            else {
+                shift @F;
+            }
+            printf qq{%s\n}, $_ for @F;
+            ' \
         > "NR/${SPECIES_}/redundant.lst"
 
     cat "NR/${SPECIES_}/assembly.lst" |
@@ -930,7 +1142,92 @@ find NR -name "redundant.lst" -size +0 | wc -l
 find NR -name "redundant.lst" -empty | wc -l
 #564
 
+find NR -name "NR.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/NR.lst
+
 ```
+
+### Genus
+
+```shell
+cd ~/data/Bacteria
+
+cat summary/genus.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(
+            cat ASSEMBLY/collect.csv |
+                sed "1d" |
+                grep -F -f <( cat summary/NR.lst summary/representative_assembly.lst | sort | uniq ) |
+                tsv-select -d, -f 3 |
+                nwr append stdin -r genus -r species |
+                grep {} |
+                tsv-select -f 1,3 |
+                tsv-uniq |
+                wc -l
+        )
+
+        n_strains=$(
+            cat ASSEMBLY/collect.csv |
+                sed "1d" |
+                grep -F -f <( cat summary/NR.lst summary/representative_assembly.lst | sort | uniq ) |
+                tsv-select -d, -f 3 |
+                nwr append stdin -r genus |
+                grep {} |
+                wc -l
+        )
+
+        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 5,4,2,3 |
+    tsv-sort -k2,2 |
+    tsv-filter --ge 4:50 |
+    (echo -e '#tax_id\tgenus\t#species\t#strains' && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #tax_id | genus               | #species | #strains |
+|---------|---------------------|----------|----------|
+| 469     | Acinetobacter       | 37       | 245      |
+| 642     | Aeromonas           | 15       | 169      |
+| 357     | Agrobacterium       | 14       | 79       |
+| 1386    | Bacillus            | 97       | 389      |
+| 816     | Bacteroides         | 30       | 221      |
+| 1678    | Bifidobacterium     | 46       | 279      |
+| 34098   | Blattabacterium     | 5        | 52       |
+| 32199   | Buchnera            | 55       | 55       |
+| 32008   | Burkholderia        | 33       | 124      |
+| 194     | Campylobacter       | 54       | 107      |
+| 544     | Citrobacter         | 15       | 91       |
+| 1485    | Clostridium         | 48       | 134      |
+| 102106  | Collinsella         | 3        | 55       |
+| 1716    | Corynebacterium     | 51       | 96       |
+| 547     | Enterobacter        | 18       | 255      |
+| 1350    | Enterococcus        | 18       | 83       |
+| 561     | Escherichia         | 21       | 197      |
+| 724     | Haemophilus         | 12       | 79       |
+| 209     | Helicobacter        | 55       | 289      |
+| 570     | Klebsiella          | 18       | 130      |
+| 1578    | Lactobacillus       | 36       | 112      |
+| 1357    | Lactococcus         | 12       | 53       |
+| 2767887 | Ligilactobacillus   | 9        | 50       |
+| 2742598 | Limosilactobacillus | 7        | 96       |
+| 909656  | Phocaeicola         | 5        | 56       |
+| 286     | Pseudomonas         | 174      | 557      |
+| 379     | Rhizobium           | 31       | 160      |
+| 1827    | Rhodococcus         | 18       | 54       |
+| 590     | Salmonella          | 37       | 73       |
+| 613     | Serratia            | 14       | 69       |
+| 1279    | Staphylococcus      | 41       | 100      |
+| 40323   | Stenotrophomonas    | 9        | 159      |
+| 1301    | Streptococcus       | 70       | 374      |
+| 1883    | Streptomyces        | 57       | 88       |
+| 662     | Vibrio              | 57       | 366      |
+| 338     | Xanthomonas         | 55       | 83       |
 
 ## Collect proteins
 
@@ -1197,6 +1494,11 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
         continue
     fi
 
+    # sometimes `muscle` can not produce alignments
+    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
     # 1 name to many names
     cat PROTEINS/${marker}/${marker}.replace.tsv |
         parallel --no-run-if-empty --linebuffer -k -j 4 "
@@ -1210,6 +1512,9 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
     if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
         continue
     fi
+    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
 
     # sequences in one line
     faops filter -l 0 PROTEINS/${marker}/${marker}.replace.fa stdout
@@ -1219,7 +1524,7 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
 done \
     > PROTEINS/bac120.aln.fas
 
-fasops concat PROTEINS/bac120.aln.fas summary/strains.lst -o PROTEINS/bac120.aln.fa
+fasops concat PROTEINS/bac120.aln.fas summary/representative_assembly.lst -o PROTEINS/bac120.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
@@ -1227,8 +1532,8 @@ trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
 faops size PROTEINS/bac120.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#50203
-#25591
+#94432
+#15688
 
 # To make it faster
 FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
@@ -1238,30 +1543,26 @@ FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
 ### Tweak the concat tree
 
 ```shell script
-cd ~/data/Pseudomonas/tree
+cd ~/data/Bacteria/tree
 
-nw_reroot ../PROTEINS/bac120.trim.newick Baci_subti_subtilis_168 Sta_aure_aureus_NCTC_8325 |
-    nw_order -c n - \
-    > bac120.reroot.newick
-
-rm bac120.condensed.map
+cp ../PROTEINS/bac120.trim.newick .
 
 # rank::col
 ARRAY=(
-#    'order::7'
-#    'family::6'
-#    'genus::5'
-    'species::4'
+    'order::6'
+    'family::5'
+#    'genus::4'
+    'species::3'
 )
 
-rm bac120.condensed.map
-CUR_TREE=bac120.reroot.newick
+rm mash.condensed.map
+CUR_TREE=bac120.trim.newick
 
 for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick bac120.${GROUP_NAME}.newick
     cat condense.map >> bac120.condensed.map
@@ -1270,16 +1571,67 @@ for item in "${ARRAY[@]}" ; do
 done
 
 # png
-nw_display -s -b 'visibility:hidden' -w 800 -v 20 bac120.species.newick |
-    rsvg-convert -o Pseudomonas.bac120.png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 bac120.species.newick |
+    rsvg-convert -o Bacteria.bac120.png
 
 ```
 
-## Proteobacteria
+## Early divergence of Bacteria
+
+![molbiolevolmsn247f02_ht.jpeg](images%2Fmolbiolevolmsn247f02_ht.jpeg)
+
+### Terrabacteria group
+
+Bacillota == Firmicutes
+
+Actinomycetota == Actinobacteria
+
+```shell
+mkdir -p ~/data/Bacteria/Terrabacteria
+cd ~/data/Bacteria/Terrabacteria
+
+FAMILY=$(
+    nwr member "Terrabacteria group" -r family |
+        sed '1d' |
+        cut -f 1 |
+        nwr append stdin -r order |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        organism_name,
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND family_id IN ($FAMILY)
+        AND species NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '% sp.%'
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
+    grep -v -i "symbiont " |
+    tsv-filter --str-not-in-fld 1:"[" \
+    > tmp.tsv
+
+cat ../ASSEMBLY/collect.csv |
+    grep -F -f <(cut -f 2 tmp.tsv) |
+    grep -F -f <(cat ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
+    tsv-select -d, -f 1,3 |
+    tr "," "\t" |
+    nwr append stdin -c 2 -r species -r genus -r family -r order |
+    sed 's/Pseudomonas paraeruginosa/Pseudomonas aeruginosa/g' \
+    > strains.taxon.tsv
+
+wc -l strains.taxon.tsv
+#3106 strains.taxon.tsv
+
+```
+
+### Proteobacteria
 
 Pseudomonadota == Proteobacteria
-
-### Strains
 
 ```shell
 mkdir -p ~/data/Bacteria/Proteobacteria
@@ -1304,8 +1656,6 @@ echo "
         AND family_id IN ($FAMILY)
         AND species NOT LIKE '% sp.%'
         AND organism_name NOT LIKE '% sp.%'
-        AND refseq_category IN ('reference genome', 'representative genome')
-        AND assembly_level IN ('Complete Genome', 'Chromosome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
     grep -v -i "symbiont " |
@@ -1314,107 +1664,13 @@ echo "
 
 cat ../ASSEMBLY/collect.csv |
     grep -F -f <(cut -f 2 tmp.tsv) |
+    grep -F -f <(cat ../summary/NR.lst ../summary/representative_assembly.lst | sort | uniq) |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
-    nwr append stdin -c 2 -r species -r genus -r family -r order |
-    sed 's/Pseudomonas paraeruginosa/Pseudomonas aeruginosa/g' \
+    nwr append stdin -c 2 -r species -r genus -r family -r order \
     > strains.taxon.tsv
 
 wc -l strains.taxon.tsv
-#715 strains.taxon.tsv
-
-```
-
-### Raw Phylo-tree
-
-```shell
-cd ~/data/Bacteria/Proteobacteria
-
-mash triangle -E -p 8 -l <(
-    cat strains.taxon.tsv |
-        cut -f 1 |
-        parallel --no-run-if-empty --linebuffer -k -j 1 '
-            if [[ -e ../mash/{}.msh ]]; then
-                echo "../mash/{}.msh"
-            fi
-        ' |
-        (echo -e "../mash/Baci_subti_subtilis_168.msh" && cat) |
-        (echo -e "../mash/Sta_aure_aureus_NCTC_8325.msh" && cat)
-    ) \
-    > mash.dist.tsv
-
-# Fill matrix with lower triangle
-tsv-select -f 1-3 mash.dist.tsv |
-    (tsv-select -f 2,1,3 dist.tsv && cat) |
-    (
-        cut -f 1 mash.dist.tsv |
-            tsv-uniq |
-            parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
-        cat
-    ) \
-    > mash.dist_full.tsv
-
-cat mash.dist_full.tsv |
-    Rscript -e '
-        library(readr);
-        library(tidyr);
-        library(ape);
-        pair_dist <- read_tsv(file("stdin"), col_names=F);
-        tmp <- pair_dist %>%
-            pivot_wider( names_from = X2, values_from = X3, values_fill = list(X3 = 1.0) )
-        tmp <- as.matrix(tmp)
-        mat <- tmp[,-1]
-        rownames(mat) <- tmp[,1]
-
-        dist_mat <- as.dist(mat)
-        clusters <- hclust(dist_mat, method = "ward.D2")
-        tree <- as.phylo(clusters)
-        write.tree(phy=tree, file="tree.nwk")
-
-        group <- cutree(clusters, h=0.4) # k=5
-        groups <- as.data.frame(group)
-        groups$ids <- rownames(groups)
-        rownames(groups) <- NULL
-        groups <- groups[order(groups$group), ]
-        write_tsv(groups, "groups.tsv")
-    '
-
-```
-
-### Tweak the mash tree
-
-```shell
-cd ~/data/Bacteria/Proteobacteria
-
-nw_reroot tree.nwk Baci_subti_subtilis_168 Sta_aure_aureus_NCTC_8325 |
-    nw_order -c n - \
-    > mash.reroot.newick
-
-# rank::col
-ARRAY=(
-    'order::6'
-    'family::5'
-    'genus::4'
-    'species::3'
-)
-
-rm mash.condensed.map
-CUR_TREE=mash.reroot.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick mash.${GROUP_NAME}.newick
-    cat condense.map >> mash.condensed.map
-
-    CUR_TREE=mash.${GROUP_NAME}.newick
-done
-
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.species.newick |
-    rsvg-convert -o Proteobacteria.mash.png
+#4905 strains.taxon.tsv
 
 ```
