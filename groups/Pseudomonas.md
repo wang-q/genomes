@@ -3,38 +3,33 @@
 <!-- toc -->
 
 - [Strain info](#strain-info)
-    * [List all ranks](#list-all-ranks)
-    * [Species with assemblies](#species-with-assemblies)
-- [Download all assemblies](#download-all-assemblies)
-    * [Symlink](#symlink)
-    * [Rsync to hpcc](#rsync-to-hpcc)
-- [BioSample](#biosample)
-- [Count and group strains](#count-and-group-strains)
-    * [Check N50 of assemblies](#check-n50-of-assemblies)
-    * [Order](#order)
-    * [Genus](#genus)
-    * [Strains](#strains)
+  * [List all ranks](#list-all-ranks)
+  * [Species with assemblies](#species-with-assemblies)
+- [All assemblies](#all-assemblies)
+  * [Symlink](#symlink)
+  * [Removal of abnormal strains](#removal-of-abnormal-strains)
+  * [Extract from `../Bacteria`](#extract-from-bacteria)
+  * [Count strains - Genus](#count-strains---genus)
+  * [Typical strains](#typical-strains)
+  * [Rsync to hpcc](#rsync-to-hpcc)
 - [NCBI taxonomy](#ncbi-taxonomy)
-- [Raw phylogenetic tree by MinHash](#raw-phylogenetic-tree-by-minhash)
-    * [Tweak the mash tree](#tweak-the-mash-tree)
 - [Collect proteins](#collect-proteins)
-    * [`all.pro.fa`](#allprofa)
-    * [`all.replace.fa`](#allreplacefa)
-    * [`all.info.tsv`](#allinfotsv)
+  * [`all.pro.fa`](#allprofa)
+  * [`all.replace.fa`](#allreplacefa)
+  * [`all.info.tsv`](#allinfotsv)
 - [Phylogenetics with bac120](#phylogenetics-with-bac120)
-    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
-    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-    * [Tweak the concat tree](#tweak-the-concat-tree)
-- [InterProScan on all proteins of typical strains](#interproscan-on-all-proteins-of-typical-strains)
-    * [Typical strains](#typical-strains)
-    * [`interproscan.sh`](#interproscansh)
-    * [P. aeruginosa](#p-aeruginosa)
-    * [P. putida](#p-putida)
-    * [P. protegens](#p-protegens)
-    * [P. syringae](#p-syringae)
-    * [A. baumannii](#a-baumannii)
+  * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+  * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+  * [Tweak the concat tree](#tweak-the-concat-tree)
+- [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
+  * [`interproscan.sh`](#interproscansh)
+  * [P. aeruginosa](#p-aeruginosa)
+  * [P. putida](#p-putida)
+  * [P. protegens](#p-protegens)
+  * [P. syringae](#p-syringae)
+  * [A. baumannii](#a-baumannii)
 - [Protein families](#protein-families)
-    * [IPR007416 - YggL 50S ribosome-binding protein](#ipr007416---yggl-50s-ribosome-binding-protein)
+  * [IPR007416 - YggL 50S ribosome-binding protein](#ipr007416---yggl-50s-ribosome-binding-protein)
 
 <!-- tocstop -->
 
@@ -251,7 +246,7 @@ cat species.count.tsv |
 | 476        | Moraxella bovis            | 39   | 37  |
 | 1444770    | Xylella taiwanensis        | 32   | 22  |
 
-## Download all assemblies
+## All assemblies
 
 ### Symlink
 
@@ -259,14 +254,22 @@ cat species.count.tsv |
 cd ~/data/Pseudomonas
 
 rm -fr ASSEMBLY
+rm -fr NR
 rm -fr STRAINS
 
 ln -s ../Bacteria/ASSEMBLY ASSEMBLY
+ln -s ../Bacteria/NR NR
 ln -s ../Bacteria/STRAINS STRAINS
 
 ```
 
-### Extract from `../Bacteria`
+### Removal of abnormal strains
+
+* Some strains were anomalously labeled and identified by the `mash` ANI values.
+    * Pseudom_chl_GCF_001023535_1
+    * Pseudom_flu_GCF_900636635_1
+    * Pseudom_puti_GCF_003228315_1 and Pseudom_puti_GCF_020172705_1
+    * Pseudom_syr_GCF_004006335_1
 
 ```shell
 cd ~/data/Pseudomonas
@@ -319,15 +322,80 @@ echo "
     tsv-filter --str-not-in-fld 1:"[" \
     > tmp.lst
 
-# collect.pass.csv
+# strains.taxon.tsv
+# Avoid abnormal assemblies
+touch summary/abnormal.lst
 cat ../Bacteria/summary/collect.pass.csv |
     grep -F -f tmp.lst |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
     sort |
     tsv-uniq |
+    grep -v -F -w -f summary/abnormal.lst |
     nwr append stdin -c 2 -r species -r genus -r family -r order \
     > summary/strains.taxon.tsv
+
+# Abnormal strains
+cat summary/strains.taxon.tsv | tsv-select -f 3 | tsv-uniq | #head -n 1 |
+while read SPECIES; do
+    SPECIES_=$(
+        echo "${SPECIES}" |
+            tr " " "_"
+    )
+
+    # Number of assemblies >= 10
+    N_ASM=$(
+        cat NR/${SPECIES_}/assembly.lst | wc -l
+    )
+    if [[ $N_ASM -lt 10 ]]; then
+        continue
+    fi
+
+    # Max ANI > 0.12
+    D_MAX=$(
+        cat NR/${SPECIES_}/mash.dist.tsv |
+            tsv-summarize --max 3
+    )
+    if (( $(echo "$D_MAX < 0.12" | bc -l) )); then
+        continue
+    fi
+
+    # Link assemblies with median ANI
+    D_MEDIAN=$(
+        cat NR/${SPECIES_}/mash.dist.tsv |
+            tsv-summarize --median 3
+    )
+    cat "NR/${SPECIES_}/mash.dist.tsv" |
+        tsv-filter --ff-str-ne 1:2 --le "3:$D_MEDIAN" |
+        perl -nla -F"\t" -MGraph::Undirected -e '
+            BEGIN {
+                our $g = Graph::Undirected->new;
+            }
+
+            $g->add_edge($F[0], $F[1]);
+
+            END {
+                for my $cc ( $g->connected_components ) {
+                    print join qq{\n}, sort @{$cc};
+                }
+            }
+        ' \
+        > "NR/${SPECIES_}/median.cc.lst"
+
+    1>&2 echo -e "==> ${SPECIES_}\t${D_MEDIAN}\t${D_MAX}"
+    cat NR/${SPECIES_}/assembly.lst |
+        grep -v -F -w -f "NR/${SPECIES_}/median.cc.lst"
+done |
+    tee summary/abnormal.lst
+
+# Recreate summary/strains.taxon.tsv to avoid these assemblies
+
+```
+
+### Extract from `../Bacteria`
+
+```shell
+cd ~/data/Pseudomonas
 
 head -n 1 ../Bacteria/summary/collect.pass.csv \
     > summary/collect.pass.csv
@@ -355,17 +423,24 @@ cat ../Bacteria/summary/representative.lst |
     grep -F -w -f <(cat summary/strains.taxon.tsv | cut -f 1 | sort | uniq) \
     > summary/representative.lst
 
+# All representative is in NR
+cat summary/representative.lst |
+    grep -v -F -f summary/NR.lst
+
 wc -l \
     summary/strains.taxon.tsv \
     summary/collect.pass.csv \
     summary/biosample.tsv \
     summary/NR.lst \
     summary/representative.lst
-#   4210 summary/strains.taxon.tsv
-#   4211 summary/collect.pass.csv
-#   4218 summary/biosample.tsv
-#   1128 summary/NR.lst
-#    132 summary/representative.lst
+#   4182 summary/strains.taxon.tsv
+#   4183 summary/collect.pass.csv
+#   4190 summary/biosample.tsv
+#   1100 summary/NR.lst
+#    131 summary/representative.lst
+
+cat summary/strains.taxon.tsv | tsv-select -f 1 | sort | uniq \
+    > summary/strains.lst
 
 cat summary/strains.taxon.tsv | tsv-select -f 4 | sort | uniq \
     > summary/genus.lst
@@ -420,14 +495,14 @@ cat summary/genus.lst |
 
 | #tax_id | genus            | #species | #strains | #NR |
 |---------|------------------|----------|----------|-----|
-| 469     | Acinetobacter    | 52       | 795      | 244 |
+| 469     | Acinetobacter    | 51       | 791      | 240 |
 | 352     | Azotobacter      | 5        | 6        | 4   |
 | 517     | Bordetella       | 23       | 807      | 12  |
 | 32008   | Burkholderia     | 103      | 692      | 123 |
-| 286     | Pseudomonas      | 234      | 1434     | 511 |
+| 286     | Pseudomonas      | 233      | 1418     | 495 |
 | 613     | Serratia         | 21       | 191      | 69  |
-| 40323   | Stenotrophomonas | 11       | 249      | 132 |
-| 2901164 | Stutzerimonas    | 9        | 36       | 33  |
+| 40323   | Stenotrophomonas | 11       | 246      | 129 |
+| 2901164 | Stutzerimonas    | 8        | 31       | 28  |
 
 ### Typical strains
 
@@ -459,12 +534,6 @@ cat summary/genus.lst |
     * DSM30011-VUB https://www.ncbi.nlm.nih.gov/assembly/GCF_001936675.2
         * Assembly level: Scaffold
     * AB5075-VUB https://www.ncbi.nlm.nih.gov/assembly/GCF_016919505.2
-
-* Some strains were anomalously labeled and identified by the `mash` tree.
-    * Pseudom_flu_GCF_900636635_1
-    * Pseudom_chl_GCF_001023535_1
-    * Pseudom_syr_GCF_004006335_1
-    * Pseudom_puti_GCF_003228315_1 and Pseudom_puti_GCF_020172705_1
 
 ```shell
 cd ~/data/Pseudomonas
@@ -583,14 +652,14 @@ gzip -dcf PROTEINS/all.pro.fa.gz |
     tsv-uniq |
     wc -l |
     numfmt --to=si
-#4567759
+#4.7M
 
 # annotations may be different
 gzip -dcf PROTEINS/all.uniq.fa.gz |
     grep "^>" |
     wc -l |
     numfmt --to=si
-#4475736
+#4.6M
 
 ```
 
@@ -627,8 +696,9 @@ done
 
 gzip -dcf PROTEINS/all.replace.fa.gz |
     grep "^>" |
-    wc -l
-#13058330
+    wc -l |
+    numfmt --to=si
+#21M
 
 (echo -e "#name\tstrain" && cat PROTEINS/all.strain.tsv)  \
     > temp &&
@@ -663,8 +733,9 @@ done \
     > PROTEINS/all.annotation.tsv
 
 cat PROTEINS/all.annotation.tsv |
-    wc -l
-#13058330
+    wc -l |
+    numfmt --to=si
+#21M
 
 (echo -e "#name\tannotation" && cat PROTEINS/all.annotation.tsv) \
     > temp &&
@@ -691,19 +762,15 @@ tsv-join \
     > PROTEINS/all.info.tsv
 
 cat PROTEINS/all.info.tsv |
-    wc -l
-#13058331
+    wc -l |
+    numfmt --to=si
+#21M
 
 ```
 
 ## Phylogenetics with bac120
 
 ### Find corresponding proteins by `hmmsearch`
-
-* Download HMM models as described in [`hmm/README.md`](../hmm/README.md)
-
-* The `E_VALUE` was manually adjusted to 1e-20 to reach a balance between sensitivity and
-  speciality.
 
 ```shell
 E_VALUE=1e-20
@@ -716,20 +783,17 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
 
     mkdir -p PROTEINS/${marker}
 
-    for ORDER in $(cat summary/order.lst); do
-        >&2 echo "==> ORDER [${ORDER}]"
+    cat summary/NR.lst |
+        parallel --no-run-if-empty --linebuffer -k -j 8 "
+            gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
+                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw ~/data/HMM/bac120/HMM/${marker}.HMM - |
+                grep '>>' |
+                perl -nl -e ' m{>>\s+(\S+)} and printf qq{%s\t%s\n}, \$1, {}; '
+        " \
+        > PROTEINS/${marker}/replace.tsv
 
-        cat taxon/${ORDER} |
-            parallel --no-run-if-empty --linebuffer -k -j 8 "
-                gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
-                    hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw ~/data/HMM/bac120/HMM/${marker}.HMM - |
-                    grep '>>' |
-                    perl -nl -e ' m{>>\s+(\S+)} and printf qq{%s\t%s\n}, \$1, {}; '
-            " \
-            > PROTEINS/${marker}/${ORDER}.replace.tsv
-    done
+    >&2 echo
 
-    echo
 done
 
 ```
@@ -741,24 +805,20 @@ cd ~/data/Pseudomonas
 
 cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        for ORDER in $(cat summary/order.lst); do
-            cat PROTEINS/{}/${ORDER}.replace.tsv
-        done |
+        cat PROTEINS/{}/replace.tsv |
             wc -l
     ' |
     tsv-summarize --quantile 1:0.25,0.5,0.75
-# 2776    2779    4068
+#2196    2200    3326.5
 
 cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo {}
-        for ORDER in $(cat summary/order.lst); do
-            cat PROTEINS/{}/${ORDER}.replace.tsv
-        done |
+        cat PROTEINS/{}/replace.tsv |
             wc -l
     ' |
     paste - - |
-    tsv-filter --invert --ge 2:2000 --le 2:3500 |
+    tsv-filter --invert --ge 2:1800 --le 2:2600 |
     cut -f 1 \
     > PROTEINS/bac120.omit.lst
 
@@ -769,9 +829,7 @@ cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         >&2 echo "==> marker [{}]"
 
-        for ORDER in $(cat summary/order.lst); do
-            cat PROTEINS/{}/${ORDER}.replace.tsv
-        done \
+        cat PROTEINS/{}/replace.tsv \
             > PROTEINS/{}/{}.replace.tsv
 
         faops some PROTEINS/all.uniq.fa.gz <(
@@ -802,6 +860,11 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
         continue
     fi
 
+    # sometimes `muscle` can not produce alignments
+    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
     # 1 name to many names
     cat PROTEINS/${marker}/${marker}.replace.tsv |
         parallel --no-run-if-empty --linebuffer -k -j 4 "
@@ -815,6 +878,9 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
     if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
         continue
     fi
+    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
 
     # sequences in one line
     faops filter -l 0 PROTEINS/${marker}/${marker}.replace.fa stdout
@@ -824,7 +890,7 @@ for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
 done \
     > PROTEINS/bac120.aln.fas
 
-fasops concat PROTEINS/bac120.aln.fas summary/strains.lst -o PROTEINS/bac120.aln.fa
+fasops concat PROTEINS/bac120.aln.fas summary/NR.lst -o PROTEINS/bac120.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
@@ -832,8 +898,8 @@ trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
 faops size PROTEINS/bac120.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#50203
-#25591
+#30002
+#24150
 
 # To make it faster
 FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
@@ -845,28 +911,24 @@ FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
 ```shell script
 cd ~/data/Pseudomonas/tree
 
-nw_reroot ../PROTEINS/bac120.trim.newick Baci_subti_subtilis_168 Sta_aure_aureus_NCTC_8325 |
-    nw_order -c n - \
-    > bac120.reroot.newick
-
-rm bac120.condensed.map
+cp ../PROTEINS/bac120.trim.newick .
 
 # rank::col
 ARRAY=(
-#    'order::7'
-#    'family::6'
-#    'genus::5'
-    'species::4'
+#    'order::6'
+#    'family::5'
+    'genus::4'
+    'species::3'
 )
 
 rm bac120.condensed.map
-CUR_TREE=bac120.reroot.newick
+CUR_TREE=bac120.trim.newick
 
 for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick bac120.${GROUP_NAME}.newick
     cat condense.map >> bac120.condensed.map
@@ -875,130 +937,26 @@ for item in "${ARRAY[@]}" ; do
 done
 
 # png
-nw_display -s -b 'visibility:hidden' -w 800 -v 20 bac120.species.newick |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 bac120.species.newick |
     rsvg-convert -o Pseudomonas.bac120.png
 
 ```
 
-## InterProScan on all proteins of typical strains
-
-### Typical strains
-
-```shell
-cd ~/data/Pseudomonas
-
-faops size ASSEMBLY/Pseudom_aeruginosa_PAO1/*_protein.faa.gz |
-    wc -l
-#5572
-
-faops size ASSEMBLY/Pseudom_aeruginosa_PAO1/*_protein.faa.gz |
-    tsv-summarize --sum 2
-#1858983
-
-cat summary/species.count.tsv |
-    tsv-filter -H --or --ge RS:50 --ge CHR:10 |
-    tsv-filter -H --or \
-        --str-in-fld species:Pseudomonas \
-        --str-in-fld species:Halopseudomonas \
-        --str-in-fld species:Stutzerimonas \
-        --str-in-fld species:Azotobacter \
-        --str-in-fld species:Acinetobacter |
-    mlr --itsv --omd cat
-
-for ABBR in \
-    Pseudom_aeruginosa_ \
-    Pseudom_viridif_ \
-    Pseudom_syringae_ \
-    Pseudom_fluo_ \
-    Pseudom_putida_ \
-    Stu_stut_ \
-    Pseudom_savas_ \
-    Pseudom_chl_ \
-    Pseudom_amyg_ \
-    Pseudom_proteg_ \
-    Pseudom_fulva_ \
-    Pseudom_coro_ \
-    Pseudom_synx_ \
-    Pseudom_entomophila_ \
-    Acin_bau_ \
-    Acin_pit_ \
-    Acin_nos_ \
-    Acin_indicus_ \
-    Acin_junii_ \
-    Acin_urs_ \
-    Acin_bere_ \
-    Acin_sei_ \
-    Acin_radior_ \
-    Acin_haemolyticus_ \
-    Acin_johnsonii_ \
-    Acin_lwo_ \
-    ; do
-    cat ASSEMBLY/pass.csv |
-        grep ${ABBR} |
-        grep -E "Reference|Representative"
-
-done |
-    cut -d, -f 1
-
-mkdir -p STRAINS
-
-for S in \
-    Pseudom_aeruginosa_PAO1 \
-    Pseudom_aeruginosa_UCBPP_PA14_GCF_000014625_1 \
-    Pseudom_aeruginosa_PA7_GCF_000017205_1 \
-    Pseudom_aeruginosa_PAK_GCF_000568855_2 \
-    Pseudom_aeruginosa_GCF_011466835_1 \
-    Pseudom_aeruginosa_LESB58_GCF_000026645_1 \
-    Pseudom_viridif_GCF_900184295_1 \
-    Pseudom_syringae_pv_tomato_DC3000_GCF_000007805_1 \
-    Pseudom_syringae_pv_syringae_B728a_GCF_000012245_1 \
-    Pseudom_syringae_pv_tagetis_GCF_022557255_1 \
-    Pseudom_syringae_GCF_018394375_1 \
-    Pseudom_fluo_GCF_900215245_1 \
-    Pseudom_putida_KT2440_GCF_000007565_2 \
-    Pseudom_putida_NBRC_14164_GCF_000412675_1 \
-    Stu_stut_A1501_GCF_000013785_1 \
-    Pseudom_savas_pv_phaseolicola_1448A_GCF_000012205_1 \
-    Pseudom_savas_GCF_020917325_1 \
-    Pseudom_chl_aureofaciens_30_84_GCF_000281915_1 \
-    Pseudom_chl_GCF_014524625_1 \
-    Pseudom_amyg_pv_tabaci_ATCC_11528_GCF_000145945_2 \
-    Pseudom_proteg_Pf_5_GCF_000012265_1 \
-    Pseudom_proteg_CHA0_GCF_900560965_1 \
-    Pseudom_coro_pv_oryzae_1_6_GCF_000156995_2 \
-    Pseudom_synx_GCF_003851555_1 \
-    Pseudom_entomophila_L48_GCF_000026105_1 \
-    Acin_bau_GCF_008632635_1 \
-    Acin_bau_ATCC_17978_GCF_004794235_2 \
-    Acin_bau_ATCC_19606_CIP_70_34_JCM_6841_GCF_019331655_1 \
-    Acin_bau_GCF_016919505_2 \
-    Acin_pit_PHEA_2 \
-    Acin_nos_M2_GCF_005281455_1 \
-    Acin_indicus_GCF_009914475_1 \
-    Acin_junii_GCF_018336855_1 \
-    Acin_bere_GCF_016576965_1 \
-    Acin_sei_GCF_016064815_1 \
-    Acin_radior_GCF_003258335_1 \
-    Acin_haemolyticus_GCF_003323815_1 \
-    Acin_lwo_GCF_019343495_1 \
-    ; do
-    echo ${S}
-done \
-    > summary/typical.lst
-
-```
+## InterProScan on all proteins of representative and typical strains
 
 ### `interproscan.sh`
 
 ```shell
 cd ~/data/Pseudomonas
 
-for S in $(cat summary/typical.lst); do
+for S in $(cat summary/NR.lst); do
+    >&2 echo "==> ${S}"
     mkdir -p STRAINS/${S}
-    faops split-about ASSEMBLY/${S}/*_protein.faa.gz 200000 STRAINS/${S}/
+    faops split-about ASSEMBLY/${S}/*_protein.faa.gz 5000000 STRAINS/${S}/ # all in one
 done
 
-for S in $(cat summary/typical.lst); do
+cat summary/NR.lst | head -n 750 | tail -n 150 | # max job number is 200
+while read S; do
     for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort); do
         >&2 echo "==> ${f}"
         if [ -e ${f}.tsv ]; then
@@ -1012,18 +970,6 @@ for S in $(cat summary/typical.lst); do
     done
 done
 
-#for S in $(cat summary/typical.lst | head -n 1); do
-#    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort | head -n 1); do
-#        >&2 echo "==> ${f}"
-#        if [ -e ${f}.tsv ]; then
-#            >&2 echo ${f}
-#            continue
-#        fi
-#
-#        interproscan.sh --cpu 12 -dp -f tsv,json -i ${f} --output-file-base ${f}
-#    done
-#done
-
 find STRAINS -type f -name "*.json" | sort |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
         if [ $(({#} % 10)) -eq "0" ]; then
@@ -1033,7 +979,7 @@ find STRAINS -type f -name "*.json" | sort |
     '
 
 # same protein may have multiple families
-for S in $(cat summary/typical.lst); do
+for S in $(cat summary/NR.lst); do
     for f in $(find STRAINS/${S} -maxdepth 1 -type f -name "[0-9]*.json.gz" | sort); do
         >&2 echo "==> ${f}"
         gzip -dcf ${f} |
@@ -1051,6 +997,12 @@ for S in $(cat summary/typical.lst); do
     done \
         > STRAINS/${S}/family.tsv
 done
+
+```
+
+
+```shell
+cd ~/data/Pseudomonas
 
 # Pseudom
 COUNT=
