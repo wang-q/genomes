@@ -3,33 +3,33 @@
 <!-- toc -->
 
 - [Strain info](#strain-info)
-  * [List all ranks](#list-all-ranks)
-  * [Species with assemblies](#species-with-assemblies)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
 - [All assemblies](#all-assemblies)
-  * [Symlink](#symlink)
-  * [Removal of abnormal strains](#removal-of-abnormal-strains)
-  * [Extract from `../Bacteria`](#extract-from-bacteria)
-  * [Count strains - Genus](#count-strains---genus)
-  * [Typical strains](#typical-strains)
-  * [Rsync to hpcc](#rsync-to-hpcc)
+    * [Symlink](#symlink)
+    * [List strains of the target genus and remove abnormal strains](#list-strains-of-the-target-genus-and-remove-abnormal-strains)
+    * [Extract from `../Bacteria`](#extract-from-bacteria)
+    * [Count strains - Genus](#count-strains---genus)
+    * [Typical strains](#typical-strains)
+    * [Rsync to hpcc](#rsync-to-hpcc)
 - [NCBI taxonomy](#ncbi-taxonomy)
 - [Collect proteins](#collect-proteins)
-  * [`all.pro.fa`](#allprofa)
-  * [`all.replace.fa`](#allreplacefa)
-  * [`all.info.tsv`](#allinfotsv)
+    * [`all.pro.fa`](#allprofa)
+    * [`all.replace.fa`](#allreplacefa)
+    * [`all.info.tsv`](#allinfotsv)
 - [Phylogenetics with bac120](#phylogenetics-with-bac120)
-  * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
-  * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-  * [Tweak the concat tree](#tweak-the-concat-tree)
+    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Tweak the concat tree](#tweak-the-concat-tree)
 - [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-  * [`interproscan.sh`](#interproscansh)
-  * [P. aeruginosa](#p-aeruginosa)
-  * [P. putida](#p-putida)
-  * [P. protegens](#p-protegens)
-  * [P. syringae](#p-syringae)
-  * [A. baumannii](#a-baumannii)
+    * [`interproscan.sh`](#interproscansh)
+    * [P. aeruginosa](#p-aeruginosa)
+    * [P. putida](#p-putida)
+    * [P. protegens](#p-protegens)
+    * [P. syringae](#p-syringae)
+    * [A. baumannii](#a-baumannii)
 - [Protein families](#protein-families)
-  * [IPR007416 - YggL 50S ribosome-binding protein](#ipr007416---yggl-50s-ribosome-binding-protein)
+    * [IPR007416 - YggL 50S ribosome-binding protein](#ipr007416---yggl-50s-ribosome-binding-protein)
 
 <!-- tocstop -->
 
@@ -263,7 +263,7 @@ ln -s ../Bacteria/STRAINS STRAINS
 
 ```
 
-### Removal of abnormal strains
+### List strains of the target genus and remove abnormal strains
 
 * Some strains were anomalously labeled and identified by the `mash` ANI values.
     * Pseudom_chl_GCF_001023535_1
@@ -323,15 +323,12 @@ echo "
     > tmp.lst
 
 # strains.taxon.tsv
-# Avoid abnormal assemblies
-touch summary/abnormal.lst
 cat ../Bacteria/summary/collect.pass.csv |
     grep -F -f tmp.lst |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
     sort |
     tsv-uniq |
-    grep -v -F -w -f summary/abnormal.lst |
     nwr append stdin -c 2 -r species -r genus -r family -r order \
     > summary/strains.taxon.tsv
 
@@ -389,6 +386,31 @@ done |
     tee summary/abnormal.lst
 
 # Recreate summary/strains.taxon.tsv to avoid these assemblies
+cat ../Bacteria/summary/collect.pass.csv |
+    grep -F -f tmp.lst |
+    tsv-select -d, -f 1,3 |
+    tr "," "\t" |
+    sort |
+    tsv-uniq |
+    grep -v -F -w -f summary/abnormal.lst |
+    nwr append stdin -c 2 -r species -r genus -r family -r order \
+    > summary/strains.taxon.tsv
+
+# other lists
+cat summary/strains.taxon.tsv | cut -f 1 | sort | uniq \
+    > strains.lst
+
+cat summary/strains.taxon.tsv | tsv-select -f 4 | sort | uniq \
+    > summary/genus.lst
+
+cat ../Bacteria/summary/collect.pass.csv |
+    grep -F -w -f <(
+        cat ~/Scripts/genomes/assembly/Bacteria.reference.tsv |
+            tsv-select -H -f assembly_accession |
+            sed '1d'
+    ) |
+    cut -d, -f 1 \
+    > summary/reference.lst
 
 ```
 
@@ -401,7 +423,7 @@ head -n 1 ../Bacteria/summary/collect.pass.csv \
     > summary/collect.pass.csv
 
 cat ../Bacteria/summary/collect.pass.csv |
-    grep -F -w -f <(cat summary/strains.taxon.tsv | cut -f 1 | sort | uniq) \
+    grep -F -w -f <(cat summary/strains.lst summary/reference.lst) \
     >> summary/collect.pass.csv
 
 # biosample.tsv
@@ -416,14 +438,14 @@ cat ../Bacteria/summary/biosample.tsv |
 
 # NR.lst and representative.lst
 cat ../Bacteria/summary/NR.lst |
-    grep -F -w -f <(cat summary/strains.taxon.tsv | cut -f 1 | sort | uniq) \
+    grep -F -w -f <(cat summary/strains.lst) \
     > summary/NR.lst
 
 cat ../Bacteria/summary/representative.lst |
-    grep -F -w -f <(cat summary/strains.taxon.tsv | cut -f 1 | sort | uniq) \
+    grep -F -w -f <(cat summary/strains.lst) \
     > summary/representative.lst
 
-# All representative is in NR
+# All representative should be in NR
 cat summary/representative.lst |
     grep -v -F -f summary/NR.lst
 
@@ -434,16 +456,10 @@ wc -l \
     summary/NR.lst \
     summary/representative.lst
 #   4182 summary/strains.taxon.tsv
-#   4183 summary/collect.pass.csv
-#   4190 summary/biosample.tsv
+#   4196 summary/collect.pass.csv
+#   4203 summary/biosample.tsv
 #   1100 summary/NR.lst
 #    131 summary/representative.lst
-
-cat summary/strains.taxon.tsv | tsv-select -f 1 | sort | uniq \
-    > summary/strains.lst
-
-cat summary/strains.taxon.tsv | tsv-select -f 4 | sort | uniq \
-    > summary/genus.lst
 
 ```
 
@@ -620,7 +636,7 @@ cd ~/data/Pseudomonas
 
 mkdir -p PROTEINS
 
-for STRAIN in $(cat summary/strains.taxon.tsv | cut -f 1); do
+for STRAIN in $(cat summary/strains.lst); do
     gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
 done |
     pigz -p4 \
@@ -949,20 +965,26 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 bac120.species.newick |
 ```shell
 cd ~/data/Pseudomonas
 
-for S in $(cat summary/NR.lst); do
+for S in $(cat summary/NR.lst summary/reference.lst | sort | uniq); do
+    if [ -e STRAINS/${S}/000.fa ]; then
+        continue
+    fi
+
     >&2 echo "==> ${S}"
+
     mkdir -p STRAINS/${S}
     faops split-about ASSEMBLY/${S}/*_protein.faa.gz 5000000 STRAINS/${S}/ # all in one
 done
 
-cat summary/NR.lst | head -n 750 | tail -n 150 | # max job number is 200
+cat summary/NR.lst summary/reference.lst | sort | # head -n 900 | tail -n 150 | # max job number is 200
+    grep -v -F -w -f <(bjobs -w | tr -s " " | cut -d " " -f 7 | cut -d "/" -f 2) | # Job exists
 while read S; do
     for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort); do
-        >&2 echo "==> ${f}"
         if [ -e ${f}.tsv ]; then
-            >&2 echo ${f}
             continue
         fi
+
+        >&2 echo "==> ${f}"
 
         bsub -q mpi -n 24 -J "${f}" "
             interproscan.sh --cpu 24 -dp -f tsv,json -i ${f} --output-file-base ${f}
@@ -970,7 +992,7 @@ while read S; do
     done
 done
 
-find STRAINS -type f -name "*.json" | sort |
+find STRAINS/ -type f -name "*.json" | sort |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
         if [ $(({#} % 10)) -eq "0" ]; then
             >&2 printf "."
@@ -980,7 +1002,7 @@ find STRAINS -type f -name "*.json" | sort |
 
 # same protein may have multiple families
 for S in $(cat summary/NR.lst); do
-    for f in $(find STRAINS/${S} -maxdepth 1 -type f -name "[0-9]*.json.gz" | sort); do
+    for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.json.gz" | sort); do
         >&2 echo "==> ${f}"
         gzip -dcf ${f} |
             jq .results |
@@ -999,7 +1021,6 @@ for S in $(cat summary/NR.lst); do
 done
 
 ```
-
 
 ```shell
 cd ~/data/Pseudomonas
