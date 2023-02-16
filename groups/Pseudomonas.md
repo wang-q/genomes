@@ -22,11 +22,11 @@
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
     * [Tweak the concat tree](#tweak-the-concat-tree)
 - [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-    * [`interproscan.sh`](#interproscansh)
+- [Count members of protein families](#count-members-of-protein-families)
+    * [Pseudomonas](#pseudomonas)
     * [P. aeruginosa](#p-aeruginosa)
     * [P. putida](#p-putida)
-    * [P. protegens](#p-protegens)
-    * [P. syringae](#p-syringae)
+    * [Acinetobacter](#acinetobacter)
     * [A. baumannii](#a-baumannii)
 - [Protein families](#protein-families)
     * [IPR007416 - YggL 50S ribosome-binding protein](#ipr007416---yggl-50s-ribosome-binding-protein)
@@ -597,7 +597,7 @@ rsync -avP \
     ~/data/Pseudomonas/ \
     wangq@58.213.64.36:data/Pseudomonas
 
-# rsync -avP wangq@202.119.37.251:data/Pseudomonas/ ~/data/Pseudomonas
+# rsync -avP wangq@202.119.37.251:data/Pseudomonas/STRAINS/ ~/data/Pseudomonas/STRAINS
 
 # rsync -avP -e "ssh -T -c chacha20-poly1305@openssh.com -o Compression=no -x" \
 #   wangq@202.119.37.251:data/Pseudomonas/ ~/data/Pseudomonas
@@ -960,28 +960,46 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 bac120.species.newick |
 
 ## InterProScan on all proteins of representative and typical strains
 
-### `interproscan.sh`
-
 ```shell
 cd ~/data/Pseudomonas
 
-for S in $(cat summary/NR.lst summary/reference.lst | sort | uniq); do
-    if [ -e STRAINS/${S}/000.fa ]; then
+cat summary/NR.lst summary/reference.lst summary/typical.manual.lst |
+    sort |
+    uniq \
+    > summary/ips.lst
+
+wc -l summary/ips.lst
+#1119
+
+for S in $(cat summary/ips.lst); do
+    if [ -s STRAINS/${S}/family.tsv ]; then
         continue
     fi
 
     >&2 echo "==> ${S}"
 
     mkdir -p STRAINS/${S}
-    faops split-about ASSEMBLY/${S}/*_protein.faa.gz 5000000 STRAINS/${S}/ # all in one
+
+    # Too many sequences would make ips crash
+    faops split-about ASSEMBLY/${S}/*_protein.faa.gz 500000 STRAINS/${S}/
 done
 
-cat summary/NR.lst summary/reference.lst | sort | # head -n 900 | tail -n 150 | # max job number is 200
+# max job number is 200
+N_JOBS=$(bjobs -w | wc -l)
+COUNT=
+cat summary/ips.lst | #sort -r |
     grep -v -F -w -f <(bjobs -w | tr -s " " | cut -d " " -f 7 | cut -d "/" -f 2) | # Job exists
 while read S; do
     for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.fa" | sort); do
         if [ -e ${f}.tsv ]; then
             continue
+        fi
+
+        COUNT=$((COUNT + 1))
+
+        if ((  COUNT + N_JOBS > 195 )); then
+            >&2 echo MAX JOBS
+            break 2 # In a nested loop
         fi
 
         >&2 echo "==> ${f}"
@@ -997,11 +1015,17 @@ find STRAINS/ -type f -name "*.json" | sort |
         if [ $(({#} % 10)) -eq "0" ]; then
             >&2 printf "."
         fi
-        pigz -p 3 {}
+        pigz -p 4 {}
     '
 
+find STRAINS/ -type f -name "*.json.gz" -size +1M | wc -l
+
 # same protein may have multiple families
-for S in $(cat summary/NR.lst); do
+for S in $(cat summary/ips.lst); do
+    if [ -s STRAINS/${S}/family.tsv ]; then
+        continue
+    fi
+
     for f in $(find STRAINS/${S}/ -maxdepth 1 -type f -name "[0-9]*.json.gz" | sort); do
         >&2 echo "==> ${f}"
         gzip -dcf ${f} |
@@ -1020,301 +1044,364 @@ for S in $(cat summary/NR.lst); do
         > STRAINS/${S}/family.tsv
 done
 
+find STRAINS/ -type f -name "family.tsv" -empty
+
+find STRAINS/ -type f -name "family.tsv" | wc -l
+#1121
+
+find STRAINS/ -type d |
+    grep -v -Fw -f summary/ips.lst
+
+find STRAINS/ -type f -name "family.tsv" |
+    xargs wc -l |
+    sed 's/^\s*//g' |
+    grep -v "total$" |
+    cut -d" " -f 1 |
+    tsv-summarize --quantile 1:0,0.25,0.5,0.75,1
+#735     2644    3471    3823    9168
+
+find STRAINS/ -type f -name "family.tsv" |
+    xargs wc -l |
+    sed 's/^\s*//g' |
+    grep -v "total$" |
+    tsv-filter -d ' ' --lt 1:1500
+#1253 STRAINS/Cox_burn_RSA_493/family.tsv
+#1269 STRAINS/Cam_jej_jejuni_NCTC_11168_ATCC_700819/family.tsv
+#735 STRAINS/Chlamydia_tracho_D_UW_3_CX/family.tsv
+
+# seems OK
+
+# Count protein family per strains
+for S in $(cat summary/ips.lst); do
+    if [ ! -s STRAINS/${S}/family.tsv ]; then
+        continue
+    fi
+    if [ -s STRAINS/${S}/family-count.tsv ]; then
+        continue
+    fi
+
+    cat STRAINS/${S}/family.tsv |
+        tsv-summarize -g 2,3 --count \
+        > STRAINS/${S}/family-count.tsv
+
+done
+
 ```
+
+## Count members of protein families
+
+### Pseudomonas
 
 ```shell
 cd ~/data/Pseudomonas
 
-# Pseudom
-COUNT=
-for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)"); do
-    if [ ! -s STRAINS/${S}/family.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family.tsv |
-        tsv-summarize -g 2,3 --count \
-        > STRAINS/${S}/family-count.tsv
+mkdir -p count
 
-    COUNT=$((COUNT + 1))
-done
-echo $COUNT
+cat summary/strains.taxon.tsv |
+    tsv-join -k 1 -f summary/ips.lst |
+    tsv-filter --or --str-eq 4:Pseudomonas --str-eq 4:Halopseudomonas --str-eq 4:Stutzerimonas --str-eq 4:Azotobacter \
+    > count/Pseudomonas.taxon.tsv
 
-# families in almost all strains
-for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)"); do
-    cat STRAINS/${S}/family-count.tsv
+N_SPECIES=$(
+    cat count/Pseudomonas.taxon.tsv |
+        tsv-select -f 3 |
+        tsv-uniq |
+        wc -l
+)
+echo ${N_SPECIES}
+# 91
+
+cat count/Pseudomonas.taxon.tsv |
+    tsv-select -f 3 |
+    tsv-uniq |
+    sort | # head |
+while read SPECIES; do
+    N_STRAINS=$(
+        cat count/Pseudomonas.taxon.tsv |
+            tsv-filter --str-eq "3:${SPECIES}" |
+            wc -l
+    )
+
+    cat count/Pseudomonas.taxon.tsv |
+        tsv-filter --str-eq "3:${SPECIES}" |
+        tsv-select -f 1 |
+        SPECIES=${SPECIES} N_STRAINS=${N_STRAINS} perl -nl -MPath::Tiny -e '
+            BEGIN { our %count_of; }
+
+            my @lines = path(qq{STRAINS/$_/family-count.tsv})->lines({chomp => 1});
+            for my $l (@lines) {
+                my ($f, $d, $c) = split /\t/, $l;
+                $count_of{qq($f\t$d)} += $c;
+            }
+
+            #print $ENV{SPECIES}, $ENV{N_STRAINS};
+
+            END {
+                for my $f (sort keys %count_of) {
+                    print join qq(\t), $f, $ENV{SPECIES}, sprintf(q{%.1f}, $count_of{$f} / $ENV{N_STRAINS} ) ;
+                }
+            }
+        '
 done |
+    tsv-filter --istr-not-in-fld 2:"probable" |
+    tsv-filter --istr-not-in-fld 2:"putative" |
+    tsv-filter --istr-not-in-fld 2:"Uncharacterised" |
+    tsv-filter --istr-not-in-fld 2:" DUF" \
+    > count/Pseudomonas.family.tsv
+
+# Families occurring in at least 81/91 species
+cat count/Pseudomonas.family.tsv |
     tsv-summarize -g 1,2 --count |
-    tsv-filter -H --istr-not-in-fld 2:"probable" |
-    tsv-filter -H --istr-not-in-fld 2:"putative" |
-    tsv-filter -H --istr-not-in-fld 2:"Uncharacterised" |
-    tsv-filter -H --istr-not-in-fld 2:" DUF" |
-    tsv-filter --ge 3:$((COUNT - 2)) \
-    > STRAINS/Pseudom-universal.tsv
-
-# Acin
-COUNT=
-for S in $(cat summary/typical.lst | grep -E "^(Acin)"); do
-    if [ ! -s STRAINS/${S}/family.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family.tsv |
-        tsv-summarize -g 2,3 --count \
-        > STRAINS/${S}/family-count.tsv
-
-    COUNT=$((COUNT + 1))
-done
-echo $COUNT
-
-# families in almost all strains
-for S in $(cat summary/typical.lst | grep -E "^(Acin)"); do
-    cat STRAINS/${S}/family-count.tsv
-done |
-    tsv-summarize -g 1,2 --count |
-    tsv-filter -H --istr-not-in-fld 2:"probable" |
-    tsv-filter -H --istr-not-in-fld 2:"putative" |
-    tsv-filter -H --istr-not-in-fld 2:"Uncharacterised" |
-    tsv-filter -H --istr-not-in-fld 2:" DUF" |
-    tsv-filter --ge 3:$((COUNT - 1)) \
-    > STRAINS/Acin-universal.tsv
+    tsv-filter --gt "3:$((N_SPECIES - 10))" \
+    > count/Pseudomonas.universal.tsv
 
 ```
 
 ### P. aeruginosa
 
 ```shell
-PREFIX=Pseudom_aeruginosa
-
 cd ~/data/Pseudomonas
 
-# All other strains should have only 1 family member
-cp STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv
-for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep -v "${PREFIX}_"); do
-    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/${PREFIX}-1.tsv |
-        tsv-filter --le 3:1 \
-        > STRAINS/family-tmp.tsv
+cat count/Pseudomonas.taxon.tsv |
+    tsv-filter --str-eq "3:Pseudomonas aeruginosa" |
+    wc -l
+#12
 
-    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-1.tsv
-done
+# All other species should have only 1 family member
+# The number is shrunk to be more tolerable, such as Pseudomonas paraeruginosa
+cat count/Pseudomonas.family.tsv |
+    tsv-filter --str-ne "3:Pseudomonas aeruginosa" |
+    tsv-filter --le 4:1.5 |
+    tsv-summarize -g 1,2 --count |
+    tsv-filter --gt "3:$((N_SPECIES - 15))" \
+    > count/Paer.1.tsv
 
-# All ${PREFIX} strains should have multiple family members
-cp STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
-for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep "${PREFIX}_"); do
-    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/${PREFIX}-n.tsv |
-        tsv-filter --gt 3:1 \
-        > STRAINS/family-tmp.tsv
+# All strains of target species should have multiple family members
+cat count/Pseudomonas.family.tsv |
+    tsv-filter --str-eq "3:Pseudomonas aeruginosa" |
+    tsv-filter --ge 4:1.8 |
+    tsv-filter --lt 4:3 \
+    > count/Paer.n.tsv
 
-    wc -l < STRAINS/family-tmp.tsv
-    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-n.tsv
-done
+wc -l \
+    count/Pseudomonas.universal.tsv\
+    count/Paer.1.tsv \
+    count/Paer.n.tsv
+#  1640 count/Pseudomonas.universal.tsv
+#  1150 count/Paer.1.tsv
+#   305 count/Paer.n.tsv
 
-wc -l STRAINS/Pseudom_aeruginosa_PAO1/family.tsv \
-    STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
-#  3971 STRAINS/Pseudom_aeruginosa_PAO1/family.tsv
-#  1707 STRAINS/Pseudom-universal.tsv
-#   912 STRAINS/Pseudom_aeruginosa-1.tsv
-#     9 STRAINS/Pseudom_aeruginosa-n.tsv
-
-cat STRAINS/${PREFIX}-n.tsv |
-    tsv-select -f 1,2 |
+cat count/Paer.n.tsv |
+    tsv-join -k 1 -f count/Pseudomonas.universal.tsv |
+    tsv-join -k 1 -f count/Paer.1.tsv |
+    tsv-select -f 1,2,4 |
     tsv-sort |
-    (echo -e "#family\tcount" && cat) |
+    (echo -e "#family\tdesc\tcount" && cat) |
     mlr --itsv --omd cat
 
 ```
 
-| #family   | count                                         |
-|-----------|-----------------------------------------------|
-| IPR001353 | Proteasome, subunit alpha/beta                |
-| IPR001404 | Heat shock protein Hsp90 family               |
-| IPR004361 | Glyoxalase I                                  |
-| IPR005999 | Glycerol kinase                               |
-| IPR006684 | Acyl-CoA thioester hydrolase YbgC/YbaW family |
-| IPR007416 | YggL 50S ribosome-binding protein             |
-| IPR011757 | Lytic transglycosylase MltB                   |
-| IPR014311 | Guanine deaminase                             |
-| IPR037532 | Peptidoglycan D,D-transpeptidase FtsI         |
+| #family   | desc                                                          | count |
+|-----------|---------------------------------------------------------------|-------|
+| IPR000440 | NADH:ubiquinone/plastoquinone oxidoreductase, chain 3         | 2.0   |
+| IPR000473 | Ribosomal protein L36                                         | 2.0   |
+| IPR000813 | 7Fe ferredoxin                                                | 2.1   |
+| IPR001353 | Proteasome, subunit alpha/beta                                | 2.2   |
+| IPR001404 | Heat shock protein Hsp90 family                               | 2.1   |
+| IPR002307 | Tyrosine-tRNA ligase                                          | 2.2   |
+| IPR002480 | DAHP synthetase, class II                                     | 2.8   |
+| IPR002830 | UbiD decarboxylyase family                                    | 2.2   |
+| IPR003672 | CobN/magnesium chelatase                                      | 2.2   |
+| IPR004633 | Na/Pi-cotransporter II-related/YqeW-like protein              | 1.8   |
+| IPR004685 | Branched-chain amino acid transport system II carrier protein | 2.2   |
+| IPR004769 | Adenylosuccinate lyase                                        | 2.1   |
+| IPR005955 | Glutathione S-transferases, class Zeta                        | 2.3   |
+| IPR005999 | Glycerol kinase                                               | 2.1   |
+| IPR006261 | dNTP triphosphohydrolase                                      | 2.2   |
+| IPR006684 | Acyl-CoA thioester hydrolase YbgC/YbaW family                 | 2.2   |
+| IPR007416 | YggL 50S ribosome-binding protein                             | 2.1   |
+| IPR007692 | DNA helicase, DnaB type                                       | 1.8   |
+| IPR011548 | 3-hydroxyisobutyrate dehydrogenase                            | 2.2   |
+| IPR011757 | Lytic transglycosylase MltB                                   | 2.2   |
+| IPR014311 | Guanine deaminase                                             | 2.2   |
+| IPR017039 | Virulence factor BrkB                                         | 2.2   |
+| IPR023695 | Thiosulfate sulfurtransferase, bacterial                      | 2.3   |
+| IPR024088 | Tyrosine-tRNA ligase, bacterial-type                          | 2.2   |
+| IPR026968 | 3-oxoadipate enol-lactonase 1/2                               | 2.0   |
+| IPR028883 | tRNA-specific adenosine deaminase                             | 2.0   |
 
 ### P. putida
 
 ```shell
-PREFIX=Pseudom_putida
-
 cd ~/data/Pseudomonas
 
-# All other strains should have only 1 family member
-cp STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv
-for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep -v "${PREFIX}_"); do
-    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/${PREFIX}-1.tsv |
-        tsv-filter --le 3:1 \
-        > STRAINS/family-tmp.tsv
+cat count/Pseudomonas.taxon.tsv |
+    tsv-filter --str-eq "3:Pseudomonas putida" |
+    wc -l
+#55
 
-    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-1.tsv
-done
+# All other species should have only 1 family member
+cat count/Pseudomonas.family.tsv |
+    tsv-filter --str-ne "3:Pseudomonas putida" |
+    tsv-filter --le 4:1.5 |
+    tsv-summarize -g 1,2 --count |
+    tsv-filter --gt "3:$((N_SPECIES - 15))" \
+    > count/Pput.1.tsv
 
-# All ${PREFIX} strains should have multiple family members
-cp STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
-for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep "${PREFIX}_"); do
-    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/${PREFIX}-n.tsv |
-        tsv-filter --gt 3:1 \
-        > STRAINS/family-tmp.tsv
+# All strains of target species should have multiple family members
+cat count/Pseudomonas.family.tsv |
+    tsv-filter --str-eq "3:Pseudomonas putida" |
+    tsv-filter --ge 4:1.8 |
+    tsv-filter --lt 4:3 \
+    > count/Pput.n.tsv
 
-    wc -l < STRAINS/family-tmp.tsv
-    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-n.tsv
-done
+wc -l \
+    count/Pseudomonas.universal.tsv\
+    count/Pput.1.tsv \
+    count/Pput.n.tsv
+#  1640 count/Pseudomonas.universal.tsv
+#  1147 count/Pput.1.tsv
+#   239 count/Pput.n.tsv
 
-wc -l STRAINS/Pseudom_putida_KT2440_GCF_000007565_2/family.tsv \
-    STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
-#  3731 STRAINS/Pseudom_putida_KT2440_GCF_000007565_2/family.tsv
-#  1707 STRAINS/Pseudom-universal.tsv
-#   860 STRAINS/Pseudom_putida-1.tsv
-#     7 STRAINS/Pseudom_putida-n.tsv
-
-cat STRAINS/${PREFIX}-n.tsv |
-    tsv-select -f 1,2 |
+cat count/Pput.n.tsv |
+    tsv-join -k 1 -f count/Pseudomonas.universal.tsv |
+    tsv-join -k 1 -f count/Pput.1.tsv |
+    tsv-select -f 1,2,4 |
     tsv-sort |
-    (echo -e "#family\tcount" && cat) |
+    (echo -e "#family\tdesc\tcount" && cat) |
     mlr --itsv --omd cat
 
 ```
 
-| #family   | count                                                      |
-|-----------|------------------------------------------------------------|
-| IPR001783 | Lumazine-binding protein                                   |
-| IPR002033 | Sec-independent periplasmic protein translocase TatC       |
-| IPR002446 | Lipocalin, bacterial                                       |
-| IPR011342 | Shikimate dehydrogenase                                    |
-| IPR012794 | Beta-ketoadipate transcriptional regulator, PcaR/PcaU/PobR |
-| IPR018448 | Sec-independent protein translocase protein TatB           |
-| IPR018550 | Lipid A 3-O-deacylase-related                              |
+| #family   | desc                                                       | count |
+|-----------|------------------------------------------------------------|-------|
+| IPR001783 | Lumazine-binding protein                                   | 1.9   |
+| IPR002033 | Sec-independent periplasmic protein translocase TatC       | 1.9   |
+| IPR002446 | Lipocalin, bacterial                                       | 1.9   |
+| IPR003171 | Methylenetetrahydrofolate reductase-like                   | 2.0   |
+| IPR006312 | Sec-independent protein translocase protein TatA/E         | 1.9   |
+| IPR012794 | Beta-ketoadipate transcriptional regulator, PcaR/PcaU/PobR | 1.8   |
+| IPR018448 | Sec-independent protein translocase protein TatB           | 1.9   |
+| IPR018550 | Lipid A 3-O-deacylase-related                              | 2.3   |
 
-### P. protegens
+### Acinetobacter
 
 ```shell
-PREFIX=Pseudom_proteg
-
 cd ~/data/Pseudomonas
 
-# All other strains should have only 1 family member
-cp STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv
-for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep -v "${PREFIX}_"); do
-    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/${PREFIX}-1.tsv |
-        tsv-filter --le 3:1 \
-        > STRAINS/family-tmp.tsv
+mkdir -p count
 
-    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-1.tsv
-done
+cat summary/strains.taxon.tsv |
+    tsv-join -k 1 -f summary/ips.lst |
+    tsv-filter --or --str-eq 4:Acinetobacter \
+    > count/Acinetobacter.taxon.tsv
 
-# All ${PREFIX} strains should have multiple family members
-cp STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
-for S in $(cat summary/typical.lst | grep -E "^(Pseudom|Stu)" | grep "${PREFIX}_"); do
-    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/${PREFIX}-n.tsv |
-        tsv-filter --gt 3:1 \
-        > STRAINS/family-tmp.tsv
+N_SPECIES=$(
+    cat count/Acinetobacter.taxon.tsv |
+        tsv-select -f 3 |
+        tsv-uniq |
+        wc -l
+)
+echo ${N_SPECIES}
+# 22
 
-    wc -l < STRAINS/family-tmp.tsv
-    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-n.tsv
-done
+cat count/Acinetobacter.taxon.tsv |
+    tsv-select -f 3 |
+    tsv-uniq |
+    sort | # head |
+while read SPECIES; do
+    N_STRAINS=$(
+        cat count/Acinetobacter.taxon.tsv |
+            tsv-filter --str-eq "3:${SPECIES}" |
+            wc -l
+    )
 
-wc -l STRAINS/Pseudom_proteg_Pf_5_GCF_000012265_1/family.tsv \
-    STRAINS/Pseudom-universal.tsv STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
-#  4104 STRAINS/Pseudom_proteg_Pf_5_GCF_000012265_1/family.tsv
-#  1707 STRAINS/Pseudom-universal.tsv
-#   853 STRAINS/Pseudom_proteg-1.tsv
-#     6 STRAINS/Pseudom_proteg-n.tsv
+    cat count/Acinetobacter.taxon.tsv |
+        tsv-filter --str-eq "3:${SPECIES}" |
+        tsv-select -f 1 |
+        SPECIES=${SPECIES} N_STRAINS=${N_STRAINS} perl -nl -MPath::Tiny -e '
+            BEGIN { our %count_of; }
 
-cat STRAINS/${PREFIX}-n.tsv |
-    tsv-select -f 1,2 |
-    tsv-sort |
-    (echo -e "#family\tcount" && cat) |
-    mlr --itsv --omd cat
+            my @lines = path(qq{STRAINS/$_/family-count.tsv})->lines({chomp => 1});
+            for my $l (@lines) {
+                my ($f, $d, $c) = split /\t/, $l;
+                $count_of{qq($f\t$d)} += $c;
+            }
+
+            #print $ENV{SPECIES}, $ENV{N_STRAINS};
+
+            END {
+                for my $f (sort keys %count_of) {
+                    print join qq(\t), $f, $ENV{SPECIES}, sprintf(q{%.1f}, $count_of{$f} / $ENV{N_STRAINS} ) ;
+                }
+            }
+        '
+done |
+    tsv-filter --istr-not-in-fld 2:"probable" |
+    tsv-filter --istr-not-in-fld 2:"putative" |
+    tsv-filter --istr-not-in-fld 2:"Uncharacterised" |
+    tsv-filter --istr-not-in-fld 2:" DUF" \
+    > count/Acinetobacter.family.tsv
+
+# Families occurring in at least 18/22 species
+cat count/Acinetobacter.family.tsv |
+    tsv-summarize -g 1,2 --count |
+    tsv-filter --gt "3:$((N_SPECIES - 4))" \
+    > count/Acinetobacter.universal.tsv
 
 ```
-
-| #family   | count                                    |
-|-----------|------------------------------------------|
-| IPR000926 | GTP cyclohydrolase II, RibA              |
-| IPR004794 | Riboflavin biosynthesis protein RibD     |
-| IPR009246 | Ethanolamine ammonia-lyase small subunit |
-| IPR010099 | Epimerase family protein SDR39U1         |
-| IPR010628 | Ethanolamine ammonia-lyase heavy chain   |
-| IPR011842 | Coenzyme PQQ biosynthesis protein B      |
-
-### P. syringae
 
 ### A. baumannii
 
 ```shell
-PREFIX=Acin_bau
-
 cd ~/data/Pseudomonas
 
-# All other strains should have only 1 family member
-cp STRAINS/Acin-universal.tsv STRAINS/${PREFIX}-1.tsv
-for S in $(cat summary/typical.lst | grep -E "^(Acin)" | grep -v "${PREFIX}_"); do
-    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/${PREFIX}-1.tsv |
-        tsv-filter --le 3:1 \
-        > STRAINS/family-tmp.tsv
+cat count/Acinetobacter.taxon.tsv |
+    tsv-filter --str-eq "3:Acinetobacter baumannii" |
+    wc -l
+#73
 
-    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-1.tsv
-done
+# All other species should have only 1 family member
+cat count/Acinetobacter.family.tsv |
+    tsv-filter --str-ne "3:Pseudomonas baumannii" |
+    tsv-filter --le 4:1.5 |
+    tsv-summarize -g 1,2 --count |
+    tsv-filter --gt "3:$((N_SPECIES - 6))" \
+    > count/Abau.1.tsv
 
-# All ${PREFIX} strains should have multiple family members
-cp STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
-for S in $(cat summary/typical.lst | grep -E "^(Acin)" | grep "${PREFIX}_"); do
-    if [ ! -s STRAINS/${S}/family-count.tsv ]; then
-        continue
-    fi
-    cat STRAINS/${S}/family-count.tsv |
-        tsv-join -k 1 -f STRAINS/${PREFIX}-n.tsv |
-        tsv-filter --gt 3:1 \
-        > STRAINS/family-tmp.tsv
+# All strains of target species should have multiple family members
+cat count/Acinetobacter.family.tsv |
+    tsv-filter --str-eq "3:Acinetobacter baumannii" |
+    tsv-filter --ge 4:1.8 |
+    tsv-filter --lt 4:3 \
+    > count/Abau.n.tsv
 
-    wc -l < STRAINS/family-tmp.tsv
-    mv STRAINS/family-tmp.tsv STRAINS/${PREFIX}-n.tsv
-done
+wc -l \
+    count/Acinetobacter.universal.tsv\
+    count/Abau.1.tsv \
+    count/Abau.n.tsv
+#  1613 count/Acinetobacter.universal.tsv
+#  1132 count/Abau.1.tsv
+#   177 count/Abau.n.tsv
 
-wc -l STRAINS/Acin_bau_GCF_008632635_1/family.tsv \
-    STRAINS/Acin-universal.tsv STRAINS/${PREFIX}-1.tsv STRAINS/${PREFIX}-n.tsv
-#  2525 STRAINS/Acin_bau_GCF_008632635_1/family.tsv
-#  1342 STRAINS/Acin-universal.tsv
-#   890 STRAINS/Acin_bau-1.tsv
-#     0 STRAINS/Acin_bau-n.tsv
-
-cat STRAINS/${PREFIX}-n.tsv |
-    tsv-select -f 1,2 |
+cat count/Abau.n.tsv |
+    tsv-join -k 1 -f count/Acinetobacter.universal.tsv |
+    tsv-join -k 1 -f count/Abau.1.tsv |
+    tsv-select -f 1,2,4 |
     tsv-sort |
-    (echo -e "#family\tcount" && cat) |
+    (echo -e "#family\tdesc\tcount" && cat) |
     mlr --itsv --omd cat
 
 ```
+
+| #family   | desc                                                          | count |
+|-----------|---------------------------------------------------------------|-------|
+| IPR001930 | Peptidase M1, alanine aminopeptidase/leukotriene A4 hydrolase | 1.9   |
+| IPR002129 | Pyridoxal phosphate-dependent decarboxylase                   | 2.0   |
+| IPR006424 | Glyceraldehyde-3-phosphate dehydrogenase, type I              | 1.8   |
+| IPR030048 | Survival protein SurE                                         | 1.8   |
+| IPR030664 | FAD-dependent oxidoreductase SdhA/FrdA/AprA                   | 2.0   |
+| IPR047109 | Cinnamyl alcohol dehydrogenase-like                           | 1.9   |
 
 ## Protein families
 
