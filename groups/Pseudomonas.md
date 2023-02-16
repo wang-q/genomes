@@ -933,7 +933,7 @@ cp ../PROTEINS/bac120.trim.newick .
 ARRAY=(
 #    'order::6'
 #    'family::5'
-    'genus::4'
+#    'genus::4'
     'species::3'
 )
 
