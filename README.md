@@ -108,7 +108,7 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 
 ## Prokaryote groups
 
-* Pseudomonas
+* [Pseudomonas](groups/Pseudomonas.md)
 * MTBC
 * Tenericutes
 
@@ -116,4 +116,4 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 
 * [Trichoderma](groups/Trichoderma.md)
 * Fungi
-* [Protistis](./groups/Protists.md)
+* [Protistis](groups/Protists.md)
