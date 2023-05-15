@@ -56,7 +56,9 @@ Four levels:
     1. assembly_level: 'Complete Genome', 'Chromosome'
     2. genome_rep: 'Full'
 * 'Genbank'
-    4. assembly_level: 'Complete Genome', 'Chromosome'
+    3. With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
+    4. With strain ID; genome_rep: 'Full'
+    5. genome_rep: 'Full'
 
 ```shell
 mkdir -p ~/data/Fungi/summary
@@ -121,13 +123,87 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
+            AND assembly_level IN ('Complete Genome', 'Chromosome')
             AND genome_rep IN ('Full') -- fully representative
         GROUP BY species_id
-        HAVING count >= 50
+        HAVING count >= 20
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
     > L3.tsv
+
+for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
+    echo "
+        SELECT
+            species_id,
+            species,
+            COUNT(DISTINCT tax_id) AS count -- with strain ID
+        FROM ar
+        WHERE 1=1
+            AND genus_id = ${RANK_ID}
+            AND genome_rep IN ('Full') -- fully representative
+        GROUP BY species_id
+        HAVING count >= 20
+        " |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > L4.tsv
+
+for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
+    echo "
+        SELECT
+            species_id,
+            species,
+            COUNT(*) AS count
+        FROM ar
+        WHERE 1=1
+            AND genus_id = ${RANK_ID}
+            AND assembly_level IN ('Complete Genome', 'Chromosome')
+            AND genome_rep IN ('Full') -- fully representative
+        GROUP BY species_id
+        HAVING count >= 20
+        " |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > L5.tsv
+
+for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
+    echo "
+        SELECT
+            species_id,
+            species,
+            COUNT(*) AS count
+        FROM ar
+        WHERE 1=1
+            AND genus_id = ${RANK_ID}
+            AND genome_rep IN ('Full') -- fully representative
+        GROUP BY species_id
+        HAVING count >= 20
+        " |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > L6.tsv
+
+for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
+    echo "
+        SELECT
+            species_id,
+            species,
+            COUNT(*) AS count
+        FROM ar
+        WHERE 1=1
+            AND genus_id = ${RANK_ID}
+            AND assembly_level IN ('Complete Genome', 'Chromosome')
+        GROUP BY species_id
+        HAVING count >= 2
+        " |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > L7.tsv
 
 ```
