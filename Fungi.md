@@ -50,15 +50,17 @@ nwr member Fungi |
 
 In the vast majority of fungal species, only one genome was selected for refseq.
 
-Four levels:
-
 * 'RefSeq'
     1. assembly_level: 'Complete Genome', 'Chromosome'
     2. genome_rep: 'Full'
 * 'Genbank'
-    3. With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
-    4. With strain ID; genome_rep: 'Full'
-    5. genome_rep: 'Full'
+    * '>= 20 genomes'
+        1. With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
+        2. With strain ID; genome_rep: 'Full'
+        3. assembly_level: 'Complete Genome', 'Chromosome'; genome_rep: 'Full'
+        4. genome_rep: 'Full'
+    * '>= 2 genomes'
+        5. assembly_level: 'Complete Genome', 'Chromosome'
 
 ```shell
 mkdir -p ~/data/Fungi/summary
@@ -94,7 +96,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
     tsv-sort -k2,2 \
-    > L1.tsv
+    > RS1.tsv
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -112,7 +114,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
     tsv-sort -k2,2 \
-    > L2.tsv
+    > RS2.tsv
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -131,7 +133,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
-    > L3.tsv
+    > GB1.tsv
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -149,7 +151,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
-    > L4.tsv
+    > GB2.tsv
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -168,7 +170,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
-    > L5.tsv
+    > GB3.tsv
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -186,7 +188,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
-    > L6.tsv
+    > GB4.tsv
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -198,12 +200,58 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         WHERE 1=1
             AND genus_id = ${RANK_ID}
             AND assembly_level IN ('Complete Genome', 'Chromosome')
+            AND genome_rep IN ('Full') -- fully representative
         GROUP BY species_id
         HAVING count >= 2
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
-    > L7.tsv
+    > GB5.tsv
+
+wc -l RS*.tsv GB*.tsv
+#      80 RS1.tsv
+#     482 RS2.tsv
+#       1 GB1.tsv
+#       5 GB2.tsv
+#       4 GB3.tsv
+#      82 GB4.tsv
+#      83 GB5.tsv
+
+for C in RS GB; do
+    for N in $(seq 1 1 5); do
+        if [ -e ${C}${N}.tsv ]; then
+            cat ${C}${N}.tsv |
+                tsv-summarize --sum 3
+        fi
+    done
+done
+#82
+#487
+#109
+#294
+#750
+#6731
+#1084
+
+```
+
+* The names of some genera are abnormal
+
+```shell
+cd ~/data/Bacteria/summary
+
+cat RS*.tsv GB*.tsv |
+    cut -f 1,2 |
+    tsv-uniq |
+    grep "\[" |
+    nwr append stdin -r genus
+#498019	[Candida] auris	Candida/Metschnikowiaceae
+#1231522	[Candida] duobushaemulonis	Candida/Metschnikowiaceae
+#45357	[Candida] haemuloni	Candida/Metschnikowiaceae
+#418784	[Candida] pseudohaemulonii	Candida/Metschnikowiaceae
+#561895	[Candida] subhashii	Spathaspora
+#5477	[Candida] boidinii	Ogataea
+#45354	[Candida] intermedia	Candida/Metschnikowiaceae
 
 ```
