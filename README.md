@@ -26,6 +26,7 @@ Thu Feb 9 05:00:03 CST 2023
 ```shell
 brew install wang-q/tap/nwr # 0.5.4 or above
 brew install sqlite         # 3.34 or above
+#brew link sqlite --force
 
 nwr download
 nwr txdb
