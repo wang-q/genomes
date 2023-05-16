@@ -328,7 +328,7 @@ Three levels:
 
 * '>= 100 genomes'
     * assembly_level: 'Complete Genome', 'Chromosome'
-    * assembly_level: NOT 'contig' AND genome_rep: 'Full'
+    * assembly_level: NOT 'contig'; genome_rep: 'Full'
 * '>= 2 genomes'
     * assembly_level: 'Complete Genome', 'Chromosome'
 
