@@ -239,7 +239,7 @@ done
 * The names of some genera are abnormal
 
 ```shell
-cd ~/data/Bacteria/summary
+cd ~/data/Fungi/summary
 
 cat RS*.tsv GB*.tsv |
     cut -f 1,2 |
@@ -253,5 +253,34 @@ cat RS*.tsv GB*.tsv |
 #561895	[Candida] subhashii	Spathaspora
 #5477	[Candida] boidinii	Ogataea
 #45354	[Candida] intermedia	Candida/Metschnikowiaceae
+
+```
+
+### Model organisms
+
+There is only one model genome in Fungi, Saccharomyces cerevisiae S288C
+
+```shell
+cd ~/data/Fungi/summary
+
+GENUS=$(
+    cat genus.list.tsv |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+.headers ON
+
+    SELECT
+        *
+    FROM ar
+    WHERE 1=1
+        AND genus_id IN ($GENUS)
+        AND refseq_category IN ('reference genome')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite \
+    > reference.tsv
 
 ```
