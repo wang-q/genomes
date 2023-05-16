@@ -51,16 +51,15 @@ nwr member Fungi |
 In the vast majority of fungal species, only one genome was selected for refseq.
 
 * 'RefSeq'
-    1. assembly_level: 'Complete Genome', 'Chromosome'
-    2. genome_rep: 'Full'
+    * RS1 - assembly_level: 'Complete Genome', 'Chromosome'
+    * RS2 - genome_rep: 'Full'
 * 'Genbank'
     * '>= 20 genomes'
-        1. With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
-        2. With strain ID; genome_rep: 'Full'
-        3. assembly_level: 'Complete Genome', 'Chromosome'; genome_rep: 'Full'
-        4. genome_rep: 'Full'
+        * GB1 - With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
+        * GB2 - assembly_level: 'Complete Genome', 'Chromosome'
+        * GB3 - NOT 'contig'; genome_rep: 'Full'
     * '>= 2 genomes'
-        5. assembly_level: 'Complete Genome', 'Chromosome'
+        * GB4 - assembly_level: 'Complete Genome', 'Chromosome'
 
 ```shell
 mkdir -p ~/data/Fungi/summary
@@ -88,6 +87,8 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
             AND assembly_level IN ('Complete Genome', 'Chromosome')
             AND genome_rep IN ('Full') -- fully representative
         GROUP BY species_id
@@ -107,6 +108,8 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
             AND genome_rep IN ('Full') -- fully representative
         GROUP BY species_id
         HAVING count >= 1
@@ -125,6 +128,8 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
             AND assembly_level IN ('Complete Genome', 'Chromosome')
             AND genome_rep IN ('Full') -- fully representative
         GROUP BY species_id
@@ -140,10 +145,13 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         SELECT
             species_id,
             species,
-            COUNT(DISTINCT tax_id) AS count -- with strain ID
+            COUNT(*) AS count
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
+            AND assembly_level IN ('Complete Genome', 'Chromosome')
             AND genome_rep IN ('Full') -- fully representative
         GROUP BY species_id
         HAVING count >= 20
@@ -162,7 +170,9 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND assembly_level IN ('Complete Genome', 'Chromosome')
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
+            AND assembly_level IN ('Complete Genome', 'Chromosome', 'Scaffold')
             AND genome_rep IN ('Full') -- fully representative
         GROUP BY species_id
         HAVING count >= 20
@@ -181,58 +191,39 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND genome_rep IN ('Full') -- fully representative
-        GROUP BY species_id
-        HAVING count >= 20
-        " |
-        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-done |
-    tsv-sort -k2,2 \
-    > GB4.tsv
-
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
             AND assembly_level IN ('Complete Genome', 'Chromosome')
-            AND genome_rep IN ('Full') -- fully representative
         GROUP BY species_id
         HAVING count >= 2
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
-    > GB5.tsv
+    > GB4.tsv
 
 wc -l RS*.tsv GB*.tsv
-#      80 RS1.tsv
-#     482 RS2.tsv
-#       1 GB1.tsv
-#       5 GB2.tsv
-#       4 GB3.tsv
-#      82 GB4.tsv
-#      83 GB5.tsv
+#   81 RS1.tsv
+#  487 RS2.tsv
+#    1 GB1.tsv
+#    4 GB2.tsv
+#   51 GB3.tsv
+#   82 GB4.tsv
 
 for C in RS GB; do
-    for N in $(seq 1 1 5); do
+    for N in $(seq 1 1 10); do
         if [ -e ${C}${N}.tsv ]; then
             cat ${C}${N}.tsv |
                 tsv-summarize --sum 3
         fi
     done
 done
-#82
-#487
+#83
+#492
 #109
-#294
 #750
-#6731
-#1084
+#4473
+#1082
 
 ```
 
@@ -280,7 +271,243 @@ echo "
         AND genus_id IN ($GENUS)
         AND refseq_category IN ('reference genome')
     " |
-    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite \
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     > reference.tsv
+
+```
+
+## Download all assemblies
+
+### Create assembly.tsv
+
+Five levels:
+
+* 'RefSeq'
+    * RS2 - genome_rep: 'Full'
+* 'Genbank'
+    * '>= 20 genomes'
+        * GB1 - With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
+        * GB2 - assembly_level: 'Complete Genome', 'Chromosome'
+        * GB3 - NOT 'contig'; genome_rep: 'Full'
+    * '>= 2 genomes'
+        * GB4 - assembly_level: 'Complete Genome', 'Chromosome'
+
+If a refseq assembly is available, the corresponding genbank one is not downloaded
+
+```shell
+cd ~/data/Fungi/summary
+
+cat reference.tsv |
+    tsv-select -H -f organism_name,species,genus,ftp_path,assembly_level,assembly_accession \
+    > raw.tsv
+
+# RS2
+SPECIES=$(
+    cat RS2.tsv |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        organism_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, assembly_level,
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND genome_rep IN ('Full') -- fully representative
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    >> raw.tsv
+
+# Avoid refseq in genbank
+cat raw.tsv |
+    cut -f 6 \
+    > rs.acc.tsv
+
+# GB1
+SPECIES=$(
+    cat GB1.tsv |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        organism_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND tax_id NOT IN ($SPECIES) -- With strain ID
+        AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
+    >> raw.tsv
+
+# GB2
+SPECIES=$(
+    cat GB2.tsv |
+        tsv-join -f GB1.tsv -k 1 -e |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        organism_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
+    >> raw.tsv
+
+# GB3
+SPECIES=$(
+    cat GB3.tsv |
+        tsv-join -f GB1.tsv -k 1 -e |
+        tsv-join -f GB2.tsv -k 1 -e |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+echo "
+    SELECT
+        organism_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND assembly_level IN ('Complete Genome', 'Chromosome', 'Scaffold')
+        AND genome_rep IN ('Full') -- fully representative
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
+    >> raw.tsv
+
+# GB4
+SPECIES=$(
+    cat GB4.tsv |
+        tsv-join -f GB1.tsv -k 1 -e |
+        tsv-join -f GB2.tsv -k 1 -e |
+        tsv-join -f GB3.tsv -k 1 -e |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+echo "
+    SELECT
+        organism_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND assembly_level IN ('Complete Genome', 'Chromosome', 'Scaffold')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
+    >> raw.tsv
+
+datamash check < raw.tsv
+#3602 lines, 6 fields
+
+# Create abbr.
+cat raw.tsv |
+    grep -v '^#' |
+    tsv-uniq |
+    tsv-select -f 1-5 |
+    perl ~/Scripts/withncbi/taxon/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    (echo -e '#name\tftp_path\torganism\tassembly_level' && cat ) |
+    perl -nl -a -F"," -e '
+        BEGIN{my %seen};
+        /^#/ and print and next;
+        /^organism_name/i and next;
+        $seen{$F[3]}++; # ftp_path
+        $seen{$F[3]} > 1 and next;
+        $seen{$F[5]}++; # abbr_name
+        $seen{$F[5]} > 1 and next;
+        printf qq{%s\t%s\t%s\t%s\n}, $F[5], $F[3], $F[1], $F[4];
+        ' |
+    keep-header -- sort -k3,3 -k1,1 \
+    > Fungi.assembly.tsv
+
+datamash check < Fungi.assembly.tsv
+#3601 lines, 4 fields
+
+# find potential duplicate strains or assemblies
+cat Fungi.assembly.tsv |
+    tsv-uniq -f 1 --repeated
+
+cat Fungi.assembly.tsv |
+    tsv-filter --str-not-in-fld 2:ftp
+
+cat Fungi.assembly.tsv |
+    tsv-filter --or --str-in-fld 1:genomosp --str-in-fld 1:genomovar
+
+# Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
+# vim Fungi.assembly.tsv
+# cp Fungi.assembly.tsv ~/Scripts/genomes/assembly
+
+# Comment out unneeded strains
+
+# Cleaning
+rm raw*.*sv
+
+```
+
+### rsync and check
+
+```shell
+cd ~/data/Fungi
+
+cat ~/Scripts/genomes/assembly/Fungi.assembly.tsv |
+    tsv-filter -v --str-in-fld 2:http
+
+nwr assembly ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    -o ASSEMBLY
+
+# Remove dirs not in the list
+find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
+    tr "/" "\t" |
+    cut -f 2 |
+    tsv-join --exclude -k 1 -f ASSEMBLY/url.tsv -d 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        echo Remove {}
+        rm -fr ASSEMBLY/{}
+    '
+
+# Run
+bash ASSEMBLY/rsync.sh
+
+# Check md5
+# rm ASSEMBLY/check.list
+bash ASSEMBLY/check.sh
+
+# Collect
+bash ASSEMBLY/collect.sh
+
+# Temporary files, possibly caused by an interrupted rsync process
+find ASSEMBLY/ -type f -name ".*" > ASSEMBLY/temp.list
+
+cat ASSEMBLY/temp.list |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        if [[ -f {} ]]; then
+            echo Remove {}
+            rm {}
+        fi
+    '
 
 ```
