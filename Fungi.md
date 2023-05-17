@@ -536,14 +536,14 @@ cat ASSEMBLY/collect.csv | # head |
 cat ASSEMBLY/n50.tsv |
     tsv-filter \
         -H --or \
-        --le 4:100 \
+        --le 4:1000 \
         --ge 2:100000 |
     tsv-filter -H --ge 3:1000000 |
     tr "\t" "," \
     > ASSEMBLY/n50.pass.csv
 
 wc -l ASSEMBLY/n50* ASSEMBLY/collect.csv
-#   3012 ASSEMBLY/n50.pass.csv
+#   3085 ASSEMBLY/n50.pass.csv
 #   3601 ASSEMBLY/n50.tsv
 #   3601 ASSEMBLY/collect.csv
 
@@ -559,7 +559,7 @@ done |
     tsv-uniq \
     > ASSEMBLY/omit.lst
 wc -l ASSEMBLY/omit.lst
-#1782 ASSEMBLY/omit.lst
+#1832 ASSEMBLY/omit.lst
 
 tsv-join \
     ASSEMBLY/collect.csv \
@@ -568,7 +568,7 @@ tsv-join \
     > summary/collect.pass.csv
 
 wc -l summary/collect.pass.csv
-#3012 summary/collect.pass.csv
+#3085 summary/collect.pass.csv
 
 ```
 
@@ -709,7 +709,7 @@ cat summary/collect.pass.csv |
     tsv-select -f 2 |
     tsv-uniq |
     wc -l
-#508
+#519
 
 cat summary/collect.pass.csv |
     tsv-filter -H -d, --or \
@@ -720,7 +720,7 @@ cat summary/collect.pass.csv |
     > summary/representative.lst
 
 wc -l summary/representative.lst
-#498 summary/representative.lst
+#509 summary/representative.lst
 
 cat summary/collect.pass.csv |
     sed -e '1d' |
@@ -763,22 +763,22 @@ cat summary/strains.taxon.tsv |
 | Venturia inaequalis      |    85 |
 
 | organism                 | count |
-|--------------------------|------:|
-| Aspergillus flavus       |   133 |
-| Aspergillus fumigatus    |    73 |
-| Aspergillus niger        |    94 |
-| Aspergillus oryzae       |    90 |
-| Botryosphaeria dothidea  |   128 |
-| Candida albicans         |    50 |
-| Cryphonectria parasitica |    68 |
-| Fusarium graminearum     |   111 |
-| Komagataella phaffii     |   127 |
-| Ophidiomyces ophidiicola |    58 |
-| Parastagonospora nodorum |   163 |
-| Penicillium chrysogenum  |    77 |
-| Pyricularia oryzae       |   169 |
-| Rhodotorula mucilaginosa |    64 |
-| Saccharomyces cerevisiae |   111 |
+|--------------------------|-------|
+| Aspergillus flavus       | 136   |
+| Aspergillus fumigatus    | 74    |
+| Aspergillus niger        | 94    |
+| Aspergillus oryzae       | 90    |
+| Botryosphaeria dothidea  | 128   |
+| Candida albicans         | 53    |
+| Cryphonectria parasitica | 68    |
+| Fusarium graminearum     | 112   |
+| Komagataella phaffii     | 127   |
+| Ophidiomyces ophidiicola | 63    |
+| Parastagonospora nodorum | 163   |
+| Penicillium chrysogenum  | 77    |
+| Pyricularia oryzae       | 170   |
+| Rhodotorula mucilaginosa | 65    |
+| Saccharomyces cerevisiae | 111   |
 
 ### Order
 
@@ -830,13 +830,13 @@ cat summary/order.lst |
 |---------|-------------------|----------|----------|
 | 451869  | Botryosphaeriales | 4        | 131      |
 | 5114    | Diaporthales      | 5        | 71       |
-| 5042    | Eurotiales        | 95       | 668      |
-| 5125    | Hypocreales       | 75       | 289      |
-| 639021  | Magnaporthales    | 9        | 172      |
-| 33183   | Onygenales        | 27       | 100      |
-| 92860   | Pleosporales      | 44       | 270      |
-| 4892    | Saccharomycetales | 237      | 687      |
-| 231213  | Sporidiobolales   | 3        | 66       |
+| 5042    | Eurotiales        | 97       | 675      |
+| 5125    | Hypocreales       | 75       | 290      |
+| 639021  | Magnaporthales    | 9        | 173      |
+| 33183   | Onygenales        | 28       | 106      |
+| 92860   | Pleosporales      | 44       | 271      |
+| 4892    | Saccharomycetales | 240      | 727      |
+| 231213  | Sporidiobolales   | 3        | 67       |
 | 5234    | Tremellales       | 18       | 92       |
 
 ### Genus
@@ -890,21 +890,21 @@ cat summary/genus.count.tsv |
 
 | #tax_id | genus                     | #species | #strains |
 |---------|---------------------------|----------|----------|
-| 5598    | Alternaria                | 17       | 59       |
-| 5052    | Aspergillus               | 65       | 449      |
+| 5598    | Alternaria                | 17       | 60       |
+| 5052    | Aspergillus               | 66       | 454      |
 | 45132   | Botryosphaeria            | 1        | 128      |
-| 5475    | Candida                   | 51       | 133      |
+| 5475    | Candida                   | 51       | 137      |
 | 2964429 | Candida/Metschnikowiaceae | 5        | 52       |
 | 5115    | Cryphonectria             | 2        | 68       |
-| 5506    | Fusarium                  | 40       | 223      |
+| 5506    | Fusarium                  | 40       | 224      |
 | 460517  | Komagataella              | 3        | 127      |
 | 27320   | Metschnikowia             | 6        | 53       |
-| 1387562 | Ophidiomyces              | 1        | 58       |
+| 1387562 | Ophidiomyces              | 1        | 63       |
 | 1351751 | Parastagonospora          | 2        | 163      |
 | 5073    | Penicillium               | 19       | 202      |
-| 48558   | Pyricularia               | 8        | 171      |
-| 5533    | Rhodotorula               | 3        | 66       |
-| 4930    | Saccharomyces             | 120      | 198      |
+| 48558   | Pyricularia               | 8        | 172      |
+| 5533    | Rhodotorula               | 3        | 67       |
+| 4930    | Saccharomyces             | 121      | 203      |
 
 ### Infections
 
@@ -960,40 +960,39 @@ cat summary/infections.csv |
     (echo -e '#tax_id\tgenus\t#species\t#strains\tcomment' && cat) |
     mlr --itsv --omd cat
 
-
 ```
 
 | #tax_id | genus                     | #species | #strains | comment       |
 |---------|---------------------------|----------|----------|---------------|
-| 4930    | Saccharomyces             | 120      | 198      | 酵母菌属          |
-| 5052    | Aspergillus               | 65       | 449      | 曲霉菌属          |
+| 4930    | Saccharomyces             | 121      | 203      | 酵母菌属          |
+| 5052    | Aspergillus               | 66       | 454      | 曲霉菌属          |
 | 229219  | Blastomyces               | 2        | 2        | 芽生菌属 (lung)   |
-| 5475    | Candida                   | 51       | 133      | 念珠菌属          |
+| 5475    | Candida                   | 51       | 137      | 念珠菌属          |
 | 2964429 | Candida/Metschnikowiaceae | 5        | 52       |               |
 | 5500    | Coccidioides              | 2        | 2        | 球孢子菌属 (lung)  |
 | 5455    | Colletotrichum            | 14       | 14       | 炭疽菌属          |
 | 5112    | Epichloe                  | 4        | 4        |               |
-| 5506    | Fusarium                  | 40       | 223      | 镰刀菌           |
+| 5506    | Fusarium                  | 40       | 224      | 镰刀菌           |
 | 5036    | Histoplasma               | 5        | 8        | 组织胞浆菌属 (lung) |
 | 71245   | Kazachstania              | 3        | 3        |               |
 | 27320   | Metschnikowia             | 6        | 53       | 梅奇酵母属         |
 | 461281  | Ogataea                   | 5        | 20       |               |
 | 38946   | Paracoccidioides          | 2        | 2        | 副球孢子菌属 (lung) |
 | 5073    | Penicillium               | 19       | 202      | 青霉菌属          |
-| 4919    | Pichia                    | 2        | 21       | 毕赤酵母属         |
+| 4919    | Pichia                    | 2        | 23       | 毕赤酵母属         |
 | 4753    | Pneumocystis              | 3        | 3        | 肺孢子菌属 (lung)  |
-| 48558   | Pyricularia               | 8        | 171      | 梨孢属           |
+| 48558   | Pyricularia               | 8        | 172      | 梨孢属           |
 | 29907   | Sporothrix                | 2        | 2        | 孢子丝菌属 (skin)  |
 | 5094    | Talaromyces               | 8        | 10       | 踝节菌属 (lung)   |
 | 5543    | Trichoderma               | 12       | 31       | 木霉属           |
-| 5550    | Trichophyton              | 11       | 24       | 毛癣菌属          |
+| 5550    | Trichophyton              | 12       | 25       | 毛癣菌属          |
 | 1036719 | Verticillium              | 7        | 20       | 轮枝菌属          |
-| 4951    | Yarrowia                  | 4        | 22       | 耶氏酵母          |
+| 4951    | Yarrowia                  | 4        | 23       | 耶氏酵母          |
 | 1047167 | Zymoseptoria              | 7        | 21       |               |
 | 5206    | Cryptococcus              | 9        | 35       | 隐球菌属 (脑膜炎)    |
-| 55193   | Malassezia                | 7        | 14       | 马拉色菌属         |
+| 55193   | Malassezia                | 7        | 16       | 马拉色菌属         |
 | 5296    | Puccinia                  | 7        | 14       | 柄锈菌属          |
-| 5533    | Rhodotorula               | 3        | 66       | 红酵母属          |
+| 5533    | Rhodotorula               | 3        | 67       | 红酵母属          |
 | 5269    | Ustilago                  | 3        | 36       | 黑粉菌属          |
 | 4830    | Mucor                     | 1        | 1        | 毛霉菌属          |
 
@@ -1136,7 +1135,7 @@ cat summary/strains.taxon.tsv |
 
 tsv-summarize NR/species.tsv -H --count --sum count
 #count   count_sum
-#105     2608
+#105     2670
 
 # each species
 cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 10 |
@@ -1227,7 +1226,7 @@ find NR -name "NR.lst" |
     > summary/NR.lst
 
 wc -l summary/NR.lst
-#291 summary/NR.lst
+#296 summary/NR.lst
 
 ```
 
@@ -1273,14 +1272,14 @@ cat summary/genus.lst |
 
 | #tax_id | genus          | #species | #strains |
 |---------|----------------|----------|----------|
-| 5598    | Alternaria     | 17       | 33       |
-| 5052    | Aspergillus    | 55       | 66       |
+| 5598    | Alternaria     | 17       | 34       |
+| 5052    | Aspergillus    | 56       | 67       |
 | 5579    | Aureobasidium  | 6        | 16       |
 | 5475    | Candida        | 18       | 21       |
 | 5455    | Colletotrichum | 14       | 14       |
 | 5506    | Fusarium       | 32       | 39       |
 | 5073    | Penicillium    | 13       | 20       |
 | 1322061 | Rhizoctonia    | 6        | 14       |
-| 4930    | Saccharomyces  | 9        | 19       |
+| 4930    | Saccharomyces  | 10       | 19       |
 | 5543    | Trichoderma    | 10       | 10       |
 | 1047167 | Zymoseptoria   | 5        | 10       |
