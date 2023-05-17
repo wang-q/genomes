@@ -669,3 +669,618 @@ find biosample -name "SAM*.txt" |
     >> summary/biosample.tsv
 
 ```
+
+## Count species and strains
+
+```shell
+cd ~/data/Fungi
+
+echo "
+    SELECT
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND species NOT LIKE '% sp.%'
+        AND organism_name NOT LIKE '%symbiont %'
+        AND refseq_category IN ('reference genome', 'representative genome')
+        AND assembly_level IN ('Complete Genome', 'Chromosome')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    > summary/assembly_accession.lst
+
+wc -l summary/assembly_accession.lst
+#5278 assembly_accession.lst
+
+cat ASSEMBLY/collect.csv |
+    tsv-select -H -d, -f Taxid |
+    sed '1d' |
+    tsv-uniq |
+    nwr append stdin -r species |
+    tsv-select -f 2 |
+    tsv-uniq |
+    wc -l
+#520
+
+cat summary/collect.pass.csv |
+    tsv-select -H -d, -f Taxid |
+    sed '1d' |
+    tsv-uniq |
+    nwr append stdin -r species |
+    tsv-select -f 2 |
+    tsv-uniq |
+    wc -l
+#508
+
+cat summary/collect.pass.csv |
+    tsv-filter -H -d, --or \
+        --istr-eq "RefSeq_category:reference genome" --istr-eq "RefSeq_category:representative genome" |
+    grep -v "symbiont " |
+    tsv-select -H -d, -f name |
+    sed '1d' \
+    > summary/representative.lst
+
+wc -l summary/representative.lst
+#498 summary/representative.lst
+
+cat summary/collect.pass.csv |
+    sed -e '1d' |
+    tr "," "\t" |
+    tsv-select -f 1,3 |
+    nwr append stdin -c 2 -r species -r genus -r family -r order \
+    > summary/strains.taxon.tsv
+
+cat ~/Scripts/genomes/assembly/Fungi.assembly.tsv |
+    tsv-summarize -H -g 3 --count |
+    tsv-filter -H --ge 2:50 |
+    mlr --itsv --omd cat
+
+cat summary/strains.taxon.tsv |
+    tsv-summarize -g 3 --count |
+    ( echo -e 'organism\tcount' && cat ) |
+    tsv-filter -H --ge 2:50 |
+    mlr --itsv --omd cat
+
+```
+
+| organism                 | count |
+|--------------------------|------:|
+| Aspergillus flavus       |   144 |
+| Aspergillus fumigatus    |    80 |
+| Aspergillus niger        |    96 |
+| Aspergillus oryzae       |    90 |
+| Botryosphaeria dothidea  |   131 |
+| Candida albicans         |    64 |
+| Cryphonectria parasitica |    92 |
+| Fusarium graminearum     |   114 |
+| Komagataella phaffii     |   129 |
+| Ophidiomyces ophidiicola |    63 |
+| Parastagonospora nodorum |   171 |
+| Penicillium chrysogenum  |    78 |
+| Pyricularia oryzae       |   251 |
+| Rhodotorula mucilaginosa |    66 |
+| Saccharomyces cerevisiae |   111 |
+| Saitozyma podzolica      |    56 |
+| Venturia inaequalis      |    85 |
+
+| organism                 | count |
+|--------------------------|------:|
+| Aspergillus flavus       |   133 |
+| Aspergillus fumigatus    |    73 |
+| Aspergillus niger        |    94 |
+| Aspergillus oryzae       |    90 |
+| Botryosphaeria dothidea  |   128 |
+| Candida albicans         |    50 |
+| Cryphonectria parasitica |    68 |
+| Fusarium graminearum     |   111 |
+| Komagataella phaffii     |   127 |
+| Ophidiomyces ophidiicola |    58 |
+| Parastagonospora nodorum |   163 |
+| Penicillium chrysogenum  |    77 |
+| Pyricularia oryzae       |   169 |
+| Rhodotorula mucilaginosa |    64 |
+| Saccharomyces cerevisiae |   111 |
+
+### Order
+
+```shell
+cd ~/data/Fungi
+
+# Group by order
+cat summary/collect.pass.csv |
+    sed -e '1d' |
+    tsv-select -d, -f 3 |
+    tsv-uniq |
+    nwr append stdin -r order |
+    tsv-select -f 2 |
+    tsv-uniq |
+    grep -v "NA" |
+    sort \
+    > summary/order.lst
+
+cat summary/order.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(cat summary/collect.pass.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r order -r species |
+            grep {} |
+            tsv-select -f 1,3 |
+            tsv-uniq |
+            wc -l)
+
+        n_strains=$(cat summary/collect.pass.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r order |
+            grep {} |
+            wc -l)
+
+        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 5,4,2,3 |
+    tsv-sort -k2,2 |
+    tsv-filter --ge 4:50 |
+    (echo -e '#tax_id\torder\t#species\t#strains' && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #tax_id | order             | #species | #strains |
+|---------|-------------------|----------|----------|
+| 451869  | Botryosphaeriales | 4        | 131      |
+| 5114    | Diaporthales      | 5        | 71       |
+| 5042    | Eurotiales        | 95       | 668      |
+| 5125    | Hypocreales       | 75       | 289      |
+| 639021  | Magnaporthales    | 9        | 172      |
+| 33183   | Onygenales        | 27       | 100      |
+| 92860   | Pleosporales      | 44       | 270      |
+| 4892    | Saccharomycetales | 237      | 687      |
+| 231213  | Sporidiobolales   | 3        | 66       |
+| 5234    | Tremellales       | 18       | 92       |
+
+### Genus
+
+```shell
+cd ~/data/Fungi
+
+# Group by genus
+cat summary/collect.pass.csv |
+    sed -e '1d' |
+    tsv-select -d, -f 3 |
+    tsv-uniq |
+    nwr append stdin -r genus |
+    tsv-select -f 2 |
+    tsv-uniq |
+    grep -v "NA" |
+    sort \
+    > summary/genus.lst
+
+cat summary/genus.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(cat summary/collect.pass.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r genus -r species |
+            grep {} |
+            tsv-select -f 1,3 |
+            tsv-uniq |
+            wc -l)
+
+        n_strains=$(cat summary/collect.pass.csv |
+            sed "1d" |
+            tsv-select -d, -f 3 |
+            nwr append stdin -r genus |
+            grep {} |
+            wc -l)
+
+        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 5,4,2,3 |
+    tsv-sort -k2,2 \
+    > summary/genus.count.tsv
+
+cat summary/genus.count.tsv |
+    tsv-filter --ge 4:50 |
+    (echo -e '#tax_id\tgenus\t#species\t#strains' && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #tax_id | genus                     | #species | #strains |
+|---------|---------------------------|----------|----------|
+| 5598    | Alternaria                | 17       | 59       |
+| 5052    | Aspergillus               | 65       | 449      |
+| 45132   | Botryosphaeria            | 1        | 128      |
+| 5475    | Candida                   | 51       | 133      |
+| 2964429 | Candida/Metschnikowiaceae | 5        | 52       |
+| 5115    | Cryphonectria             | 2        | 68       |
+| 5506    | Fusarium                  | 40       | 223      |
+| 460517  | Komagataella              | 3        | 127      |
+| 27320   | Metschnikowia             | 6        | 53       |
+| 1387562 | Ophidiomyces              | 1        | 58       |
+| 1351751 | Parastagonospora          | 2        | 163      |
+| 5073    | Penicillium               | 19       | 202      |
+| 48558   | Pyricularia               | 8        | 171      |
+| 5533    | Rhodotorula               | 3        | 66       |
+| 4930    | Saccharomyces             | 120      | 198      |
+
+### Infections
+
+* https://patient.info/doctor/fungal-lung-infections
+
+* https://www.cdc.gov/fungal/diseases/index.html
+
+```shell
+cd ~/data/Fungi
+
+cat <<EOF | grep -v '^#' > summary/infections.csv
+# Ascomycetes
+Saccharomyces,酵母菌属
+Aspergillus,曲霉菌属
+Blastomyces,芽生菌属 (lung)
+Candida,念珠菌属
+Candida/Metschnikowiaceae,
+Coccidioides,球孢子菌属 (lung)
+Colletotrichum,炭疽菌属
+Epichloe,
+Fusarium,镰刀菌
+Hanseniaspora,有孢汉逊酵母
+Histoplasma,组织胞浆菌属 (lung)
+Kazachstania,
+Metschnikowia,梅奇酵母属
+Ogataea,
+Paracoccidioides,副球孢子菌属 (lung)
+Penicillium,青霉菌属
+Pichia,毕赤酵母属
+Pneumocystis,肺孢子菌属 (lung)
+Pyricularia,梨孢属
+Sporothrix,孢子丝菌属 (skin)
+Talaromyces,踝节菌属 (lung)
+Trichoderma,木霉属
+Trichophyton,毛癣菌属
+Verticillium,轮枝菌属
+Yarrowia,耶氏酵母
+Zymoseptoria,
+# Basidiomycetes
+Cryptococcus,隐球菌属 (脑膜炎)
+Malassezia,马拉色菌属
+Puccinia,柄锈菌属
+Rhodotorula,红酵母属
+Ustilago,黑粉菌属
+# Other
+Mucor,毛霉菌属
+EOF
+
+cat summary/infections.csv |
+    tr ',' '\t' |
+    tsv-join -f summary/genus.count.tsv -k 2 -d 1 --append-fields 1,3,4 |
+    tsv-select -f 3,1,4,5,2 |
+    (echo -e '#tax_id\tgenus\t#species\t#strains\tcomment' && cat) |
+    mlr --itsv --omd cat
+
+
+```
+
+| #tax_id | genus                     | #species | #strains | comment       |
+|---------|---------------------------|----------|----------|---------------|
+| 4930    | Saccharomyces             | 120      | 198      | 酵母菌属          |
+| 5052    | Aspergillus               | 65       | 449      | 曲霉菌属          |
+| 229219  | Blastomyces               | 2        | 2        | 芽生菌属 (lung)   |
+| 5475    | Candida                   | 51       | 133      | 念珠菌属          |
+| 2964429 | Candida/Metschnikowiaceae | 5        | 52       |               |
+| 5500    | Coccidioides              | 2        | 2        | 球孢子菌属 (lung)  |
+| 5455    | Colletotrichum            | 14       | 14       | 炭疽菌属          |
+| 5112    | Epichloe                  | 4        | 4        |               |
+| 5506    | Fusarium                  | 40       | 223      | 镰刀菌           |
+| 5036    | Histoplasma               | 5        | 8        | 组织胞浆菌属 (lung) |
+| 71245   | Kazachstania              | 3        | 3        |               |
+| 27320   | Metschnikowia             | 6        | 53       | 梅奇酵母属         |
+| 461281  | Ogataea                   | 5        | 20       |               |
+| 38946   | Paracoccidioides          | 2        | 2        | 副球孢子菌属 (lung) |
+| 5073    | Penicillium               | 19       | 202      | 青霉菌属          |
+| 4919    | Pichia                    | 2        | 21       | 毕赤酵母属         |
+| 4753    | Pneumocystis              | 3        | 3        | 肺孢子菌属 (lung)  |
+| 48558   | Pyricularia               | 8        | 171      | 梨孢属           |
+| 29907   | Sporothrix                | 2        | 2        | 孢子丝菌属 (skin)  |
+| 5094    | Talaromyces               | 8        | 10       | 踝节菌属 (lung)   |
+| 5543    | Trichoderma               | 12       | 31       | 木霉属           |
+| 5550    | Trichophyton              | 11       | 24       | 毛癣菌属          |
+| 1036719 | Verticillium              | 7        | 20       | 轮枝菌属          |
+| 4951    | Yarrowia                  | 4        | 22       | 耶氏酵母          |
+| 1047167 | Zymoseptoria              | 7        | 21       |               |
+| 5206    | Cryptococcus              | 9        | 35       | 隐球菌属 (脑膜炎)    |
+| 55193   | Malassezia                | 7        | 14       | 马拉色菌属         |
+| 5296    | Puccinia                  | 7        | 14       | 柄锈菌属          |
+| 5533    | Rhodotorula               | 3        | 66       | 红酵母属          |
+| 5269    | Ustilago                  | 3        | 36       | 黑粉菌属          |
+| 4830    | Mucor                     | 1        | 1        | 毛霉菌属          |
+
+## MinHash
+
+### Compute MinHash
+
+```shell
+mkdir -p ~/data/Fungi/mash
+cd ~/data/Fungi/mash
+
+# Remove .msh files not in the list
+find . -maxdepth 1 -mindepth 1 -type f -name "*.msh" |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        basename {} .msh
+    ' |
+    tsv-join --exclude -k 1 -f ../ASSEMBLY/url.tsv -d 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        echo Remove {}
+        rm {}.msh
+    '
+
+# Compute MinHash
+cat ../ASSEMBLY/url.tsv |
+    cut -f 1 |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        if [[ -e {}.msh ]]; then
+            exit
+        fi
+
+        2>&1 echo "==> {}"
+
+        find ../ASSEMBLY/{} -name "*_genomic.fna.gz" |
+            grep -v "_from_" |
+            xargs cat |
+            mash sketch -k 21 -s 100000 -p 2 - -I "{}" -o {}
+    '
+
+```
+
+### Raw phylo-tree of representative assemblies
+
+```shell
+mkdir -p ~/data/Fungi/tree
+cd ~/data/Fungi/tree
+
+mash triangle -E -p 8 -l <(
+    cat ../summary/representative.lst |
+        parallel --no-run-if-empty --linebuffer -k -j 1 '
+            if [[ -e ../mash/{}.msh ]]; then
+                echo "../mash/{}.msh"
+            fi
+        '
+    ) \
+    > mash.dist.tsv
+
+# Fill matrix with lower triangle
+tsv-select -f 1-3 mash.dist.tsv |
+    (tsv-select -f 2,1,3 mash.dist.tsv && cat) |
+    (
+        cut -f 1 mash.dist.tsv |
+            tsv-uniq |
+            parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
+        cat
+    ) \
+    > mash.dist_full.tsv
+
+cat mash.dist_full.tsv |
+    Rscript -e '
+        library(readr);
+        library(tidyr);
+        library(ape);
+        pair_dist <- read_tsv(file("stdin"), col_names=F);
+        tmp <- pair_dist %>%
+            pivot_wider( names_from = X2, values_from = X3, values_fill = list(X3 = 1.0) )
+        tmp <- as.matrix(tmp)
+        mat <- tmp[,-1]
+        rownames(mat) <- tmp[,1]
+
+        dist_mat <- as.dist(mat)
+        clusters <- hclust(dist_mat, method = "ward.D2")
+        tree <- as.phylo(clusters)
+        write.tree(phy=tree, file="tree.nwk")
+
+        group <- cutree(clusters, h=0.4) # k=5
+        groups <- as.data.frame(group)
+        groups$ids <- rownames(groups)
+        rownames(groups) <- NULL
+        groups <- groups[order(groups$group), ]
+        write_tsv(groups, "groups.tsv")
+    '
+
+```
+
+### Tweak the mash tree
+
+```shell
+cd ~/data/Fungi/tree
+
+# rank::col
+ARRAY=(
+    'order::6'
+    'family::5'
+#    'genus::4'
+    'species::3'
+)
+
+rm mash.condensed.map
+CUR_TREE=tree.nwk
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick mash.${GROUP_NAME}.newick
+    cat condense.map >> mash.condensed.map
+
+    CUR_TREE=mash.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.species.newick |
+    rsvg-convert -o Fungi.mash.png
+
+```
+
+## Non-redundant strains within species
+
+```shell
+cd ~/data/Fungi
+
+mkdir NR
+
+cat summary/strains.taxon.tsv |
+    tsv-summarize -H -g 3 --count |
+    tsv-filter -H --ge 2:2 \
+    > NR/species.tsv
+
+tsv-summarize NR/species.tsv -H --count --sum count
+#count   count_sum
+#105     2608
+
+# each species
+cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 10 |
+while read SPECIES; do
+    1>&2 echo "==> ${SPECIES}"
+
+    SPECIES_=$(
+        echo "${SPECIES}" |
+            tr " " "_"
+    )
+
+    mkdir -p NR/${SPECIES_}
+
+    cat summary/strains.taxon.tsv |
+        tsv-filter --str-eq "3:${SPECIES}" |
+        tsv-select -f 1 \
+        > "NR/${SPECIES_}/assembly.lst"
+
+    1>&2 echo "    mash distances"
+
+    if [[ ! -f "NR/${SPECIES_}/mash.dist.tsv" ]]; then
+        mash triangle -E -p 8 -l <(
+            cat "NR/${SPECIES_}/assembly.lst" |
+                parallel --no-run-if-empty --linebuffer -k -j 1 '
+                    if [[ -e mash/{}.msh ]]; then
+                        echo "mash/{}.msh"
+                    fi
+                '
+            ) \
+            > "NR/${SPECIES_}/mash.dist.tsv"
+    fi
+
+    1>&2 echo "    List NR"
+
+    cat "NR/${SPECIES_}/mash.dist.tsv" |
+        tsv-filter --ff-str-ne 1:2 --le 3:0.01 \
+        > "NR/${SPECIES_}/redundant.dist.tsv"
+
+    cat "NR/${SPECIES_}/redundant.dist.tsv" |
+        perl -nla -F"\t" -MGraph::Undirected -e '
+            BEGIN {
+                our $g = Graph::Undirected->new;
+            }
+
+            $g->add_edge($F[0], $F[1]);
+
+            END {
+                for my $cc ( $g->connected_components ) {
+                    print join qq{\t}, sort @{$cc};
+                }
+            }
+        ' \
+        > "NR/${SPECIES_}/connected_components.tsv"
+
+    cat "NR/${SPECIES_}/connected_components.tsv" |
+        perl -nla -MPath::Tiny -F"\t" -e '
+            BEGIN {
+                our %rep = map { ($_, 1) } path(q{summary/representative.lst})->lines({chomp => 1});
+            }
+
+            # Representative strains are preferred
+            if ( grep { $rep{$_} } @F ) {
+                @F = grep { ! $rep{$_} } @F
+            }
+            else {
+                shift @F;
+            }
+            printf qq{%s\n}, $_ for @F;
+            ' \
+        > "NR/${SPECIES_}/redundant.lst"
+
+    cat "NR/${SPECIES_}/assembly.lst" |
+        tsv-join --exclude -f "NR/${SPECIES_}/redundant.lst" \
+        > "NR/${SPECIES_}/NR.lst"
+
+done
+
+find NR -name "redundant.lst" -size +0 | wc -l
+#97
+
+find NR -name "redundant.lst" -empty | wc -l
+#8
+
+find NR -name "NR.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/NR.lst
+
+wc -l summary/NR.lst
+#291 summary/NR.lst
+
+```
+
+### Genus
+
+```shell
+cd ~/data/Fungi
+
+cat summary/genus.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(
+            cat summary/collect.pass.csv |
+                sed "1d" |
+                grep -F -w -f <( cat summary/NR.lst summary/representative.lst | sort | uniq ) |
+                tsv-select -d, -f 3 |
+                nwr append stdin -r genus -r species |
+                grep {} |
+                tsv-select -f 1,3 |
+                tsv-uniq |
+                wc -l
+        )
+
+        n_strains=$(
+            cat summary/collect.pass.csv |
+                sed "1d" |
+                grep -F -w -f <( cat summary/NR.lst summary/representative.lst | sort | uniq ) |
+                tsv-select -d, -f 3 |
+                nwr append stdin -r genus |
+                grep {} |
+                wc -l
+        )
+
+        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 5,4,2,3 |
+    tsv-sort -k2,2 |
+    tsv-filter --ge 4:10 |
+    (echo -e '#tax_id\tgenus\t#species\t#strains' && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #tax_id | genus          | #species | #strains |
+|---------|----------------|----------|----------|
+| 5598    | Alternaria     | 17       | 33       |
+| 5052    | Aspergillus    | 55       | 66       |
+| 5579    | Aureobasidium  | 6        | 16       |
+| 5475    | Candida        | 18       | 21       |
+| 5455    | Colletotrichum | 14       | 14       |
+| 5506    | Fusarium       | 32       | 39       |
+| 5073    | Penicillium    | 13       | 20       |
+| 1322061 | Rhizoctonia    | 6        | 14       |
+| 4930    | Saccharomyces  | 9        | 19       |
+| 5543    | Trichoderma    | 10       | 10       |
+| 1047167 | Zymoseptoria   | 5        | 10       |
