@@ -1077,7 +1077,7 @@ cat mash.dist_full.tsv |
         tree <- as.phylo(clusters)
         write.tree(phy=tree, file="tree.nwk")
 
-        group <- cutree(clusters, h=0.4) # k=5
+        group <- cutree(clusters, h=0.5) # k=3
         groups <- as.data.frame(group)
         groups$ids <- rownames(groups)
         rownames(groups) <- NULL
@@ -1283,3 +1283,7 @@ cat summary/genus.lst |
 | 4930    | Saccharomyces  | 10       | 19       |
 | 5543    | Trichoderma    | 10       | 10       |
 | 1047167 | Zymoseptoria   | 5        | 10       |
+
+## Groups and targets
+
+Review `summary/collect.pass.csv` and `tree/groups.tsv`
