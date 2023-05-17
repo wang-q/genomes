@@ -105,7 +105,9 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 
 ## Download all valid Bacteria and Archaea genomes
 
-[Bacteria.md](./Bacteria.md): All genomes of *Bacteria* and *Archaea*, species by species
+[Bacteria.md](./Bacteria.md): All genomes of **Bacteria** and **Archaea**, species by species
+
+[Fungi.md](./Fungi.md): All genomes of **Fungi**, species by species
 
 ## Prokaryote groups
 
@@ -116,5 +118,4 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 ## Eukaryote groups
 
 * [Trichoderma](groups/Trichoderma.md)
-* Fungi
 * [Protistis](groups/Protists.md)
