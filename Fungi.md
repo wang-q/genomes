@@ -543,11 +543,11 @@ cat ASSEMBLY/n50.tsv |
     > ASSEMBLY/n50.pass.csv
 
 wc -l ASSEMBLY/n50* ASSEMBLY/collect.csv
-#   35159 ASSEMBLY/n50.pass.csv
-#   38660 ASSEMBLY/n50.tsv
-#   38660 ASSEMBLY/collect.csv
+#   3012 ASSEMBLY/n50.pass.csv
+#   3601 ASSEMBLY/n50.tsv
+#   3601 ASSEMBLY/collect.csv
 
-# Omit strains without protein annotations
+# Strains without protein annotations
 for STRAIN in $(cat ASSEMBLY/n50.pass.csv | cut -d, -f 1); do
     if ! compgen -G "ASSEMBLY/${STRAIN}/*_protein.faa.gz" > /dev/null; then
         echo ${STRAIN}
@@ -556,8 +556,10 @@ for STRAIN in $(cat ASSEMBLY/n50.pass.csv | cut -d, -f 1); do
         echo ${STRAIN}
     fi
 done |
-    tsv-uniq
-# All OK
+    tsv-uniq \
+    > ASSEMBLY/omit.lst
+wc -l ASSEMBLY/omit.lst
+#1782 ASSEMBLY/omit.lst
 
 tsv-join \
     ASSEMBLY/collect.csv \
@@ -566,7 +568,7 @@ tsv-join \
     > summary/collect.pass.csv
 
 wc -l summary/collect.pass.csv
-#35159 summary/collect.pass.csv
+#3012 summary/collect.pass.csv
 
 ```
 
@@ -586,5 +588,84 @@ rsync -avP \
 
 # rsync -avP -e "ssh -T -c chacha20-poly1305@openssh.com -o Compression=no -x" \
 #   wangq@202.119.37.251:data/Fungi/ASSEMBLY/ ~/data/Fungi/ASSEMBLY
+
+```
+
+## BioSample
+
+```shell
+cd ~/data/Fungi
+
+mkdir -p biosample
+
+ulimit -n `ulimit -Hn`
+
+cat ASSEMBLY/collect.csv |
+    tsv-select -H -d, -f BioSample |
+    grep "^SAM" |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        if [ ! -s biosample/{}.txt ]; then
+            >&2 echo {}
+            curl -fsSL "https://www.ncbi.nlm.nih.gov/biosample/?term={}&report=full&format=text" -o biosample/{}.txt
+#            curl -fsSL "https://www.ebi.ac.uk/biosamples/samples/{}" -o biosample/{}.json
+        fi
+    '
+
+# Allowing samples not in the list
+find biosample -name "SAM*.txt" | wc -l
+# 3579
+
+find biosample -name "SAM*.txt" |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        cat {} |
+            perl -nl -e '\''
+                print $1 if m{\s+\/([\w_ ]+)=};
+            '\''
+    ' |
+    tsv-uniq --at-least 50 | # ignore rare attributes
+    grep -v "^INSDC" |
+    grep -v "^ENA" \
+    > summary/attributes.lst
+
+cat summary/attributes.lst |
+    (echo -e "BioSample" && cat) |
+    tr '\n' '\t' |
+    sed 's/\t$/\n/' \
+    > summary/biosample.tsv
+
+find biosample -name "SAM*.txt" |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        >&2 echo {/.}
+        cat {} |
+            perl -nl -MPath::Tiny -e '\''
+                BEGIN {
+                    our @keys = grep {/\S/} path(q{summary/attributes.lst})->lines({chomp => 1});
+                    our %stat = ();
+                }
+
+                m(\s+\/([\w_ ]+)=\"(.+)\") or next;
+                my $k = $1;
+                my $v = $2;
+                if ( $v =~ m(\bNA|missing|Not applicable|not collected|not available|not provided|N\/A|not known|unknown\b)i ) {
+                    $stat{$k} = q();
+                } else {
+                    $stat{$k} = $v;
+                }
+
+                END {
+                    my @c;
+                    for my $key ( @keys ) {
+                        if (exists $stat{$key}) {
+                            push @c, $stat{$key};
+                        }
+                        else {
+                            push @c, q();
+                        }
+                    }
+                    print join(qq{\t}, q{{/.}}, @c);
+                }
+            '\''
+    ' \
+    >> summary/biosample.tsv
 
 ```
