@@ -1033,10 +1033,15 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.species.newick |
 
 ## Non-redundant strains within species
 
+If the ANI value between two strains was less than 0.005, the two strains were considered as
+redundant.
+
 ```shell
 cd ~/data/Fungi
 
 mkdir NR
+
+ANI_VALUE=0.005
 
 cat summary/strains.taxon.tsv |
     tsv-summarize -H -g 3 --count |
@@ -1081,7 +1086,7 @@ while read SPECIES; do
     1>&2 echo "    List NR"
 
     cat "NR/${SPECIES_}/mash.dist.tsv" |
-        tsv-filter --ff-str-ne 1:2 --le 3:0.01 \
+        tsv-filter --ff-str-ne 1:2 --le "3:${ANI_VALUE}" \
         > "NR/${SPECIES_}/redundant.dist.tsv"
 
     cat "NR/${SPECIES_}/redundant.dist.tsv" |
@@ -1124,10 +1129,10 @@ while read SPECIES; do
 done
 
 find NR -name "redundant.lst" -size +0 | wc -l
-#97
+#87
 
 find NR -name "redundant.lst" -empty | wc -l
-#8
+#18
 
 find NR -name "NR.lst" |
     xargs cat |
@@ -1136,7 +1141,7 @@ find NR -name "NR.lst" |
     > summary/NR.lst
 
 wc -l summary/NR.lst
-#296 summary/NR.lst
+#504 summary/NR.lst
 
 ```
 
