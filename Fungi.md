@@ -291,6 +291,7 @@ Five levels:
         * GB3 - NOT 'contig'; genome_rep: 'Full'
     * '>= 2 genomes'
         * GB4 - assembly_level: 'Complete Genome', 'Chromosome'
+    * Pneumocystis - The not-so-good genus/species
 
 If a refseq assembly is available, the corresponding genbank one is not downloaded
 
@@ -421,8 +422,26 @@ echo "
     tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
     >> raw.tsv
 
-datamash check < raw.tsv
-#3602 lines, 6 fields
+# The not-so-good genera are placed here
+# Pneumocystis
+echo "
+    SELECT
+        organism_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND genus IN ('Pneumocystis')
+        AND genome_rep IN ('Full') -- fully representative
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
+    >> raw.tsv
+
+cat raw.tsv |
+    tsv-uniq |
+    datamash check
+#3608 lines, 6 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -445,7 +464,7 @@ cat raw.tsv |
     > Fungi.assembly.tsv
 
 datamash check < Fungi.assembly.tsv
-#3601 lines, 4 fields
+#3609 lines, 4 fields
 
 # find potential duplicate strains or assemblies
 cat Fungi.assembly.tsv |
