@@ -39,7 +39,7 @@ nwr ardb --genbank
 ### Packages managed by Homebrew
 
 ```shell
-brew install hmmer
+brew install hmmer easel
 brew install brewsci/bio/muscle
 brew install brewsci/bio/fasttree
 brew install brewsci/bio/newick-utils

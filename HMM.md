@@ -108,6 +108,10 @@ cat ~/Scripts/genomes/data/bac120.tsv |
 
 Ref.: https://doi.org/10.1093/nar/gkac894
 
+The link to the HMM file in their website is actually in the augustus prfl format.
+
+We use hmmbuild to build hmm models from sequence alignments.
+
 ```shell
 mkdir -p ~/data/HMM/fungi61
 cd ~/data/HMM/fungi61
@@ -117,9 +121,19 @@ mkdir -p HMM
 curl -L https://ufcg.steineggerlab.com/ufcg/genes > genes.html
 
 cat genes.html |
-    pup 'table#genes tr td strong text{}' |
+    pup 'table#genes tr td strong text{}' \
+    > fungi61.lst
+
+#https://ufcg.steineggerlab.workers.dev/msa/ACT1_aligned.fasta
+cat fungi61.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        curl -L https://ufcg.steineggerlab.workers.dev/hmm/{}.hmm > HMM/{}.HMM
+        curl -L https://ufcg.steineggerlab.workers.dev/msa/{}_aligned.fasta > HMM/{}.fasta
+    '
+
+cat fungi61.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        esl-reformat stockholm HMM/{}.fasta > HMM/{}.sto
+        hmmbuild HMM/{}.hmm HMM/{}.sto
     '
 
 ```
