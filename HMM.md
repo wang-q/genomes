@@ -6,6 +6,7 @@
 - [TIGRFAM](#tigrfam)
 - [40 single-copy genes](#40-single-copy-genes)
 - [120 bacterial proteins `bac120`](#120-bacterial-proteins-bac120)
+- [61 fungal marker genes](#61-fungal-marker-genes)
 
 <!-- tocstop -->
 
@@ -103,3 +104,22 @@ cat ~/Scripts/genomes/data/bac120.tsv |
 
 ```
 
+## 61 fungal marker genes
+
+Ref.: https://doi.org/10.1093/nar/gkac894
+
+```shell
+mkdir -p ~/data/HMM/fungi61
+cd ~/data/HMM/fungi61
+
+mkdir -p HMM
+
+curl -L https://ufcg.steineggerlab.com/ufcg/genes > genes.html
+
+cat genes.html |
+    pup 'table#genes tr td strong text{}' |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        curl -L https://ufcg.steineggerlab.workers.dev/hmm/{}.hmm > HMM/{}.HMM
+    '
+
+```
