@@ -5,34 +5,34 @@ Download all genomes and analyze representative strains.
 <!-- toc -->
 
 - [Taxon info](#taxon-info)
-  * [List all ranks](#list-all-ranks)
-  * [Species with assemblies](#species-with-assemblies)
-  * [Model organisms](#model-organisms)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+    * [Model organisms](#model-organisms)
 - [Download all assemblies](#download-all-assemblies)
-  * [Create assembly.tsv](#create-assemblytsv)
-  * [rsync and check](#rsync-and-check)
-  * [Check N50 of assemblies](#check-n50-of-assemblies)
-  * [Rsync to hpcc](#rsync-to-hpcc)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [Rsync and check](#rsync-and-check)
+    * [Check N50 of assemblies](#check-n50-of-assemblies)
+    * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
 - [Count species and strains](#count-species-and-strains)
-  * [Order](#order)
-  * [Genus](#genus)
-  * [ReRoot](#reroot)
+    * [Order](#order)
+    * [Genus](#genus)
+    * [ReRoot](#reroot)
 - [MinHash](#minhash)
-  * [Compute MinHash](#compute-minhash)
-  * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
-  * [Tweak the mash tree](#tweak-the-mash-tree)
+    * [Compute MinHash](#compute-minhash)
+    * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
+    * [Tweak the mash tree](#tweak-the-mash-tree)
 - [Non-redundant strains within species](#non-redundant-strains-within-species)
-  * [Genus](#genus-1)
+    * [Genus](#genus-1)
 - [Groups and targets](#groups-and-targets)
 - [Collect proteins](#collect-proteins)
-  * [`all.pro.fa`](#allprofa)
-  * [`all.replace.fa`](#allreplacefa)
-  * [`all.info.tsv`](#allinfotsv)
+    * [`all.pro.fa`](#allprofa)
+    * [`all.replace.fa`](#allreplacefa)
+    * [`all.info.tsv`](#allinfotsv)
 - [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
-  * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
-  * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-  * [Tweak the concat tree](#tweak-the-concat-tree)
+    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Tweak the concat tree](#tweak-the-concat-tree)
 - [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
 - [Divergence of Fungi](#divergence-of-fungi)
 
@@ -521,7 +521,7 @@ rm raw*.*sv
 
 ```
 
-### rsync and check
+### Rsync and check
 
 ```shell
 cd ~/data/Fungi
@@ -985,7 +985,6 @@ cat summary/strains.taxon.tsv |
 #No_cera_GCF_000988165_1 Nosema ceranae  Microsporidia
 
 ```
-
 
 ## MinHash
 
@@ -1656,6 +1655,7 @@ mkdir -p ~/data/Fungi/STRAINS
 
 Ref.:
 
-1. A genome-scale phylogeny of the kingdom Fungi. Cur Biology, 2021. https://doi.org/10.1016/j.cub.2021.01.074
+1. A genome-scale phylogeny of the kingdom Fungi. Cur Biology,
+    2021. https://doi.org/10.1016/j.cub.2021.01.074
 
 ![1-s2.0-S0960982221001391-fx1_lrg.jpg](images%2F1-s2.0-S0960982221001391-fx1_lrg.jpg)
