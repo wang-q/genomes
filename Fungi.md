@@ -4,6 +4,40 @@ Download all genomes and analyze representative strains.
 
 <!-- toc -->
 
+- [Taxon info](#taxon-info)
+  * [List all ranks](#list-all-ranks)
+  * [Species with assemblies](#species-with-assemblies)
+  * [Model organisms](#model-organisms)
+- [Download all assemblies](#download-all-assemblies)
+  * [Create assembly.tsv](#create-assemblytsv)
+  * [rsync and check](#rsync-and-check)
+  * [Check N50 of assemblies](#check-n50-of-assemblies)
+  * [Rsync to hpcc](#rsync-to-hpcc)
+- [BioSample](#biosample)
+- [Count species and strains](#count-species-and-strains)
+  * [Order](#order)
+  * [Genus](#genus)
+  * [ReRoot](#reroot)
+- [MinHash](#minhash)
+  * [Compute MinHash](#compute-minhash)
+  * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
+  * [Tweak the mash tree](#tweak-the-mash-tree)
+- [Non-redundant strains within species](#non-redundant-strains-within-species)
+  * [Genus](#genus-1)
+- [Groups and targets](#groups-and-targets)
+- [Collect proteins](#collect-proteins)
+  * [`all.pro.fa`](#allprofa)
+  * [`all.replace.fa`](#allreplacefa)
+  * [`all.info.tsv`](#allinfotsv)
+- [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
+  * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+  * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+  * [Tweak the concat tree](#tweak-the-concat-tree)
+- [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
+- [Divergence of Fungi](#divergence-of-fungi)
+
+<!-- tocstop -->
+
 ## Taxon info
 
 * [Fungi](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=4751)
@@ -925,6 +959,34 @@ cat summary/genus.count.tsv |
 | 5533    | Rhodotorula               | 3        | 67       |
 | 4930    | Saccharomyces             | 121      | 203      |
 
+### ReRoot
+
+小孢子虫 (Microsporidia) 可以当作真菌的基部类群, 也可以当作真菌的姊妹类群
+
+```shell
+cd ~/data/Fungi
+
+cat summary/strains.taxon.tsv |
+    nwr append stdin -c 2 -r phylum -r subkingdom |
+    tsv-filter --str-ne "8:Dikarya" | # 双核亚界
+    tsv-select -f 1,3,7 |
+    tsv-sort -k3,3 -k1,1 |
+    tsv-filter --or \
+        --str-in-fld "2:Mitosporidium" \
+        --str-in-fld "2:Nematocida" \
+        --str-in-fld "2:Nosema" |
+    grep -v -Fw -f ASSEMBLY/omit.lst
+#Mit_dap_GCF_000760515_2 Mitosporidium daphniae  Microsporidia
+#Nem_aus_GCF_000738915_1 Nematocida ausubeli     Microsporidia
+#Nem_homos_GCF_024244095_1       Nematocida homosporus   Microsporidia
+#Nem_maj_GCF_021653875_1 Nematocida major        Microsporidia
+#Nem_minor_GCF_024244105_1       Nematocida minor        Microsporidia
+#Nem_pari_ERTm1_GCF_000250985_1  Nematocida parisii      Microsporidia
+#No_cera_GCF_000988165_1 Nosema ceranae  Microsporidia
+
+```
+
+
 ## MinHash
 
 ### Compute MinHash
@@ -1021,6 +1083,10 @@ cat mash.dist_full.tsv |
 ```shell
 cd ~/data/Fungi/tree
 
+nw_reroot tree.nwk Mit_dap_GCF_000760515_2 No_cera_GCF_000988165_1 |
+    nw_order -c n - \
+    > mash.reroot.newick
+
 # rank::col
 ARRAY=(
     'order::6'
@@ -1030,7 +1096,7 @@ ARRAY=(
 )
 
 rm mash.condensed.map
-CUR_TREE=tree.nwk
+CUR_TREE=mash.reroot.newick
 
 for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
@@ -1228,3 +1294,368 @@ cat summary/genus.lst |
 ## Groups and targets
 
 Review `summary/collect.pass.csv` and `tree/groups.tsv`
+
+## Collect proteins
+
+### `all.pro.fa`
+
+```shell
+cd ~/data/Fungi
+
+mkdir -p PROTEINS
+
+cat summary/representative.lst | wc -l
+#513
+
+cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst | wc -l
+#499
+
+for STRAIN in $(cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst); do
+    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
+done |
+    pigz -p4 \
+    > PROTEINS/all.pro.fa.gz
+
+gzip -dcf PROTEINS/all.pro.fa.gz |
+    perl -nl -e '
+        BEGIN { our %seen; our $h; }
+
+        if (/^>/) {
+            $h = (split(" ", $_))[0];
+            $seen{$h}++;
+            $_ = $h;
+        }
+        print if $seen{$h} == 1;
+    ' |
+    pigz -p4 \
+    > PROTEINS/all.uniq.fa.gz
+
+# counting proteins
+gzip -dcf PROTEINS/all.pro.fa.gz |
+    grep "^>" |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+gzip -dcf PROTEINS/all.pro.fa.gz |
+    grep "^>" |
+    tsv-uniq |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+# annotations may be different
+gzip -dcf PROTEINS/all.uniq.fa.gz |
+    grep "^>" |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+```
+
+### `all.replace.fa`
+
+```shell
+cd ~/data/Fungi
+
+rm PROTEINS/all.strain.tsv PROTEINS/all.replace.fa.gz
+
+for STRAIN in $(cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst); do
+    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
+        grep "^>" |
+        cut -d" " -f 1 |
+        sed "s/^>//" |
+        STRAIN=${STRAIN} perl -nl -e '
+            $n = $_;
+            $s = $n;
+            $s =~ s/\.\d+//;
+            printf qq{%s\t%s_%s\t%s\n}, $n, $ENV{STRAIN}, $s, $ENV{STRAIN};
+        ' \
+    > PROTEINS/${STRAIN}.replace.tsv
+
+    cut -f 2,3 PROTEINS/${STRAIN}.replace.tsv >> PROTEINS/all.strain.tsv
+
+    faops replace -s \
+        ASSEMBLY/${STRAIN}/*_protein.faa.gz \
+        <(cut -f 1,2 PROTEINS/${STRAIN}.replace.tsv) \
+        stdout |
+        pigz -p4 \
+        >> PROTEINS/all.replace.fa.gz
+
+    rm PROTEINS/${STRAIN}.replace.tsv
+done
+
+gzip -dcf PROTEINS/all.replace.fa.gz |
+    grep "^>" |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+(echo -e "#name\tstrain" && cat PROTEINS/all.strain.tsv)  \
+    > temp &&
+    mv temp PROTEINS/all.strain.tsv
+
+faops size PROTEINS/all.replace.fa.gz > PROTEINS/all.replace.sizes
+
+(echo -e "#name\tsize" && cat PROTEINS/all.replace.sizes) > PROTEINS/all.size.tsv
+
+rm PROTEINS/all.replace.sizes
+
+```
+
+### `all.info.tsv`
+
+```shell
+cd ~/data/Fungi
+
+for STRAIN in $(cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst); do
+    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
+        grep "^>" |
+        sed "s/^>//" |
+        perl -nl -e '/\[.+\[/ and s/\[/\(/; print' |
+        perl -nl -e '/\].+\]/ and s/\]/\)/; print' |
+        perl -nl -e 's/\s+\[.+?\]$//g; print' |
+        perl -nl -e 's/MULTISPECIES: //g; print' |
+        STRAIN=${STRAIN} perl -nl -e '
+            /^(\w+)\.\d+\s+(.+)$/ or next;
+            printf qq{%s_%s\t%s\n}, $ENV{STRAIN}, $1, $2;
+        '
+done \
+    > PROTEINS/all.annotation.tsv
+
+cat PROTEINS/all.annotation.tsv |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+(echo -e "#name\tannotation" && cat PROTEINS/all.annotation.tsv) \
+    > temp &&
+    mv temp PROTEINS/all.annotation.tsv
+
+# check differences
+cat PROTEINS/all.size.tsv |
+    grep -F -f <(cut -f 1 PROTEINS/all.annotation.tsv) -v
+
+tsv-join \
+    PROTEINS/all.strain.tsv \
+    --data-fields 1 \
+    -f PROTEINS/all.size.tsv \
+    --key-fields 1 \
+    --append-fields 2 \
+    > PROTEINS/all.strain_size.tsv
+
+tsv-join \
+    PROTEINS/all.strain_size.tsv \
+    --data-fields 1 \
+    -f PROTEINS/all.annotation.tsv \
+    --key-fields 1 \
+    --append-fields 2 \
+    > PROTEINS/all.info.tsv
+
+cat PROTEINS/all.info.tsv |
+    wc -l |
+    numfmt --to=si
+#5.2M
+
+```
+
+## Phylogenetics with fungi61
+
+### Find corresponding proteins by `hmmsearch`
+
+* Download HMM models as described in [`HMM.md`](HMM.md)
+
+* The `E_VALUE` was manually adjusted to 1e-20 to reach a balance between sensitivity and
+  speciality.
+
+```shell
+E_VALUE=1e-20
+
+cd ~/data/Fungi
+
+# Find all genes
+for marker in $(cat ~/data/HMM/fungi61/fungi61.lst); do
+    >&2 echo "==> marker [${marker}]"
+
+    mkdir -p PROTEINS/${marker}
+
+    cat summary/representative.lst |
+        grep -v -Fx -f ASSEMBLY/omit.lst |
+        parallel --no-run-if-empty --linebuffer -k -j 8 "
+            gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
+                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw ~/data/HMM/fungi61/HMM/${marker}.HMM - |
+                grep '>>' |
+                perl -nl -e ' m{>>\s+(\S+)} and printf qq{%s\t%s\n}, \$1, {}; '
+        " \
+        > PROTEINS/${marker}/replace.tsv
+
+    >&2 echo
+
+done
+
+```
+
+### Align and concat marker genes to create species tree
+
+```shell
+cd ~/data/Fungi
+
+cat ~/data/HMM/fungi61/fungi61.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        cat PROTEINS/{}/replace.tsv |
+            wc -l
+    ' |
+    tsv-summarize --quantile 1:0.25,0.5,0.75
+#493     512     1257
+
+cat ~/data/HMM/fungi61/fungi61.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo {}
+        cat PROTEINS/{}/replace.tsv |
+            wc -l
+    ' |
+    paste - - |
+    tsv-filter --invert --ge 2:400 --le 2:800 |
+    cut -f 1 \
+    > PROTEINS/fungi61.omit.lst
+
+# Extract sequences
+# Multiple copies slow down the alignment process
+cat ~/data/HMM/fungi61/fungi61.lst |
+    grep -v -Fx -f PROTEINS/fungi61.omit.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        >&2 echo "==> marker [{}]"
+
+        cat PROTEINS/{}/replace.tsv \
+            > PROTEINS/{}/{}.replace.tsv
+
+        faops some PROTEINS/all.uniq.fa.gz <(
+            cat PROTEINS/{}/{}.replace.tsv |
+                cut -f 1 |
+                tsv-uniq
+            ) stdout \
+            > PROTEINS/{}/{}.pro.fa
+    '
+
+# Align each markers with muscle
+cat ~/data/HMM/fungi61/fungi61.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        >&2 echo "==> marker [{}]"
+        if [ ! -s PROTEINS/{}/{}.pro.fa ]; then
+            exit
+        fi
+        if [ -s PROTEINS/{}/{}.aln.fa ]; then
+            exit
+        fi
+
+        muscle -quiet -in PROTEINS/{}/{}.pro.fa -out PROTEINS/{}/{}.aln.fa
+    '
+
+for marker in $(cat ~/data/HMM/fungi61/fungi61.lst); do
+    >&2 echo "==> marker [${marker}]"
+    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+
+    # sometimes `muscle` can not produce alignments
+    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    # 1 name to many names
+    cat PROTEINS/${marker}/${marker}.replace.tsv |
+        parallel --no-run-if-empty --linebuffer -k -j 4 "
+            faops replace -s PROTEINS/${marker}/${marker}.aln.fa <(echo {}) stdout
+        " \
+        > PROTEINS/${marker}/${marker}.replace.fa
+done
+
+# Concat marker genes
+for marker in $(cat ~/data/HMM/fungi61/fungi61.lst); do
+    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    # sequences in one line
+    faops filter -l 0 PROTEINS/${marker}/${marker}.replace.fa stdout
+
+    # empty line for .fas
+    echo
+done \
+    > PROTEINS/fungi61.aln.fas
+
+cat summary/representative.lst |
+    grep -v -Fx -f ASSEMBLY/omit.lst |
+    fasops concat PROTEINS/fungi61.aln.fas stdin -o PROTEINS/fungi61.aln.fa
+
+# Trim poorly aligned regions with `TrimAl`
+trimal -in PROTEINS/fungi61.aln.fa -out PROTEINS/fungi61.trim.fa -automated1
+
+faops size PROTEINS/fungi61.*.fa |
+    tsv-uniq -f 2 |
+    cut -f 2
+#107618
+#12337
+
+# To make it faster
+FastTree -fastest -noml PROTEINS/fungi61.trim.fa > PROTEINS/fungi61.trim.newick
+
+```
+
+### Tweak the concat tree
+
+```shell
+cd ~/data/Fungi/tree
+
+nw_reroot ../PROTEINS/fungi61.trim.newick Mit_dap_GCF_000760515_2 No_cera_GCF_000988165_1 |
+    nw_order -c n - \
+    > fungi61.reroot.newick
+
+# rank::col
+ARRAY=(
+    'order::6'
+    'family::5'
+#    'genus::4'
+    'species::3'
+)
+
+rm fungi61.condensed.map
+CUR_TREE=fungi61.reroot.newick
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick fungi61.${GROUP_NAME}.newick
+    cat condense.map >> fungi61.condensed.map
+
+    CUR_TREE=fungi61.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 fungi61.species.newick |
+    rsvg-convert -o Fungi.fungi61.png
+
+```
+
+## InterProScan on all proteins of representative and typical strains
+
+To be filled by other projects
+
+```shell
+mkdir -p ~/data/Fungi/STRAINS
+
+```
+
+## Divergence of Fungi
+
+Ref.:
+
+1. A genome-scale phylogeny of the kingdom Fungi. Cur Biology, 2021. https://doi.org/10.1016/j.cub.2021.01.074
+
+![1-s2.0-S0960982221001391-fx1_lrg.jpg](images%2F1-s2.0-S0960982221001391-fx1_lrg.jpg)
