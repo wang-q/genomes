@@ -562,9 +562,9 @@ cat ASSEMBLY/n50.tsv |
     > ASSEMBLY/n50.pass.csv
 
 wc -l ASSEMBLY/n50* ASSEMBLY/collect.csv
-#   3085 ASSEMBLY/n50.pass.csv
-#   3601 ASSEMBLY/n50.tsv
-#   3601 ASSEMBLY/collect.csv
+#   3093 ASSEMBLY/n50.pass.csv
+#   3609 ASSEMBLY/n50.tsv
+#   3609 ASSEMBLY/collect.csv
 
 # Strains without protein annotations
 for STRAIN in $(cat ASSEMBLY/n50.pass.csv | cut -d, -f 1); do
@@ -578,7 +578,7 @@ done |
     tsv-uniq \
     > ASSEMBLY/omit.lst
 wc -l ASSEMBLY/omit.lst
-#1832 ASSEMBLY/omit.lst
+#1833 ASSEMBLY/omit.lst
 
 tsv-join \
     ASSEMBLY/collect.csv \
@@ -587,7 +587,7 @@ tsv-join \
     > summary/collect.pass.csv
 
 wc -l summary/collect.pass.csv
-#3085 summary/collect.pass.csv
+#3093 summary/collect.pass.csv
 
 ```
 
@@ -632,7 +632,7 @@ cat ASSEMBLY/collect.csv |
 
 # Allowing samples not in the list
 find biosample -name "SAM*.txt" | wc -l
-# 3579
+# 3587
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -718,7 +718,7 @@ cat ASSEMBLY/collect.csv |
     tsv-select -f 2 |
     tsv-uniq |
     wc -l
-#520
+#524
 
 cat summary/collect.pass.csv |
     tsv-select -H -d, -f Taxid |
@@ -728,7 +728,7 @@ cat summary/collect.pass.csv |
     tsv-select -f 2 |
     tsv-uniq |
     wc -l
-#519
+#524
 
 cat summary/collect.pass.csv |
     tsv-filter -H -d, --or \
@@ -739,7 +739,7 @@ cat summary/collect.pass.csv |
     > summary/representative.lst
 
 wc -l summary/representative.lst
-#509 summary/representative.lst
+#513 summary/representative.lst
 
 cat summary/collect.pass.csv |
     sed -e '1d' |
@@ -782,22 +782,22 @@ cat summary/strains.taxon.tsv |
 | Venturia inaequalis      |    85 |
 
 | organism                 | count |
-|--------------------------|-------|
-| Aspergillus flavus       | 136   |
-| Aspergillus fumigatus    | 74    |
-| Aspergillus niger        | 94    |
-| Aspergillus oryzae       | 90    |
-| Botryosphaeria dothidea  | 128   |
-| Candida albicans         | 53    |
-| Cryphonectria parasitica | 68    |
-| Fusarium graminearum     | 112   |
-| Komagataella phaffii     | 127   |
-| Ophidiomyces ophidiicola | 63    |
-| Parastagonospora nodorum | 163   |
-| Penicillium chrysogenum  | 77    |
-| Pyricularia oryzae       | 170   |
-| Rhodotorula mucilaginosa | 65    |
-| Saccharomyces cerevisiae | 111   |
+|--------------------------|------:|
+| Aspergillus flavus       |   136 |
+| Aspergillus fumigatus    |    74 |
+| Aspergillus niger        |    94 |
+| Aspergillus oryzae       |    90 |
+| Botryosphaeria dothidea  |   128 |
+| Candida albicans         |    53 |
+| Cryphonectria parasitica |    68 |
+| Fusarium graminearum     |   112 |
+| Komagataella phaffii     |   127 |
+| Ophidiomyces ophidiicola |    63 |
+| Parastagonospora nodorum |   163 |
+| Penicillium chrysogenum  |    77 |
+| Pyricularia oryzae       |   170 |
+| Rhodotorula mucilaginosa |    65 |
+| Saccharomyces cerevisiae |   111 |
 
 ### Order
 
@@ -1069,7 +1069,7 @@ cat summary/strains.taxon.tsv |
 
 tsv-summarize NR/species.tsv -H --count --sum count
 #count   count_sum
-#105     2670
+#107     2676
 
 # each species
 cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 10 |
@@ -1148,7 +1148,7 @@ while read SPECIES; do
 done
 
 find NR -name "redundant.lst" -size +0 | wc -l
-#87
+#89
 
 find NR -name "redundant.lst" -empty | wc -l
 #18
@@ -1160,7 +1160,7 @@ find NR -name "NR.lst" |
     > summary/NR.lst
 
 wc -l summary/NR.lst
-#504 summary/NR.lst
+#508 summary/NR.lst
 
 ```
 
@@ -1204,19 +1204,26 @@ cat summary/genus.lst |
 
 ```
 
-| #tax_id | genus          | #species | #strains |
-|---------|----------------|----------|----------|
-| 5598    | Alternaria     | 17       | 34       |
-| 5052    | Aspergillus    | 56       | 67       |
-| 5579    | Aureobasidium  | 6        | 16       |
-| 5475    | Candida        | 18       | 21       |
-| 5455    | Colletotrichum | 14       | 14       |
-| 5506    | Fusarium       | 32       | 39       |
-| 5073    | Penicillium    | 13       | 20       |
-| 1322061 | Rhizoctonia    | 6        | 14       |
-| 4930    | Saccharomyces  | 10       | 19       |
-| 5543    | Trichoderma    | 10       | 10       |
-| 1047167 | Zymoseptoria   | 5        | 10       |
+| #tax_id | genus                     | #species | #strains |
+|---------|---------------------------|----------|----------|
+| 5598    | Alternaria                | 17       | 36       |
+| 5052    | Aspergillus               | 58       | 98       |
+| 5579    | Aureobasidium             | 6        | 16       |
+| 45132   | Botryosphaeria            | 1        | 26       |
+| 5475    | Candida                   | 28       | 39       |
+| 2964429 | Candida/Metschnikowiaceae | 5        | 10       |
+| 5455    | Colletotrichum            | 14       | 14       |
+| 5506    | Fusarium                  | 36       | 67       |
+| 27320   | Metschnikowia             | 6        | 11       |
+| 1351751 | Parastagonospora          | 2        | 11       |
+| 5073    | Penicillium               | 14       | 24       |
+| 5296    | Puccinia                  | 6        | 11       |
+| 48558   | Pyricularia               | 4        | 12       |
+| 1322061 | Rhizoctonia               | 6        | 16       |
+| 4930    | Saccharomyces             | 19       | 32       |
+| 1890244 | Saitozyma                 | 1        | 15       |
+| 5543    | Trichoderma               | 11       | 20       |
+| 1047167 | Zymoseptoria              | 5        | 12       |
 
 ## Groups and targets
 
