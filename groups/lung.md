@@ -181,39 +181,53 @@ cat summary/strains.taxon.tsv |
 
 ```
 
-| #family            | genus                     | species                  | count |
-|--------------------|---------------------------|--------------------------|-------|
-| Ajellomycetaceae   | Histoplasma               | Histoplasma capsulatum   | 7     |
-| Arthrodermataceae  | Trichophyton              | Trichophyton rubrum      | 23    |
-| Aspergillaceae     | Aspergillus               | Aspergillus flavus       | 136   |
-|                    |                           | Aspergillus fumigatus    | 74    |
-|                    |                           | Aspergillus luchuensis   | 12    |
-|                    |                           | Aspergillus niger        | 94    |
-|                    |                           | Aspergillus oryzae       | 90    |
-|                    | Monascus                  | Monascus purpureus       | 6     |
-|                    | Penicillium               | Penicillium chrysogenum  | 77    |
-|                    |                           | Penicillium citrinum     | 23    |
-|                    |                           | Penicillium nalgiovense  | 29    |
-|                    |                           | Penicillium oxalicum     | 10    |
-|                    |                           | Penicillium roqueforti   | 36    |
-|                    |                           | Penicillium salamii      | 21    |
-| Cryptococcaceae    | Cryptococcus              | Cryptococcus neoformans  | 32    |
-| Debaryomycetaceae  | Candida                   | Candida albicans         | 53    |
-|                    |                           | Candida orthopsilosis    | 4     |
-|                    |                           | Candida parapsilosis     | 21    |
-|                    | Debaryomyces              | Debaryomyces hansenii    | 11    |
-|                    | Scheffersomyces           | Scheffersomyces stipitis | 2     |
-| Dipodascaceae      | Geotrichum                | Geotrichum candidum      | 17    |
-|                    | Yarrowia                  | Yarrowia lipolytica      | 23    |
-| Malasseziaceae     | Malassezia                | Malassezia furfur        | 2     |
-|                    |                           | Malassezia restricta     | 4     |
-|                    |                           | Malassezia sympodialis   | 8     |
-| Metschnikowiaceae  | Candida/Metschnikowiaceae | [Candida] auris          | 46    |
-|                    |                           | [Candida] intermedia     | 3     |
-|                    | Clavispora                | Clavispora lusitaniae    | 32    |
-| Onygenaceae        | Ophidiomyces              | Ophidiomyces ophidiicola | 63    |
-| Saccharomycodaceae | Saccharomycodes           | Saccharomycodes ludwigii | 3     |
-| Trichocomaceae     | Talaromyces               | Talaromyces marneffei    | 5     |
+| #family            | genus                     | species                               | count |
+|--------------------|---------------------------|---------------------------------------|-------|
+| Ajellomycetaceae   | Histoplasma               | Histoplasma capsulatum                | 7     |
+| Arthrodermataceae  | Trichophyton              | Trichophyton rubrum                   | 23    |
+| Aspergillaceae     | Aspergillus               | Aspergillus flavus                    | 136   |
+|                    |                           | Aspergillus fumigatus                 | 74    |
+|                    |                           | Aspergillus luchuensis                | 12    |
+|                    |                           | Aspergillus niger                     | 94    |
+|                    |                           | Aspergillus oryzae                    | 90    |
+|                    | Monascus                  | Monascus purpureus                    | 6     |
+|                    | Penicillium               | Penicillium chrysogenum               | 77    |
+|                    |                           | Penicillium citrinum                  | 23    |
+|                    |                           | Penicillium nalgiovense               | 29    |
+|                    |                           | Penicillium oxalicum                  | 10    |
+|                    |                           | Penicillium roqueforti                | 36    |
+|                    |                           | Penicillium salamii                   | 21    |
+| Cryptococcaceae    | Cryptococcus              | Cryptococcus neoformans               | 32    |
+| Debaryomycetaceae  | Candida                   | Candida albicans                      | 53    |
+|                    |                           | Candida orthopsilosis                 | 4     |
+|                    |                           | Candida parapsilosis                  | 21    |
+|                    | Debaryomyces              | Debaryomyces hansenii                 | 11    |
+|                    | Scheffersomyces           | Scheffersomyces stipitis              | 2     |
+| Dipodascaceae      | Geotrichum                | Geotrichum candidum                   | 17    |
+|                    | Yarrowia                  | Yarrowia lipolytica                   | 23    |
+| Malasseziaceae     | Malassezia                | Malassezia furfur                     | 2     |
+|                    |                           | Malassezia restricta                  | 4     |
+|                    |                           | Malassezia sympodialis                | 8     |
+| Metschnikowiaceae  | Candida/Metschnikowiaceae | [Candida] auris                       | 46    |
+|                    |                           | [Candida] intermedia                  | 3     |
+|                    | Clavispora                | Clavispora lusitaniae                 | 32    |
+| Onygenaceae        | Ophidiomyces              | Ophidiomyces ophidiicola              | 63    |
+| Pneumocystidaceae  | Pneumocystis              | Pneumocystis canis                    | 3     |
+|                    |                           | Pneumocystis jirovecii                | 3     |
+| Saccharomycetaceae | Eremothecium              | Eremothecium gossypii                 | 2     |
+|                    | Kluyveromyces             | Kluyveromyces lactis                  | 3     |
+|                    |                           | Kluyveromyces marxianus               | 15    |
+|                    | Nakaseomyces              | Nakaseomyces glabratus                | 42    |
+|                    | Saccharomyces             | Saccharomyces boulardii (nom. inval.) | 7     |
+|                    |                           | Saccharomyces cerevisiae              | 111   |
+|                    |                           | Saccharomyces eubayanus               | 13    |
+|                    |                           | Saccharomyces kudriavzevii            | 9     |
+|                    |                           | Saccharomyces paradoxus               | 25    |
+|                    |                           | Saccharomyces pastorianus             | 18    |
+|                    |                           | Saccharomyces uvarum                  | 20    |
+|                    | Torulaspora               | Torulaspora delbrueckii               | 23    |
+| Saccharomycodaceae | Saccharomycodes           | Saccharomycodes ludwigii              | 3     |
+| Trichocomaceae     | Talaromyces               | Talaromyces marneffei                 | 5     |
 
 ### List all ranks within the genus of interest
 
@@ -223,12 +237,12 @@ There are no noteworthy classification ranks other than species.
 
 ```shell
 
-nwr member Aspergillus Candida "Candida/Metschnikowiaceae" Pneumocystis Cryptococcus |
+nwr member Aspergillus Candida "Candida/Metschnikowiaceae" Nakaseomyces Pneumocystis Cryptococcus |
     grep -v " sp." |
     tsv-summarize -H -g 3 --count |
     mlr --itsv --omd cat
 
-for N in Aspergillus Candida "Candida/Metschnikowiaceae" Pneumocystis Cryptococcus; do
+for N in Aspergillus Candida "Candida/Metschnikowiaceae" Nakaseomyces Pneumocystis Cryptococcus; do
     nwr lineage "${N}" |
         tsv-filter --str-ne 1:clade |
         tsv-filter --str-ne "1:no rank" |
@@ -243,14 +257,14 @@ done |
 
 | rank       | count |
 |------------|-------|
-| genus      | 5     |
-| species    | 728   |
+| genus      | 6     |
+| species    | 738   |
 | subgenus   | 6     |
-| strain     | 715   |
-| no rank    | 6     |
+| strain     | 730   |
+| no rank    | 7     |
 | varietas   | 43    |
 | subspecies | 1     |
-| isolate    | 3     |
+| isolate    | 4     |
 
 | #rank      | sci_name                  | tax_id  |
 |------------|---------------------------|---------|
@@ -270,6 +284,8 @@ done |
 | *genus*    | Candida                   | 5475    |
 | family     | Metschnikowiaceae         | 27319   |
 | *genus*    | Candida/Metschnikowiaceae | 2964429 |
+| family     | Saccharomycetaceae        | 4893    |
+| *genus*    | Nakaseomyces              | 374468  |
 | subphylum  | Taphrinomycotina          | 451866  |
 | class      | Pneumocystidomycetes      | 147553  |
 | order      | Pneumocystidales          | 37987   |
