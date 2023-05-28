@@ -44,7 +44,7 @@ cat <<EOF | grep -v '^#' > summary/infections.csv
 Aspergillus,曲霉菌属
 Blastomyces,芽生菌属 (lung)
 Candida,念珠菌属
-Candida/Metschnikowiaceae,
+Candida/Metschnikowiaceae, ([Candida] auris 耳念珠菌)
 Coccidioides,球孢子菌属 (lung)
 #Colletotrichum,刺盘孢属 (炭疽)
 #Epichloe,
@@ -53,6 +53,7 @@ Hanseniaspora,有孢汉逊酵母
 Histoplasma,组织胞浆菌属 (lung)
 #Kazachstania,
 Metschnikowia,梅奇酵母属
+Nakaseomyces, (Candida glabrata 光滑念珠菌)
 #Ogataea,
 Paracoccidioides,副球孢子菌属 (lung)
 #Penicillium,青霉菌属
@@ -74,6 +75,12 @@ Malassezia,马拉色菌属 (skin)
 #Ustilago,黑粉菌属
 ## Other
 Mucor,毛霉菌属
+## Top
+Candida albicans,白色念珠菌
+Nakaseomyces glabratus,光滑念珠菌
+Candida tropicalis,热带念珠菌
+Candida parapsilosis,近平滑念珠菌
+[Candida] auris,耳念珠菌
 EOF
 
 cat summary/infections.csv |
@@ -83,26 +90,45 @@ cat summary/infections.csv |
     (echo -e '#tax_id\tgenus\t#species\t#strains\tcomment' && cat) |
     mlr --itsv --omd cat
 
+cat ~/data/Fungi/summary/strains.taxon.tsv |
+    tsv-summarize -g 3 --count |
+    tsv-join -k 1 -f <(
+        cat summary/infections.csv |
+            tr ',' '\t'
+        ) \
+        -a 2 |
+    (echo -e '#species\t#strains\tcomment' && cat) |
+    mlr --itsv --omd cat
+
 ```
 
-| #tax_id | genus                     | #species | #strains | comment       |
-|---------|---------------------------|----------|----------|---------------|
-| 5052    | Aspergillus               | 66       | 454      | 曲霉菌属          |
-| 229219  | Blastomyces               | 2        | 2        | 芽生菌属 (lung)   |
-| 5475    | Candida                   | 51       | 137      | 念珠菌属          |
-| 2964429 | Candida/Metschnikowiaceae | 5        | 52       |               |
-| 5500    | Coccidioides              | 2        | 2        | 球孢子菌属 (lung)  |
-| 5036    | Histoplasma               | 5        | 8        | 组织胞浆菌属 (lung) |
-| 27320   | Metschnikowia             | 6        | 53       | 梅奇酵母属         |
-| 38946   | Paracoccidioides          | 2        | 2        | 副球孢子菌属 (lung) |
-| 4753    | Pneumocystis              | 3        | 3        | 肺孢子菌属 (lung)  |
-| 29907   | Sporothrix                | 2        | 2        | 孢子丝菌属 (skin)  |
-| 5094    | Talaromyces               | 8        | 10       | 踝节菌属 (lung)   |
-| 5550    | Trichophyton              | 12       | 25       | 毛癣菌属          |
-| 4951    | Yarrowia                  | 4        | 23       | 耶氏酵母          |
-| 5206    | Cryptococcus              | 9        | 35       | 隐球菌属 (脑膜炎)    |
-| 55193   | Malassezia                | 7        | 16       | 马拉色菌属 (skin)  |
-| 4830    | Mucor                     | 1        | 1        | 毛霉菌属          |
+| #tax_id | genus                     | #species | #strains | comment                  |
+|---------|---------------------------|----------|----------|--------------------------|
+| 5052    | Aspergillus               | 66       | 454      | 曲霉菌属                     |
+| 229219  | Blastomyces               | 2        | 2        | 芽生菌属 (lung)              |
+| 5475    | Candida                   | 51       | 137      | 念珠菌属                     |
+| 2964429 | Candida/Metschnikowiaceae | 5        | 52       | ([Candida] auris 耳念珠菌)   |
+| 5500    | Coccidioides              | 2        | 2        | 球孢子菌属 (lung)             |
+| 5036    | Histoplasma               | 5        | 8        | 组织胞浆菌属 (lung)            |
+| 27320   | Metschnikowia             | 6        | 53       | 梅奇酵母属                    |
+| 374468  | Nakaseomyces              | 2        | 42       | (Candida glabrata 光滑念珠菌) |
+| 38946   | Paracoccidioides          | 2        | 2        | 副球孢子菌属 (lung)            |
+| 4753    | Pneumocystis              | 8        | 11       | 肺孢子菌属 (lung)             |
+| 29907   | Sporothrix                | 2        | 2        | 孢子丝菌属 (skin)             |
+| 5094    | Talaromyces               | 8        | 10       | 踝节菌属 (lung)              |
+| 5550    | Trichophyton              | 12       | 25       | 毛癣菌属                     |
+| 4951    | Yarrowia                  | 4        | 23       | 耶氏酵母                     |
+| 5206    | Cryptococcus              | 9        | 35       | 隐球菌属 (脑膜炎)               |
+| 55193   | Malassezia                | 7        | 16       | 马拉色菌属 (skin)             |
+| 4830    | Mucor                     | 1        | 1        | 毛霉菌属                     |
+
+| #species               | #strains | comment |
+|------------------------|----------|---------|
+| Candida albicans       | 53       | 白色念珠菌   |
+| Candida parapsilosis   | 21       | 近平滑念珠菌  |
+| Candida tropicalis     | 1        | 热带念珠菌   |
+| [Candida] auris        | 46       | 耳念珠菌    |
+| Nakaseomyces glabratus | 42       | 光滑念珠菌   |
 
 ### List strains within families of target genara
 
