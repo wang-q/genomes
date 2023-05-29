@@ -92,7 +92,7 @@ In the vast majority of fungal species, only one genome was selected for refseq.
         * GB1 - With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
         * GB2 - assembly_level: 'Complete Genome', 'Chromosome'
         * GB3 - NOT 'contig'; genome_rep: 'Full'
-    * '>= 2 genomes'
+    * '>= 1 genomes'
         * GB4 - assembly_level: 'Complete Genome', 'Chromosome'
 
 ```shell
@@ -229,7 +229,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
             AND species NOT LIKE '% x %'
             AND assembly_level IN ('Complete Genome', 'Chromosome')
         GROUP BY species_id
-        HAVING count >= 2
+        HAVING count >= 1
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
@@ -242,7 +242,7 @@ wc -l RS*.tsv GB*.tsv
 #    1 GB1.tsv
 #    4 GB2.tsv
 #   51 GB3.tsv
-#   82 GB4.tsv
+#  250 GB4.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -257,7 +257,7 @@ done
 #109
 #750
 #4473
-#1082
+#1268
 
 ```
 
@@ -271,13 +271,15 @@ cat RS*.tsv GB*.tsv |
     tsv-uniq |
     grep "\[" |
     nwr append stdin -r genus
-#498019	[Candida] auris	Candida/Metschnikowiaceae
-#1231522	[Candida] duobushaemulonis	Candida/Metschnikowiaceae
-#45357	[Candida] haemuloni	Candida/Metschnikowiaceae
-#418784	[Candida] pseudohaemulonii	Candida/Metschnikowiaceae
-#561895	[Candida] subhashii	Spathaspora
-#5477	[Candida] boidinii	Ogataea
-#45354	[Candida] intermedia	Candida/Metschnikowiaceae
+#498019  [Candida] auris Candida/Metschnikowiaceae
+#1231522 [Candida] duobushaemulonis      Candida/Metschnikowiaceae
+#45357   [Candida] haemuloni     Candida/Metschnikowiaceae
+#418784  [Candida] pseudohaemulonii      Candida/Metschnikowiaceae
+#561895  [Candida] subhashii     Spathaspora
+#566037  [Ashbya] aceris (nom. inval.)   Eremothecium
+#312227  [Candida] hispaniensis  Candida/Saccharomycetales
+#45354   [Candida] intermedia    Candida/Metschnikowiaceae
+#2093215 [Candida] vulturna (nom. inval.)        Clavispora
 
 ```
 
@@ -323,7 +325,7 @@ Five levels:
         * GB1 - With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
         * GB2 - assembly_level: 'Complete Genome', 'Chromosome'
         * GB3 - NOT 'contig'; genome_rep: 'Full'
-    * '>= 2 genomes'
+    * '>= 1 genomes'
         * GB4 - assembly_level: 'Complete Genome', 'Chromosome'
     * Pneumocystis - The not-so-good genus/species
 
@@ -475,7 +477,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#3608 lines, 6 fields
+#4016 lines, 6 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -498,7 +500,7 @@ cat raw.tsv |
     > Fungi.assembly.tsv
 
 datamash check < Fungi.assembly.tsv
-#3609 lines, 4 fields
+#4015 lines, 4 fields
 
 # find potential duplicate strains or assemblies
 cat Fungi.assembly.tsv |
