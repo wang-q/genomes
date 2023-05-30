@@ -598,9 +598,9 @@ cat ASSEMBLY/n50.tsv |
     > ASSEMBLY/n50.pass.csv
 
 wc -l ASSEMBLY/n50* ASSEMBLY/collect.csv
-#   3093 ASSEMBLY/n50.pass.csv
-#   3609 ASSEMBLY/n50.tsv
-#   3609 ASSEMBLY/collect.csv
+#   3437 ASSEMBLY/n50.pass.csv
+#   4015 ASSEMBLY/n50.tsv
+#   4015 ASSEMBLY/collect.csv
 
 # Strains without protein annotations
 for STRAIN in $(cat ASSEMBLY/n50.pass.csv | cut -d, -f 1); do
@@ -614,7 +614,7 @@ done |
     tsv-uniq \
     > ASSEMBLY/omit.lst
 wc -l ASSEMBLY/omit.lst
-#1833 ASSEMBLY/omit.lst
+#2080 ASSEMBLY/omit.lst
 
 tsv-join \
     ASSEMBLY/collect.csv \
@@ -623,7 +623,7 @@ tsv-join \
     > summary/collect.pass.csv
 
 wc -l summary/collect.pass.csv
-#3093 summary/collect.pass.csv
+#3437 summary/collect.pass.csv
 
 ```
 
@@ -668,7 +668,7 @@ cat ASSEMBLY/collect.csv |
 
 # Allowing samples not in the list
 find biosample -name "SAM*.txt" | wc -l
-# 3587
+# 3990
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -754,7 +754,7 @@ cat ASSEMBLY/collect.csv |
     tsv-select -f 2 |
     tsv-uniq |
     wc -l
-#524
+#624
 
 cat summary/collect.pass.csv |
     tsv-select -H -d, -f Taxid |
@@ -764,7 +764,7 @@ cat summary/collect.pass.csv |
     tsv-select -f 2 |
     tsv-uniq |
     wc -l
-#524
+#623
 
 cat summary/collect.pass.csv |
     tsv-filter -H -d, --or \
@@ -775,7 +775,7 @@ cat summary/collect.pass.csv |
     > summary/representative.lst
 
 wc -l summary/representative.lst
-#513 summary/representative.lst
+#609 summary/representative.lst
 
 cat summary/collect.pass.csv |
     sed -e '1d' |
@@ -798,42 +798,42 @@ cat summary/strains.taxon.tsv |
 ```
 
 | organism                 | count |
-|--------------------------|------:|
-| Aspergillus flavus       |   144 |
-| Aspergillus fumigatus    |    80 |
-| Aspergillus niger        |    96 |
-| Aspergillus oryzae       |    90 |
-| Botryosphaeria dothidea  |   131 |
-| Candida albicans         |    64 |
-| Cryphonectria parasitica |    92 |
-| Fusarium graminearum     |   114 |
-| Komagataella phaffii     |   129 |
-| Ophidiomyces ophidiicola |    63 |
-| Parastagonospora nodorum |   171 |
-| Penicillium chrysogenum  |    78 |
-| Pyricularia oryzae       |   251 |
-| Rhodotorula mucilaginosa |    66 |
-| Saccharomyces cerevisiae |   111 |
-| Saitozyma podzolica      |    56 |
-| Venturia inaequalis      |    85 |
+|--------------------------|-------|
+| Aspergillus flavus       | 144   |
+| Aspergillus fumigatus    | 80    |
+| Aspergillus niger        | 96    |
+| Aspergillus oryzae       | 90    |
+| Botryosphaeria dothidea  | 131   |
+| Candida albicans         | 64    |
+| Cryphonectria parasitica | 92    |
+| Fusarium graminearum     | 114   |
+| Komagataella phaffii     | 129   |
+| Ophidiomyces ophidiicola | 63    |
+| Parastagonospora nodorum | 171   |
+| Penicillium chrysogenum  | 78    |
+| Pyricularia oryzae       | 251   |
+| Rhodotorula mucilaginosa | 66    |
+| Saccharomyces cerevisiae | 111   |
+| Saitozyma podzolica      | 56    |
+| Venturia inaequalis      | 85    |
 
 | organism                 | count |
-|--------------------------|------:|
-| Aspergillus flavus       |   136 |
-| Aspergillus fumigatus    |    74 |
-| Aspergillus niger        |    94 |
-| Aspergillus oryzae       |    90 |
-| Botryosphaeria dothidea  |   128 |
-| Candida albicans         |    53 |
-| Cryphonectria parasitica |    68 |
-| Fusarium graminearum     |   112 |
-| Komagataella phaffii     |   127 |
-| Ophidiomyces ophidiicola |    63 |
-| Parastagonospora nodorum |   163 |
-| Penicillium chrysogenum  |    77 |
-| Pyricularia oryzae       |   170 |
-| Rhodotorula mucilaginosa |    65 |
-| Saccharomyces cerevisiae |   111 |
+|--------------------------|-------|
+| Aspergillus flavus       | 136   |
+| Aspergillus fumigatus    | 74    |
+| Aspergillus niger        | 94    |
+| Aspergillus oryzae       | 90    |
+| Botryosphaeria dothidea  | 128   |
+| Candida albicans         | 53    |
+| Cryphonectria parasitica | 68    |
+| Fusarium graminearum     | 112   |
+| Komagataella phaffii     | 127   |
+| Ophidiomyces ophidiicola | 63    |
+| Parastagonospora nodorum | 163   |
+| Penicillium chrysogenum  | 77    |
+| Pyricularia oryzae       | 170   |
+| Rhodotorula mucilaginosa | 65    |
+| Saccharomyces cerevisiae | 111   |
 
 ### Order
 
@@ -883,16 +883,18 @@ cat summary/order.lst |
 
 | #tax_id | order             | #species | #strains |
 |---------|-------------------|----------|----------|
-| 451869  | Botryosphaeriales | 4        | 131      |
-| 5114    | Diaporthales      | 5        | 71       |
-| 5042    | Eurotiales        | 97       | 675      |
-| 5125    | Hypocreales       | 75       | 290      |
-| 639021  | Magnaporthales    | 9        | 173      |
-| 33183   | Onygenales        | 28       | 106      |
-| 92860   | Pleosporales      | 44       | 271      |
-| 4892    | Saccharomycetales | 240      | 727      |
+| 451869  | Botryosphaeriales | 5        | 140      |
+| 34395   | Chaetothyriales   | 23       | 50       |
+| 5114    | Diaporthales      | 9        | 76       |
+| 5042    | Eurotiales        | 107      | 719      |
+| 5125    | Hypocreales       | 104      | 376      |
+| 639021  | Magnaporthales    | 10       | 176      |
+| 33183   | Onygenales        | 37       | 116      |
+| 92860   | Pleosporales      | 51       | 288      |
+| 4892    | Saccharomycetales | 279      | 803      |
 | 231213  | Sporidiobolales   | 3        | 67       |
-| 5234    | Tremellales       | 18       | 92       |
+| 5234    | Tremellales       | 36       | 112      |
+| 5267    | Ustilaginales     | 13       | 52       |
 
 ### Genus
 
@@ -945,21 +947,22 @@ cat summary/genus.count.tsv |
 
 | #tax_id | genus                     | #species | #strains |
 |---------|---------------------------|----------|----------|
-| 5598    | Alternaria                | 17       | 60       |
-| 5052    | Aspergillus               | 66       | 454      |
+| 5598    | Alternaria                | 20       | 69       |
+| 5052    | Aspergillus               | 70       | 468      |
 | 45132   | Botryosphaeria            | 1        | 128      |
-| 5475    | Candida                   | 51       | 137      |
-| 2964429 | Candida/Metschnikowiaceae | 5        | 52       |
+| 5475    | Candida                   | 55       | 150      |
+| 2964429 | Candida/Metschnikowiaceae | 6        | 55       |
 | 5115    | Cryphonectria             | 2        | 68       |
-| 5506    | Fusarium                  | 40       | 224      |
-| 460517  | Komagataella              | 3        | 127      |
-| 27320   | Metschnikowia             | 6        | 53       |
+| 5206    | Cryptococcus              | 27       | 55       |
+| 5506    | Fusarium                  | 44       | 251      |
+| 460517  | Komagataella              | 4        | 128      |
+| 27320   | Metschnikowia             | 10       | 61       |
 | 1387562 | Ophidiomyces              | 1        | 63       |
 | 1351751 | Parastagonospora          | 2        | 163      |
-| 5073    | Penicillium               | 19       | 202      |
-| 48558   | Pyricularia               | 8        | 172      |
+| 5073    | Penicillium               | 23       | 214      |
+| 48558   | Pyricularia               | 9        | 175      |
 | 5533    | Rhodotorula               | 3        | 67       |
-| 4930    | Saccharomyces             | 121      | 203      |
+| 4930    | Saccharomyces             | 128      | 214      |
 
 ### ReRoot
 
@@ -1093,7 +1096,7 @@ ARRAY=(
     'order::6'
     'family::5'
 #    'genus::4'
-    'species::3'
+#    'species::3'
 )
 
 rm mash.condensed.map
@@ -1103,7 +1106,7 @@ for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/scripts/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick mash.${GROUP_NAME}.newick
     cat condense.map >> mash.condensed.map
@@ -1112,7 +1115,7 @@ for item in "${ARRAY[@]}" ; do
 done
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.species.newick |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.family.newick |
     rsvg-convert -o Fungi.mash.png
 
 ```
@@ -1136,7 +1139,7 @@ cat summary/strains.taxon.tsv |
 
 tsv-summarize NR/species.tsv -H --count --sum count
 #count   count_sum
-#107     2676
+#188     3001
 
 # each species
 cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 10 |
@@ -1215,10 +1218,10 @@ while read SPECIES; do
 done
 
 find NR -name "redundant.lst" -size +0 | wc -l
-#89
+#146
 
 find NR -name "redundant.lst" -empty | wc -l
-#18
+#42
 
 find NR -name "NR.lst" |
     xargs cat |
@@ -1227,7 +1230,7 @@ find NR -name "NR.lst" |
     > summary/NR.lst
 
 wc -l summary/NR.lst
-#508 summary/NR.lst
+#705 summary/NR.lst
 
 ```
 
@@ -1273,23 +1276,28 @@ cat summary/genus.lst |
 
 | #tax_id | genus                     | #species | #strains |
 |---------|---------------------------|----------|----------|
-| 5598    | Alternaria                | 17       | 36       |
-| 5052    | Aspergillus               | 58       | 98       |
+| 5598    | Alternaria                | 20       | 44       |
+| 5052    | Aspergillus               | 60       | 103      |
 | 5579    | Aureobasidium             | 6        | 16       |
+| 5581    | Beauveria                 | 2        | 10       |
 | 45132   | Botryosphaeria            | 1        | 26       |
-| 5475    | Candida                   | 28       | 39       |
-| 2964429 | Candida/Metschnikowiaceae | 5        | 10       |
-| 5455    | Colletotrichum            | 14       | 14       |
-| 5506    | Fusarium                  | 36       | 67       |
-| 27320   | Metschnikowia             | 6        | 11       |
+| 5475    | Candida                   | 30       | 41       |
+| 2964429 | Candida/Metschnikowiaceae | 5        | 11       |
+| 5455    | Colletotrichum            | 15       | 15       |
+| 5206    | Cryptococcus              | 11       | 14       |
+| 5112    | Epichloe                  | 14       | 16       |
+| 5506    | Fusarium                  | 40       | 87       |
+| 300275  | Lachancea                 | 9        | 10       |
+| 27320   | Metschnikowia             | 9        | 15       |
 | 1351751 | Parastagonospora          | 2        | 11       |
-| 5073    | Penicillium               | 14       | 24       |
-| 5296    | Puccinia                  | 6        | 11       |
-| 48558   | Pyricularia               | 4        | 12       |
+| 5073    | Penicillium               | 15       | 28       |
+| 5296    | Puccinia                  | 7        | 13       |
+| 48558   | Pyricularia               | 4        | 14       |
 | 1322061 | Rhizoctonia               | 6        | 16       |
-| 4930    | Saccharomyces             | 19       | 32       |
+| 4930    | Saccharomyces             | 25       | 41       |
 | 1890244 | Saitozyma                 | 1        | 15       |
-| 5543    | Trichoderma               | 11       | 20       |
+| 5094    | Talaromyces               | 8        | 12       |
+| 5543    | Trichoderma               | 17       | 29       |
 | 1047167 | Zymoseptoria              | 5        | 12       |
 
 ## Groups and targets
@@ -1306,10 +1314,10 @@ cd ~/data/Fungi
 mkdir -p PROTEINS
 
 cat summary/representative.lst | wc -l
-#513
+#609
 
 cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst | wc -l
-#499
+#529
 
 for STRAIN in $(cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst); do
     gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
@@ -1336,21 +1344,21 @@ gzip -dcf PROTEINS/all.pro.fa.gz |
     grep "^>" |
     wc -l |
     numfmt --to=si
-#5.2M
+#5.4M
 
 gzip -dcf PROTEINS/all.pro.fa.gz |
     grep "^>" |
     tsv-uniq |
     wc -l |
     numfmt --to=si
-#5.2M
+#5.4M
 
 # annotations may be different
 gzip -dcf PROTEINS/all.uniq.fa.gz |
     grep "^>" |
     wc -l |
     numfmt --to=si
-#5.2M
+#5.4M
 
 ```
 
@@ -1390,7 +1398,7 @@ gzip -dcf PROTEINS/all.replace.fa.gz |
     grep "^>" |
     wc -l |
     numfmt --to=si
-#5.2M
+#5.4M
 
 (echo -e "#name\tstrain" && cat PROTEINS/all.strain.tsv)  \
     > temp &&
@@ -1427,7 +1435,7 @@ done \
 cat PROTEINS/all.annotation.tsv |
     wc -l |
     numfmt --to=si
-#5.2M
+#5.4M
 
 (echo -e "#name\tannotation" && cat PROTEINS/all.annotation.tsv) \
     > temp &&
@@ -1456,7 +1464,7 @@ tsv-join \
 cat PROTEINS/all.info.tsv |
     wc -l |
     numfmt --to=si
-#5.2M
+#5.4M
 
 ```
 
@@ -1507,7 +1515,7 @@ cat ~/data/HMM/fungi61/fungi61.lst |
             wc -l
     ' |
     tsv-summarize --quantile 1:0.25,0.5,0.75
-#493     512     1257
+#523     543     1341
 
 cat ~/data/HMM/fungi61/fungi61.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -1598,8 +1606,8 @@ trimal -in PROTEINS/fungi61.aln.fa -out PROTEINS/fungi61.trim.fa -automated1
 faops size PROTEINS/fungi61.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#107618
-#12337
+#111589
+#14051
 
 # To make it faster
 FastTree -fastest -noml PROTEINS/fungi61.trim.fa > PROTEINS/fungi61.trim.newick
@@ -1620,7 +1628,7 @@ ARRAY=(
     'order::6'
     'family::5'
 #    'genus::4'
-    'species::3'
+#    'species::3'
 )
 
 rm fungi61.condensed.map
@@ -1630,7 +1638,7 @@ for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/scripts/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick fungi61.${GROUP_NAME}.newick
     cat condense.map >> fungi61.condensed.map
@@ -1639,7 +1647,7 @@ for item in "${ARRAY[@]}" ; do
 done
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 fungi61.species.newick |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 fungi61.family.newick |
     rsvg-convert -o Fungi.fungi61.png
 
 ```
