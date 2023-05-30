@@ -310,6 +310,8 @@ echo "
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     > reference.tsv
 
+cp reference.tsv ~/Scripts/genomes/assembly/Fungi.reference.tsv
+
 ```
 
 ## Download all assemblies

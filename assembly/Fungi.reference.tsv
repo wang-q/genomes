@@ -1,0 +1,2 @@
+tax_id	organism_name	bioproject	biosample	assembly_accession	refseq_category	assembly_level	genome_rep	seq_rel_date	asm_name	gbrs_paired_asm	ftp_path	family	family_id	genus	genus_id	species	species_id
+559292	Saccharomyces cerevisiae S288C	PRJNA128		GCF_000146045.2	reference genome	Complete Genome	Full	2014-12-17	R64	GCA_000146045.2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64	Saccharomycetaceae	4893	Saccharomyces	4930	Saccharomyces cerevisiae	4932
