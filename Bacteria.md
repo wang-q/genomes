@@ -573,7 +573,12 @@ rsync -avP \
     ~/data/Bacteria/ \
     wangq@58.213.64.36:data/Bacteria
 
-# rsync -avP wangq@202.119.37.251:data/Bacteria/ ~/data/Bacteria
+# back
+rsync -avP \
+    -e 'ssh -p 8804' \
+    wangq@58.213.64.36:data/Bacteria/ \
+    ~/data/Bacteria
+
 
 # rsync -avP -e "ssh -T -c chacha20-poly1305@openssh.com -o Compression=no -x" \
 #   wangq@202.119.37.251:data/Bacteria/ASSEMBLY/ ~/data/Bacteria/ASSEMBLY
