@@ -3,10 +3,10 @@
 <!-- toc -->
 
 - [Strain info](#strain-info)
+    * [Symlink](#symlink)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
 - [All assemblies](#all-assemblies)
-    * [Symlink](#symlink)
     * [List strains of the target genus and remove abnormal strains](#list-strains-of-the-target-genus-and-remove-abnormal-strains)
     * [Extract from `../Bacteria`](#extract-from-bacteria)
     * [Count strains - Genus](#count-strains---genus)
@@ -53,6 +53,22 @@ Similarly, a recent [paper](https://doi.org/10.1016/j.syapm.2021.126289) suggest
 of Pseudomonas should be transferred to Halopseudomonas and Stutzerimonas.
 
 Also, Azotobacter is actually inside other Pseudomonas.
+
+### Symlink
+
+```shell
+mkdir -p ~/data/Pseudomonas
+cd ~/data/Pseudomonas
+
+rm -fr ASSEMBLY
+rm -fr NR
+rm -fr STRAINS
+
+ln -s ../Bacteria/ASSEMBLY ASSEMBLY
+ln -s ../Bacteria/NR NR
+ln -s ../Bacteria/STRAINS STRAINS
+
+```
 
 ### List all ranks
 
@@ -247,21 +263,6 @@ cat species.count.tsv |
 | 1444770    | Xylella taiwanensis        | 32   | 22  |
 
 ## All assemblies
-
-### Symlink
-
-```shell
-cd ~/data/Pseudomonas
-
-rm -fr ASSEMBLY
-rm -fr NR
-rm -fr STRAINS
-
-ln -s ../Bacteria/ASSEMBLY ASSEMBLY
-ln -s ../Bacteria/NR NR
-ln -s ../Bacteria/STRAINS STRAINS
-
-```
 
 ### List strains of the target genus and remove abnormal strains
 
