@@ -8,6 +8,7 @@ Default values:
     GROUP_COL   2
 
 $ bash condense_tree.sh tree.newick taxon.tsv
+
 "
 
 if [ "$#" -lt 2 ]; then
