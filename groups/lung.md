@@ -455,7 +455,7 @@ while read SPECIES; do
 
     1>&2 echo -e "==> ${SPECIES_}\t${D_MEDIAN}\t${D_MAX}"
     cat NR/${SPECIES_}/assembly.lst |
-        grep -v -F -w -f "NR/${SPECIES_}/median.cc.lst"
+        grep -v -Fw -f "NR/${SPECIES_}/median.cc.lst"
 done |
     tee summary/abnormal.lst
 
@@ -506,5 +506,59 @@ cat ../Fungi/summary/collect.pass.csv |
     ) |
     cut -d, -f 1 \
     > summary/reference.lst
+
+```
+
+### Extract from `../Fungi`
+
+```shell
+cd ~/data/lung
+
+head -n 1 ../Fungi/summary/collect.pass.csv \
+    > summary/collect.pass.csv
+
+cat ../Fungi/summary/collect.pass.csv |
+    grep -Fw -f <(cat summary/strains.lst summary/reference.lst) \
+    >> summary/collect.pass.csv
+
+# biosample.tsv
+cp ../Fungi/summary/attributes.lst summary/
+
+head -n 1 ../Fungi/summary/biosample.tsv \
+    > summary/biosample.tsv
+
+cat ../Fungi/summary/biosample.tsv |
+    grep -Fw -f <(
+        cat summary/collect.pass.csv |
+            tsv-select -H -d, -f BioSample |
+            sort | uniq |
+            grep "^SAM"
+        ) \
+    >> summary/biosample.tsv
+
+# NR.lst and representative.lst
+cat ../Fungi/summary/NR.lst |
+    grep -Fw -f <(cat summary/strains.lst) \
+    > summary/NR.lst
+
+cat ../Fungi/summary/representative.lst |
+    grep -Fw -f <(cat summary/strains.lst) \
+    > summary/representative.lst
+
+# All representative should be in NR
+cat summary/representative.lst |
+    grep -v -F -f summary/NR.lst
+
+wc -l \
+    summary/strains.taxon.tsv \
+    summary/collect.pass.csv \
+    summary/biosample.tsv \
+    summary/NR.lst \
+    summary/representative.lst
+#   4182 summary/strains.taxon.tsv
+#   4196 summary/collect.pass.csv
+#   4203 summary/biosample.tsv
+#   1100 summary/NR.lst
+#    131 summary/representative.lst
 
 ```
