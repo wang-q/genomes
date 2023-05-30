@@ -399,7 +399,7 @@ cat ../Bacteria/summary/collect.pass.csv |
 
 # other lists
 cat summary/strains.taxon.tsv | cut -f 1 | sort | uniq \
-    > strains.lst
+    > summary/strains.lst
 
 cat summary/strains.taxon.tsv | tsv-select -f 4 | sort | uniq \
     > summary/genus.lst
@@ -598,11 +598,6 @@ rsync -avP \
     ~/data/Pseudomonas/ \
     wangq@58.213.64.36:data/Pseudomonas
 
-# rsync -avP wangq@202.119.37.251:data/Pseudomonas/STRAINS/ ~/data/Pseudomonas/STRAINS
-
-# rsync -avP -e "ssh -T -c chacha20-poly1305@openssh.com -o Compression=no -x" \
-#   wangq@202.119.37.251:data/Pseudomonas/ ~/data/Pseudomonas
-
 ```
 
 ## NCBI taxonomy
@@ -630,158 +625,15 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 ncbi.nwk |
 
 ## Collect proteins
 
-### `all.pro.fa`
+Call the pipeline script.
 
 ```shell
 cd ~/data/Pseudomonas
 
-mkdir -p PROTEINS
+bash ~/Scripts/genomes/bin/pl_collect_protein.sh
 
-for STRAIN in $(cat summary/strains.lst); do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
-done |
-    pigz -p4 \
-    > PROTEINS/all.pro.fa.gz
-
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    perl -nl -e '
-        BEGIN { our %seen; our $h; }
-
-        if (/^>/) {
-            $h = (split(" ", $_))[0];
-            $seen{$h}++;
-            $_ = $h;
-        }
-        print if $seen{$h} == 1;
-    ' |
-    pigz -p4 \
-    > PROTEINS/all.uniq.fa.gz
-
-# counting proteins
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#21M
-
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    grep "^>" |
-    tsv-uniq |
-    wc -l |
-    numfmt --to=si
-#4.7M
-
-# annotations may be different
-gzip -dcf PROTEINS/all.uniq.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#4.6M
-
-```
-
-### `all.replace.fa`
-
-```shell
-cd ~/data/Pseudomonas
-
-rm PROTEINS/all.strain.tsv PROTEINS/all.replace.fa.gz
-for STRAIN in $(cat summary/strains.lst); do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
-        grep "^>" |
-        cut -d" " -f 1 |
-        sed "s/^>//" |
-        STRAIN=${STRAIN} perl -nl -e '
-            $n = $_;
-            $s = $n;
-            $s =~ s/\.\d+//;
-            printf qq{%s\t%s_%s\t%s\n}, $n, $ENV{STRAIN}, $s, $ENV{STRAIN};
-        ' \
-    > PROTEINS/${STRAIN}.replace.tsv
-
-    cut -f 2,3 PROTEINS/${STRAIN}.replace.tsv >> PROTEINS/all.strain.tsv
-
-    faops replace -s \
-        ASSEMBLY/${STRAIN}/*_protein.faa.gz \
-        <(cut -f 1,2 PROTEINS/${STRAIN}.replace.tsv) \
-        stdout |
-        pigz -p4 \
-        >> PROTEINS/all.replace.fa.gz
-
-    rm PROTEINS/${STRAIN}.replace.tsv
-done
-
-gzip -dcf PROTEINS/all.replace.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#21M
-
-(echo -e "#name\tstrain" && cat PROTEINS/all.strain.tsv)  \
-    > temp &&
-    mv temp PROTEINS/all.strain.tsv
-
-faops size PROTEINS/all.replace.fa.gz > PROTEINS/all.replace.sizes
-
-(echo -e "#name\tsize" && cat PROTEINS/all.replace.sizes) > PROTEINS/all.size.tsv
-
-rm PROTEINS/all.replace.sizes
-
-```
-
-### `all.info.tsv`
-
-```shell
-cd ~/data/Pseudomonas
-
-for STRAIN in $(cat summary/strains.lst); do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
-        grep "^>" |
-        sed "s/^>//" |
-        perl -nl -e '/\[.+\[/ and s/\[/\(/; print' |
-        perl -nl -e '/\].+\]/ and s/\]/\)/; print' |
-        perl -nl -e 's/\s+\[.+?\]$//g; print' |
-        perl -nl -e 's/MULTISPECIES: //g; print' |
-        STRAIN=${STRAIN} perl -nl -e '
-            /^(\w+)\.\d+\s+(.+)$/ or next;
-            printf qq{%s_%s\t%s\n}, $ENV{STRAIN}, $1, $2;
-        '
-done \
-    > PROTEINS/all.annotation.tsv
-
-cat PROTEINS/all.annotation.tsv |
-    wc -l |
-    numfmt --to=si
-#21M
-
-(echo -e "#name\tannotation" && cat PROTEINS/all.annotation.tsv) \
-    > temp &&
-    mv temp PROTEINS/all.annotation.tsv
-
-# check differences
-cat PROTEINS/all.size.tsv |
-    grep -F -f <(cut -f 1 PROTEINS/all.annotation.tsv) -v
-
-tsv-join \
-    PROTEINS/all.strain.tsv \
-    --data-fields 1 \
-    -f PROTEINS/all.size.tsv \
-    --key-fields 1 \
-    --append-fields 2 \
-    > PROTEINS/all.strain_size.tsv
-
-tsv-join \
-    PROTEINS/all.strain_size.tsv \
-    --data-fields 1 \
-    -f PROTEINS/all.annotation.tsv \
-    --key-fields 1 \
-    --append-fields 2 \
-    > PROTEINS/all.info.tsv
-
-cat PROTEINS/all.info.tsv |
-    wc -l |
-    numfmt --to=si
-#21M
+cat PROTEINS/counts.tsv |
+    mlr --itsv --omd cat
 
 ```
 
