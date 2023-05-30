@@ -10,7 +10,12 @@ Genomic alignment of fungi infecting the lungs was performed to obtain consensus
     * [List strains within families of target genara](#list-strains-within-families-of-target-genara)
     * [List all ranks within the genus of interest](#list-all-ranks-within-the-genus-of-interest)
 - [All assemblies](#all-assemblies)
-    * [List strains of the target genus and remove abnormal strains](#list-strains-of-the-target-genus-and-remove-abnormal-strains)
+    * [List strains of the target families and remove abnormal strains](#list-strains-of-the-target-families-and-remove-abnormal-strains)
+    * [Remove abnormal strains](#remove-abnormal-strains)
+    * [Extract from `../Fungi`](#extract-from-fungi)
+    * [Count strains - Genus](#count-strains---genus)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+- [Collect proteins](#collect-proteins)
 
 <!-- tocstop -->
 
@@ -656,161 +661,24 @@ rsync -avP \
 
 ## Collect proteins
 
-### `all.pro.fa`
-
-```shell script
-cd ~/data/lung
-
-mkdir -p PROTEINS
-
-cat summary/strains.lst | grep -v -Fw -f ASSEMBLY/omit.lst |
-while read STRAIN; do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
-done |
-    pigz -p4 \
-    > PROTEINS/all.pro.fa.gz
-
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    perl -nl -e '
-        BEGIN { our %seen; our $h; }
-
-        if (/^>/) {
-            $h = (split(" ", $_))[0];
-            $seen{$h}++;
-            $_ = $h;
-        }
-        print if $seen{$h} == 1;
-    ' |
-    pigz -p4 \
-    > PROTEINS/all.uniq.fa.gz
-
-# counting proteins
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#4.4M
-
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    grep "^>" |
-    tsv-uniq |
-    wc -l |
-    numfmt --to=si
-#4.4M
-
-# annotations may be different
-gzip -dcf PROTEINS/all.uniq.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#4.4M
-
-```
-
-### `all.replace.fa`
+Call the pipeline script.
 
 ```shell
 cd ~/data/lung
 
-rm PROTEINS/all.strain.tsv PROTEINS/all.replace.fa.gz
+bash ~/Scripts/genomes/bin/pl_collect_protein.sh
 
-cat summary/strains.lst | grep -v -Fw -f ASSEMBLY/omit.lst |
-while read STRAIN; do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
-        grep "^>" |
-        cut -d" " -f 1 |
-        sed "s/^>//" |
-        STRAIN=${STRAIN} perl -nl -e '
-            $n = $_;
-            $s = $n;
-            $s =~ s/\.\d+//;
-            printf qq{%s\t%s_%s\t%s\n}, $n, $ENV{STRAIN}, $s, $ENV{STRAIN};
-        ' \
-    > PROTEINS/${STRAIN}.replace.tsv
-
-    cut -f 2,3 PROTEINS/${STRAIN}.replace.tsv >> PROTEINS/all.strain.tsv
-
-    faops replace -s \
-        ASSEMBLY/${STRAIN}/*_protein.faa.gz \
-        <(cut -f 1,2 PROTEINS/${STRAIN}.replace.tsv) \
-        stdout |
-        pigz -p4 \
-        >> PROTEINS/all.replace.fa.gz
-
-    rm PROTEINS/${STRAIN}.replace.tsv
-done
-
-gzip -dcf PROTEINS/all.replace.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#4.4M
-
-(echo -e "#name\tstrain" && cat PROTEINS/all.strain.tsv)  \
-    > temp &&
-    mv temp PROTEINS/all.strain.tsv
-
-faops size PROTEINS/all.replace.fa.gz > PROTEINS/all.replace.sizes
-
-(echo -e "#name\tsize" && cat PROTEINS/all.replace.sizes) > PROTEINS/all.size.tsv
-
-rm PROTEINS/all.replace.sizes
+cat PROTEINS/counts.tsv |
+    mlr --itsv --omd cat
 
 ```
 
-### `all.info.tsv`
+| #item                          | count     |
+|--------------------------------|-----------|
+| Proteins                       | 4,398,679 |
+| Unique headers and annotations | 4,398,679 |
+| Unique proteins                | 4,398,679 |
+| all.replace.fa                 | 4,398,679 |
+| all.annotation.tsv             | 4,398,680 |
+| all.info.tsv                   | 4,398,680 |
 
-```shell
-cd ~/data/lung
-
-cat summary/strains.lst | grep -v -Fw -f ASSEMBLY/omit.lst |
-while read STRAIN; do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
-        grep "^>" |
-        sed "s/^>//" |
-        perl -nl -e '/\[.+\[/ and s/\[/\(/; print' |
-        perl -nl -e '/\].+\]/ and s/\]/\)/; print' |
-        perl -nl -e 's/\s+\[.+?\]$//g; print' |
-        perl -nl -e 's/MULTISPECIES: //g; print' |
-        STRAIN=${STRAIN} perl -nl -e '
-            /^(\w+)\.\d+\s+(.+)$/ or next;
-            printf qq{%s_%s\t%s\n}, $ENV{STRAIN}, $1, $2;
-        '
-done \
-    > PROTEINS/all.annotation.tsv
-
-cat PROTEINS/all.annotation.tsv |
-    wc -l |
-    numfmt --to=si
-#4.4M
-
-(echo -e "#name\tannotation" && cat PROTEINS/all.annotation.tsv) \
-    > temp &&
-    mv temp PROTEINS/all.annotation.tsv
-
-# check differences
-cat PROTEINS/all.size.tsv |
-    grep -v -F -f <(cut -f 1 PROTEINS/all.annotation.tsv)
-
-tsv-join \
-    PROTEINS/all.strain.tsv \
-    --data-fields 1 \
-    -f PROTEINS/all.size.tsv \
-    --key-fields 1 \
-    --append-fields 2 \
-    > PROTEINS/all.strain_size.tsv
-
-tsv-join \
-    PROTEINS/all.strain_size.tsv \
-    --data-fields 1 \
-    -f PROTEINS/all.annotation.tsv \
-    --key-fields 1 \
-    --append-fields 2 \
-    > PROTEINS/all.info.tsv
-
-cat PROTEINS/all.info.tsv |
-    wc -l |
-    numfmt --to=si
-#21M
-
-```
