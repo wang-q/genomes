@@ -1108,7 +1108,7 @@ for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/genomes/scripts/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick mash.${GROUP_NAME}.newick
     cat condense.map >> mash.condensed.map
@@ -1640,7 +1640,7 @@ for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/genomes/scripts/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick fungi61.${GROUP_NAME}.newick
     cat condense.map >> fungi61.condensed.map
