@@ -632,7 +632,7 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 ncbi.nwk |
 
 ### `all.pro.fa`
 
-```shell script
+```shell
 cd ~/data/Pseudomonas
 
 mkdir -p PROTEINS
@@ -817,7 +817,7 @@ done
 
 ### Align and concat marker genes to create species tree
 
-```shell script
+```shell
 cd ~/data/Pseudomonas
 
 cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
@@ -925,7 +925,7 @@ FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
 
 ### Tweak the concat tree
 
-```shell script
+```shell
 cd ~/data/Pseudomonas/tree
 
 cp ../PROTEINS/bac120.trim.newick .
