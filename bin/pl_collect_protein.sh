@@ -1,6 +1,37 @@
 #!/usr/bin/env bash
 
 #----------------------------#
+# USAGE
+#----------------------------#
+USAGE="
+This is a script that belongs to the pipeline for collecting proteins.
+
+Expecting dirs/files:
+    ASSEMBLY/
+    summary/strains.lst
+
+Creating files:
+    PROTEINS/all.all.fa.gz
+    PROTEINS/all.uniq.fa.gz
+
+$ cd ~/data/Fungi
+$ bash ~/Scripts/genomes/bin/pl_collect_protein.sh
+
+"
+
+# Check dirs/files
+if [[ ! -d "ASSEMBLY/" ]]; then
+    echo >&2 "ASSEMBLY/ doesn't exist"
+    echo >&2 "$USAGE"
+    exit 1
+fi
+if [[ ! -s "summary/strains.lst" ]]; then
+    echo >&2 "summary/strains.lst doesn't exist or is empty"
+    echo >&2 "$USAGE"
+    exit 1
+fi
+
+#----------------------------#
 # Colors in term
 #----------------------------#
 GREEN=
@@ -25,35 +56,20 @@ log_debug () {
 }
 
 #----------------------------#
-# USAGE
+# helper functions
 #----------------------------#
-USAGE="
-This is a script that belongs to the pipeline for collecting proteins.
+set +e
 
-Expecting dirs/files:
-    ASSEMBLY/
-    summary/strains.lst
-
-Creating files:
-    PROTEINS/all.all.fa.gz
-    PROTEINS/all.uniq.fa.gz
-
-$ cd ~/data/Fungi
-$ bash ~/Scripts/genome/bin/pl_collect_protein.sh
-
-"
-
-# Check dirs/files
-if [[ ! -d "ASSEMBLY/" ]]; then
-    echo >&2 "ASSEMBLY/ doesn't exist"
-    echo >&2 "$USAGE"
-    exit 1
+# set stacksize to unlimited
+if [[ "$OSTYPE" != "darwin"* ]]; then
+    ulimit -s unlimited
 fi
-if [[ ! -s "summary/strains.lst" ]]; then
-    echo >&2 "summary/strains.lst doesn't exist or is empty"
-    echo >&2 "$USAGE"
+
+signaled () {
+    log_warn Interrupted
     exit 1
-fi
+}
+trap signaled TERM QUIT INT
 
 #----------------------------#
 # all.pro.fa
@@ -185,65 +201,49 @@ log_info "Counts"
 printf "#item\tcount\n" \
     > PROTEINS/counts.tsv
 
-printf "Proteins\t%s\n" $(
-    gzip -dcf PROTEINS/all.pro.fa.gz |
-        grep "^>" |
-        wc -l |
-        numfmt --to=si
-    ) \
+gzip -dcf PROTEINS/all.pro.fa.gz |
+    grep "^>" |
+    wc -l |
+    perl -nl -MNumber::Format -e '
+        printf qq(Proteins\t%s\n), Number::Format::format_number($_, 0,);
+        ' \
     >> PROTEINS/counts.tsv
 
-printf "Unique headers and annotations\t%s\n" $(
-    gzip -dcf PROTEINS/all.pro.fa.gz |
-        grep "^>" |
-        tsv-uniq |
-        wc -l |
-        numfmt --to=si
-    ) \
+gzip -dcf PROTEINS/all.pro.fa.gz |
+    grep "^>" |
+    tsv-uniq |
+    wc -l |
+    perl -nl -MNumber::Format -e '
+        printf qq(Unique headers and annotations\t%s\n), Number::Format::format_number($_, 0,);
+        ' \
     >> PROTEINS/counts.tsv
 
-printf "Unique proteins\t%s\n" $(
-    gzip -dcf PROTEINS/all.uniq.fa.gz |
-        grep "^>" |
-        wc -l |
-        numfmt --to=si
-    ) \
+gzip -dcf PROTEINS/all.uniq.fa.gz |
+    grep "^>" |
+    wc -l |
+    perl -nl -MNumber::Format -e '
+        printf qq(Unique proteins\t%s\n), Number::Format::format_number($_, 0,);
+        ' \
     >> PROTEINS/counts.tsv
 
-printf "Unique proteins\t%s\n" $(
-    gzip -dcf PROTEINS/all.uniq.fa.gz |
-        grep "^>" |
-        wc -l |
-        numfmt --to=si
-    ) \
+gzip -dcf PROTEINS/all.replace.fa.gz |
+    grep "^>" |
+    wc -l |
+    perl -nl -MNumber::Format -e '
+        printf qq(all.replace.fa\t%s\n), Number::Format::format_number($_, 0,);
+        ' \
     >> PROTEINS/counts.tsv
 
-printf "all.replace.fa\t%s\n" $(
-    gzip -dcf PROTEINS/all.replace.fa.gz |
-        grep "^>" |
-        wc -l |
-        numfmt --to=si
-    ) \
+cat PROTEINS/all.annotation.tsv |
+    wc -l |
+    perl -nl -MNumber::Format -e '
+        printf qq(all.annotation.tsv\t%s\n), Number::Format::format_number($_, 0,);
+        ' \
     >> PROTEINS/counts.tsv
 
-printf "all.replace.fa\t%s\n" $(
-    gzip -dcf PROTEINS/all.replace.fa.gz |
-        grep "^>" |
-        wc -l |
-        numfmt --to=si
-    ) \
-    >> PROTEINS/counts.tsv
-
-printf "all.annotation.tsv\t%s\n" $(
-    cat PROTEINS/all.annotation.tsv |
-        wc -l |
-        numfmt --to=si
-    ) \
-    >> PROTEINS/counts.tsv
-
-printf "all.info.tsv\t%s\n" $(
-    cat PROTEINS/all.annotation.tsv |
-        wc -l |
-        numfmt --to=si
-    ) \
+cat PROTEINS/all.info.tsv |
+    wc -l |
+    perl -nl -MNumber::Format -e '
+        printf qq(all.info.tsv\t%s\n), Number::Format::format_number($_, 0,);
+        ' \
     >> PROTEINS/counts.tsv
