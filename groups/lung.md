@@ -4,6 +4,16 @@ Genomic alignment of fungi infecting the lungs was performed to obtain consensus
 
 <!-- toc -->
 
+- [Strain info](#strain-info)
+    * [Symlink](#symlink)
+    * [Infections](#infections)
+    * [List strains within families of target genara](#list-strains-within-families-of-target-genara)
+    * [List all ranks within the genus of interest](#list-all-ranks-within-the-genus-of-interest)
+- [All assemblies](#all-assemblies)
+    * [List strains of the target genus and remove abnormal strains](#list-strains-of-the-target-genus-and-remove-abnormal-strains)
+
+<!-- tocstop -->
+
 ## Strain info
 
 * [Aspergillus](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=5052)
@@ -42,7 +52,7 @@ cat <<EOF | grep -v '^#' > summary/infections.csv
 ## Ascomycetes
 #Saccharomyces,酵母菌属
 Aspergillus,曲霉菌属
-Blastomyces,芽生菌属 (lung)
+#Blastomyces,芽生菌属 (lung)
 Candida,念珠菌属
 Candida/Metschnikowiaceae, ([Candida] auris 耳念珠菌)
 Coccidioides,球孢子菌属 (lung)
@@ -50,7 +60,7 @@ Coccidioides,球孢子菌属 (lung)
 #Epichloe,
 #Fusarium,镰刀菌
 Hanseniaspora,有孢汉逊酵母
-Histoplasma,组织胞浆菌属 (lung)
+#Histoplasma,组织胞浆菌属 (lung)
 #Kazachstania,
 Metschnikowia,梅奇酵母属
 Nakaseomyces, (Candida glabrata 光滑念珠菌)
@@ -60,21 +70,21 @@ Paracoccidioides,副球孢子菌属 (lung)
 #Pichia,毕赤酵母属
 Pneumocystis,肺孢子菌属 (lung)
 #Pyricularia,梨孢属 (稻瘟病)
-Sporothrix,孢子丝菌属 (skin)
-Talaromyces,踝节菌属 (lung)
+#Sporothrix,孢子丝菌属 (skin)
+#Talaromyces,踝节菌属 (lung)
 #Trichoderma,木霉属
-Trichophyton,毛癣菌属
+#Trichophyton,毛癣菌属
 #Verticillium,轮枝菌属 (黄萎病)
 Yarrowia,耶氏酵母
 #Zymoseptoria,
 ## Basidiomycetes
 Cryptococcus,隐球菌属 (脑膜炎)
-Malassezia,马拉色菌属 (skin)
+#Malassezia,马拉色菌属 (skin)
 #Puccinia,柄锈菌属 (条锈病)
 #Rhodotorula,红酵母属
 #Ustilago,黑粉菌属
 ## Other
-Mucor,毛霉菌属
+#Mucor,毛霉菌属
 ## Top
 Candida albicans,白色念珠菌
 Nakaseomyces glabratus,光滑念珠菌
@@ -104,29 +114,22 @@ cat ~/data/Fungi/summary/strains.taxon.tsv |
 
 | #tax_id | genus                     | #species | #strains | comment                  |
 |---------|---------------------------|----------|----------|--------------------------|
-| 5052    | Aspergillus               | 66       | 454      | 曲霉菌属                     |
-| 229219  | Blastomyces               | 2        | 2        | 芽生菌属 (lung)              |
-| 5475    | Candida                   | 51       | 137      | 念珠菌属                     |
-| 2964429 | Candida/Metschnikowiaceae | 5        | 52       | ([Candida] auris 耳念珠菌)   |
-| 5500    | Coccidioides              | 2        | 2        | 球孢子菌属 (lung)             |
-| 5036    | Histoplasma               | 5        | 8        | 组织胞浆菌属 (lung)            |
-| 27320   | Metschnikowia             | 6        | 53       | 梅奇酵母属                    |
+| 5052    | Aspergillus               | 70       | 468      | 曲霉菌属                     |
+| 5475    | Candida                   | 55       | 150      | 念珠菌属                     |
+| 2964429 | Candida/Metschnikowiaceae | 6        | 55       | ([Candida] auris 耳念珠菌)   |
+| 5500    | Coccidioides              | 11       | 12       | 球孢子菌属 (lung)             |
+| 27320   | Metschnikowia             | 10       | 61       | 梅奇酵母属                    |
 | 374468  | Nakaseomyces              | 2        | 42       | (Candida glabrata 光滑念珠菌) |
 | 38946   | Paracoccidioides          | 2        | 2        | 副球孢子菌属 (lung)            |
 | 4753    | Pneumocystis              | 8        | 11       | 肺孢子菌属 (lung)             |
-| 29907   | Sporothrix                | 2        | 2        | 孢子丝菌属 (skin)             |
-| 5094    | Talaromyces               | 8        | 10       | 踝节菌属 (lung)              |
-| 5550    | Trichophyton              | 12       | 25       | 毛癣菌属                     |
 | 4951    | Yarrowia                  | 4        | 23       | 耶氏酵母                     |
-| 5206    | Cryptococcus              | 9        | 35       | 隐球菌属 (脑膜炎)               |
-| 55193   | Malassezia                | 7        | 16       | 马拉色菌属 (skin)             |
-| 4830    | Mucor                     | 1        | 1        | 毛霉菌属                     |
+| 5206    | Cryptococcus              | 27       | 55       | 隐球菌属 (脑膜炎)               |
 
 | #species               | #strains | comment |
 |------------------------|----------|---------|
 | Candida albicans       | 53       | 白色念珠菌   |
 | Candida parapsilosis   | 21       | 近平滑念珠菌  |
-| Candida tropicalis     | 1        | 热带念珠菌   |
+| Candida tropicalis     | 9        | 热带念珠菌   |
 | [Candida] auris        | 46       | 耳念珠菌    |
 | Nakaseomyces glabratus | 42       | 光滑念珠菌   |
 
@@ -183,55 +186,74 @@ cat summary/strains.taxon.tsv |
 
 | #family            | genus                     | species                               | count |
 |--------------------|---------------------------|---------------------------------------|-------|
-| Ajellomycetaceae   | Histoplasma               | Histoplasma capsulatum                | 7     |
-| Arthrodermataceae  | Trichophyton              | Trichophyton rubrum                   | 23    |
-| Aspergillaceae     | Aspergillus               | Aspergillus flavus                    | 136   |
+| Aspergillaceae     | Aspergillus               | Aspergillus chevalieri                | 4     |
+|                    |                           | Aspergillus felis                     | 3     |
+|                    |                           | Aspergillus flavus                    | 136   |
 |                    |                           | Aspergillus fumigatus                 | 74    |
 |                    |                           | Aspergillus luchuensis                | 12    |
+|                    |                           | Aspergillus nidulans                  | 3     |
 |                    |                           | Aspergillus niger                     | 94    |
 |                    |                           | Aspergillus oryzae                    | 90    |
+|                    |                           | Aspergillus puulaauensis              | 2     |
+|                    |                           | Aspergillus sojae                     | 5     |
 |                    | Monascus                  | Monascus purpureus                    | 6     |
 |                    | Penicillium               | Penicillium chrysogenum               | 77    |
 |                    |                           | Penicillium citrinum                  | 23    |
+|                    |                           | Penicillium digitatum                 | 5     |
 |                    |                           | Penicillium nalgiovense               | 29    |
 |                    |                           | Penicillium oxalicum                  | 10    |
+|                    |                           | Penicillium polonicum                 | 8     |
 |                    |                           | Penicillium roqueforti                | 36    |
 |                    |                           | Penicillium salamii                   | 21    |
-| Cryptococcaceae    | Cryptococcus              | Cryptococcus neoformans               | 32    |
+| Cryptococcaceae    | Cryptococcus              | Cryptococcus floricola                | 2     |
+|                    |                           | Cryptococcus gattii VGI               | 7     |
+|                    |                           | Cryptococcus gattii VGII              | 10    |
+|                    |                           | Cryptococcus neoformans               | 32    |
+|                    |                           | Cryptococcus wingfieldii              | 2     |
 | Debaryomycetaceae  | Candida                   | Candida albicans                      | 53    |
 |                    |                           | Candida orthopsilosis                 | 4     |
 |                    |                           | Candida parapsilosis                  | 21    |
+|                    |                           | Candida tropicalis                    | 9     |
 |                    | Debaryomyces              | Debaryomyces hansenii                 | 11    |
+|                    | Hyphopichia               | Hyphopichia burtonii                  | 3     |
 |                    | Scheffersomyces           | Scheffersomyces stipitis              | 2     |
 | Dipodascaceae      | Geotrichum                | Geotrichum candidum                   | 17    |
 |                    | Yarrowia                  | Yarrowia lipolytica                   | 23    |
-| Malasseziaceae     | Malassezia                | Malassezia furfur                     | 2     |
-|                    |                           | Malassezia restricta                  | 4     |
-|                    |                           | Malassezia sympodialis                | 8     |
 | Metschnikowiaceae  | Candida/Metschnikowiaceae | [Candida] auris                       | 46    |
+|                    |                           | [Candida] haemuloni                   | 4     |
 |                    |                           | [Candida] intermedia                  | 3     |
 |                    | Clavispora                | Clavispora lusitaniae                 | 32    |
-| Onygenaceae        | Ophidiomyces              | Ophidiomyces ophidiicola              | 63    |
+|                    | Metschnikowia             | Metschnikowia reukaufii               | 2     |
+|                    |                           | Metschnikowia zobellii                | 2     |
+| Onygenaceae        | Coccidioides              | Coccidioides posadasii                | 11    |
+|                    | Ophidiomyces              | Ophidiomyces ophidiicola              | 63    |
 | Pneumocystidaceae  | Pneumocystis              | Pneumocystis canis                    | 3     |
 |                    |                           | Pneumocystis jirovecii                | 3     |
 | Saccharomycetaceae | Eremothecium              | Eremothecium gossypii                 | 2     |
 |                    | Kluyveromyces             | Kluyveromyces lactis                  | 3     |
 |                    |                           | Kluyveromyces marxianus               | 15    |
+|                    | Lachancea                 | Lachancea fermentati                  | 2     |
+|                    |                           | Lachancea thermotolerans              | 4     |
 |                    | Nakaseomyces              | Nakaseomyces glabratus                | 42    |
-|                    | Saccharomyces             | Saccharomyces boulardii (nom. inval.) | 7     |
+|                    | Naumovozyma               | Naumovozyma castellii                 | 7     |
+|                    | Saccharomyces             | Saccharomyces arboricola              | 2     |
+|                    |                           | Saccharomyces bayanus                 | 5     |
+|                    |                           | Saccharomyces boulardii (nom. inval.) | 7     |
 |                    |                           | Saccharomyces cerevisiae              | 111   |
 |                    |                           | Saccharomyces eubayanus               | 13    |
 |                    |                           | Saccharomyces kudriavzevii            | 9     |
+|                    |                           | Saccharomyces mikatae                 | 3     |
 |                    |                           | Saccharomyces paradoxus               | 25    |
 |                    |                           | Saccharomyces pastorianus             | 18    |
 |                    |                           | Saccharomyces uvarum                  | 20    |
 |                    | Torulaspora               | Torulaspora delbrueckii               | 23    |
+|                    | Zygosaccharomyces         | Zygosaccharomyces rouxii              | 4     |
+|                    | Zygotorulaspora           | Zygotorulaspora mrakii                | 2     |
 | Saccharomycodaceae | Saccharomycodes           | Saccharomycodes ludwigii              | 3     |
-| Trichocomaceae     | Talaromyces               | Talaromyces marneffei                 | 5     |
 
 ### List all ranks within the genus of interest
 
-下面 5 个属是这次研究的主要目标
+下面 6 个属是这次研究的主要目标
 
 There are no noteworthy classification ranks other than species.
 
@@ -300,7 +322,76 @@ done |
 
 ## All assemblies
 
-### List strains of the target genus and remove abnormal strains
+### List strains of the target families and remove abnormal strains
+
+```shell
+cd ~/data/lung
+
+mkdir -p summary
+
+# Target families
+FAMILY=(
+    # Ascomycota
+    # Pezizomycotina
+    Aspergillaceae
+
+    # Saccharomycotina
+    # All families inside Saccharomycetales...
+
+    # Taphrinomycotina
+    Pneumocystidaceae
+
+    # Basidiomycota
+    Cryptococcaceae
+)
+FAMILY+=( $(nwr member Saccharomycetales -r family | sed 1d | cut -f 2) )
+#FAMILY=$(IFS=, ; echo "${FAMILY[*]}")
+
+FAMILY_ID=$(
+    for G in "${FAMILY[@]}"; do echo $G; done |
+        nwr append stdin --id -r family |
+        cut -f 3 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        DISTINCT assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND family_id IN ($FAMILY_ID)
+        AND species NOT LIKE '% sp.%'
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
+    grep -v -i "symbiont " \
+    > tmp.lst
+
+echo "
+    SELECT
+        DISTINCT assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND family_id IN ($FAMILY_ID)
+        AND species NOT LIKE '% sp.%'
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    grep -v -i "symbiont " \
+    >> tmp.lst
+
+# all.taxon.tsv
+cat ../Fungi/summary/collect.pass.csv |
+    grep -Fw -f tmp.lst |
+    tsv-select -d, -f 1,3 |
+    tr "," "\t" |
+    sort |
+    tsv-uniq |
+    nwr append stdin -c 2 -r species -r genus -r family -r order \
+    > summary/all.taxon.tsv
+
+```
+
+### Remove abnormal strains
 
 If the maximum value of ANI between strains within a species was greater than 0.05, the median and
 maximum ANI would be reported. Strains that cannot be linked by the median ANI will be considered as
@@ -312,7 +403,7 @@ cd ~/data/lung
 ANI_VALUE_THRESHOLD=0.05
 
 # Abnormal strains
-cat summary/strains.taxon.tsv | tsv-select -f 3 | tsv-uniq | #head -n 1 |
+cat summary/all.taxon.tsv | tsv-select -f 3 | tsv-uniq | #head -n 1 |
 while read SPECIES; do
     SPECIES_=$(
         echo "${SPECIES}" |
@@ -371,26 +462,38 @@ done |
 cat summary/abnormal.lst
 #Asp_flav_GCA_023653635_1
 #Asp_nig_GCA_027923785_1
+#Candida_haemuloni_GCA_019332025_1
+#Crypt_gattii_VGI_GCA_000786445_1
+#Crypt_gattii_VGI_GCA_014964225_1
 #De_han_GCA_016097515_1
 #De_han_GCA_016097625_1
 #Geot_candidum_GCA_013305805_1
+#Mal_globosa_GCA_001264795_1
+#Mal_globosa_GCA_001264815_1
+#Penicillium_polo_GCA_003344595_1
+#Penicillium_polo_GCA_015585905_1
 #Penicillium_sal_GCA_911639275_1
+#Pn_canis_GCA_017911135_1
+#Saccharomyces_uva_GCA_013180255_1
+#Saccharomyces_uva_GCA_918221285_1
+#Saccharomyces_uva_GCA_918280685_1
 #Yar_lip_GCA_003571375_1
+#Zygos_rou_GCA_020521415_1
 
 # Recreate summary/strains.taxon.tsv to avoid these assemblies
-cat ../Fungi/summary/collect.pass.csv |
-    grep -F -f tmp.lst |
-    tsv-select -d, -f 1,3 |
-    tr "," "\t" |
-    sort |
-    tsv-uniq |
+cat summary/all.taxon.tsv |
+    cut -f 1,2 |
     grep -v -F -w -f summary/abnormal.lst |
     nwr append stdin -c 2 -r species -r genus -r family -r order \
     > summary/strains.taxon.tsv
 
+wc -l summary/*.taxon.tsv
+#  1557 summary/all.taxon.tsv
+#  1540 summary/strains.taxon.tsv
+
 # other lists
 cat summary/strains.taxon.tsv | cut -f 1 | sort | uniq \
-    > strains.lst
+    > summary/strains.lst
 
 cat summary/strains.taxon.tsv | tsv-select -f 4 | sort | uniq \
     > summary/genus.lst
