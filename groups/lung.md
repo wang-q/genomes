@@ -562,3 +562,94 @@ wc -l \
 #    131 summary/representative.lst
 
 ```
+
+### Count strains - Genus
+
+```shell
+cd ~/data/lung
+
+cat summary/genus.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(
+            cat summary/collect.pass.csv |
+                sed "1d" |
+                tsv-select -d, -f 3 |
+                nwr append stdin -r genus -r species |
+                grep -w {} |
+                tsv-select -f 1,3 |
+                tsv-uniq |
+                wc -l
+        )
+
+        n_strains=$(
+            cat summary/collect.pass.csv |
+                sed "1d" |
+                tsv-select -d, -f 3 |
+                nwr append stdin -r genus |
+                grep -w {} |
+                wc -l
+        )
+
+        n_nr=$(
+            cat summary/collect.pass.csv |
+                grep -F -w -f summary/NR.lst |
+                tsv-select -d, -f 3 |
+                nwr append stdin -r genus |
+                grep -w {} |
+                wc -l
+        )
+
+        printf "%s\t%d\t%d\t%d\n" {} ${n_species} ${n_strains} ${n_nr}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 6,5,2,3,4 |
+    tsv-sort -k2,2 |
+    tsv-filter --ge 4:5 |
+    (echo -e '#tax_id\tgenus\t#species\t#strains\t#NR' && cat) |
+    mlr --itsv --omd cat
+
+```
+
+| #tax_id | genus                     | #species | #strains | #NR |
+|---------|---------------------------|----------|----------|-----|
+| 5052    | Aspergillus               | 70       | 466      | 56  |
+| 13366   | Brettanomyces             | 3        | 7        | 5   |
+| 5475    | Candida                   | 54       | 147      | 31  |
+| 2964429 | Candida/Metschnikowiaceae | 6        | 54       | 8   |
+| 36910   | Clavispora                | 3        | 33       | 7   |
+| 5206    | Cryptococcus              | 26       | 53       | 10  |
+| 604195  | Cyberlindnera             | 5        | 7        | 5   |
+| 4958    | Debaryomyces              | 3        | 10       | 6   |
+| 33170   | Eremothecium              | 5        | 5        | 1   |
+| 43987   | Geotrichum                | 1        | 16       | 3   |
+| 4910    | Kluyveromyces             | 4        | 18       | 8   |
+| 460517  | Komagataella              | 4        | 128      | 2   |
+| 490731  | Kwoniella                 | 5        | 5        | 0   |
+| 300275  | Lachancea                 | 9        | 12       | 4   |
+| 27320   | Metschnikowia             | 4        | 6        | 2   |
+| 5097    | Monascus                  | 1        | 6        | 1   |
+| 374468  | Nakaseomyces              | 2        | 42       | 6   |
+| 278028  | Naumovozyma               | 4        | 8        | 1   |
+| 461281  | Ogataea                   | 6        | 23       | 3   |
+| 5073    | Penicillium               | 23       | 211      | 20  |
+| 4919    | Pichia                    | 2        | 23       | 2   |
+| 4753    | Pneumocystis              | 7        | 9        | 3   |
+| 4930    | Saccharomyces             | 128      | 211      | 38  |
+| 4943    | Saccharomycopsis          | 2        | 5        | 4   |
+| 4948    | Torulaspora               | 3        | 25       | 5   |
+| 599737  | Wickerhamomyces           | 3        | 7        | 6   |
+| 4951    | Yarrowia                  | 4        | 22       | 1   |
+
+### Rsync to hpcc
+
+```bash
+rsync -avP \
+    ~/data/lung/ \
+    wangq@202.119.37.251:data/lung
+
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/lung/ \
+    wangq@58.213.64.36:data/lung
+
+```
