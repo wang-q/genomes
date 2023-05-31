@@ -461,6 +461,10 @@ rm raw*.*sv
 
 ### rsync and check
 
+Information of assemblies are collected from *_assembly_report.txt *after* downloading.
+
+**Note**: `*_assembly_report.txt` have `CRLF` at the end of the line.
+
 ```shell
 cd ~/data/Bacteria
 
