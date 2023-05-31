@@ -17,7 +17,7 @@
 
 ## `date`
 
-Thu Feb 9 05:00:03 CST 2023
+The date of executing `nwr download` is `Thu Feb 9 05:00:03 CST 2023`
 
 ## Software
 
@@ -78,6 +78,8 @@ cpanm https://github.com/wang-q/Bio-Tools-Phylo-PAML.git
 
 * [Bacteria](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2)
 * [Archaea](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2157)
+* [Fungi](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=4751)
+* [Oomycota](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=4762)
 
 ### NCBI statistics
 
@@ -105,9 +107,12 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 
 ## Download all valid Bacteria and Archaea genomes
 
-[Bacteria.md](./Bacteria.md): All genomes of **Bacteria** and **Archaea**, species by species
+* [Oomycota](./groups/Oomycota.md) is a good example of familiarizing yourself with the processing
+  steps.
 
-[Fungi.md](./Fungi.md): All genomes of **Fungi**, species by species
+* [Bacteria](./Bacteria.md): All genomes of **Bacteria** and **Archaea**, species by species
+
+* [Fungi](./Fungi.md): All genomes of **Fungi**, species by species
 
 ## Prokaryote groups
 
