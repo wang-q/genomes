@@ -17,7 +17,7 @@
 
 ## `date`
 
-The date of executing `nwr download` is `Thu Feb 9 05:00:03 CST 2023`
+The date of executing `nwr download` is `Wed May 31 20:14:22 CST 2023`
 
 ## Software
 
@@ -107,8 +107,8 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 
 ## Download all valid Bacteria and Archaea genomes
 
-* [Oomycota](./groups/Oomycota.md) is a good example of familiarizing yourself with the processing
-  steps.
+* [Trichoderma](./groups/Trichoderma.md) is a good example of familiarizing yourself with the
+  processing steps.
 
 * [Bacteria](./Bacteria.md): All genomes of **Bacteria** and **Archaea**, species by species
 

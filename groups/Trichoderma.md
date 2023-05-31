@@ -22,14 +22,21 @@ Genus *Trichoderma* as an example.
 
 * [Trichoderma](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=5543)
 * [Entrez records](http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=5543)
+* [WGS](https://www.ncbi.nlm.nih.gov/Traces/wgs/?view=wgs&search=Trichoderma) is now useless and can
+  be ignored.
+
+A nice review article about Trichoderma:
+
+Woo, S.L. et al.
+Trichoderma: a multipurpose, plant-beneficial microorganism for eco-sustainable agriculture.
+Nat Rev Microbiol 21, 312–326 (2023).
+https://doi.org/10.1038/s41579-022-00819-5
 
 ### List all ranks
 
 There are no noteworthy classification ranks other than species.
 
 ```shell
-mkdir -p ~/data/alignment/Trichoderma
-cd ~/data/alignment/Trichoderma
 
 nwr member Trichoderma |
     grep -v " sp." |
@@ -38,20 +45,22 @@ nwr member Trichoderma |
 
 nwr lineage Trichoderma |
     tsv-filter --str-ne 1:clade |
+    tsv-filter --str-ne "1:no rank" |
     sed -n '/kingdom\tFungi/,$p' |
+    sed -E "s/\b(genus)\b/*\1*/"| # Highlight genus
     (echo -e '#rank\tsci_name\ttax_id' && cat) |
     mlr --itsv --omd cat
 
 ```
 
 | rank     | count |
-|----------|------:|
-| genus    |     1 |
-| species  |   420 |
-| no rank  |     1 |
-| varietas |     2 |
-| strain   |    14 |
-| forma    |     2 |
+|----------|-------|
+| genus    | 1     |
+| species  | 443   |
+| no rank  | 1     |
+| varietas | 2     |
+| strain   | 14    |
+| forma    | 2     |
 
 | #rank      | sci_name          | tax_id |
 |------------|-------------------|--------|
@@ -63,151 +72,189 @@ nwr lineage Trichoderma |
 | subclass   | Hypocreomycetidae | 222543 |
 | order      | Hypocreales       | 5125   |
 | family     | Hypocreaceae      | 5129   |
-| genus      | Trichoderma       | 5543   |
+| *genus*    | Trichoderma       | 5543   |
 
 ### Species with assemblies
 
 Check also the family Hypocreaceae for outgroups.
 
 ```shell
-cd ~/data/alignment/Trichoderma
+mkdir -p ~/data/Trichoderma/summary
+cd ~/data/Trichoderma/summary
 
-SPECIES=$(
-    nwr member Hypocreaceae -r species |
-        grep -v -i "Candidatus " |
-        grep -v -i "candidate " |
-        grep -v " sp." |
-        sed '1d' |
-        cut -f 1 |
-        sort
-)
+# should have a valid name of genus
+nwr member Hypocreaceae -r genus |
+    grep -v -i "Candidatus " |
+    grep -v -i "candidate " |
+    grep -v " sp." |
+    grep -v " spp." |
+    sed '1d' |
+    sort -n -k1,1 \
+    > genus.list.tsv
 
-for S in $SPECIES; do
-    GB=$(
-        echo "
-            SELECT
-                COUNT(*)
-            FROM ar
-            WHERE 1=1
-                AND species_id = $S
-            " |
-            sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-    )
+wc -l genus.list.tsv
+#18 genus.list
 
-    CHR=$(
-        echo "
-            SELECT
-                COUNT(*)
-            FROM ar
-            WHERE 1=1
-                AND species_id = $S
-                AND assembly_level IN ('Complete Genome', 'Chromosome')
-            " |
-            sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-    )
-
-    if [[ ${GB} -gt 0 ]]; then
-        echo -e "$S\t$GB\t$CHR"
-    fi
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo "
+        SELECT
+            species_id,
+            species,
+            COUNT(*) AS count
+        FROM ar
+        WHERE 1=1
+            AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
+            AND genome_rep IN ('Full')
+        GROUP BY species_id
+        HAVING count >= 1
+        " |
+        sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
-    nwr append stdin |
-    tsv-select -f 1,4,2-3 |
-    tsv-sort -k3,3nr -k4,4nr -k2,2 |
-    (echo -e '#tax_id\tspecies\tGB\tCHR' && cat) \
-    > species.count.tsv
+    tsv-sort -k2,2 \
+    > RS1.tsv
 
-cat species.count.tsv |
-    tsv-filter -H --ge GB:1 |
-    sed 's/Trichoderma /T. /g' |
-    mlr --itsv --omd cat
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo "
+        SELECT
+            species_id,
+            species,
+            COUNT(*) AS count
+        FROM ar
+        WHERE 1=1
+            AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
+            AND genome_rep IN ('Full')
+        GROUP BY species_id
+        HAVING count >= 1
+        " |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > GB1.tsv
+
+wc -l RS*.tsv GB*.tsv
+#   8 RS1.tsv
+#  37 GB1.tsv
+
+for C in RS GB; do
+    for N in $(seq 1 1 10); do
+        if [ -e "${C}${N}.tsv" ]; then
+            printf "${C}${N}\t"
+            cat ${C}${N}.tsv |
+                tsv-summarize --sum 3
+        fi
+    done
+done
+#RS1     8
+#GB1     113
 
 ```
 
-| #tax_id | species                | GB  | CHR |
-|---------|------------------------|-----|-----|
-| 51453   | T. reesei              | 11  | 7   |
-| 101201  | T. asperellum          | 11  | 2   |
-| 5544    | T. harzianum           | 9   | 1   |
-| 63577   | T. atroviride          | 7   | 1   |
-| 29875   | T. virens              | 6   | 2   |
-| 150374  | Escovopsis weberi      | 2   | 0   |
-| 1567482 | T. afroharzianum       | 2   | 0   |
-| 398673  | T. gamsii              | 2   | 0   |
-| 49224   | T. hamatum             | 2   | 0   |
-| 5548    | T. longibrachiatum     | 2   | 0   |
-| 654480  | T. cornu-damae         | 1   | 1   |
-| 1491008 | T. semiorbis           | 1   | 1   |
-| 1491479 | T. simmonsii           | 1   | 1   |
-| 767780  | Cladobotryum protrusum | 1   | 0   |
-| 2060699 | Hypomyces perniciosus  | 1   | 0   |
-| 5132    | Hypomyces rosellus     | 1   | 0   |
-| 490622  | T. arundinaceum        | 1   | 0   |
-| 702382  | T. asperelloides       | 1   | 0   |
-| 1491457 | T. atrobrunneum        | 1   | 0   |
-| 247546  | T. brevicompactum      | 1   | 0   |
-| 2034171 | T. brevicrassum        | 1   | 0   |
-| 58853   | T. citrinoviride       | 1   | 0   |
-| 202914  | T. erinaceum           | 1   | 0   |
-| 1195189 | T. gracile             | 1   | 0   |
-| 1491466 | T. guizhouense         | 1   | 0   |
-| 97093   | T. koningii            | 1   | 0   |
-| 337941  | T. koningiopsis        | 1   | 0   |
-| 1567552 | T. lentiforme          | 1   | 0   |
-| 1491472 | T. lixii               | 1   | 0   |
-| 1497375 | T. oligosporum         | 1   | 0   |
-| 858221  | T. parareesei          | 1   | 0   |
-| 500994  | T. pleuroti            | 1   | 0   |
-| 5547    | T. viride              | 1   | 0   |
-
 ## Download all assemblies
 
-[WGS](https://www.ncbi.nlm.nih.gov/Traces/wgs/?view=wgs&search=Trichoderma) is now useless and can
-be ignored.
+### Create assembly.tsv
+
+If a refseq assembly is available, the corresponding genbank one is not downloaded
 
 ```shell
-cd ~/data/alignment/Trichoderma
+cd ~/data/Trichoderma/summary
+
+cat ~/Scripts/genomes/assembly/Fungi.reference.tsv |
+    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
+    > raw.tsv
+
+# RS
+SPECIES=$(
+    cat RS1.tsv |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
 
 echo "
     SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
+        assembly_accession
     FROM ar
     WHERE 1=1
-        AND (
-            (genus IN ('Trichoderma'))
-            OR
-            (species IN ('Escovopsis weberi', 'Cladobotryum protrusum', 'Hypomyces perniciosus', 'Hypomyces rosellus'))
-        )
-        AND species NOT LIKE '% sp.%'
+        AND species_id IN ($SPECIES)
+        AND genome_rep IN ('Full')
     " |
-    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite \
-    > raw.tsv
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    >> raw.tsv
 
+# Preference for refseq
+cat raw.tsv |
+    cut -f 6 \
+    > rs.acc.tsv
+
+# GB
+SPECIES=$(
+    cat GB1.tsv |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND genome_rep IN ('Full')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    >> raw.tsv
+
+cat raw.tsv |
+    tsv-uniq |
+    datamash check
+#123 lines, 6 fields
+
+# Create abbr.
 cat raw.tsv |
     grep -v '^#' |
     tsv-uniq |
-    perl ~/Scripts/withncbi/taxon/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
-    (echo -e '#name\tftp_path\torganism\tassembly_level' && cat ) |
+    tsv-select -f 1-6 |
+    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
     perl -nl -a -F"," -e '
         BEGIN{my %seen};
         /^#/ and print and next;
         /^organism_name/i and next;
         $seen{$F[3]}++; # ftp_path
         $seen{$F[3]} > 1 and next;
-        $seen{$F[5]}++; # abbr_name
-        $seen{$F[5]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\n}, $F[5], $F[3], $F[1], $F[4];
+        $seen{$F[6]}++; # abbr_name
+        $seen{$F[6]} > 1 and next;
+        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
         ' |
-    keep-header -- sort -k3,3 -k1,1 \
+    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
+    keep-header -- sort -k4,4 -k1,1 \
     > Trichoderma.assembly.tsv
 
-# find potential duplicated strains or assemblies
+datamash check < Trichoderma.assembly.tsv
+#122 lines, 5 fields
+
+# find potential duplicate strains or assemblies
 cat Trichoderma.assembly.tsv |
     tsv-uniq -f 1 --repeated
 
+cat Trichoderma.assembly.tsv |
+    tsv-filter --str-not-in-fld 2:ftp
+
 # Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Trichoderma.assembly.tsv
-# cp Trichoderma.assembly.tsv ~/Scripts/withncbi/pop
+# cp Trichoderma.assembly.tsv ~/Scripts/genomes/assembly
 
 # Comment out unneeded strains
 
@@ -216,41 +263,84 @@ rm raw*.*sv
 
 ```
 
-Information of assemblies are collected from *_assembly_report.txt *after* downloading.
-
-**Note**: `*_assembly_report.txt` have `CRLF` at the end of the line.
+### Rsync and check
 
 ```shell
-cd ~/data/alignment/Trichoderma
+cd ~/data/Trichoderma
 
-perl ~/Scripts/withncbi/taxon/assembly_prep.pl \
-    -f ~/Scripts/withncbi/pop/Trichoderma.assembly.tsv \
+nwr assembly ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     -o ASSEMBLY
 
 # Remove dirs not in the list
 find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
     tr "/" "\t" |
     cut -f 2 |
-    tsv-join --exclude -k 1 -f ASSEMBLY/rsync.tsv -d 1 |
+    tsv-join --exclude -k 1 -f ASSEMBLY/url.tsv -d 1 |
     parallel --no-run-if-empty --linebuffer -k -j 1 '
         echo Remove {}
         rm -fr ASSEMBLY/{}
     '
 
 # Run
-proxychains4 bash ASSEMBLY/Pseudomonas.assembly.rsync.sh
+bash ASSEMBLY/rsync.sh
 
-bash ASSEMBLY/Pseudomonas.assembly.collect.sh
+# Check md5; create check.lst
+bash ASSEMBLY/check.sh
 
-# md5
-cat ASSEMBLY/rsync.tsv |
-    tsv-select -f 1 |
-    parallel -j 4 --keep-order '
-        echo "==> {}"
-        cd ASSEMBLY/{}
-        md5sum --check md5checksums.txt
-    ' |
-    grep -v ": OK"
+# N50 C S; create n50.tsv and n50.pass.csv
+bash ASSEMBLY/n50.sh 100000 1000 1000000
+
+# Adjust parameters passed to `n50.sh`
+cat ASSEMBLY/n50.tsv |
+    tsv-filter -H --str-in-fld "name:_GCF_" |
+    tsv-summarize -H --min "N50,S" --max "C"
+#N50_min S_min   C_max
+#280942  53131624        4921
+
+cat ASSEMBLY/n50.tsv |
+    tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
+#S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
+#35704092        49127533.5      8042    24984.5 5018    14664
+
+# Temporary files, possibly caused by an interrupted rsync process
+find ASSEMBLY/ -type f -name ".*" > ASSEMBLY/temp.list
+
+cat ASSEMBLY/temp.list |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        if [[ -f {} ]]; then
+            echo Remove {}
+            rm {}
+        fi
+    '
+
+# Collect; create collect.csv
+bash ASSEMBLY/collect.sh
+
+# After all completed
+bash ASSEMBLY/finish.sh
+
+cp ASSEMBLY/collect.pass.csv summary/
+
+cat ASSEMBLY/counts.tsv |
+    mlr --itsv --omd cat
+
+```
+
+### List strains within the family of target genus
+
+```shell
+cd ~/data/Trichoderma/
+mkdir -p summary
+
+cat ../Fungi/summary/collect.pass.csv |
+    sed -e '1d' |
+    tr "," "\t" |
+    tsv-select -f 1,3 |
+    nwr append stdin -c 2 -r species -r genus -r family -r order |
+    tsv-filter --str-eq "5:Hypocreaceae" \
+    > summary/strains.taxon.tsv
+
+bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 1
 
 ```
 
