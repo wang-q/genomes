@@ -91,9 +91,10 @@ In the vast majority of fungal species, only one genome was selected for refseq.
     * '>= 20 genomes'
         * GB1 - With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
         * GB2 - assembly_level: 'Complete Genome', 'Chromosome'
-        * GB3 - NOT 'contig'; genome_rep: 'Full'
+        * GB3 - genome_rep: 'Full'
     * '>= 1 genomes'
         * GB4 - assembly_level: 'Complete Genome', 'Chromosome'
+        * GB5 - genome_rep: 'Full'
 
 ```shell
 mkdir -p ~/data/Fungi/summary
@@ -144,7 +145,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
             AND genus_id = ${RANK_ID}
             AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %'
-            AND genome_rep IN ('Full') -- fully representative
+            AND genome_rep IN ('Full')
         GROUP BY species_id
         HAVING count >= 1
         " |
@@ -165,7 +166,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
             AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %'
             AND assembly_level IN ('Complete Genome', 'Chromosome')
-            AND genome_rep IN ('Full') -- fully representative
+            AND genome_rep IN ('Full')
         GROUP BY species_id
         HAVING count >= 20
         " |
@@ -186,7 +187,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
             AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %'
             AND assembly_level IN ('Complete Genome', 'Chromosome')
-            AND genome_rep IN ('Full') -- fully representative
+            AND genome_rep IN ('Full')
         GROUP BY species_id
         HAVING count >= 20
         " |
@@ -206,8 +207,7 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
             AND genus_id = ${RANK_ID}
             AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %'
-            AND assembly_level IN ('Complete Genome', 'Chromosome', 'Scaffold')
-            AND genome_rep IN ('Full') -- fully representative
+            AND genome_rep IN ('Full')
         GROUP BY species_id
         HAVING count >= 20
         " |
@@ -236,28 +236,51 @@ done |
     tsv-sort -k2,2 \
     > GB4.tsv
 
+for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
+    echo "
+        SELECT
+            species_id,
+            species,
+            COUNT(*) AS count
+        FROM ar
+        WHERE 1=1
+            AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
+            AND genome_rep IN ('Full')
+        GROUP BY species_id
+        HAVING count >= 1
+        " |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > GB5.tsv
+
 wc -l RS*.tsv GB*.tsv
-#   81 RS1.tsv
-#  487 RS2.tsv
-#    1 GB1.tsv
-#    4 GB2.tsv
-#   51 GB3.tsv
-#  250 GB4.tsv
+#    81 RS1.tsv
+#   487 RS2.tsv
+#     1 GB1.tsv
+#     4 GB2.tsv
+#    79 GB3.tsv
+#   250 GB4.tsv
+#  3256 GB5.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
         if [ -e ${C}${N}.tsv ]; then
+            printf "${C}${N}\t"
             cat ${C}${N}.tsv |
                 tsv-summarize --sum 3
         fi
     done
 done
-#83
-#492
-#109
-#750
-#4473
-#1268
+#RS1     83
+#RS2     492
+#GB1     109
+#GB2     750
+#GB3     6643
+#GB4     1268
+#GB5     12494
 
 ```
 
@@ -270,7 +293,8 @@ cat RS*.tsv GB*.tsv |
     cut -f 1,2 |
     tsv-uniq |
     grep "\[" |
-    nwr append stdin -r genus
+    nwr append stdin -r genus |
+    head
 #498019  [Candida] auris Candida/Metschnikowiaceae
 #1231522 [Candida] duobushaemulonis      Candida/Metschnikowiaceae
 #45357   [Candida] haemuloni     Candida/Metschnikowiaceae
@@ -280,6 +304,7 @@ cat RS*.tsv GB*.tsv |
 #312227  [Candida] hispaniensis  Candida/Saccharomycetales
 #45354   [Candida] intermedia    Candida/Metschnikowiaceae
 #2093215 [Candida] vulturna (nom. inval.)        Clavispora
+#45518   [Candida] aaseri        Yamadazyma
 
 ```
 
@@ -323,14 +348,7 @@ Five levels:
 * 'RefSeq'
     * RS2 - genome_rep: 'Full'
 * 'Genbank'
-    * '>= 20 genomes'
-        * GB1 - With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
-        * GB2 - assembly_level: 'Complete Genome', 'Chromosome'
-        * GB3 - NOT 'contig'; genome_rep: 'Full'
-    * '>= 1 genomes'
-        * GB4 - assembly_level: 'Complete Genome', 'Chromosome'
-    * The not-so-good family/genus/species
-        * Pneumocystis
+    * GB5 - genome_rep: 'Full'
 
 If a refseq assembly is available, the corresponding genbank one is not downloaded
 
@@ -357,7 +375,7 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND genome_rep IN ('Full') -- fully representative
+        AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
@@ -367,9 +385,9 @@ cat raw.tsv |
     cut -f 6 \
     > rs.acc.tsv
 
-# GB1
+# GB5
 SPECIES=$(
-    cat GB1.tsv |
+    cat GB5.tsv |
         cut -f 1 |
         tr "\n" "," |
         sed 's/,$//'
@@ -383,109 +401,7 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND tax_id NOT IN ($SPECIES) -- With strain ID
-        AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
-    " |
-    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
-    >> raw.tsv
-
-# GB2
-SPECIES=$(
-    cat GB2.tsv |
-        tsv-join -f GB1.tsv -k 1 -e |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
-
-echo "
-    SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level,
-        gbrs_paired_asm
-    FROM ar
-    WHERE 1=1
-        AND species_id IN ($SPECIES)
-        AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
-    " |
-    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
-    >> raw.tsv
-
-# GB3
-SPECIES=$(
-    cat GB3.tsv |
-        tsv-join -f GB1.tsv -k 1 -e |
-        tsv-join -f GB2.tsv -k 1 -e |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
-echo "
-    SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level,
-        gbrs_paired_asm
-    FROM ar
-    WHERE 1=1
-        AND species_id IN ($SPECIES)
-        AND assembly_level IN ('Complete Genome', 'Chromosome', 'Scaffold')
-        AND genome_rep IN ('Full') -- fully representative
-    " |
-    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
-    >> raw.tsv
-
-# GB4
-SPECIES=$(
-    cat GB4.tsv |
-        tsv-join -f GB1.tsv -k 1 -e |
-        tsv-join -f GB2.tsv -k 1 -e |
-        tsv-join -f GB3.tsv -k 1 -e |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
-echo "
-    SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level,
-        gbrs_paired_asm
-    FROM ar
-    WHERE 1=1
-        AND species_id IN ($SPECIES)
-        AND assembly_level IN ('Complete Genome', 'Chromosome', 'Scaffold')
-    " |
-    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
-    >> raw.tsv
-
-# The not-so-good ranks are placed here
-# Pneumocystis
-echo "
-    SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level,
-        gbrs_paired_asm
-    FROM ar
-    WHERE 1=1
-        AND genus IN ('Pneumocystis')
-        AND genome_rep IN ('Full') -- fully representative
-    " |
-    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
-    >> raw.tsv
-
-echo "
-    SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level,
-        gbrs_paired_asm
-    FROM ar
-    WHERE 1=1
-        AND family IN ('Hypocreaceae')
-        AND genome_rep IN ('Full') -- fully representative
+        AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
     tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
@@ -494,7 +410,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#4089 lines, 6 fields
+#12499 lines, 6 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -513,11 +429,12 @@ cat raw.tsv |
         $seen{$F[5]} > 1 and next;
         printf qq{%s\t%s\t%s\t%s\n}, $F[5], $F[3], $F[1], $F[4];
         ' |
+    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
     keep-header -- sort -k3,3 -k1,1 \
     > Fungi.assembly.tsv
 
 datamash check < Fungi.assembly.tsv
-#4088 lines, 4 fields
+#12495 lines, 4 fields
 
 # find potential duplicate strains or assemblies
 cat Fungi.assembly.tsv |
@@ -615,9 +532,9 @@ cat ASSEMBLY/n50.tsv |
     > ASSEMBLY/n50.pass.csv
 
 wc -l ASSEMBLY/n50* ASSEMBLY/collect.csv
-#   3437 ASSEMBLY/n50.pass.csv
-#   4015 ASSEMBLY/n50.tsv
-#   4015 ASSEMBLY/collect.csv
+#   3501 ASSEMBLY/n50.pass.csv
+#   4088 ASSEMBLY/n50.tsv
+#   4088 ASSEMBLY/collect.csv
 
 # Strains without protein annotations
 for STRAIN in $(cat ASSEMBLY/n50.pass.csv | cut -d, -f 1); do
@@ -631,7 +548,7 @@ done |
     tsv-uniq \
     > ASSEMBLY/omit.lst
 wc -l ASSEMBLY/omit.lst
-#2080 ASSEMBLY/omit.lst
+#2136 ASSEMBLY/omit.lst
 
 tsv-join \
     ASSEMBLY/collect.csv \
@@ -640,7 +557,7 @@ tsv-join \
     > summary/collect.pass.csv
 
 wc -l summary/collect.pass.csv
-#3437 summary/collect.pass.csv
+#3501 summary/collect.pass.csv
 
 ```
 
@@ -685,7 +602,7 @@ cat ASSEMBLY/collect.csv |
 
 # Allowing samples not in the list
 find biosample -name "SAM*.txt" | wc -l
-# 3990
+# 4061
 
 find biosample -name "SAM*.txt" |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -771,7 +688,7 @@ cat ASSEMBLY/collect.csv |
     tsv-select -f 2 |
     tsv-uniq |
     wc -l
-#624
+#659
 
 cat summary/collect.pass.csv |
     tsv-select -H -d, -f Taxid |
@@ -781,7 +698,7 @@ cat summary/collect.pass.csv |
     tsv-select -f 2 |
     tsv-uniq |
     wc -l
-#623
+#654
 
 cat summary/collect.pass.csv |
     tsv-filter -H -d, --or \
@@ -792,7 +709,7 @@ cat summary/collect.pass.csv |
     > summary/representative.lst
 
 wc -l summary/representative.lst
-#609 summary/representative.lst
+#639 summary/representative.lst
 
 cat summary/collect.pass.csv |
     sed -e '1d' |
@@ -904,7 +821,7 @@ cat summary/order.lst |
 | 34395   | Chaetothyriales   | 23       | 50       |
 | 5114    | Diaporthales      | 9        | 76       |
 | 5042    | Eurotiales        | 107      | 719      |
-| 5125    | Hypocreales       | 104      | 376      |
+| 5125    | Hypocreales       | 137      | 440      |
 | 639021  | Magnaporthales    | 10       | 176      |
 | 33183   | Onygenales        | 37       | 116      |
 | 92860   | Pleosporales      | 51       | 288      |
@@ -980,6 +897,7 @@ cat summary/genus.count.tsv |
 | 48558   | Pyricularia               | 9        | 175      |
 | 5533    | Rhodotorula               | 3        | 67       |
 | 4930    | Saccharomyces             | 128      | 214      |
+| 5543    | Trichoderma               | 40       | 97       |
 
 ### ReRoot
 
@@ -1156,7 +1074,7 @@ cat summary/strains.taxon.tsv |
 
 tsv-summarize NR/species.tsv -H --count --sum count
 #count   count_sum
-#188     3001
+#197     3043
 
 # each species
 cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 10 |
@@ -1235,10 +1153,10 @@ while read SPECIES; do
 done
 
 find NR -name "redundant.lst" -size +0 | wc -l
-#146
+#152
 
 find NR -name "redundant.lst" -empty | wc -l
-#42
+#45
 
 find NR -name "NR.lst" |
     xargs cat |
@@ -1247,7 +1165,7 @@ find NR -name "NR.lst" |
     > summary/NR.lst
 
 wc -l summary/NR.lst
-#705 summary/NR.lst
+#728 summary/NR.lst
 
 ```
 
@@ -1314,7 +1232,7 @@ cat summary/genus.lst |
 | 4930    | Saccharomyces             | 25       | 41       |
 | 1890244 | Saitozyma                 | 1        | 15       |
 | 5094    | Talaromyces               | 8        | 12       |
-| 5543    | Trichoderma               | 17       | 29       |
+| 5543    | Trichoderma               | 36       | 61       |
 | 1047167 | Zymoseptoria              | 5        | 12       |
 
 ## Groups and targets
