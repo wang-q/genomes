@@ -343,7 +343,7 @@ cp reference.tsv ~/Scripts/genomes/assembly/Fungi.reference.tsv
 
 ### Create assembly.tsv
 
-Five levels:
+Two levels:
 
 * 'RefSeq'
     * RS2 - genome_rep: 'Full'
@@ -481,11 +481,10 @@ find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
 # Run
 bash ASSEMBLY/rsync.sh
 
-# Check md5
-# rm ASSEMBLY/check.list
+# Check md5; create check.lst
 bash ASSEMBLY/check.sh
 
-# Collect
+# Collect; create collect.csv
 bash ASSEMBLY/collect.sh
 
 # Temporary files, possibly caused by an interrupted rsync process
@@ -499,65 +498,16 @@ cat ASSEMBLY/temp.list |
         fi
     '
 
-```
+# N50 C S; create n50.tsv
+bash ASSEMBLY/n50.sh 100000 1000 1000000
 
-### Check N50 of assemblies
+# After all completed
+bash ASSEMBLY/finish.sh
 
-```shell
-cd ~/data/Fungi
+cp ASSEMBLY/collect.pass.csv summary/
 
-cat ASSEMBLY/collect.csv | # head |
-    sed '1d' |
-    tsv-select -d "," -f 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 8 '
-        1>&2 echo "==> {}"
-
-        find ASSEMBLY/{} -type f -name "*_genomic.fna.gz" |
-            grep -v "_from_" | # exclude CDS and rna
-            xargs cat |
-            faops n50 -C -S stdin |
-            (echo -e "name\t{}" && cat) |
-            datamash transpose
-    ' |
-    tsv-uniq | # keep the first header
-    tee ASSEMBLY/n50.tsv
-
-cat ASSEMBLY/n50.tsv |
-    tsv-filter \
-        -H --or \
-        --le 4:1000 \
-        --ge 2:100000 |
-    tsv-filter -H --ge 3:1000000 |
-    tr "\t" "," \
-    > ASSEMBLY/n50.pass.csv
-
-wc -l ASSEMBLY/n50* ASSEMBLY/collect.csv
-#   3501 ASSEMBLY/n50.pass.csv
-#   4088 ASSEMBLY/n50.tsv
-#   4088 ASSEMBLY/collect.csv
-
-# Strains without protein annotations
-for STRAIN in $(cat ASSEMBLY/n50.pass.csv | cut -d, -f 1); do
-    if ! compgen -G "ASSEMBLY/${STRAIN}/*_protein.faa.gz" > /dev/null; then
-        echo ${STRAIN}
-    fi
-    if ! compgen -G "ASSEMBLY/${STRAIN}/*_cds_from_genomic.fna.gz" > /dev/null; then
-        echo ${STRAIN}
-    fi
-done |
-    tsv-uniq \
-    > ASSEMBLY/omit.lst
-wc -l ASSEMBLY/omit.lst
-#2136 ASSEMBLY/omit.lst
-
-tsv-join \
-    ASSEMBLY/collect.csv \
-    --delimiter "," -H --key-fields 1 \
-    --filter-file ASSEMBLY/n50.pass.csv \
-    > summary/collect.pass.csv
-
-wc -l summary/collect.pass.csv
-#3501 summary/collect.pass.csv
+cat ASSEMBLY/counts.tsv |
+    mlr --itsv --omd cat
 
 ```
 
@@ -575,8 +525,7 @@ rsync -avP \
 
 # rsync -avP wangq@202.119.37.251:data/Fungi/ ~/data/Fungi
 
-# rsync -avP -e "ssh -T -c chacha20-poly1305@openssh.com -o Compression=no -x" \
-#   wangq@202.119.37.251:data/Fungi/ASSEMBLY/ ~/data/Fungi/ASSEMBLY
+# rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Fungi/ ~/data/Fungi
 
 ```
 

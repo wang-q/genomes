@@ -488,7 +488,7 @@ find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
 proxychains4 bash ASSEMBLY/rsync.sh
 
 # Check md5
-# rm ASSEMBLY/check.list
+# rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
 # Collect

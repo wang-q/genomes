@@ -300,9 +300,6 @@ rm raw*.*sv
 ```shell
 cd ~/data/Protists
 
-cat ~/Scripts/genomes/assembly/Protists.assembly.tsv |
-    tsv-filter -v --str-in-fld 2:http
-
 nwr assembly ~/Scripts/genomes/assembly/Protists.assembly.tsv \
     -o ASSEMBLY
 
