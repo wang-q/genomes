@@ -8,6 +8,10 @@ Genus *Trichoderma* as an example.
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
 - [Download all assemblies](#download-all-assemblies)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [Rsync and check](#rsync-and-check)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+    * [List strains within the family of target genus](#list-strains-within-the-family-of-target-genus)
 - [Count and group strains](#count-and-group-strains)
 - [NCBI taxonomy](#ncbi-taxonomy)
 - [Raw phylogenetic tree by MinHash](#raw-phylogenetic-tree-by-minhash)
@@ -239,7 +243,7 @@ cat raw.tsv |
         printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
         ' |
     tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
-    keep-header -- sort -k4,4 -k1,1 \
+    keep-header -- tsv-sort -k4,4 -k1,1 \
     > Trichoderma.assembly.tsv
 
 datamash check < Trichoderma.assembly.tsv
@@ -295,12 +299,12 @@ cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50,S" --max "C"
 #N50_min S_min   C_max
-#280942  53131624        4921
+#697391  33215161        533
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#35704092        49127533.5      8042    24984.5 5018    14664
+#32322684        37330627        99165   1578216 167     1054
 
 # Temporary files, possibly caused by an interrupted rsync process
 find ASSEMBLY/ -type f -name ".*" > ASSEMBLY/temp.list
@@ -323,6 +327,34 @@ cp ASSEMBLY/collect.pass.csv summary/
 
 cat ASSEMBLY/counts.tsv |
     mlr --itsv --omd cat
+
+```
+
+| #item            | count |
+|------------------|-------|
+| url.tsv          | 121   |
+| check.lst        | 121   |
+| collect.csv      | 122   |
+| n50.tsv          | 122   |
+| n50.pass.csv     | 112   |
+| omit.lst         | 81    |
+| collect.pass.csv | 112   |
+
+### Rsync to hpcc
+
+```bash
+rsync -avP \
+    ~/data/Trichoderma/ \
+    wangq@202.119.37.251:data/Trichoderma
+
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/Trichoderma/ \
+    wangq@58.213.64.36:data/Trichoderma
+
+# rsync -avP wangq@202.119.37.251:data/Trichoderma/ ~/data/Trichoderma
+
+# rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Trichoderma/ ~/data/Trichoderma
 
 ```
 
