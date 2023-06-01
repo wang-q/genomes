@@ -123,7 +123,7 @@ If a refseq assembly is available, the corresponding genbank one is not download
 cd ~/data/Oomycota/summary
 
 cat ~/Scripts/genomes/assembly/Fungi.reference.tsv |
-    tsv-select -H -f organism_name,species,genus,ftp_path,assembly_level,assembly_accession \
+    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
 # RS
@@ -136,8 +136,8 @@ SPECIES=$(
 
 echo "
     SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level,
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
         assembly_accession
     FROM ar
     WHERE 1=1
@@ -162,8 +162,8 @@ SPECIES=$(
 
 echo "
     SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level,
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
         gbrs_paired_asm
     FROM ar
     WHERE 1=1
@@ -171,37 +171,37 @@ echo "
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
+    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#417 lines, 6 fields
+#435 lines, 6 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
     tsv-uniq |
-    tsv-select -f 1-5 |
-    perl ~/Scripts/withncbi/taxon/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
-    (echo -e '#name\tftp_path\torganism\tassembly_level' && cat ) |
+    tsv-select -f 1-6 |
+    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
     perl -nl -a -F"," -e '
         BEGIN{my %seen};
         /^#/ and print and next;
         /^organism_name/i and next;
         $seen{$F[3]}++; # ftp_path
         $seen{$F[3]} > 1 and next;
-        $seen{$F[5]}++; # abbr_name
-        $seen{$F[5]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\n}, $F[5], $F[3], $F[1], $F[4];
+        $seen{$F[6]}++; # abbr_name
+        $seen{$F[6]} > 1 and next;
+        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
         ' |
     tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
-    keep-header -- sort -k3,3 -k1,1 \
+    keep-header -- tsv-sort -k4,4 -k1,1 \
     > Oomycota.assembly.tsv
 
 datamash check < Oomycota.assembly.tsv
-#417 lines, 4 fields
+#433 lines, 4 fields
 
 # find potential duplicate strains or assemblies
 cat Oomycota.assembly.tsv |
@@ -226,24 +226,18 @@ rm raw*.*sv
 ```shell
 cd ~/data/Oomycota
 
-nwr assembly ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
-    -o ASSEMBLY
-
-# Remove dirs not in the list
-find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
-    tr "/" "\t" |
-    cut -f 2 |
-    tsv-join --exclude -k 1 -f ASSEMBLY/url.tsv -d 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        echo Remove {}
-        rm -fr ASSEMBLY/{}
-    '
+nwr template ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
+    --ass \
+    -o .
 
 # Run
 bash ASSEMBLY/rsync.sh
 
 # Check md5; create check.lst
 bash ASSEMBLY/check.sh
+
+# Put the misplaced directory in the right place
+#bash ASSEMBLY/reorder.sh
 
 # N50 C S; create n50.tsv and n50.pass.csv
 bash ASSEMBLY/n50.sh 50000 5000 20000000
@@ -258,18 +252,7 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#35704092        49127533.5      8042    24984.5 5018    14664
-
-# Temporary files, possibly caused by an interrupted rsync process
-find ASSEMBLY/ -type f -name ".*" > ASSEMBLY/temp.list
-
-cat ASSEMBLY/temp.list |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        if [[ -f {} ]]; then
-            echo Remove {}
-            rm {}
-        fi
-    '
+#35693128        50477035.5      8472.2  25917.5 4826    14503.7
 
 # Collect; create collect.csv
 bash ASSEMBLY/collect.sh
@@ -286,13 +269,13 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | count |
 |------------------|-------|
-| url.tsv          | 416   |
-| check.lst        | 416   |
-| collect.csv      | 417   |
-| n50.tsv          | 416   |
-| n50.pass.csv     | 94    |
-| omit.lst         | 305   |
-| collect.pass.csv | 94    |
+| url.tsv          | 432   |
+| check.lst        | 432   |
+| collect.csv      | 433   |
+| n50.tsv          | 433   |
+| n50.pass.csv     | 129   |
+| omit.lst         | 307   |
+| collect.pass.csv | 129   |
 
 ### Rsync to hpcc
 

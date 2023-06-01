@@ -1,417 +1,433 @@
-#name	ftp_path	organism	assembly_level
-Ac_hyp_GCA_002081595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/081/595/GCA_002081595.1_ACH_lane_v1	Achlya hypogyna	Scaffold
-Al_cand_2VRR_GCA_020283525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/283/525/GCA_020283525.1_ASM2028352v1	Albugo candida	Scaffold
-Al_cand_GCA_000313105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/313/105/GCA_000313105.1_ASM31310v1	Albugo candida	Contig
-Al_cand_GCA_000326045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/326/045/GCA_000326045.1_ASM32604v1	Albugo candida	Contig
-Al_cand_GCA_000326065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/326/065/GCA_000326065.1_ASM32606v1	Albugo candida	Contig
-Al_cand_GCA_000961115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/961/115/GCA_000961115.1_Alb_can_Em2.v1	Albugo candida	Contig
-Al_cand_GCA_001078535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/078/535/GCA_001078535.1_ASM107853v1	Albugo candida	Scaffold
-Al_cand_GCA_001306755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/306/755/GCA_001306755.1_ASM130675v1	Albugo candida	Contig
-Al_cand_GCA_001306775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/306/775/GCA_001306775.1_ASM130677v1	Albugo candida	Contig
-Al_cand_GCA_905220665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/220/665/GCA_905220665.1_Assembly_of_Albugo_candida_isolate_Ac2vPB	Albugo candida	Contig
-Al_lai_GCA_902706625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/706/625/GCA_902706625.1_Albugo_laibachii_Nc14	Albugo laibachii	Scaffold
-Ap_ast_GCA_002197585_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/197/585/GCA_002197585.2_ASM219758v2	Aphanomyces astaci	Scaffold
-Ap_ast_GCA_003546545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/545/GCA_003546545.1_astaci_Si	Aphanomyces astaci	Contig
-Ap_ast_GCA_003546565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/565/GCA_003546565.1_astaci_KV	Aphanomyces astaci	Contig
-Ap_ast_GCA_003546585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/585/GCA_003546585.1_astaci_D2	Aphanomyces astaci	Contig
-Ap_ast_GCA_003546605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/605/GCA_003546605.1_astaci_YX	Aphanomyces astaci	Contig
-Ap_ast_GCA_003546625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/625/GCA_003546625.1_astaci_SA	Aphanomyces astaci	Contig
-Ap_ast_GCA_003546765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/765/GCA_003546765.1_astaci_SV	Aphanomyces astaci	Contig
-Ap_ast_GCA_003546785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/785/GCA_003546785.1_astaci_457	Aphanomyces astaci	Contig
-Ap_ast_GCA_003546805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/805/GCA_003546805.1_astaci_197901	Aphanomyces astaci	Contig
-Ap_ast_GCA_003546825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/825/GCA_003546825.1_Da	Aphanomyces astaci	Contig
-Ap_ast_GCA_003666305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/666/305/GCA_003666305.1_astaci_KB13	Aphanomyces astaci	Contig
-Ap_ast_GCA_009835205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/835/205/GCA_009835205.1_AaE_v1	Aphanomyces astaci	Scaffold
-Ap_ast_GCA_900243735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/243/735/GCA_900243735.1_Aphanomyces_astaci_v1	Aphanomyces astaci	Scaffold
-Ap_ast_GCF_000520075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/520/075/GCF_000520075.1_Apha_asta_APO3_V1	Aphanomyces astaci	Scaffold
-Ap_coc_GCA_019828595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/828/595/GCA_019828595.1_UMN_Aphcoc_1.0	Aphanomyces cochlioides	Contig
-Ap_eut_GCA_009835175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/835/175/GCA_009835175.1_Ae201684_v1	Aphanomyces euteiches	Scaffold
-Ap_eut_GCA_021527665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/665/GCA_021527665.1_ASM2152766v1	Aphanomyces euteiches	Scaffold
-Ap_eut_GCA_021527685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/685/GCA_021527685.1_ASM2152768v1	Aphanomyces euteiches	Contig
-Ap_eut_GCA_021527745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/745/GCA_021527745.1_ASM2152774v1	Aphanomyces euteiches	Scaffold
-Ap_eut_GCA_021527785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/785/GCA_021527785.1_ASM2152778v1	Aphanomyces euteiches	Scaffold
-Ap_eut_GCA_021527805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/805/GCA_021527805.1_ASM2152780v1	Aphanomyces euteiches	Contig
-Ap_eut_GCA_900312765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/312/765/GCA_900312765.1_ASM90031276v1	Aphanomyces euteiches	Scaffold
-Ap_inv_GCA_003546525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/525/GCA_003546525.1_inv_NJM0002	Aphanomyces invadans	Contig
-Ap_inv_GCF_000520115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/520/115/GCF_000520115.1_Apha_inva_NJM9701_V1	Aphanomyces invadans	Scaffold
-Ap_ste_GCA_009835185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/835/185/GCA_009835185.1_As_578.67_v1	Aphanomyces stellatus	Scaffold
-Ap_ste_GCA_900243725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/243/725/GCA_900243725.1_Aphanomyces_stellatus_v1	Aphanomyces stellatus	Scaffold
-Ap_ste_GCA_900708865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/708/865/GCA_900708865.1_Aphanomyces_stellatus_CBS568.67	Aphanomyces stellatus	Scaffold
-B_lac_GCA_004359215_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/359/215/GCA_004359215.2_BlacSF5v2	Bremia lactucae	Chromosome
-E_ana_GCA_023337935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/935/GCA_023337935.1_ASM2333793v1	Elongisporangium anandrum	Contig
-E_dim_GCA_023336395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/395/GCA_023336395.1_ASM2333639v1	Elongisporangium dimorphum	Contig
-E_pro_GCA_023335875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/875/GCA_023335875.1_ASM2333587v1	Elongisporangium prolatum	Contig
-E_sen_GCA_023335835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/835/GCA_023335835.1_ASM2333583v1	Elongisporangium senticosum	Contig
-E_und_GCA_023334555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/555/GCA_023334555.1_ASM2333455v1	Elongisporangium undulatum	Contig
-G_aba_GCA_023334355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/355/GCA_023334355.1_ASM2333435v1	Globisporangium abappressorium	Contig
-G_aca_GCA_023334365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/365/GCA_023334365.1_ASM2333436v1	Globisporangium acanthophoron	Contig
-G_alt_GCA_023334315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/315/GCA_023334315.1_ASM2333431v1	Globisporangium alternatum	Contig
-G_bar_GCA_023337805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/805/GCA_023337805.1_ASM2333780v1	Globisporangium barbulae	Contig
-G_camu_GCA_023337595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/595/GCA_023337595.1_ASM2333759v1	Globisporangium camurandrum	Contig
-G_cana_GCA_023334305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/305/GCA_023334305.1_ASM2333430v1	Globisporangium canariense	Contig
-G_car_GCA_023334275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/275/GCA_023334275.1_ASM2333427v1	Globisporangium carolinianum	Contig
-G_ced_GCA_023334245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/245/GCA_023334245.1_ASM2333424v1	Globisporangium cederbergense	Contig
-G_cryptoi_GCA_023337535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/535/GCA_023337535.1_ASM2333753v1	Globisporangium cryptoirregulare	Contig
-G_cyl_GCA_023334255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/255/GCA_023334255.1_ASM2333425v1	Globisporangium cylindrosporum	Contig
-G_cys_GCA_023334215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/215/GCA_023334215.1_ASM2333421v1	Globisporangium cystogenes	Contig
-G_deb_GCA_023334175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/175/GCA_023334175.1_ASM2333417v1	Globisporangium debaryanum	Contig
-G_ech_GCA_023336405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/405/GCA_023336405.1_ASM2333640v1	Globisporangium echinulatum	Contig
-G_emi_GCA_023334195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/195/GCA_023334195.1_ASM2333419v1	Globisporangium emineosum	Contig
-G_eri_GCA_023334135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/135/GCA_023334135.1_ASM2333413v1	Globisporangium erinaceum	Contig
-G_het_GCA_023334155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/155/GCA_023334155.1_ASM2333415v1	Globisporangium heterothallicum	Contig
-G_irr_DAOM_BR486_GCA_000387425_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/425/GCA_000387425.2_pir_scaffolds_v1	Globisporangium irregulare	Scaffold
-G_irr_GCA_004117815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/117/815/GCA_004117815.1_PIRR_v1	Globisporangium irregulare	Scaffold
-G_irr_GCA_023336235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/235/GCA_023336235.1_ASM2333623v1	Globisporangium irregulare	Contig
-G_iwa_DAOM_BR242034_GCA_000387465_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/465/GCA_000387465.2_piw_scaffolds_v1	Globisporangium iwayamae	Scaffold
-G_iwa_GCA_023336215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/215/GCA_023336215.1_ASM2333621v1	Globisporangium iwayamae	Contig
-G_luc_GCA_023336175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/175/GCA_023336175.1_ASM2333617v1	Globisporangium lucens	Contig
-G_mam_GCA_023336125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/125/GCA_023336125.1_ASM2333612v1	Globisporangium mamillatum	Contig
-G_megal_GCA_023334115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/115/GCA_023334115.1_ASM2333411v1	Globisporangium megalacanthum	Contig
-G_mid_GCA_023334085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/085/GCA_023334085.1_ASM2333408v1	Globisporangium middletonii	Contig
-G_nag_GCA_023335995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/995/GCA_023335995.1_ASM2333599v1	Globisporangium nagaii	Contig
-G_nod_GCA_023334105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/105/GCA_023334105.1_ASM2333410v1	Globisporangium nodosum	Contig
-G_nunn_GCA_023334075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/075/GCA_023334075.1_ASM2333407v1	Globisporangium nunn	Contig
-G_oka_GCA_023334035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/035/GCA_023334035.1_ASM2333403v1	Globisporangium okanoganense	Contig
-G_ornac_GCA_023334055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/055/GCA_023334055.1_ASM2333405v1	Globisporangium ornacarpum	Contig
-G_ort_GCA_023334005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/005/GCA_023334005.1_ASM2333400v1	Globisporangium orthogonon	Contig
-G_pad_GCA_023334015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/015/GCA_023334015.1_ASM2333401v1	Globisporangium paddicum	Contig
-G_paro_GCA_023333955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/955/GCA_023333955.1_ASM2333395v1	Globisporangium paroecandrum	Contig
-G_parvum_GCA_023333885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/885/GCA_023333885.1_ASM2333388v1	Globisporangium parvum	Contig
-G_perp_GCA_023333865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/865/GCA_023333865.1_ASM2333386v1	Globisporangium perplexum	Contig
-G_pola_GCA_023333845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/845/GCA_023333845.1_ASM2333384v1	Globisporangium polare	Contig
-G_rad_GCA_023333825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/825/GCA_023333825.1_ASM2333382v1	Globisporangium radiosum	Contig
-G_rec_GCA_023333815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/815/GCA_023333815.1_ASM2333381v1	Globisporangium recalcitrans	Contig
-G_rhizos_GCA_023333795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/795/GCA_023333795.1_ASM2333379v1	Globisporangium rhizosaccharum	Contig
-G_sol_GCA_023335675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/675/GCA_023335675.1_ASM2333567v1	Globisporangium solare	Contig
-G_spic_GCA_023335655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/655/GCA_023335655.1_ASM2333565v1	Globisporangium spiculum	Contig
-G_spin_GCA_023335535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/535/GCA_023335535.1_ASM2333553v1	Globisporangium spinosum	Contig
-G_spl_GCA_006386115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/006/386/115/GCA_006386115.1_DCB_P.spl	Globisporangium splendens	Scaffold
-G_spl_GCA_023335435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/435/GCA_023335435.1_ASM2333543v1	Globisporangium splendens	Contig
-G_syl_GCA_023334975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/975/GCA_023334975.1_ASM2333497v1	Globisporangium sylvaticum	Contig
-G_tak_GCA_023333735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/735/GCA_023333735.1_ASM2333373v1	Globisporangium takayamanum	Contig
-G_ult_DAOM_BR144_GCA_000143045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/143/045/GCA_000143045.1_pug	Globisporangium ultimum	Scaffold
-G_ult_sporangiiferum_BR650_GCA_000387525_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/525/GCA_000387525.2_pug3_scaffolds_v1	Globisporangium ultimum	Scaffold
-G_ult_sporangiiferum_GCA_023334565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/565/GCA_023334565.1_ASM2333456v1	Globisporangium ultimum	Contig
-G_unc_GCA_023333755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/755/GCA_023333755.1_ASM2333375v1	Globisporangium uncinulatum	Contig
-G_vin_GCA_023333705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/705/GCA_023333705.1_ASM2333370v1	Globisporangium viniferum	Contig
-G_yor_GCA_023333695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/695/GCA_023333695.1_ASM2333369v1	Globisporangium yorkense	Contig
-Ha_bat_GCA_023338225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/225/GCA_023338225.1_ASM2333822v1	Halophytophthora batemanensis	Contig
-Ha_poly_GCA_023338205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/205/GCA_023338205.1_ASM2333820v1	Halophytophthora polymorphica	Contig
-Hy_ara_Emoy2_GCA_000173235_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/173/235/GCA_000173235.2_HyaAraEmoy2_2.0	Hyaloperonospora arabidopsidis	Scaffold
-Hy_ara_GCA_001414265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/414/265/GCA_001414265.1_Cala2_v1	Hyaloperonospora arabidopsidis	Scaffold
-Hy_ara_GCA_001414525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/414/525/GCA_001414525.1_Noks1_v1	Hyaloperonospora arabidopsidis	Scaffold
-Hy_bras_GCA_019297655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/297/655/GCA_019297655.1_ASM1929765v1	Hyaloperonospora brassicae	Scaffold
-Hy_bras_GCA_019297675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/297/675/GCA_019297675.1_ASM1929767v1	Hyaloperonospora brassicae	Scaffold
-L_gig_GCA_002286825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/286/825/GCA_002286825.1_Lag_gig_ARSEF373_v1.0	Lagenidium giganteum	Scaffold
-L_gig_GCA_002980415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/980/415/GCA_002980415.1_ASM298041v1	Lagenidium giganteum	Scaffold
-L_gig_GCA_027925865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/925/865/GCA_027925865.1_Lag_gig_ARSEF373_Annot	Lagenidium giganteum	Scaffold
-Pa_kar_GCA_002980425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/980/425/GCA_002980425.1_ASM298042v1	Paralagenidium karlingii	Scaffold
-Pa_kar_GCA_027475765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/475/765/GCA_027475765.1_ASM2747576v1	Paralagenidium karlingii	Scaffold
-Peronosc_sor_GCA_026184515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/184/515/GCA_026184515.1_PsorP6_UCD_v1	Peronosclerospora sorghi	Chromosome
-Peronosp_bel_GCA_002864105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/864/105/GCA_002864105.1_ASM286410v1	Peronospora belbahrii	Scaffold
-Peronosp_bel_GCA_902712285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/712/285/GCA_902712285.1_TODO	Peronospora belbahrii	Scaffold
-Peronosp_des_GCA_011800735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/800/735/GCA_011800735.1_RDA_Pdes_1.0	Peronospora destructor	Contig
-Peronosp_eff_GCA_002245715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/245/715/GCA_002245715.1_ASM224571v1	Peronospora effusa	Scaffold
-Peronosp_eff_GCA_002245725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/245/725/GCA_002245725.1_ASM224572v1	Peronospora effusa	Scaffold
-Peronosp_eff_GCA_002245735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/245/735/GCA_002245735.1_ASM224573v1	Peronospora effusa	Scaffold
-Peronosp_eff_GCA_003704535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/704/535/GCA_003704535.1_Peff_R14	Peronospora effusa	Scaffold
-Peronosp_eff_GCA_003843895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/843/895/GCA_003843895.1_ASM384389v1	Peronospora effusa	Scaffold
-Peronosp_eff_GCA_013122855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/122/855/GCA_013122855.1_Hybrid7	Peronospora effusa	Scaffold
-Peronosp_eff_GCA_021491655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/491/655/GCA_021491655.1_ASM2149165v1	Peronospora effusa	Chromosome
-Peronosp_tab_GCA_002099245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/099/245/GCA_002099245.1_Ptab_968-S26	Peronospora tabacina	Scaffold
-Phytoph_GCA_000500225_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/500/225/GCA_000500225.2_ASM50022v2	Phytophthora pinifolia	Scaffold
-Phytoph_aga_GCA_001314435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/435/GCA_001314435.1_NZFS3772v2	Phytophthora agathidicida	Scaffold
-Phytoph_aga_GCA_001314445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/445/GCA_001314445.1_NZFS3770v2	Phytophthora agathidicida	Scaffold
-Phytoph_aga_GCA_025722995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/722/995/GCA_025722995.1_ASM2572299v1	Phytophthora agathidicida	Chromosome
-Phytoph_ale_GCA_018873745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/873/745/GCA_018873745.1_NZ4037v1	Phytophthora aleatoria	Scaffold
-Phytoph_bet_GCA_011320135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/320/135/GCA_011320135.1_UAnd_PBet_P8084	Phytophthora betacei	Contig
-Phytoph_boe_GCA_011947355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/947/355/GCA_011947355.1_USDA_Pboe_BL79_1.0	Phytophthora boehmeriae	Contig
-Phytoph_boe_GCA_019155685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/155/685/GCA_019155685.1_JHI_Pboe_1.0	Phytophthora boehmeriae	Scaffold
-Phytoph_boe_GCA_024679105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/105/GCA_024679105.1_ASM2467910v1	Phytophthora boehmeriae	Scaffold
-Phytoph_bras_GCA_024679045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/045/GCA_024679045.1_ASM2467904v1	Phytophthora brassicae	Scaffold
-Phytoph_cac_GCA_002081965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/081/965/GCA_002081965.1_P_cactorum_v1	Phytophthora cactorum	Contig
-Phytoph_cac_GCA_003287315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/287/315/GCA_003287315.1_Pcac_10300_v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_010194725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/010/194/725/GCA_010194725.1_Phyca_D	Phytophthora cactorum	Contig
-Phytoph_cac_GCA_016864635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/635/GCA_016864635.1_ASM1686463v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/655/GCA_016864655.1_ASM1686465v1	Phytophthora cactorum	Contig
-Phytoph_cac_GCA_016864665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/665/GCA_016864665.1_ASM1686466v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/695/GCA_016864695.1_ASM1686469v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/715/GCA_016864715.1_ASM1686471v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/735/GCA_016864735.1_Pcac_4032	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/755/GCA_016864755.1_ASM1686475v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/775/GCA_016864775.1_ASM1686477v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/795/GCA_016864795.1_ASM1686479v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/815/GCA_016864815.1_ASM1686481v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/835/GCA_016864835.1_ASM1686483v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016864855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/855/GCA_016864855.1_ASM1686485v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016865055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/865/055/GCA_016865055.1_ASM1686505v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016865075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/865/075/GCA_016865075.1_ASM1686507v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016865085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/865/085/GCA_016865085.1_ASM1686508v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_016906365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/906/365/GCA_016906365.1_ASM1690636v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_017309695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/017/309/695/GCA_017309695.1_ASM1730969v1	Phytophthora cactorum	Scaffold
-Phytoph_cac_GCA_018873755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/873/755/GCA_018873755.1_NZ3830v1	Phytophthora cactorum	Scaffold
-Phytoph_caj_GCA_024679175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/175/GCA_024679175.1_ASM2467917v1	Phytophthora cajani	Scaffold
-Phytoph_camb_GCA_000443045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/443/045/GCA_000443045.1_PhytoCambi_1.0	Phytophthora cambivora	Scaffold
-Phytoph_cap_GCA_004137865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/865/GCA_004137865.1_CPV_277	Phytophthora capsici	Scaffold
-Phytoph_cap_GCA_004137885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/885/GCA_004137885.1_CPV_302	Phytophthora capsici	Scaffold
-Phytoph_cap_GCA_004137955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/955/GCA_004137955.1_CPV_270	Phytophthora capsici	Scaffold
-Phytoph_cap_GCA_004137965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/965/GCA_004137965.1_CPV_262	Phytophthora capsici	Scaffold
-Phytoph_cap_GCA_004137975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/975/GCA_004137975.1_CPV_267	Phytophthora capsici	Scaffold
-Phytoph_cap_GCA_004138045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/138/045/GCA_004138045.1_CPV_219	Phytophthora capsici	Scaffold
-Phytoph_cap_GCA_016618375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/618/375/GCA_016618375.1_Pcap_4.1	Phytophthora capsici	Scaffold
-Phytoph_cap_GCA_018292885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/292/885/GCA_018292885.1_ASM1829288v1	Phytophthora capsici	Scaffold
-Phytoph_cap_GCA_018292895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/292/895/GCA_018292895.1_ASM1829289v1	Phytophthora capsici	Scaffold
-Phytoph_cap_GCA_018292905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/292/905/GCA_018292905.1_ASM1829290v1	Phytophthora capsici	Scaffold
-Phytoph_cap_LT1534_GCA_000325885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/325/885/GCA_000325885.1_Phytophthora_capsici_LT1534_v11.0	Phytophthora capsici	Contig
-Phytoph_cas_GCA_014706115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/115/GCA_014706115.1_ASM1470611v1	Phytophthora castanetorum	Contig
-Phytoph_chl_GCA_012295415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/295/415/GCA_012295415.1_MU_Pchl	Phytophthora chlamydospora	Scaffold
-Phytoph_cin_GCA_001314365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/365/GCA_001314365.1_MP94-48v2	Phytophthora cinnamomi	Scaffold
-Phytoph_cin_GCA_001314505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/505/GCA_001314505.1_NZFS3750v2	Phytophthora cinnamomi	Scaffold
-Phytoph_cin_GCA_002734105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/734/105/GCA_002734105.1_DU054_v1	Phytophthora cinnamomi	Scaffold
-Phytoph_cin_GCA_002734125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/734/125/GCA_002734125.1_WA94_v1	Phytophthora cinnamomi	Scaffold
-Phytoph_cin_GCA_018691715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/691/715/GCA_018691715.1_ASM1869171v1	Phytophthora cinnamomi	Scaffold
-Phytoph_cin_cinnamomi_GCA_020283495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/283/495/GCA_020283495.1_ASM2028349v1	Phytophthora cinnamomi	Scaffold
-Phytoph_cin_robiniae_GCA_024679195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/195/GCA_024679195.1_ASM2467919v1	Phytophthora cinnamomi	Scaffold
-Phytoph_cit_GCA_007655245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/007/655/245/GCA_007655245.1_USDA_Pcit_BL34_1.0	Phytophthora citricola	Contig
-Phytoph_coloc_GCA_002288995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/288/995/GCA_002288995.1_ASM228899v1	Phytophthora colocasiae	Scaffold
-Phytoph_coloc_GCA_018806915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/806/915/GCA_018806915.1_PhyCol_Lyd2019_V1	Phytophthora colocasiae	Contig
-Phytoph_coloc_GCA_020226015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/226/015/GCA_020226015.1_ASM2022601v1	Phytophthora colocasiae	Contig
-Phytoph_con_GCA_011947335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/947/335/GCA_011947335.1_USDA_Pcon_61_1.0	Phytophthora constricta	Contig
-Phytoph_cryptog_GCA_000468175_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/468/175/GCA_000468175.2_ASM46817v2	Phytophthora cryptogea	Scaffold
-Phytoph_foli_GCA_024679135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/135/GCA_024679135.1_ASM2467913v1	Phytophthora foliorum	Scaffold
-Phytoph_fra_GCA_000686205_4	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/686/205/GCA_000686205.4_P.fr2.0	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_002025845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/025/845/GCA_002025845.1_Pf4954	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_009729435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/729/435/GCA_009729435.1_ASM972943v1	Phytophthora fragariae	Contig
-Phytoph_fra_GCA_009729455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/729/455/GCA_009729455.1_ASM972945v1	Phytophthora fragariae	Contig
-Phytoph_fra_GCA_009732925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/732/925/GCA_009732925.1_ASM973292v1	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_009732985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/732/985/GCA_009732985.1_ASM973298v1	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_009733005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/005/GCA_009733005.1_ASM973300v1	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_009733025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/025/GCA_009733025.1_ASM973302v1	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_009733045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/045/GCA_009733045.1_ASM973304v1	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_009733065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/065/GCA_009733065.1_ASM973306v1	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_009733085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/085/GCA_009733085.1_ASM973308v1	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_009733105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/105/GCA_009733105.1_ASM973310v1	Phytophthora fragariae	Scaffold
-Phytoph_fra_GCA_009733125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/125/GCA_009733125.1_ASM973312v1	Phytophthora fragariae	Scaffold
-Phytoph_gon_GCA_012295475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/295/475/GCA_012295475.1_MU_Pgon	Phytophthora gonapodyides	Scaffold
-Phytoph_hib_GCA_012656075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/656/075/GCA_012656075.1_USDA_Phib_BL41_1.0	Phytophthora hibernalis	Contig
-Phytoph_hib_GCA_024679025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/025/GCA_024679025.1_ASM2467902v1	Phytophthora hibernalis	Scaffold
-Phytoph_ida_GCA_016865095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/865/095/GCA_016865095.1_ASM1686509v1	Phytophthora idaei	Scaffold
-Phytoph_ida_GCA_016880175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/880/175/GCA_016880175.1_ASM1688017v1	Phytophthora idaei	Scaffold
-Phytoph_ida_GCA_016880985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/880/985/GCA_016880985.1_ASM1688098v1	Phytophthora idaei	Scaffold
-Phytoph_infe_GCA_001661535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/661/535/GCA_001661535.1_ASM166153v1	Phytophthora infestans	Contig
-Phytoph_infe_GCA_011316315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/316/315/GCA_011316315.1_UAnd_PInf_RC1-10.1	Phytophthora infestans	Contig
-Phytoph_infe_GCA_012295175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/295/175/GCA_012295175.1_ASM1229517v1	Phytophthora infestans	Contig
-Phytoph_infe_GCA_012552325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/552/325/GCA_012552325.1_ASM1255232v1	Phytophthora infestans	Scaffold
-Phytoph_infe_GCA_026225685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/225/685/GCA_026225685.1_Pinf1306_UCR_1	Phytophthora infestans	Chromosome
-Phytoph_infe_T30_4_GCF_000142945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/142/945/GCF_000142945.1_ASM14294v1	Phytophthora infestans	Scaffold
-Phytoph_ker_00238_432_GCA_000333075_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/333/075/GCA_000333075.3_PhyKer238_432v3	Phytophthora kernoviae	Scaffold
-Phytoph_ker_00629_1_GCA_000333095_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/333/095/GCA_000333095.2_PhyKer629_1v2	Phytophthora kernoviae	Scaffold
-Phytoph_ker_00844_4_GCA_000333115_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/333/115/GCA_000333115.2_PhyKer844_4v2	Phytophthora kernoviae	Scaffold
-Phytoph_ker_GCA_000448265_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/448/265/GCA_000448265.2_Phyto_kern_2.0	Phytophthora kernoviae	Scaffold
-Phytoph_ker_GCA_000785725_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/785/725/GCA_000785725.3_NZFS3630v3	Phytophthora kernoviae	Scaffold
-Phytoph_ker_GCA_000785735_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/785/735/GCA_000785735.3_NZFS2646v3	Phytophthora kernoviae	Scaffold
-Phytoph_ker_GCA_001707905_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/707/905/GCA_001707905.2_PkChile2v2.0	Phytophthora kernoviae	Scaffold
-Phytoph_ker_GCA_001712645_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/712/645/GCA_001712645.2_PkChile7v2.0	Phytophthora kernoviae	Scaffold
-Phytoph_ker_GCA_001712655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/712/655/GCA_001712655.1_PkChile1v1.0	Phytophthora kernoviae	Scaffold
-Phytoph_ker_GCA_001712705_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/712/705/GCA_001712705.2_PkChile6v2.0	Phytophthora kernoviae	Scaffold
-Phytoph_ker_GCA_001712715_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/712/715/GCA_001712715.2_PkChile4v2.0	Phytophthora kernoviae	Scaffold
-Phytoph_ker_GCA_008080845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/008/080/845/GCA_008080845.1_CPHST-BL-91	Phytophthora kernoviae	Contig
-Phytoph_lat_GCA_000333055_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/333/055/GCA_000333055.2_SMSTG_v2.0	Phytophthora lateralis	Scaffold
-Phytoph_lat_GCA_000500205_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/500/205/GCA_000500205.2_ASM50020v2	Phytophthora lateralis	Scaffold
-Phytoph_lat_MPF4_GCA_000318465_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/318/465/GCA_000318465.3_MPF4_v2.1	Phytophthora lateralis	Scaffold
-Phytoph_lat_MPF6_GCA_000338795_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/338/795/GCA_000338795.2_MPF6_v2.0	Phytophthora lateralis	Scaffold
-Phytoph_lat_SMST21_GCA_000338815_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/338/815/GCA_000338815.2_SMST21v2.0	Phytophthora lateralis	Scaffold
-Phytoph_litc_GCA_002812785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/812/785/GCA_002812785.1_ASM281278v1	Phytophthora litchii	Scaffold
-Phytoph_mac_GCA_011947325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/947/325/GCA_011947325.1_USDA_Pmac_71_1.0	Phytophthora macrochlamydospora	Contig
-Phytoph_megak_GCA_002215365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/215/365/GCA_002215365.1_ASM221536v1	Phytophthora megakarya	Scaffold
-Phytoph_mel_GCA_008553785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/008/553/785/GCA_008553785.1_USDA_Pmel_BL23_1.0	Phytophthora melonis	Contig
-Phytoph_mel_GCA_024211575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/211/575/GCA_024211575.1_Pm_CJ26_1.0	Phytophthora melonis	Contig
-Phytoph_mel_GCA_024679155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/155/GCA_024679155.1_ASM2467915v1	Phytophthora melonis	Scaffold
-Phytoph_mul_GCA_001314345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/345/GCA_001314345.1_NZFS3378v2	Phytophthora multivora	Scaffold
-Phytoph_mul_GCA_001314355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/355/GCA_001314355.1_NZFS3448v1	Phytophthora multivora	Scaffold
-Phytoph_nic_GCA_001482985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/482/985/GCA_001482985.1_ASM148298v1	Phytophthora nicotianae	Scaffold
-Phytoph_nic_GCA_001483015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/483/015/GCA_001483015.1_ASM148301v1	Phytophthora nicotianae	Scaffold
-Phytoph_nic_GCA_003328465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/328/465/GCA_003328465.1_ASM332846v1	Phytophthora nicotianae	Scaffold
-Phytoph_nic_GCA_012658955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/658/955/GCA_012658955.1_USDA_Pnic_BL162_1.0	Phytophthora nicotianae	Contig
-Phytoph_nie_GCA_024679275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/275/GCA_024679275.1_ASM2467927v1	Phytophthora niederhauseri	Scaffold
-Phytoph_ohi_GCA_014706125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/125/GCA_014706125.1_ASM1470612v1	Phytophthora ohioensis (nom. inval.)	Contig
-Phytoph_pal_GCA_008079305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/008/079/305/GCA_008079305.1_PpalZC01v1	Phytophthora palmivora	Contig
-Phytoph_pal_GCA_012932265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/932/265/GCA_012932265.1_ASM1293226v1	Phytophthora palmivora	Scaffold
-Phytoph_pal_palmivora_GCA_002911725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/911/725/GCA_002911725.1_ASM291172v1	Phytophthora palmivora	Scaffold
-Phytoph_para_CJ01A1_GCA_000365545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/365/545/GCA_000365545.1_Phyt_para_CJ01A1_V1	Phytophthora parasitica	Contig
-Phytoph_para_GCA_000509465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/509/465/GCA_000509465.1_Phyt_para_CJ02B3_V1	Phytophthora parasitica	Scaffold
-Phytoph_para_GCA_000509485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/509/485/GCA_000509485.1_Phyt_para_CJ05E6_V1	Phytophthora parasitica	Scaffold
-Phytoph_para_GCA_000509505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/509/505/GCA_000509505.1_Phyt_para_CHvinca01_V1	Phytophthora parasitica	Scaffold
-Phytoph_para_GCA_000509525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/509/525/GCA_000509525.1_Phyt_para_IAC_01_95_V1	Phytophthora parasitica	Scaffold
-Phytoph_para_INRA_310_GCF_000247585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/247/585/GCF_000247585.1_PP_INRA-310_V2	Phytophthora parasitica	Scaffold
-Phytoph_para_P10297_GCA_000367145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/367/145/GCA_000367145.1_Phyt_para_P10297_V1	Phytophthora parasitica	Contig
-Phytoph_para_P1569_GCA_000365505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/365/505/GCA_000365505.1_Phyt_para_P1569_V1	Phytophthora parasitica	Contig
-Phytoph_para_P1976_GCA_000365525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/365/525/GCA_000365525.1_Phyt_para_P1976_V1	Phytophthora parasitica	Contig
-Phytoph_parvi_GCA_024679295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/295/GCA_024679295.1_ASM2467929v1	Phytophthora parvispora	Scaffold
-Phytoph_pini_GCA_023611945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/611/945/GCA_023611945.1_ASM2361194v1	Phytophthora pini	Contig
-Phytoph_pini_GCA_024679215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/215/GCA_024679215.1_ASM2467921v1	Phytophthora pini	Scaffold
-Phytoph_pisi_GCA_000751395_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/751/395/GCA_000751395.2_P._pisi_assembly	Phytophthora pisi	Scaffold
-Phytoph_pisi_GCA_024679225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/225/GCA_024679225.1_ASM2467922v1	Phytophthora pisi	Scaffold
-Phytoph_pist_GCA_024679115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/115/GCA_024679115.1_ASM2467911v1	Phytophthora pistaciae	Scaffold
-Phytoph_pluriv_GCA_002247145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/247/145/GCA_002247145.1_Plurivora_assembly_v1.fn	Phytophthora plurivora	Scaffold
-Phytoph_pluv_GCA_001314425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/425/GCA_001314425.1_LC9-1v2	Phytophthora pluvialis	Scaffold
-Phytoph_pluv_GCA_001314455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/455/GCA_001314455.1_NZFS3000v2	Phytophthora pluvialis	Scaffold
-Phytoph_pse_GCA_012295425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/295/425/GCA_012295425.1_MU_Ppse	Phytophthora pseudosyringae	Scaffold
-Phytoph_pse_GCA_019155715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/155/715/GCA_019155715.1_JHI_pseudo_1.0	Phytophthora pseudosyringae	Scaffold
-Phytoph_que_GCA_014706105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/105/GCA_014706105.1_ASM1470610v1	Phytophthora quercina	Contig
-Phytoph_qui_GCA_011947345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/947/345/GCA_011947345.1_USDA_Pqui_54_1.0	Phytophthora quininea	Contig
-Phytoph_ram_GCA_000149735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/149/735/GCA_000149735.1_ASM14973v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_000336535_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/336/535/GCA_000336535.2_EU2_996_3_v2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_000340395_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/340/395/GCA_000340395.2_CC2275_v2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001278135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/135/GCA_001278135.1_SOD58v2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001278145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/145/GCA_001278145.1_SOD69v2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001278155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/155/GCA_001278155.1_SOD22v2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001278165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/165/GCA_001278165.1_SOD158v2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001278215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/215/GCA_001278215.1_SOD136v2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001278225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/225/GCA_001278225.1_SODL51v2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001278235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/235/GCA_001278235.1_SOD169v2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/315/GCA_001933315.1_CC2184_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/325/GCA_001933325.1_CC14654_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/335/GCA_001933335.1_CC12475v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/345/GCA_001933345.1_CC1008_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/395/GCA_001933395.1_CC1033_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/405/GCA_001933405.1_CC1048_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/415/GCA_001933415.1_CC2168_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/455/GCA_001933455.1_CC2176_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/465/GCA_001933465.1_CC2186_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001933485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/485/GCA_001933485.1_CC2187_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_001955675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/955/675/GCA_001955675.1_CC1011_v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_002968915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/968/915/GCA_002968915.1_ASM296891v1	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_003956735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/956/735/GCA_003956735.1_Pr102_V2	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_004343245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/343/245/GCA_004343245.1_CPHST_55G_Assem3	Phytophthora ramorum	Contig
-Phytoph_ram_GCA_020800205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/800/205/GCA_020800205.1_ASM2080020v1	Phytophthora ramorum	Contig
-Phytoph_ram_GCA_020800215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/800/215/GCA_020800215.1_PR-102_v3_p	Phytophthora ramorum	Scaffold
-Phytoph_ram_GCA_020800225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/800/225/GCA_020800225.1_PR-102_v3_a	Phytophthora ramorum	Contig
-Phytoph_ram_GCA_020800235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/800/235/GCA_020800235.1_ASM2080023v1	Phytophthora ramorum	Scaffold
-Phytoph_rubi_GCA_000687305_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/687/305/GCA_000687305.2_P.frag2.0	Phytophthora rubi	Scaffold
-Phytoph_rubi_GCA_002025925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/025/925/GCA_002025925.1_Pr4671	Phytophthora rubi	Scaffold
-Phytoph_rubi_GCA_009732905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/732/905/GCA_009732905.1_ASM973290v1	Phytophthora rubi	Scaffold
-Phytoph_rubi_GCA_009732945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/732/945/GCA_009732945.1_ASM973294v1	Phytophthora rubi	Scaffold
-Phytoph_rubi_GCA_009733145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/145/GCA_009733145.1_ASM973314v1	Phytophthora rubi	Scaffold
-Phytoph_soj_GCA_009848525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/848/525/GCA_009848525.1_Psojae2019.1	Phytophthora sojae	Contig
-Phytoph_soj_GCF_000149755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/149/755/GCF_000149755.1_P.sojae_V3.0	Phytophthora sojae	Scaffold
-Phytoph_syr_GCA_012656105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/656/105/GCA_012656105.1_USDA_Psyr_BL57G_1.0	Phytophthora syringae	Scaffold
-Phytoph_syr_GCA_024679005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/005/GCA_024679005.1_ASM2467900v1	Phytophthora syringae	Scaffold
-Phytoph_tax_GCA_001314375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/375/GCA_001314375.1_NZFS3642v1	Phytophthora taxon totara	Scaffold
-Phytoph_tax_GCA_001314925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/925/GCA_001314925.1_NZFS3727v2	Phytophthora taxon totara	Scaffold
-Phytoph_tub_GCA_014706135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/135/GCA_014706135.1_ASM1470613v1	Phytophthora tubulina	Contig
-Phytoph_uli_GCA_024679075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/075/GCA_024679075.1_ASM2467907v1	Phytophthora uliginosa	Scaffold
-Phytoph_ver_GCA_014706215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/215/GCA_014706215.1_ASM1470621v1	Phytophthora versiformis	Contig
-Phytoph_vig_GCA_016169925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/169/925/GCA_016169925.1_ASM1616992v1	Phytophthora vignae	Contig
-Phytoph_vig_GCA_022496125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/496/125/GCA_022496125.1_ASM2249612v1	Phytophthora vignae	Scaffold
-Phytoph_vig_f_sp_adzukicola_GCA_016169935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/169/935/GCA_016169935.1_ASM1616993v1	Phytophthora vignae	Contig
-Phytoph_vig_f_sp_vignae_GCA_016169955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/169/955/GCA_016169955.1_ASM1616995v1	Phytophthora vignae	Contig
-Phytopy_aic_GCA_023338125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/125/GCA_023338125.1_ASM2333812v1	Phytopythium aichiense	Contig
-Phytopy_bor_GCA_023338115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/115/GCA_023338115.1_ASM2333811v1	Phytopythium boreale	Contig
-Phytopy_cha_GCA_023334415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/415/GCA_023334415.1_ASM2333441v1	Phytopythium chamaehyphon	Contig
-Phytopy_cuc_GCA_023336425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/425/GCA_023336425.1_ASM2333642v1	Phytopythium cucurbitacearum (nom. inval.)	Contig
-Phytopy_del_GCA_023338175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/175/GCA_023338175.1_ASM2333817v1	Phytopythium delawarense	Contig
-Phytopy_hel_GCA_023338155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/155/GCA_023338155.1_ASM2333815v1	Phytopythium helicoides	Contig
-Phytopy_hel_GCA_024867545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/867/545/GCA_024867545.1_ASM2486754v1	Phytopythium helicoides	Scaffold
-Phytopy_kan_GCA_023338135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/135/GCA_023338135.1_ASM2333813v1	Phytopythium kandeliae	Contig
-Phytopy_lito_GCA_023338075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/075/GCA_023338075.1_ASM2333807v1	Phytopythium litorale	Contig
-Phytopy_mir_GCA_023338055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/055/GCA_023338055.1_ASM2333805v1	Phytopythium mirpurense	Contig
-Phytopy_mont_GCA_023338065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/065/GCA_023338065.1_ASM2333806v1	Phytopythium montanum	Contig
-Phytopy_oed_GCA_023338025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/025/GCA_023338025.1_ASM2333802v1	Phytopythium oedochilum	Contig
-Phytopy_ost_GCA_023337975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/975/GCA_023337975.1_ASM2333797v1	Phytopythium ostracodes	Contig
-Phytopy_sin_GCA_023334395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/395/GCA_023334395.1_ASM2333439v1	Phytopythium sindhum	Contig
-Phytopy_vex_DAOM_BR484_GCA_000387545_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/545/GCA_000387545.2_pve_scaffolds_v1	Phytopythium vexans	Scaffold
-Phytopy_vex_GCA_003413675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/413/675/GCA_003413675.1_ASM341367v1	Phytopythium vexans	Contig
-Phytopy_vex_GCA_022023675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/023/675/GCA_022023675.1_ASM2202367v1	Phytopythium vexans	Scaffold
-Phytopy_vex_GCA_023337965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/965/GCA_023337965.1_ASM2333796v1	Phytopythium vexans	Contig
-Pi_apin_GCA_001600475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/600/475/GCA_001600475.1_JCM_30513_assembly_v001	Pilasporangium apinafurcum	Scaffold
-Pi_apin_GCA_001600495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/600/495/GCA_001600495.1_JCM_30514_assembly_v001	Pilasporangium apinafurcum	Scaffold
-Pi_apin_GCA_023337955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/955/GCA_023337955.1_ASM2333795v1	Pilasporangium apinafurcum	Contig
-Pl_hal_GCA_003640465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/465/GCA_003640465.1_ASM364046v1	Plasmopara halstedii	Scaffold
-Pl_hal_GCA_003640505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/505/GCA_003640505.1_ASM364050v1	Plasmopara halstedii	Contig
-Pl_hal_GCA_003724065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/724/065/GCA_003724065.1_Plhal710r1	Plasmopara halstedii	Scaffold
-Pl_hal_GCA_004380875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/380/875/GCA_004380875.1_ASM438087v1	Plasmopara halstedii	Scaffold
-Pl_hal_GCF_900000015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/000/015/GCF_900000015.1_Plasmopara_halstedii_genome	Plasmopara halstedii	Scaffold
-Pl_mur_GCA_003676415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/676/415/GCA_003676415.1_INRA_Pmur_1	Plasmopara muralis	Scaffold
-Pl_obd_GCA_003640485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/485/GCA_003640485.1_ASM364048v1	Plasmopara obducens	Scaffold
-Pl_obd_GCA_003640625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/625/GCA_003640625.1_ASM364062v1	Plasmopara obducens	Scaffold
-Pl_vit_GCA_001695595_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/695/595/GCA_001695595.3_INRA_Pvit_2	Plasmopara viticola	Scaffold
-Pl_vit_GCA_001974925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/974/925/GCA_001974925.1_ASM197492v1	Plasmopara viticola	Scaffold
-Pl_vit_GCA_003123765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/123/765/GCA_003123765.1_PVITv1	Plasmopara viticola	Scaffold
-Ps_cub_GCA_000252605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/252/605/GCA_000252605.1_ASM25260v1	Pseudoperonospora cubensis	Contig
-Ps_hum_GCA_003991265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/991/265/GCA_003991265.1_ASM399126v1	Pseudoperonospora humuli	Scaffold
-Py_ama_GCA_023337905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/905/GCA_023337905.1_ASM2333790v1	Pythium amasculinum	Contig
-Py_ang_GCA_023337915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/915/GCA_023337915.1_ASM2333791v1	Pythium angustatum	Contig
-Py_aph_DAOM_BR444_GCA_000387445_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/445/GCA_000387445.2_pag1_scaffolds_v1	Pythium aphanidermatum	Scaffold
-Py_aph_GCA_023337855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/855/GCA_023337855.1_ASM2333785v1	Pythium aphanidermatum	Contig
-Py_aph_GCA_027475745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/475/745/GCA_027475745.1_ASM2747574v1	Pythium aphanidermatum	Scaffold
-Py_apic_GCA_023337825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/825/GCA_023337825.1_ASM2333782v1	Pythium apiculatum	Contig
-Py_apl_GCA_023337875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/875/GCA_023337875.1_ASM2333787v1	Pythium apleroticum	Contig
-Py_aqu_GCA_023337775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/775/GCA_023337775.1_ASM2333777v1	Pythium aquatile	Contig
-Py_ari_GCA_023337755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/755/GCA_023337755.1_ASM2333775v1	Pythium aristosporum	Contig
-Py_arr_ATCC_12531_GCA_000387505_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/505/GCA_000387505.2_par_scaffolds_v1	Pythium arrhenomanes	Scaffold
-Py_bif_GCA_023337735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/735/GCA_023337735.1_ASM2333773v1	Pythium biforme	Contig
-Py_brac_GCA_023337615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/615/GCA_023337615.1_ASM2333761v1	Pythium brachiatum	Contig
-Py_cat_GCA_027475705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/475/705/GCA_027475705.1_ASM2747570v1	Pythium catenulatum	Scaffold
-Py_cho_GCA_023337575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/575/GCA_023337575.1_ASM2333757v1	Pythium chondricola	Contig
-Py_color_GCA_023337545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/545/GCA_023337545.1_ASM2333754v1	Pythium coloratum	Contig
-Py_diclinum_GCA_023337495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/495/GCA_023337495.1_ASM2333749v1	Pythium diclinum	Contig
-Py_dissi_GCA_023336445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/445/GCA_023336445.1_ASM2333644v1	Pythium dissimile	Contig
-Py_disso_GCA_023336355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/355/GCA_023336355.1_ASM2333635v1	Pythium dissotocum	Contig
-Py_foll_GCA_023336295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/295/GCA_023336295.1_ASM2333629v1	Pythium folliculosum	Contig
-Py_gram_GCA_023336255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/255/GCA_023336255.1_ASM2333625v1	Pythium graminicola	Contig
-Py_gran_GCA_023336285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/285/GCA_023336285.1_ASM2333628v1	Pythium grandisporangium	Contig
-Py_gui_GCA_003730235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/730/235/GCA_003730235.1_ASM373023v1	Pythium guiyangense	Contig
-Py_hyd_GCA_023336225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/225/GCA_023336225.1_ASM2333622v1	Pythium hydnosporum	Contig
-Py_infl_GCA_023336345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/345/GCA_023336345.1_ASM2333634v1	Pythium inflatum	Contig
-Py_ins_GCA_000764265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/764/265/GCA_000764265.1_ASM76426v1	Pythium insidiosum	Scaffold
-Py_ins_GCA_001029375_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/029/375/GCA_001029375.2_Pythium_PINS_2.0	Pythium insidiosum	Contig
-Py_ins_GCA_001950795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/795/GCA_001950795.1_Pythium_insidiosum_MCC13_0.1	Pythium insidiosum	Scaffold
-Py_ins_GCA_001950815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/815/GCA_001950815.1_Pythium_insidiosum_ATCC200269_0.1	Pythium insidiosum	Scaffold
-Py_ins_GCA_001950835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/835/GCA_001950835.1_Pythium_insidiosum_CBS57385_0.1	Pythium insidiosum	Scaffold
-Py_ins_GCA_001950855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/855/GCA_001950855.1_Pythium_insidiosum_CBS101555_0.1	Pythium insidiosum	Scaffold
-Py_ins_GCA_001950875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/875/GCA_001950875.1_Pythium_insidiosum_ATCC64221_0.1	Pythium insidiosum	Scaffold
-Py_ins_GCA_001950895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/895/GCA_001950895.1_Pythium_insidiosum_CR02_0.1	Pythium insidiosum	Scaffold
-Py_ins_GCA_001950915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/915/GCA_001950915.1_Pythium_insidiosum_Pi19_0.1	Pythium insidiosum	Scaffold
-Py_ins_GCA_001950935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/935/GCA_001950935.1_Pythium_insidiosum_MCC18_0.1	Pythium insidiosum	Scaffold
-Py_ins_GCA_001950955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/955/GCA_001950955.1_Pythium_insidiosum_SIMI4763_0.1	Pythium insidiosum	Scaffold
-Py_ins_GCA_004138015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/138/015/GCA_004138015.1_ASM413801v1	Pythium insidiosum	Scaffold
-Py_ins_GCA_022836835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/836/835/GCA_022836835.1_ASM2283683v1	Pythium insidiosum	Contig
-Py_ins_GCA_026401375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/401/375/GCA_026401375.1_ASM2640137v1	Pythium insidiosum	Scaffold
-Py_ins_GCA_026401395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/401/395/GCA_026401395.1_ASM2640139v1	Pythium insidiosum	Scaffold
-Py_lyc_GCA_023336105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/105/GCA_023336105.1_ASM2333610v1	Pythium lycopersicum	Contig
-Py_mono_GCA_023336165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/165/GCA_023336165.1_ASM2333616v1	Pythium monospermum	Contig
-Py_myr_GCA_020976625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/976/625/GCA_020976625.1_JAAS_PmSWQ7_1.0	Pythium myriotylum	Scaffold
-Py_myr_GCA_023091665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/091/665/GCA_023091665.1_ASM2309166v1	Pythium myriotylum	Contig
-Py_myr_GCA_023336135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/135/GCA_023336135.1_ASM2333613v1	Pythium myriotylum	Contig
-Py_myr_GCA_025583705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/583/705/GCA_025583705.1_ASM2558370v1	Pythium myriotylum	Contig
-Py_oli_GCA_001573145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/573/145/GCA_001573145.1_ASM157314v1	Pythium oligandrum	Scaffold
-Py_oli_GCA_002073175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/073/175/GCA_002073175.1_P_oligandrum_v1	Pythium oligandrum	Scaffold
-Py_oli_GCA_005966545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/005/966/545/GCA_005966545.1_ASM596654v1	Pythium oligandrum	Contig
-Py_oli_GCA_020085045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/085/045/GCA_020085045.1_PO-1	Pythium oligandrum	Scaffold
-Py_oli_GCA_023336055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/055/GCA_023336055.1_ASM2333605v1	Pythium oligandrum	Contig
-Py_ornam_GCA_023336015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/015/GCA_023336015.1_ASM2333601v1	Pythium ornamentatum	Contig
-Py_pec_GCA_023336095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/095/GCA_023336095.1_ASM2333609v1	Pythium pectinolyticum	Contig
-Py_peri_GCA_001922765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/922/765/GCA_001922765.1_Pythium_periplocum_1.0	Pythium periplocum	Scaffold
-Py_peri_GCA_023336075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/075/GCA_023336075.1_ASM2333607v1	Pythium periplocum	Contig
-Py_phragmitic_GCA_023335935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/935/GCA_023335935.1_ASM2333593v1	Pythium phragmiticola	Contig
-Py_phragmitis_GCA_023335925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/925/GCA_023335925.1_ASM2333592v1	Pythium phragmitis	Contig
-Py_pluris_GCA_023336035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/035/GCA_023336035.1_ASM2333603v1	Pythium plurisporium	Contig
-Py_por_GCA_023335885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/885/GCA_023335885.1_ASM2333588v1	Pythium porphyrae	Contig
-Py_pyr_GCA_023335905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/905/GCA_023335905.1_ASM2333590v1	Pythium pyrilobum	Contig
-Py_rhizo__GCA_027475725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/475/725/GCA_027475725.1_ASM2747572v1	Pythium rhizo-oryzae	Scaffold
-Py_ris_GCA_023335895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/895/GCA_023335895.1_ASM2333589v1	Pythium rishiriense	Contig
-Py_scl_GCA_023335855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/855/GCA_023335855.1_ASM2333585v1	Pythium scleroteichum	Contig
-Py_suk_GCA_023334995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/995/GCA_023334995.1_ASM2333499v1	Pythium sukuiense	Contig
-Py_tor_GCA_023334615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/615/GCA_023334615.1_ASM2333461v1	Pythium torulosum	Contig
-Py_uto_GCA_023334595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/595/GCA_023334595.1_ASM2333459v1	Pythium utonaiense	Contig
-Py_van_GCA_023334535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/535/GCA_023334535.1_ASM2333453v1	Pythium vanterpoolii	Contig
-Py_vol_GCA_023334575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/575/GCA_023334575.1_ASM2333457v1	Pythium volutum	Contig
-Sac_cer_S288C	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64	Saccharomyces cerevisiae	Complete Genome
-Sal_sap_GCA_023334545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/545/GCA_023334545.1_ASM2333454v1	Salisapilia sapeloensis	Contig
-Sap_diclina_VS20_GCF_000281045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/281/045/GCF_000281045.1_Sap_diclina_VS20_V1	Saprolegnia diclina	Scaffold
-Sap_para_CBS_223_65_GCF_000151545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/151/545/GCF_000151545.1_ASM15154v2	Saprolegnia parasitica	Scaffold
-Sc_gram_GCA_001887855_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/887/855/GCA_001887855.2_SGv3	Sclerospora graminicola	Scaffold
-Sc_gram_GCA_002933675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/933/675/GCA_002933675.1_Sgrami_v1.0	Sclerospora graminicola	Scaffold
-T_cla_GCA_002081575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/081/575/GCA_002081575.1_Thrcla_v1	Thraustotheca clavata	Scaffold
-Pythium_brassicae_nom_inval_GCA_008271595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/008/271/595/GCA_008271595.1_ASM827159v1	[Pythium] brassicae (nom. inval.)	Scaffold
+#name	ftp_path	biosample	species	assembly_level
+Ac_hyp_ATCC_48635_GCA_002081595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/081/595/GCA_002081595.1_ACH_lane_v1	SAMN02690054	Achlya hypogyna	Scaffold
+Al_cand_2VRR_GCA_020283525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/283/525/GCA_020283525.1_ASM2028352v1	SAMN00115895	Albugo candida	Scaffold
+Al_cand_Ac_2V_GCA_000326065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/326/065/GCA_000326065.1_ASM32606v1	SAMEA2272664	Albugo candida	Contig
+Al_cand_Ac_2V_GCA_905220665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/220/665/GCA_905220665.1_Assembly_of_Albugo_candida_isolate_Ac2vPB	SAMEA2272664	Albugo candida	Contig
+Al_cand_Ac_7v_GCA_001306755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/306/755/GCA_001306755.1_ASM130675v1	SAMN03938704	Albugo candida	Contig
+Al_cand_Ac_Bol_GCA_000313105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/313/105/GCA_000313105.1_ASM31310v1	SAMEA2272712	Albugo candida	Contig
+Al_cand_Ac_Bot_GCA_000326045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/326/045/GCA_000326045.1_ASM32604v1	SAMEA2272172	Albugo candida	Contig
+Al_cand_Ac_Ex1_GCA_001306775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/306/775/GCA_001306775.1_ASM130677v1	SAMN03938710	Albugo candida	Contig
+Al_cand_Ac_Nc2_GCA_001078535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/078/535/GCA_001078535.1_ASM107853v1	SAMEA3146300	Albugo candida	Scaffold
+Al_cand_Em2_GCA_000961115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/961/115/GCA_000961115.1_Alb_can_Em2.v1	SAMN03352093	Albugo candida	Contig
+Al_lai_GCA_902706625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/706/625/GCA_902706625.1_Albugo_laibachii_Nc14	SAMEA783992	Albugo laibachii	Scaffold
+Ap_ast_197901_GCA_003546805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/805/GCA_003546805.1_astaci_197901	SAMN09769445	Aphanomyces astaci	Contig
+Ap_ast_APO3_GCA_000520075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/520/075/GCA_000520075.1_Apha_asta_APO3_V1	SAMN01906578	Aphanomyces astaci	Scaffold
+Ap_ast_APO3_GCF_000520075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/520/075/GCF_000520075.1_Apha_asta_APO3_V1	SAMN01906578	Aphanomyces astaci	Scaffold
+Ap_ast_D2_GCA_003546585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/585/GCA_003546585.1_astaci_D2	SAMN09769426	Aphanomyces astaci	Contig
+Ap_ast_Da_GCA_003546825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/825/GCA_003546825.1_Da	SAMN09768903	Aphanomyces astaci	Contig
+Ap_ast_E_GCA_009835205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/835/205/GCA_009835205.1_AaE_v1	SAMN12147657	Aphanomyces astaci	Scaffold
+Ap_ast_FDL457_GCA_003546785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/785/GCA_003546785.1_astaci_457	SAMN09769394	Aphanomyces astaci	Contig
+Ap_ast_GCA_002197585_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/197/585/GCA_002197585.2_ASM219758v2	SAMN06563026	Aphanomyces astaci	Scaffold
+Ap_ast_GCA_900243735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/243/735/GCA_900243735.1_Aphanomyces_astaci_v1	SAMEA104443954	Aphanomyces astaci	Scaffold
+Ap_ast_KB13_GCA_003666305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/666/305/GCA_003666305.1_astaci_KB13	SAMN09769691	Aphanomyces astaci	Contig
+Ap_ast_Kv_GCA_003546565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/565/GCA_003546565.1_astaci_KV	SAMN09769276	Aphanomyces astaci	Contig
+Ap_ast_SA_GCA_003546625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/625/GCA_003546625.1_astaci_SA	SAMN09768943	Aphanomyces astaci	Contig
+Ap_ast_Si_GCA_003546545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/545/GCA_003546545.1_astaci_Si	SAMN09769272	Aphanomyces astaci	Contig
+Ap_ast_Sv_GCA_003546765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/765/GCA_003546765.1_astaci_SV	SAMN09768942	Aphanomyces astaci	Contig
+Ap_ast_Yx_GCA_003546605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/605/GCA_003546605.1_astaci_YX	SAMN09769275	Aphanomyces astaci	Contig
+Ap_coc_GCA_019828595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/828/595/GCA_019828595.1_UMN_Aphcoc_1.0	SAMN18617838	Aphanomyces cochlioides	Contig
+Ap_eut_ATCC_201684_GCA_009835175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/835/175/GCA_009835175.1_Ae201684_v1	SAMN12147934	Aphanomyces euteiches	Scaffold
+Ap_eut_ATCC_201684_GCA_021527685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/685/GCA_021527685.1_ASM2152768v1	SAMN22140459	Aphanomyces euteiches	Contig
+Ap_eut_EG109_GCA_021527785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/785/GCA_021527785.1_ASM2152778v1	SAMN21910396	Aphanomyces euteiches	Scaffold
+Ap_eut_GCA_900312765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/312/765/GCA_900312765.1_ASM90031276v1	SAMEA104443621	Aphanomyces euteiches	Scaffold
+Ap_eut_MF1_GCA_021527665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/665/GCA_021527665.1_ASM2152766v1	SAMN21928914	Aphanomyces euteiches	Scaffold
+Ap_eut_NC1_GCA_021527805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/805/GCA_021527805.1_ASM2152780v1	SAMN21928938	Aphanomyces euteiches	Contig
+Ap_eut_RB84_GCA_021527745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/527/745/GCA_021527745.1_ASM2152774v1	SAMN21928942	Aphanomyces euteiches	Scaffold
+Ap_inv_NJM0002_GCA_003546525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/546/525/GCA_003546525.1_inv_NJM0002	SAMN09769773	Aphanomyces invadans	Contig
+Ap_inv_NJM9701_GCA_000520115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/520/115/GCA_000520115.1_Apha_inva_NJM9701_V1	SAMN01907307	Aphanomyces invadans	Scaffold
+Ap_inv_NJM9701_GCF_000520115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/520/115/GCF_000520115.1_Apha_inva_NJM9701_V1	SAMN01907307	Aphanomyces invadans	Scaffold
+Ap_ste_CBS_578_67_GCA_009835185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/835/185/GCA_009835185.1_As_578.67_v1	SAMN12145847	Aphanomyces stellatus	Scaffold
+Ap_ste_GCA_900243725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/243/725/GCA_900243725.1_Aphanomyces_stellatus_v1	SAMEA104444324	Aphanomyces stellatus	Scaffold
+Ap_ste_GCA_900708865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/708/865/GCA_900708865.1_Aphanomyces_stellatus_CBS568.67	SAMEA104444324	Aphanomyces stellatus	Scaffold
+B_lac_SF5_GCA_004359215_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/359/215/GCA_004359215.2_BlacSF5v2	SAMN07163504	Bremia lactucae	Chromosome
+E_ana_CBS_285_31_GCA_023337935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/935/GCA_023337935.1_ASM2333793v1	SAMN13878536	Elongisporangium anandrum	Contig
+E_dim_CBS_406_72_GCA_023336395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/395/GCA_023336395.1_ASM2333639v1	SAMN13878561	Elongisporangium dimorphum	Contig
+E_pro_CBS_845_68_GCA_023335875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/875/GCA_023335875.1_ASM2333587v1	SAMN13878612	Elongisporangium prolatum	Contig
+E_sen_CBS_122490_GCA_023335835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/835/GCA_023335835.1_ASM2333583v1	SAMN13878621	Elongisporangium senticosum	Contig
+E_und_CBS_157_69_GCA_023334555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/555/GCA_023334555.1_ASM2333455v1	SAMN13878636	Elongisporangium undulatum	Contig
+G_aba_CBS_110198_GCA_023334355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/355/GCA_023334355.1_ASM2333435v1	SAMN13878532	Globisporangium abappressorium	Contig
+G_aca_CBS_337_29_GCA_023334365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/365/GCA_023334365.1_ASM2333436v1	SAMN13878533	Globisporangium acanthophoron	Contig
+G_alt_CBS_139279_GCA_023334315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/315/GCA_023334315.1_ASM2333431v1	SAMN13878534	Globisporangium alternatum	Contig
+G_bar_CBS_139569_GCA_023337805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/805/GCA_023337805.1_ASM2333780v1	SAMN13878544	Globisporangium barbulae	Contig
+G_camu_CBS_124059_GCA_023337595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/595/GCA_023337595.1_ASM2333759v1	SAMN13878548	Globisporangium camurandrum	Contig
+G_cana_CBS_112353_GCA_023334305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/305/GCA_023334305.1_ASM2333430v1	SAMN13878549	Globisporangium canariense	Contig
+G_car_CBS_122659_GCA_023334275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/275/GCA_023334275.1_ASM2333427v1	SAMN13878551	Globisporangium carolinianum	Contig
+G_ced_CBS_133716_GCA_023334245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/245/GCA_023334245.1_ASM2333424v1	SAMN13878552	Globisporangium cederbergense	Contig
+G_cryptoi_CBS_118731_GCA_023337535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/535/GCA_023337535.1_ASM2333753v1	SAMN13878555	Globisporangium cryptoirregulare	Contig
+G_cyl_CBS_218_94_GCA_023334255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/255/GCA_023334255.1_ASM2333425v1	SAMN13878557	Globisporangium cylindrosporum	Contig
+G_cys_CBS_675_85_GCA_023334215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/215/GCA_023334215.1_ASM2333421v1	SAMN13878558	Globisporangium cystogenes	Contig
+G_deb_CBS_752_96_GCA_023334175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/175/GCA_023334175.1_ASM2333417v1	SAMN13878559	Globisporangium debaryanum	Contig
+G_ech_CBS_281_64_GCA_023336405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/405/GCA_023336405.1_ASM2333640v1	SAMN13878564	Globisporangium echinulatum	Contig
+G_emi_CBS_124057_GCA_023334195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/195/GCA_023334195.1_ASM2333419v1	SAMN13878565	Globisporangium emineosum	Contig
+G_eri_CBS_505_80_GCA_023334135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/135/GCA_023334135.1_ASM2333413v1	SAMN13878566	Globisporangium erinaceum	Contig
+G_het_CBS_450_67_GCA_023334155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/155/GCA_023334155.1_ASM2333415v1	SAMN13878572	Globisporangium heterothallicum	Contig
+G_irr_CBS_250_28_GCA_023336235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/235/GCA_023336235.1_ASM2333623v1	SAMN13878576	Globisporangium irregulare	Contig
+G_irr_CBS_494_86_GCA_004117815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/117/815/GCA_004117815.1_PIRR_v1	SAMN06311412	Globisporangium irregulare	Scaffold
+G_irr_DAOM_BR486_GCA_000387425_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/425/GCA_000387425.2_pir_scaffolds_v1	SAMN02981432	Globisporangium irregulare	Scaffold
+G_iwa_CBS_156_64_GCA_023336215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/215/GCA_023336215.1_ASM2333621v1	SAMN13878577	Globisporangium iwayamae	Contig
+G_iwa_DAOM_BR242034_GCA_000387465_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/465/GCA_000387465.2_piw_scaffolds_v1	SAMN02981433	Globisporangium iwayamae	Scaffold
+G_luc_CBS_113342_GCA_023336175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/175/GCA_023336175.1_ASM2333617v1	SAMN13878579	Globisporangium lucens	Contig
+G_mam_CBS_251_28_GCA_023336125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/125/GCA_023336125.1_ASM2333612v1	SAMN13878582	Globisporangium mamillatum	Contig
+G_megal_CBS_101356_GCA_023334115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/115/GCA_023334115.1_ASM2333411v1	SAMN13878585	Globisporangium megalacanthum	Contig
+G_mid_CBS_528_74_GCA_023334085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/085/GCA_023334085.1_ASM2333408v1	SAMN13878586	Globisporangium middletonii	Contig
+G_nag_CBS_779_96_GCA_023335995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/995/GCA_023335995.1_ASM2333599v1	SAMN13878590	Globisporangium nagaii	Contig
+G_nod_CBS_102274_GCA_023334105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/105/GCA_023334105.1_ASM2333410v1	SAMN13878591	Globisporangium nodosum	Contig
+G_nunn_CBS_808_96_GCA_023334075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/075/GCA_023334075.1_ASM2333407v1	SAMN13878592	Globisporangium nunn	Contig
+G_oka_CBS_315_81_GCA_023334035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/035/GCA_023334035.1_ASM2333403v1	SAMN13878593	Globisporangium okanoganense	Contig
+G_ornac_CBS_112350_GCA_023334055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/055/GCA_023334055.1_ASM2333405v1	SAMN13878596	Globisporangium ornacarpum	Contig
+G_ort_CBS_376_72_GCA_023334005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/005/GCA_023334005.1_ASM2333400v1	SAMN13878598	Globisporangium orthogonon	Contig
+G_pad_CBS_698_83_GCA_023334015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/015/GCA_023334015.1_ASM2333401v1	SAMN13878600	Globisporangium paddicum	Contig
+G_paro_CBS_157_64_GCA_023333955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/955/GCA_023333955.1_ASM2333395v1	SAMN13878601	Globisporangium paroecandrum	Contig
+G_parvum_CBS_225_88_GCA_023333885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/885/GCA_023333885.1_ASM2333388v1	SAMN13878602	Globisporangium parvum	Contig
+G_perp_CBS_674_85_GCA_023333865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/865/GCA_023333865.1_ASM2333386v1	SAMN13878605	Globisporangium perplexum	Contig
+G_pola_CBS_118203_GCA_023333845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/845/GCA_023333845.1_ASM2333384v1	SAMN13878610	Globisporangium polare	Contig
+G_rad_CBS_217_94_GCA_023333825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/825/GCA_023333825.1_ASM2333382v1	SAMN13878614	Globisporangium radiosum	Contig
+G_rec_CBS_122440_GCA_023333815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/815/GCA_023333815.1_ASM2333381v1	SAMN13878615	Globisporangium recalcitrans	Contig
+G_rhizos_CBS_112356_GCA_023333795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/795/GCA_023333795.1_ASM2333379v1	SAMN13878617	Globisporangium rhizosaccharum	Contig
+G_sol_CBS_119359_GCA_023335675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/675/GCA_023335675.1_ASM2333567v1	SAMN13878622	Globisporangium solare	Contig
+G_spic_CBS_122645_GCA_023335655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/655/GCA_023335655.1_ASM2333565v1	SAMN13878624	Globisporangium spiculum	Contig
+G_spin_CBS_275_67_GCA_023335535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/535/GCA_023335535.1_ASM2333553v1	SAMN13878625	Globisporangium spinosum	Contig
+G_spl_CBS_462_48_GCA_023335435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/435/GCA_023335435.1_ASM2333543v1	SAMN13878626	Globisporangium splendens	Contig
+G_spl_rgcb_1_GCA_006386115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/006/386/115/GCA_006386115.1_DCB_P.spl	SAMN12049464	Globisporangium splendens	Scaffold
+G_syl_CBS_453_67_GCA_023334975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/975/GCA_023334975.1_ASM2333497v1	SAMN13878628	Globisporangium sylvaticum	Contig
+G_tak_CBS_122491_GCA_023333735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/735/GCA_023333735.1_ASM2333373v1	SAMN13878629	Globisporangium takayamanum	Contig
+G_ult_CBS_219_65_GCA_023334565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/565/GCA_023334565.1_ASM2333456v1	SAMN13878634	Globisporangium ultimum	Contig
+G_ult_DAOM_BR144_GCA_000143045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/143/045/GCA_000143045.1_pug	SAMN02981261	Globisporangium ultimum	Scaffold
+G_ult_DAOM_BR650_GCA_000387525_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/525/GCA_000387525.2_pug3_scaffolds_v1	SAMN02981434	Globisporangium ultimum	Scaffold
+G_unc_CBS_518_77_GCA_023333755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/755/GCA_023333755.1_ASM2333375v1	SAMN13878635	Globisporangium uncinulatum	Contig
+G_vin_CBS_119168_GCA_023333705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/705/GCA_023333705.1_ASM2333370v1	SAMN13878639	Globisporangium viniferum	Contig
+G_yor_CBS_142324_GCA_023333695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/333/695/GCA_023333695.1_ASM2333369v1	SAMN13878641	Globisporangium yorkense	Contig
+Ha_bat_CBS_679_84_GCA_023338225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/225/GCA_023338225.1_ASM2333822v1	SAMN13878512	Halophytophthora batemanensis	Contig
+Ha_poly_CBS_680_84_GCA_023338205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/205/GCA_023338205.1_ASM2333820v1	SAMN13878513	Halophytophthora polymorphica	Contig
+Hy_ara_Emoy2_GCA_000173235_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/173/235/GCA_000173235.2_HyaAraEmoy2_2.0	SAMN02953736	Hyaloperonospora arabidopsidis	Scaffold
+Hy_ara_GCA_001414265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/414/265/GCA_001414265.1_Cala2_v1	SAMN04124420	Hyaloperonospora arabidopsidis	Scaffold
+Hy_ara_GCA_001414525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/414/525/GCA_001414525.1_Noks1_v1	SAMN04161522	Hyaloperonospora arabidopsidis	Scaffold
+Hy_bras_GCA_019297655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/297/655/GCA_019297655.1_ASM1929765v1	SAMN11547018	Hyaloperonospora brassicae	Scaffold
+Hy_bras_GCA_019297675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/297/675/GCA_019297675.1_ASM1929767v1	SAMN11547017	Hyaloperonospora brassicae	Scaffold
+Hy_bras_GCA_947650285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/947/650/285/GCA_947650285.1_Hp1	SAMEA112151707	Hyaloperonospora brassicae	Scaffold
+L_gig_ARSEF_373_GCA_027925865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/925/865/GCA_027925865.1_Lag_gig_ARSEF373_Annot	SAMN05544984	Lagenidium giganteum	Scaffold
+L_gig_GCA_002286825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/286/825/GCA_002286825.1_Lag_gig_ARSEF373_v1.0	SAMN06579318	Lagenidium giganteum	Scaffold
+L_gig_GCA_002980415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/980/415/GCA_002980415.1_ASM298041v1	SAMN08514188	Lagenidium giganteum	Scaffold
+Pa_kar_1391_GCA_002980425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/980/425/GCA_002980425.1_ASM298042v1	SAMN08518277	Paralagenidium karlingii	Scaffold
+Pa_kar_CBS_134681_GCA_027475765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/475/765/GCA_027475765.1_ASM2747576v1	SAMN23767494	Paralagenidium karlingii	Scaffold
+Peronosc_sor_GCA_026184515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/184/515/GCA_026184515.1_PsorP6_UCD_v1	SAMN28842343	Peronosclerospora sorghi	Chromosome
+Peronosp_bel_GCA_002864105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/864/105/GCA_002864105.1_ASM286410v1	SAMN06033040	Peronospora belbahrii	Scaffold
+Peronosp_bel_GCA_902712285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/712/285/GCA_902712285.1_TODO	SAMEA4378488	Peronospora belbahrii	Scaffold
+Peronosp_bel_GCA_920618645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/920/618/645/GCA_920618645.1_pbs3_v1	SAMEA10540021	Peronospora belbahrii	Contig
+Peronosp_bel_GCA_921012115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/921/012/115/GCA_921012115.1_pbs1_v1	SAMEA10540019	Peronospora belbahrii	Contig
+Peronosp_des_GCA_011800735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/800/735/GCA_011800735.1_RDA_Pdes_1.0	SAMN12605984	Peronospora destructor	Contig
+Peronosp_des_GCA_947650345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/947/650/345/GCA_947650345.1_Pd1	SAMEA112151708	Peronospora destructor	Scaffold
+Peronosp_eff_GCA_013122855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/122/855/GCA_013122855.1_Hybrid7	SAMN14048960	Peronospora effusa	Scaffold
+Peronosp_eff_GCA_021491655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/491/655/GCA_021491655.1_ASM2149165v1	SAMN20203776	Peronospora effusa	Chromosome
+Peronosp_eff_GCA_947641895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/947/641/895/GCA_947641895.1_Pe1	SAMEA112151706	Peronospora effusa	Contig
+Peronosp_eff_R13_GCA_003843895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/843/895/GCA_003843895.1_ASM384389v1	SAMN08996247	Peronospora effusa	Scaffold
+Peronosp_eff_R14_GCA_003704535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/704/535/GCA_003704535.1_Peff_R14	SAMN08996248	Peronospora effusa	Scaffold
+Peronosp_eff_race_Pfs12_GCA_002245715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/245/715/GCA_002245715.1_ASM224571v1	SAMN07375957	Peronospora effusa	Scaffold
+Peronosp_eff_race_Pfs13_GCA_002245725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/245/725/GCA_002245725.1_ASM224572v1	SAMN07375958	Peronospora effusa	Scaffold
+Peronosp_eff_race_Pfs14_GCA_002245735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/245/735/GCA_002245735.1_ASM224573v1	SAMN07375959	Peronospora effusa	Scaffold
+Peronosp_tab_968_S26_GCA_002099245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/099/245/GCA_002099245.1_Ptab_968-S26	SAMN03744138	Peronospora tabacina	Scaffold
+Phytoph_aga_3770_GCA_025722995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/722/995/GCA_025722995.1_ASM2572299v1	SAMN19597867	Phytophthora agathidicida	Chromosome
+Phytoph_aga_GCA_001314435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/435/GCA_001314435.1_NZFS3772v2	SAMN03894431	Phytophthora agathidicida	Scaffold
+Phytoph_aga_GCA_001314445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/445/GCA_001314445.1_NZFS3770v2	SAMN03894432	Phytophthora agathidicida	Scaffold
+Phytoph_ale_GCA_018873745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/873/745/GCA_018873745.1_NZ4037v1	SAMN17151088	Phytophthora aleatoria	Scaffold
+Phytoph_bet_P8084_GCA_011320135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/320/135/GCA_011320135.1_UAnd_PBet_P8084	SAMN14214885	Phytophthora betacei	Contig
+Phytoph_boe_GCA_019155685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/155/685/GCA_019155685.1_JHI_Pboe_1.0	SAMN17922340	Phytophthora boehmeriae	Scaffold
+Phytoph_boe_Pboeh_OSU_2014_GCA_024679105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/105/GCA_024679105.1_ASM2467910v1	SAMN20204300	Phytophthora boehmeriae	Scaffold
+Phytoph_boe_SE_BL79_GCA_011947355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/947/355/GCA_011947355.1_USDA_Pboe_BL79_1.0	SAMN14367973	Phytophthora boehmeriae	Contig
+Phytoph_bras_Pbras_OSU_2014_GCA_024679045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/045/GCA_024679045.1_ASM2467904v1	SAMN20204298	Phytophthora brassicae	Scaffold
+Phytoph_cac_10300_GCA_003287315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/287/315/GCA_003287315.1_Pcac_10300_v1	SAMN05788413	Phytophthora cactorum	Scaffold
+Phytoph_cac_11_40_GCA_016865075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/865/075/GCA_016865075.1_ASM1686507v1	SAMN08638078	Phytophthora cactorum	Scaffold
+Phytoph_cac_12_420_GCA_016864635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/635/GCA_016864635.1_ASM1686463v1	SAMN07267854	Phytophthora cactorum	Scaffold
+Phytoph_cac_15_13_GCA_016864665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/665/GCA_016864665.1_ASM1686466v1	SAMN07267855	Phytophthora cactorum	Scaffold
+Phytoph_cac_15_7_GCA_016864695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/695/GCA_016864695.1_ASM1686469v1	SAMN07267856	Phytophthora cactorum	Scaffold
+Phytoph_cac_17_21_GCA_016865085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/865/085/GCA_016865085.1_ASM1686508v1	SAMN08638079	Phytophthora cactorum	Scaffold
+Phytoph_cac_2003_3_GCA_016864755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/755/GCA_016864755.1_ASM1686475v1	SAMN07267857	Phytophthora cactorum	Scaffold
+Phytoph_cac_4032_GCA_016864735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/735/GCA_016864735.1_Pcac_4032	SAMN07267858	Phytophthora cactorum	Scaffold
+Phytoph_cac_4040_GCA_016864715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/715/GCA_016864715.1_ASM1686471v1	SAMN07267860	Phytophthora cactorum	Scaffold
+Phytoph_cac_62471_GCA_016864795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/795/GCA_016864795.1_ASM1686479v1	SAMN07267863	Phytophthora cactorum	Scaffold
+Phytoph_cac_D_1_GCA_010194725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/010/194/725/GCA_010194725.1_Phyca_D	SAMN04633454	Phytophthora cactorum	Contig
+Phytoph_cac_GCA_018873755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/873/755/GCA_018873755.1_NZ3830v1	SAMN17151089	Phytophthora cactorum	Scaffold
+Phytoph_cac_LV007_GCA_002081965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/081/965/GCA_002081965.1_P_cactorum_v1	SAMN06646533	Phytophthora cactorum	Contig
+Phytoph_cac_P295_GCA_016864775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/775/GCA_016864775.1_ASM1686477v1	SAMN07267864	Phytophthora cactorum	Scaffold
+Phytoph_cac_P404_GCA_017309695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/017/309/695/GCA_017309695.1_ASM1730969v1	SAMN07267859	Phytophthora cactorum	Scaffold
+Phytoph_cac_P414_GCA_016864655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/655/GCA_016864655.1_ASM1686465v1	SAMN06766401	Phytophthora cactorum	Contig
+Phytoph_cac_P415_GCA_016864815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/815/GCA_016864815.1_ASM1686481v1	SAMN07267861	Phytophthora cactorum	Scaffold
+Phytoph_cac_P416_GCA_016864835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/835/GCA_016864835.1_ASM1686483v1	SAMN07267862	Phytophthora cactorum	Scaffold
+Phytoph_cac_P421_GCA_016865055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/865/055/GCA_016865055.1_ASM1686505v1	SAMN08638080	Phytophthora cactorum	Scaffold
+Phytoph_cac_PC13_15_GCA_016864855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/864/855/GCA_016864855.1_ASM1686485v1	SAMN07267865	Phytophthora cactorum	Scaffold
+Phytoph_cac_R36_14_GCA_016906365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/906/365/GCA_016906365.1_ASM1690636v1	SAMN07267866	Phytophthora cactorum	Scaffold
+Phytoph_caj_Pcaja_OSU_2014_GCA_024679175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/175/GCA_024679175.1_ASM2467917v1	SAMN20204292	Phytophthora cajani	Scaffold
+Phytoph_camb_CBS_114087_GCA_000443045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/443/045/GCA_000443045.1_PhytoCambi_1.0	SAMN02178787	Phytophthora cambivora	Scaffold
+Phytoph_cap_05_06_GCA_029168885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/168/885/GCA_029168885.1_P.caps_01	SAMN31310636	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_004137865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/865/GCA_004137865.1_CPV_277	SAMN10441519	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_004137885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/885/GCA_004137885.1_CPV_302	SAMN10441520	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_004137955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/955/GCA_004137955.1_CPV_270	SAMN10441518	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_004137965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/965/GCA_004137965.1_CPV_262	SAMN10441516	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_004137975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/137/975/GCA_004137975.1_CPV_267	SAMN10441517	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_004138045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/138/045/GCA_004138045.1_CPV_219	SAMN10441515	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_018292885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/292/885/GCA_018292885.1_ASM1829288v1	SAMN17101195	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_018292895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/292/895/GCA_018292895.1_ASM1829289v1	SAMN17101197	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_018292905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/292/905/GCA_018292905.1_ASM1829290v1	SAMN17101196	Phytophthora capsici	Scaffold
+Phytoph_cap_GCA_949795235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/949/795/235/GCA_949795235.1_Phytophthora_capsici_LT1534.assembly_v1.0	SAMEA112749199	Phytophthora capsici	Contig
+Phytoph_cap_GCA_949795465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/949/795/465/GCA_949795465.1_Phytophthora_capsici_Pc285.assembly_v1.0	SAMEA112749200	Phytophthora capsici	Contig
+Phytoph_cap_LT1534_B_GCA_016618375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/618/375/GCA_016618375.1_Pcap_4.1	SAMN09692924	Phytophthora capsici	Scaffold
+Phytoph_cap_LT1534_GCA_000325885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/325/885/GCA_000325885.1_Phytophthora_capsici_LT1534_v11.0	SAMN02981264	Phytophthora capsici	Contig
+Phytoph_cas_GCA_014706115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/115/GCA_014706115.1_ASM1470611v1	SAMN15299697	Phytophthora castanetorum	Contig
+Phytoph_chl_P17_99_GCA_012295415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/295/415/GCA_012295415.1_MU_Pchl	SAMN13759513	Phytophthora chlamydospora	Scaffold
+Phytoph_cin_CBS_144_22_GCA_020283495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/283/495/GCA_020283495.1_ASM2028349v1	SAMN00783884	Phytophthora cinnamomi	Scaffold
+Phytoph_cin_DU054_GCA_002734105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/734/105/GCA_002734105.1_DU054_v1	SAMN07736481	Phytophthora cinnamomi	Scaffold
+Phytoph_cin_GCA_001314365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/365/GCA_001314365.1_MP94-48v2	SAMN03921829	Phytophthora cinnamomi	Scaffold
+Phytoph_cin_GCA_001314505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/505/GCA_001314505.1_NZFS3750v2	SAMN03921830	Phytophthora cinnamomi	Scaffold
+Phytoph_cin_GKB4_GCA_018691715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/691/715/GCA_018691715.1_ASM1869171v1	SAMN16706909	Phytophthora cinnamomi	Scaffold
+Phytoph_cin_Probi_OSU_2014_GCA_024679195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/195/GCA_024679195.1_ASM2467919v1	SAMN20204290	Phytophthora cinnamomi	Scaffold
+Phytoph_cin_VT_H3_GCA_029747605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/747/605/GCA_029747605.1_Phytophthora_cinnamomi_reassembly_enz	SAMN31572647	Phytophthora cinnamomi	Scaffold
+Phytoph_cin_WA94_26_GCA_002734125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/734/125/GCA_002734125.1_WA94_v1	SAMN07736482	Phytophthora cinnamomi	Scaffold
+Phytoph_cit_P0716_GCA_007655245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/007/655/245/GCA_007655245.1_USDA_Pcit_BL34_1.0	SAMN12308235	Phytophthora citricola	Contig
+Phytoph_coloc_EPC201509_GCA_020226015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/226/015/GCA_020226015.1_ASM2022601v1	SAMN19173835	Phytophthora colocasiae	Contig
+Phytoph_coloc_GCA_002288995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/288/995/GCA_002288995.1_ASM228899v1	SAMN07562559	Phytophthora colocasiae	Scaffold
+Phytoph_coloc_Lyd2019_GCA_018806915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/806/915/GCA_018806915.1_PhyCol_Lyd2019_V1	SAMN18571158	Phytophthora colocasiae	Contig
+Phytoph_con_Ex_type_BL_61_GCA_011947335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/947/335/GCA_011947335.1_USDA_Pcon_61_1.0	SAMN14367974	Phytophthora constricta	Contig
+Phytoph_cryptog_CBS_418_71_GCA_000468175_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/468/175/GCA_000468175.2_ASM46817v2	SAMN02178792	Phytophthora cryptogea	Scaffold
+Phytoph_foli_Pfoli_OSU_2014_GCA_024679135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/135/GCA_024679135.1_ASM2467913v1	SAMN20204297	Phytophthora foliorum	Scaffold
+Phytoph_fra_A4_GCA_009733105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/105/GCA_009733105.1_ASM973310v1	SAMN07449679	Phytophthora fragariae	Scaffold
+Phytoph_fra_BC_1_GCA_009733085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/085/GCA_009733085.1_ASM973308v1	SAMN07449680	Phytophthora fragariae	Scaffold
+Phytoph_fra_BC_23_GCA_009733045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/045/GCA_009733045.1_ASM973304v1	SAMN07449682	Phytophthora fragariae	Scaffold
+Phytoph_fra_CBS_209_46_GCA_002025845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/025/845/GCA_002025845.1_Pf4954	SAMN06342478	Phytophthora fragariae	Scaffold
+Phytoph_fra_CBS_309_62_GCA_000686205_4	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/686/205/GCA_000686205.4_P.fr2.0	SAMN02712365	Phytophthora fragariae	Scaffold
+Phytoph_fra_GCA_009729455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/729/455/GCA_009729455.1_ASM972945v1	SAMN07449681	Phytophthora fragariae	Contig
+Phytoph_fra_NOV_27_GCA_009732985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/732/985/GCA_009732985.1_ASM973298v1	SAMN07449683	Phytophthora fragariae	Scaffold
+Phytoph_fra_NOV_5_GCA_009733025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/025/GCA_009733025.1_ASM973302v1	SAMN07449684	Phytophthora fragariae	Scaffold
+Phytoph_fra_NOV_71_GCA_009733065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/065/GCA_009733065.1_ASM973306v1	SAMN07449685	Phytophthora fragariae	Scaffold
+Phytoph_fra_NOV_77_GCA_009733125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/125/GCA_009733125.1_ASM973312v1	SAMN07449686	Phytophthora fragariae	Scaffold
+Phytoph_fra_NOV_9_GCA_009729435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/729/435/GCA_009729435.1_ASM972943v1	SAMN07449687	Phytophthora fragariae	Contig
+Phytoph_fra_ONT_3_GCA_009733005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/005/GCA_009733005.1_ASM973300v1	SAMN07449688	Phytophthora fragariae	Scaffold
+Phytoph_fra_SCRP245_GCA_009732925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/732/925/GCA_009732925.1_ASM973292v1	SAMN07449689	Phytophthora fragariae	Scaffold
+Phytoph_gon_P17_128_GCA_012295475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/295/475/GCA_012295475.1_MU_Pgon	SAMN13759514	Phytophthora gonapodyides	Scaffold
+Phytoph_hib_BL41G_GCA_012656075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/656/075/GCA_012656075.1_USDA_Phib_BL41_1.0	SAMN14078571	Phytophthora hibernalis	Contig
+Phytoph_hib_Phibe_OSU_2014_GCA_024679025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/025/GCA_024679025.1_ASM2467902v1	SAMN20204296	Phytophthora hibernalis	Scaffold
+Phytoph_ida_SCRP370_GCA_016865095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/865/095/GCA_016865095.1_ASM1686509v1	SAMN07267868	Phytophthora idaei	Scaffold
+Phytoph_ida_SCRP371_GCA_016880985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/880/985/GCA_016880985.1_ASM1688098v1	SAMN07267867	Phytophthora idaei	Scaffold
+Phytoph_ida_SCRP376_GCA_016880175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/880/175/GCA_016880175.1_ASM1688017v1	SAMN07267869	Phytophthora idaei	Scaffold
+Phytoph_infe_1306_GCA_026225685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/225/685/GCA_026225685.1_Pinf1306_UCR_1	SAMN30543006	Phytophthora infestans	Chromosome
+Phytoph_infe_HP_10_31_GCA_001661535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/661/535/GCA_001661535.1_ASM166153v1	SAMN05006719	Phytophthora infestans	Contig
+Phytoph_infe_KR_1_A1_GCA_012295175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/295/175/GCA_012295175.1_ASM1229517v1	SAMN13441166	Phytophthora infestans	Contig
+Phytoph_infe_KR_2_A2_GCA_012552325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/552/325/GCA_012552325.1_ASM1255232v1	SAMN13441183	Phytophthora infestans	Scaffold
+Phytoph_infe_RC1_10_GCA_011316315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/316/315/GCA_011316315.1_UAnd_PInf_RC1-10.1	SAMN10848567	Phytophthora infestans	Contig
+Phytoph_infe_T30_4_GCA_000142945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/142/945/GCA_000142945.1_ASM14294v1	SAMN02953670	Phytophthora infestans	Scaffold
+Phytoph_infe_T30_4_GCF_000142945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/142/945/GCF_000142945.1_ASM14294v1	SAMN02953670	Phytophthora infestans	Scaffold
+Phytoph_ker_00238_432_GCA_000333075_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/333/075/GCA_000333075.3_PhyKer238_432v3	SAMN02981496	Phytophthora kernoviae	Scaffold
+Phytoph_ker_00629_1_GCA_000333095_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/333/095/GCA_000333095.2_PhyKer629_1v2	SAMN02981497	Phytophthora kernoviae	Scaffold
+Phytoph_ker_00844_4_GCA_000333115_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/333/115/GCA_000333115.2_PhyKer844_4v2	SAMN02981498	Phytophthora kernoviae	Scaffold
+Phytoph_ker_CBS_122049_GCA_000448265_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/448/265/GCA_000448265.2_Phyto_kern_2.0	SAMN02178789	Phytophthora kernoviae	Scaffold
+Phytoph_ker_GCA_001707905_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/707/905/GCA_001707905.2_PkChile2v2.0	SAMN05366390	Phytophthora kernoviae	Scaffold
+Phytoph_ker_GCA_001712645_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/712/645/GCA_001712645.2_PkChile7v2.0	SAMN05366400	Phytophthora kernoviae	Scaffold
+Phytoph_ker_GCA_001712655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/712/655/GCA_001712655.1_PkChile1v1.0	SAMN05366386	Phytophthora kernoviae	Scaffold
+Phytoph_ker_GCA_001712705_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/712/705/GCA_001712705.2_PkChile6v2.0	SAMN05370962	Phytophthora kernoviae	Scaffold
+Phytoph_ker_GCA_001712715_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/712/715/GCA_001712715.2_PkChile4v2.0	SAMN05370961	Phytophthora kernoviae	Scaffold
+Phytoph_ker_NZFS_2646_GCA_000785735_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/785/735/GCA_000785735.3_NZFS2646v3	SAMN02953537	Phytophthora kernoviae	Scaffold
+Phytoph_ker_NZFS_3630_GCA_000785725_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/785/725/GCA_000785725.3_NZFS3630v3	SAMN02953542	Phytophthora kernoviae	Scaffold
+Phytoph_ker_P19827_GCA_008080845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/008/080/845/GCA_008080845.1_CPHST-BL-91	SAMN12256453	Phytophthora kernoviae	Contig
+Phytoph_lat_CBS_168_42_GCA_000500205_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/500/205/GCA_000500205.2_ASM50020v2	SAMN02178795	Phytophthora lateralis	Scaffold
+Phytoph_lat_MPF4_GCA_000318465_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/318/465/GCA_000318465.3_MPF4_v2.1	SAMN02981469	Phytophthora lateralis	Scaffold
+Phytoph_lat_MPF6_GCA_000338795_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/338/795/GCA_000338795.2_MPF6_v2.0	SAMN02981477	Phytophthora lateralis	Scaffold
+Phytoph_lat_SMST21_GCA_000338815_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/338/815/GCA_000338815.2_SMST21v2.0	SAMN02981478	Phytophthora lateralis	Scaffold
+Phytoph_lat_SMSTG_GCA_000333055_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/333/055/GCA_000333055.2_SMSTG_v2.0	SAMN01840345	Phytophthora lateralis	Scaffold
+Phytoph_litc_SHS3_GCA_002812785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/812/785/GCA_002812785.1_ASM281278v1	SAMN03892802	Phytophthora litchii	Scaffold
+Phytoph_mac_Ex_type_BL_71_GCA_011947325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/947/325/GCA_011947325.1_USDA_Pmac_71_1.0	SAMN14367975	Phytophthora macrochlamydospora	Contig
+Phytoph_megak_zdho120_GCA_002215365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/215/365/GCA_002215365.1_ASM221536v1	SAMN04632436	Phytophthora megakarya	Scaffold
+Phytoph_mel_CJ26_GCA_024211575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/211/575/GCA_024211575.1_Pm_CJ26_1.0	SAMN28951452	Phytophthora melonis	Contig
+Phytoph_mel_CPHST_BL_23_GCA_008553785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/008/553/785/GCA_008553785.1_USDA_Pmel_BL23_1.0	SAMN12364078	Phytophthora melonis	Contig
+Phytoph_mel_Pmelo_OSU_2014_GCA_024679155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/155/GCA_024679155.1_ASM2467915v1	SAMN20204293	Phytophthora melonis	Scaffold
+Phytoph_mul_GCA_001314345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/345/GCA_001314345.1_NZFS3378v2	SAMN03921836	Phytophthora multivora	Scaffold
+Phytoph_mul_GCA_001314355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/355/GCA_001314355.1_NZFS3448v1	SAMN03921831	Phytophthora multivora	Scaffold
+Phytoph_nic_BL162_GCA_012658955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/658/955/GCA_012658955.1_USDA_Pnic_BL162_1.0	SAMN14078572	Phytophthora nicotianae	Contig
+Phytoph_nic_JM01_GCA_003328465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/328/465/GCA_003328465.1_ASM332846v1	SAMN07200924	Phytophthora nicotianae	Scaffold
+Phytoph_nic_race_0_GCA_001483015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/483/015/GCA_001483015.1_ASM148301v1	SAMN04017959	Phytophthora nicotianae	Scaffold
+Phytoph_nic_race_1_GCA_001482985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/482/985/GCA_001482985.1_ASM148298v1	SAMN04017960	Phytophthora nicotianae	Scaffold
+Phytoph_nie_Pnied_OSU_2014_GCA_024679275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/275/GCA_024679275.1_ASM2467927v1	SAMN20204291	Phytophthora niederhauseri	Scaffold
+Phytoph_ohi_GCA_014706125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/125/GCA_014706125.1_ASM1470612v1	SAMN15299825	Phytophthora ohioensis (nom. inval.)	Contig
+Phytoph_pal_GCA_008079305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/008/079/305/GCA_008079305.1_PpalZC01v1	SAMN12497237	Phytophthora palmivora	Contig
+Phytoph_pal_sbr112_9_GCA_002911725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/911/725/GCA_002911725.1_ASM291172v1	SAMN04632378	Phytophthora palmivora	Scaffold
+Phytoph_para_CHvinca01_GCA_000509505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/509/505/GCA_000509505.1_Phyt_para_CHvinca01_V1	SAMN02178349	Phytophthora parasitica	Scaffold
+Phytoph_para_CJ01A1_GCA_000365545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/365/545/GCA_000365545.1_Phyt_para_CJ01A1_V1	SAMN01816556	Phytophthora parasitica	Contig
+Phytoph_para_CJ02B3_GCA_000509465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/509/465/GCA_000509465.1_Phyt_para_CJ02B3_V1	SAMN02178347	Phytophthora parasitica	Scaffold
+Phytoph_para_CJ05E6_GCA_000509485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/509/485/GCA_000509485.1_Phyt_para_CJ05E6_V1	SAMN02178348	Phytophthora parasitica	Scaffold
+Phytoph_para_IAC_01_95_GCA_000509525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/509/525/GCA_000509525.1_Phyt_para_IAC_01_95_V1	SAMN02178346	Phytophthora parasitica	Scaffold
+Phytoph_para_INRA_310_GCA_000247585_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/247/585/GCA_000247585.2_PP_INRA-310_V2	SAMN02981373	Phytophthora parasitica	Scaffold
+Phytoph_para_INRA_310_GCF_000247585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/247/585/GCF_000247585.1_PP_INRA-310_V2	SAMN02981373	Phytophthora parasitica	Scaffold
+Phytoph_para_P10297_GCA_000367145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/367/145/GCA_000367145.1_Phyt_para_P10297_V1	SAMN01816557	Phytophthora parasitica	Contig
+Phytoph_para_P1569_GCA_000365505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/365/505/GCA_000365505.1_Phyt_para_P1569_V1	SAMN01816558	Phytophthora parasitica	Contig
+Phytoph_para_P1976_GCA_000365525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/365/525/GCA_000365525.1_Phyt_para_P1976_V1	SAMN01816559	Phytophthora parasitica	Contig
+Phytoph_parvi_Pparv_OSU_2014_GCA_024679295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/295/GCA_024679295.1_ASM2467929v1	SAMN20204288	Phytophthora parvispora	Scaffold
+Phytoph_pini_GCA_023611945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/611/945/GCA_023611945.1_ASM2361194v1	SAMN27512428	Phytophthora pini	Contig
+Phytoph_pini_Ppini_OSU_2014_GCA_024679215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/215/GCA_024679215.1_ASM2467921v1	SAMN20204287	Phytophthora pini	Scaffold
+Phytoph_CBS_122922_GCA_000500225_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/500/225/GCA_000500225.2_ASM50022v2	SAMN02178790	Phytophthora pinifolia	Scaffold
+Phytoph_pisi_GCA_000751395_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/751/395/GCA_000751395.2_P._pisi_assembly	SAMEA2531522	Phytophthora pisi	Scaffold
+Phytoph_pisi_Ppisi_OSU_2014_GCA_024679225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/225/GCA_024679225.1_ASM2467922v1	SAMN20204289	Phytophthora pisi	Scaffold
+Phytoph_pist_Ppist_OSU_2014_GCA_024679115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/115/GCA_024679115.1_ASM2467911v1	SAMN20204294	Phytophthora pistaciae	Scaffold
+Phytoph_pluriv_AV1007_GCA_002247145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/247/145/GCA_002247145.1_Plurivora_assembly_v1.fn	SAMN07326770	Phytophthora plurivora	Scaffold
+Phytoph_pluriv_TJ71_GCA_030027945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/027/945/GCA_030027945.1_ASM3002794v1	SAMN34424160	Phytophthora plurivora	Chromosome
+Phytoph_pluv_GCA_001314425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/425/GCA_001314425.1_LC9-1v2	SAMN03895999	Phytophthora pluvialis	Scaffold
+Phytoph_pluv_GCA_001314455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/455/GCA_001314455.1_NZFS3000v2	SAMN03895997	Phytophthora pluvialis	Scaffold
+Phytoph_pse_GCA_019155715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/155/715/GCA_019155715.1_JHI_pseudo_1.0	SAMN17922341	Phytophthora pseudosyringae	Scaffold
+Phytoph_pse_PR13_731_GCA_012295425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/295/425/GCA_012295425.1_MU_Ppse	SAMN13759511	Phytophthora pseudosyringae	Scaffold
+Phytoph_que_GCA_014706105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/105/GCA_014706105.1_ASM1470610v1	SAMN15299829	Phytophthora quercina	Contig
+Phytoph_qui_Ex_type_BL_54_GCA_011947345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/947/345/GCA_011947345.1_USDA_Pqui_54_1.0	SAMN14367976	Phytophthora quininea	Contig
+Phytoph_ram_14567_GCA_020800205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/800/205/GCA_020800205.1_ASM2080020v1	SAMN19730093	Phytophthora ramorum	Contig
+Phytoph_ram_14567_GCA_020800235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/800/235/GCA_020800235.1_ASM2080023v1	SAMN19730093	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_2275_GCA_000340395_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/340/395/GCA_000340395.2_CC2275_v2	SAMN02981470	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_CC12475_GCA_001933335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/335/GCA_001933335.1_CC12475v1	SAMN01797768	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_CC14654_GCA_001933325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/325/GCA_001933325.1_CC14654_v1	SAMN01797770	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_CC2184_GCA_001933315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/315/GCA_001933315.1_CC2184_v1	SAMN01797769	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_GCA_001933345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/345/GCA_001933345.1_CC1008_v1	SAMN05823577	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_GCA_001933395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/395/GCA_001933395.1_CC1033_v1	SAMN05823579	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_GCA_001933405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/405/GCA_001933405.1_CC1048_v1	SAMN01797771	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_GCA_001933415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/415/GCA_001933415.1_CC2168_v1	SAMN05823583	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_GCA_001933455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/455/GCA_001933455.1_CC2176_v1	SAMN05823584	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_GCA_001933465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/465/GCA_001933465.1_CC2186_v1	SAMN05823586	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU1_GCA_001933485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/933/485/GCA_001933485.1_CC2187_v1	SAMN05823587	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU2_996_3_GCA_000336535_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/336/535/GCA_000336535.2_EU2_996_3_v2	SAMN01840346	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU2_GCA_001278135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/135/GCA_001278135.1_SOD58v2	SAMN03959777	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU2_GCA_001278145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/145/GCA_001278145.1_SOD69v2	SAMN03959803	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU2_GCA_001278155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/155/GCA_001278155.1_SOD22v2	SAMN03959804	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU2_GCA_001278165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/165/GCA_001278165.1_SOD158v2	SAMN03959776	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU2_GCA_001278215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/215/GCA_001278215.1_SOD136v2	SAMN03959812	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU2_GCA_001278225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/225/GCA_001278225.1_SODL51v2	SAMN03959819	Phytophthora ramorum	Scaffold
+Phytoph_ram_EU2_GCA_001278235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/278/235/GCA_001278235.1_SOD169v2	SAMN03959813	Phytophthora ramorum	Scaffold
+Phytoph_ram_Ex_type_CPHST_BL_55G_GCA_004343245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/343/245/GCA_004343245.1_CPHST_55G_Assem3	SAMN10615294	Phytophthora ramorum	Contig
+Phytoph_ram_GCA_001955675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/955/675/GCA_001955675.1_CC1011_v1	SAMN01797767	Phytophthora ramorum	Scaffold
+Phytoph_ram_GCA_002968915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/968/915/GCA_002968915.1_ASM296891v1	SAMN08537704	Phytophthora ramorum	Scaffold
+Phytoph_ram_GCA_003956735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/956/735/GCA_003956735.1_Pr102_V2	SAMN10245222	Phytophthora ramorum	Scaffold
+Phytoph_ram_GCA_020800215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/800/215/GCA_020800215.1_PR-102_v3_p	SAMN19730089	Phytophthora ramorum	Scaffold
+Phytoph_ram_GCA_020800225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/800/225/GCA_020800225.1_PR-102_v3_a	SAMN19730089	Phytophthora ramorum	Contig
+Phytoph_ram_Pr102_GCA_000149735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/149/735/GCA_000149735.1_ASM14973v1	SAMN02953655	Phytophthora ramorum	Scaffold
+Phytoph_rubi_CBS_109_892_GCA_000687305_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/687/305/GCA_000687305.2_P.frag2.0	SAMN02728490	Phytophthora rubi	Scaffold
+Phytoph_rubi_SCRP249_GCA_009732905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/732/905/GCA_009732905.1_ASM973290v1	SAMN07449690	Phytophthora rubi	Scaffold
+Phytoph_rubi_SCRP324_GCA_009732945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/732/945/GCA_009732945.1_ASM973294v1	SAMN07449691	Phytophthora rubi	Scaffold
+Phytoph_rubi_SCRP333_GCA_009733145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/733/145/GCA_009733145.1_ASM973314v1	SAMN07449692	Phytophthora rubi	Scaffold
+Phytoph_rubi_pd0101050015038_GCA_002025925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/025/925/GCA_002025925.1_Pr4671	SAMN06342477	Phytophthora rubi	Scaffold
+Phytoph_soj_P6497_GCA_000149755_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/149/755/GCA_000149755.2_P.sojae_V3.0	SAMN02953656	Phytophthora sojae	Scaffold
+Phytoph_soj_P6497_GCA_009848525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/848/525/GCA_009848525.1_Psojae2019.1	SAMN12695950	Phytophthora sojae	Contig
+Phytoph_soj_P6497_GCF_000149755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/149/755/GCF_000149755.1_P.sojae_V3.0	SAMN02953656	Phytophthora sojae	Scaffold
+Phytoph_syr_BL57G_GCA_012656105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/656/105/GCA_012656105.1_USDA_Psyr_BL57G_1.0	SAMN14078573	Phytophthora syringae	Scaffold
+Phytoph_syr_Psyri_OSU_2014_GCA_024679005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/005/GCA_024679005.1_ASM2467900v1	SAMN20204299	Phytophthora syringae	Scaffold
+Phytoph_tax_GCA_001314375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/375/GCA_001314375.1_NZFS3642v1	SAMN03897384	Phytophthora taxon totara	Scaffold
+Phytoph_tax_GCA_001314925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/314/925/GCA_001314925.1_NZFS3727v2	SAMN03921827	Phytophthora taxon totara	Scaffold
+Phytoph_tub_GCA_014706135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/135/GCA_014706135.1_ASM1470613v1	SAMN15299832	Phytophthora tubulina	Contig
+Phytoph_uli_Pulig_OSU_2014_GCA_024679075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/679/075/GCA_024679075.1_ASM2467907v1	SAMN20204295	Phytophthora uliginosa	Scaffold
+Phytoph_ver_GCA_014706215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/706/215/GCA_014706215.1_ASM1470621v1	SAMN15299845	Phytophthora versiformis	Contig
+Phytoph_vig_GCA_022496125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/496/125/GCA_022496125.1_ASM2249612v1	SAMN17967553	Phytophthora vignae	Scaffold
+Phytoph_vig_PVMG4_GCA_016169925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/169/925/GCA_016169925.1_ASM1616992v1	SAMN14648294	Phytophthora vignae	Contig
+Phytoph_vig_PaV1_GCA_016169935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/169/935/GCA_016169935.1_ASM1616993v1	SAMN14648107	Phytophthora vignae	Contig
+Phytoph_vig_PcV2_GCA_016169955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/169/955/GCA_016169955.1_ASM1616995v1	SAMN14648089	Phytophthora vignae	Contig
+Phytopy_aic_CBS_137195_GCA_023338125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/125/GCA_023338125.1_ASM2333812v1	SAMN13878515	Phytopythium aichiense	Contig
+Phytopy_bor_CBS_551_88_GCA_023338115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/115/GCA_023338115.1_ASM2333811v1	SAMN13878516	Phytopythium boreale	Contig
+Phytopy_cha_CBS_259_30_GCA_023334415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/415/GCA_023334415.1_ASM2333441v1	SAMN13878517	Phytopythium chamaehyphon	Contig
+Phytopy_cuc_CBS_748_96_GCA_023336425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/425/GCA_023336425.1_ASM2333642v1	SAMN13878556	Phytopythium cucurbitacearum (nom. inval.)	Contig
+Phytopy_del_CBS_123040_GCA_023338175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/175/GCA_023338175.1_ASM2333817v1	SAMN13878518	Phytopythium delawarense	Contig
+Phytopy_hel_CBS_286_31_GCA_023338155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/155/GCA_023338155.1_ASM2333815v1	SAMN13878519	Phytopythium helicoides	Contig
+Phytopy_hel_GCA_024867545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/867/545/GCA_024867545.1_ASM2486754v1	SAMN29814032	Phytopythium helicoides	Scaffold
+Phytopy_kan_ATCC_66501_GCA_023338135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/135/GCA_023338135.1_ASM2333813v1	SAMN13878521	Phytopythium kandeliae	Contig
+Phytopy_lito_CBS_118360_GCA_023338075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/075/GCA_023338075.1_ASM2333807v1	SAMN13878522	Phytopythium litorale	Contig
+Phytopy_mir_CBS_124523_GCA_023338055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/055/GCA_023338055.1_ASM2333805v1	SAMN13878524	Phytopythium mirpurense	Contig
+Phytopy_mont_CBS_111349_GCA_023338065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/065/GCA_023338065.1_ASM2333806v1	SAMN13878525	Phytopythium montanum	Contig
+Phytopy_oed_CBS_292_37_GCA_023338025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/338/025/GCA_023338025.1_ASM2333802v1	SAMN13878526	Phytopythium oedochilum	Contig
+Phytopy_ost_CBS_768_73_GCA_023337975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/975/GCA_023337975.1_ASM2333797v1	SAMN13878527	Phytopythium ostracodes	Contig
+Phytopy_sin_CBS_124518_GCA_023334395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/395/GCA_023334395.1_ASM2333439v1	SAMN13878528	Phytopythium sindhum	Contig
+Phytopy_vex_CBS_119_80_GCA_023337965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/965/GCA_023337965.1_ASM2333796v1	SAMN13878529	Phytopythium vexans	Contig
+Phytopy_vex_DAOM_BR484_GCA_000387545_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/545/GCA_000387545.2_pve_scaffolds_v1	SAMN02981435	Phytopythium vexans	Scaffold
+Phytopy_vex_GCA_022023675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/023/675/GCA_022023675.1_ASM2202367v1	SAMN24899379	Phytopythium vexans	Scaffold
+Phytopy_vex_HF1_GCA_003413675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/413/675/GCA_003413675.1_ASM341367v1	SAMN09010073	Phytopythium vexans	Contig
+Pi_apin_DAOMC_242887_GCA_023337955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/955/GCA_023337955.1_ASM2333795v1	SAMN13878530	Pilasporangium apinafurcum	Contig
+Pi_apin_JCM_30513_GCA_001600475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/600/475/GCA_001600475.1_JCM_30513_assembly_v001	SAMD00028699	Pilasporangium apinafurcum	Scaffold
+Pi_apin_JCM_30514_GCA_001600495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/600/495/GCA_001600495.1_JCM_30514_assembly_v001	SAMD00028700	Pilasporangium apinafurcum	Scaffold
+Pl_hal_A23_Pilon_GCA_004380875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/380/875/GCA_004380875.1_ASM438087v1	SAMN07972602	Plasmopara halstedii	Scaffold
+Pl_hal_GCA_003640465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/465/GCA_003640465.1_ASM364046v1	SAMN03788140	Plasmopara halstedii	Scaffold
+Pl_hal_GCA_003640505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/505/GCA_003640505.1_ASM364050v1	SAMN03853128	Plasmopara halstedii	Contig
+Pl_hal_GCA_900000015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/000/015/GCA_900000015.1_Plasmopara_halstedii_genome	SAMEA2781508	Plasmopara halstedii	Scaffold
+Pl_hal_GCF_900000015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/000/015/GCF_900000015.1_Plasmopara_halstedii_genome	SAMEA2781508	Plasmopara halstedii	Scaffold
+Pl_hal_pathotype_710_GCA_003724065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/724/065/GCA_003724065.1_Plhal710r1	SAMN07693293	Plasmopara halstedii	Scaffold
+Pl_mur_GCA_003676415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/676/415/GCA_003676415.1_INRA_Pmur_1	SAMN08862468	Plasmopara muralis	Scaffold
+Pl_obd_H12_14_11_GCA_003640485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/485/GCA_003640485.1_ASM364048v1	SAMN03787542	Plasmopara obducens	Scaffold
+Pl_obd_PA1_1_GCA_003640625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/625/GCA_003640625.1_ASM364062v1	SAMN03787759	Plasmopara obducens	Scaffold
+Pl_vit_GCA_001695595_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/695/595/GCA_001695595.3_INRA_Pvit_2	SAMN05415085	Plasmopara viticola	Scaffold
+Pl_vit_GCA_001974925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/974/925/GCA_001974925.1_ASM197492v1	SAMN06231250	Plasmopara viticola	Scaffold
+Pl_vit_PvitFEM01_GCA_003123765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/123/765/GCA_003123765.1_PVITv1	SAMN06627059	Plasmopara viticola	Scaffold
+Ps_cub_GCA_000252605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/252/605/GCA_000252605.1_ASM25260v1	SAMN00791897	Pseudoperonospora cubensis	Contig
+Ps_hum_GCA_003991265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/991/265/GCA_003991265.1_ASM399126v1	SAMN06041740	Pseudoperonospora humuli	Scaffold
+Py_ama_CBS_552_88_GCA_023337905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/905/GCA_023337905.1_ASM2333790v1	SAMN13878535	Pythium amasculinum	Contig
+Py_ang_CBS_522_74_GCA_023337915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/915/GCA_023337915.1_ASM2333791v1	SAMN13878537	Pythium angustatum	Contig
+Py_aph_ATCC_32230_GCA_027475745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/475/745/GCA_027475745.1_ASM2747574v1	SAMN23767495	Pythium aphanidermatum	Scaffold
+Py_aph_CBS_118_80_GCA_023337855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/855/GCA_023337855.1_ASM2333785v1	SAMN13878538	Pythium aphanidermatum	Contig
+Py_aph_DAOM_BR444_GCA_000387445_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/445/GCA_000387445.2_pag1_scaffolds_v1	SAMN02981430	Pythium aphanidermatum	Scaffold
+Py_apic_CBS_120945_GCA_023337825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/825/GCA_023337825.1_ASM2333782v1	SAMN13878539	Pythium apiculatum	Contig
+Py_apl_CBS_772_81_GCA_023337875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/875/GCA_023337875.1_ASM2333787v1	SAMN13878540	Pythium apleroticum	Contig
+Py_aqu_CBS_215_80_GCA_023337775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/775/GCA_023337775.1_ASM2333777v1	SAMN13878541	Pythium aquatile	Contig
+Py_ari_CBS_263_38_GCA_023337755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/755/GCA_023337755.1_ASM2333775v1	SAMN13878542	Pythium aristosporum	Contig
+Py_arr_ATCC_12531_GCA_000387505_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/387/505/GCA_000387505.2_par_scaffolds_v1	SAMN02981431	Pythium arrhenomanes	Scaffold
+Py_bif_JCM_30207_GCA_023337735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/735/GCA_023337735.1_ASM2333773v1	SAMN13878545	Pythium biforme	Contig
+Py_brac_JCM_30210_GCA_023337615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/615/GCA_023337615.1_ASM2333761v1	SAMN13878546	Pythium brachiatum	Contig
+Py_cat_Rm9_06_GCA_027475705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/475/705/GCA_027475705.1_ASM2747570v1	SAMN23767496	Pythium catenulatum	Scaffold
+Py_cho_CBS_203_85_GCA_023337575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/575/GCA_023337575.1_ASM2333757v1	SAMN13878553	Pythium chondricola	Contig
+Py_color_CBS_154_64_GCA_023337545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/545/GCA_023337545.1_ASM2333754v1	SAMN13878554	Pythium coloratum	Contig
+Py_diclinum_CBS_664_79_GCA_023337495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/337/495/GCA_023337495.1_ASM2333749v1	SAMN13878560	Pythium diclinum	Contig
+Py_dissi_CBS_155_64_GCA_023336445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/445/GCA_023336445.1_ASM2333644v1	SAMN13878562	Pythium dissimile	Contig
+Py_disso_CBS_166_68_GCA_023336355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/355/GCA_023336355.1_ASM2333635v1	SAMN13878563	Pythium dissotocum	Contig
+Py_foll_CBS_220_94_GCA_023336295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/295/GCA_023336295.1_ASM2333629v1	SAMN13878568	Pythium folliculosum	Contig
+Py_gram_CBS_327_62_GCA_023336255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/255/GCA_023336255.1_ASM2333625v1	SAMN13878570	Pythium graminicola	Contig
+Py_gran_CBS_286_79_GCA_023336285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/285/GCA_023336285.1_ASM2333628v1	SAMN13878571	Pythium grandisporangium	Contig
+Py_gui_Su_GCA_003730235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/730/235/GCA_003730235.1_ASM373023v1	SAMN09914743	Pythium guiyangense	Contig
+Py_hyd_CBS_253_60_GCA_023336225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/225/GCA_023336225.1_ASM2333622v1	SAMN13878573	Pythium hydnosporum	Contig
+Py_infl_CBS_168_68_GCA_023336345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/345/GCA_023336345.1_ASM2333634v1	SAMN13878574	Pythium inflatum	Contig
+Py_ins_ATCC_200269_GCA_001950815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/815/GCA_001950815.1_Pythium_insidiosum_ATCC200269_0.1	SAMD00042003	Pythium insidiosum	Scaffold
+Py_ins_ATCC_64221_GCA_001950875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/875/GCA_001950875.1_Pythium_insidiosum_ATCC64221_0.1	SAMD00042006	Pythium insidiosum	Scaffold
+Py_ins_CBS_101555_GCA_001950855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/855/GCA_001950855.1_Pythium_insidiosum_CBS101555_0.1	SAMD00042005	Pythium insidiosum	Scaffold
+Py_ins_CBS_573_85_GCA_001950835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/835/GCA_001950835.1_Pythium_insidiosum_CBS57385_0.1	SAMD00042004	Pythium insidiosum	Scaffold
+Py_ins_CDC_B5653_GCA_000764265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/764/265/GCA_000764265.1_ASM76426v1	SAMN03025308	Pythium insidiosum	Scaffold
+Py_ins_CR02_GCA_001950895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/895/GCA_001950895.1_Pythium_insidiosum_CR02_0.1	SAMD00042007	Pythium insidiosum	Scaffold
+Py_ins_GCA_022836835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/836/835/GCA_022836835.1_ASM2283683v1	SAMN26105103	Pythium insidiosum	Contig
+Py_ins_MCC_13_GCA_001950795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/795/GCA_001950795.1_Pythium_insidiosum_MCC13_0.1	SAMD00042002	Pythium insidiosum	Scaffold
+Py_ins_MCC_18_GCA_001950935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/935/GCA_001950935.1_Pythium_insidiosum_MCC18_0.1	SAMD00042009	Pythium insidiosum	Scaffold
+Py_ins_MTPI_04_GCA_004138015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/138/015/GCA_004138015.1_ASM413801v1	SAMN06481191	Pythium insidiosum	Scaffold
+Py_ins_Pi050C3_GCA_026401375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/401/375/GCA_026401375.1_ASM2640137v1	SAMN23767486	Pythium insidiosum	Scaffold
+Py_ins_Pi057C3_GCA_026401395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/401/395/GCA_026401395.1_ASM2640139v1	SAMN23767487	Pythium insidiosum	Scaffold
+Py_ins_Pi19_GCA_001950915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/915/GCA_001950915.1_Pythium_insidiosum_Pi19_0.1	SAMD00042008	Pythium insidiosum	Scaffold
+Py_ins_Pi_S_GCA_001029375_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/029/375/GCA_001029375.2_Pythium_PINS_2.0	SAMD00028776	Pythium insidiosum	Contig
+Py_ins_SIMI_4763_GCA_001950955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/950/955/GCA_001950955.1_Pythium_insidiosum_SIMI4763_0.1	SAMD00042010	Pythium insidiosum	Scaffold
+Py_lyc_CBS_122909_GCA_023336105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/105/GCA_023336105.1_ASM2333610v1	SAMN13878581	Pythium lycopersicum	Contig
+Py_mono_CBS_158_73_GCA_023336165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/165/GCA_023336165.1_ASM2333616v1	SAMN13878588	Pythium monospermum	Contig
+Py_myr_CBS_254_70_GCA_023336135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/135/GCA_023336135.1_ASM2333613v1	SAMN13878589	Pythium myriotylum	Contig
+Py_myr_GCA_020976625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/976/625/GCA_020976625.1_JAAS_PmSWQ7_1.0	SAMN17348867	Pythium myriotylum	Scaffold
+Py_myr_N14_GCA_025583705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/583/705/GCA_025583705.1_ASM2558370v1	SAMN18395105	Pythium myriotylum	Contig
+Py_myr_PRI180062_GCA_023091665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/091/665/GCA_023091665.1_ASM2309166v1	SAMN27363979	Pythium myriotylum	Contig
+Py_oli_ATCC_38472_TT_GCA_005966545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/005/966/545/GCA_005966545.1_ASM596654v1	SAMN11246703	Pythium oligandrum	Contig
+Py_oli_CBS_382_34_GCA_023336055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/055/GCA_023336055.1_ASM2333605v1	SAMN13878594	Pythium oligandrum	Contig
+Py_oli_CBS_530_74_GCA_002073175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/073/175/GCA_002073175.1_P_oligandrum_v1	SAMN06579319	Pythium oligandrum	Scaffold
+Py_oli_Po37_GCA_001573145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/573/145/GCA_001573145.1_ASM157314v1	SAMN04445819	Pythium oligandrum	Scaffold
+Py_ornam_CBS_122665_GCA_023336015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/015/GCA_023336015.1_ASM2333601v1	SAMN13878597	Pythium ornamentatum	Contig
+Py_pec_CBS_122643_GCA_023336095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/095/GCA_023336095.1_ASM2333609v1	SAMN13878603	Pythium pectinolyticum	Contig
+Py_peri_CBS_289_31_GCA_023336075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/075/GCA_023336075.1_ASM2333607v1	SAMN13878604	Pythium periplocum	Contig
+Py_peri_CBS_532_74_GCA_001922765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/922/765/GCA_001922765.1_Pythium_periplocum_1.0	SAMN06118650	Pythium periplocum	Scaffold
+Py_phragmitic_CBS_135511_GCA_023335935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/935/GCA_023335935.1_ASM2333593v1	SAMN13878606	Pythium phragmiticola	Contig
+Py_phragmitis_CBS_117104_GCA_023335925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/925/GCA_023335925.1_ASM2333592v1	SAMN13878607	Pythium phragmitis	Contig
+Py_pluris_CBS_100530_GCA_023336035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/336/035/GCA_023336035.1_ASM2333603v1	SAMN13878609	Pythium plurisporium	Contig
+Py_por_CBS_369_79_GCA_023335885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/885/GCA_023335885.1_ASM2333588v1	SAMN13878611	Pythium porphyrae	Contig
+Py_pyr_CBS_158_64_GCA_023335905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/905/GCA_023335905.1_ASM2333590v1	SAMN13878613	Pythium pyrilobum	Contig
+Py_rhizo__RCB01_GCA_027475725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/475/725/GCA_027475725.1_ASM2747572v1	SAMN23767497	Pythium rhizo-oryzae	Scaffold
+Py_ris_CBS_139278_GCA_023335895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/895/GCA_023335895.1_ASM2333589v1	SAMN13878618	Pythium rishiriense	Contig
+Py_scl_CBS_294_37_GCA_023335855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/335/855/GCA_023335855.1_ASM2333585v1	SAMN13878620	Pythium scleroteichum	Contig
+Py_suk_CBS_110030_GCA_023334995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/995/GCA_023334995.1_ASM2333499v1	SAMN13878627	Pythium sukuiense	Contig
+Py_tor_CBS_316_33_GCA_023334615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/615/GCA_023334615.1_ASM2333461v1	SAMN13878632	Pythium torulosum	Contig
+Py_uto_JCM_30206_GCA_023334595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/595/GCA_023334595.1_ASM2333459v1	SAMN13878637	Pythium utonaiense	Contig
+Py_van_CBS_295_37_GCA_023334535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/535/GCA_023334535.1_ASM2333453v1	SAMN13878638	Pythium vanterpoolii	Contig
+Py_vol_CBS_699_83_GCA_023334575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/575/GCA_023334575.1_ASM2333457v1	SAMN13878640	Pythium volutum	Contig
+Sac_cer_S288C	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64		Saccharomyces cerevisiae	Complete Genome
+Sal_sap_CBS_127946_GCA_023334545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/545/GCA_023334545.1_ASM2333454v1	SAMN13878642	Salisapilia sapeloensis	Contig
+Sap_diclina_VS20_GCA_000281045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/281/045/GCA_000281045.1_Sap_diclina_VS20_V1	SAMN02981407	Saprolegnia diclina	Scaffold
+Sap_diclina_VS20_GCF_000281045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/281/045/GCF_000281045.1_Sap_diclina_VS20_V1	SAMN02981407	Saprolegnia diclina	Scaffold
+Sap_para_CBS_223_65_GCA_000151545_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/151/545/GCA_000151545.2_ASM15154v2	SAMN02981252	Saprolegnia parasitica	Scaffold
+Sap_para_CBS_223_65_GCF_000151545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/151/545/GCF_000151545.1_ASM15154v2	SAMN02981252	Saprolegnia parasitica	Scaffold
+Sc_gram_GCA_001887855_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/887/855/GCA_001887855.2_SGv3	SAMN05219233	Sclerospora graminicola	Scaffold
+Sc_gram_GCA_002933675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/933/675/GCA_002933675.1_Sgrami_v1.0	SAMD00084316	Sclerospora graminicola	Scaffold
+T_cla_ATCC_34112_GCA_002081575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/081/575/GCA_002081575.1_Thrcla_v1	SAMN02690055	Thraustotheca clavata	Scaffold
+Pythium_brassicae_nom_inval_P1_GCA_008271595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/008/271/595/GCA_008271595.1_ASM827159v1	SAMN10332717	[Pythium] brassicae (nom. inval.)	Scaffold
