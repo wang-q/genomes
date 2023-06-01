@@ -272,24 +272,18 @@ rm raw*.*sv
 ```shell
 cd ~/data/Trichoderma
 
-nwr assembly ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
-    -o ASSEMBLY
-
-# Remove dirs not in the list
-find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
-    tr "/" "\t" |
-    cut -f 2 |
-    tsv-join --exclude -k 1 -f ASSEMBLY/url.tsv -d 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        echo Remove {}
-        rm -fr ASSEMBLY/{}
-    '
+nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    --ass \
+    -o .
 
 # Run
 bash ASSEMBLY/rsync.sh
 
 # Check md5; create check.lst
 bash ASSEMBLY/check.sh
+
+# Put the misplaced directory in the right place
+#bash ASSEMBLY/reorder.sh
 
 # N50 C S; create n50.tsv and n50.pass.csv
 bash ASSEMBLY/n50.sh 100000 1000 1000000
@@ -305,17 +299,6 @@ cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
 #32322684        37330627        99165   1578216 167     1054
-
-# Temporary files, possibly caused by an interrupted rsync process
-find ASSEMBLY/ -type f -name ".*" > ASSEMBLY/temp.list
-
-cat ASSEMBLY/temp.list |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        if [[ -f {} ]]; then
-            echo Remove {}
-            rm {}
-        fi
-    '
 
 # Collect; create collect.csv
 bash ASSEMBLY/collect.sh
@@ -336,9 +319,9 @@ cat ASSEMBLY/counts.tsv |
 | check.lst        | 121   |
 | collect.csv      | 122   |
 | n50.tsv          | 122   |
-| n50.pass.csv     | 112   |
+| n50.pass.csv     | 105   |
 | omit.lst         | 81    |
-| collect.pass.csv | 112   |
+| collect.pass.csv | 105   |
 
 ### Rsync to hpcc
 
@@ -363,8 +346,9 @@ rsync -avP \
 ```shell
 cd ~/data/Trichoderma
 
-nwr biosample ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
-    -o BioSample
+nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    --bs \
+    -o .
 
 bash BioSample/download.sh
 
