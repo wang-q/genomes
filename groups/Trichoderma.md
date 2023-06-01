@@ -358,140 +358,79 @@ rsync -avP \
 
 ```
 
-### List strains within the family of target genus
+## BioSample
+
+```shell
+cd ~/data/Trichoderma
+
+nwr biosample ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    -o BioSample
+
+bash BioSample/download.sh
+
+# Ignore rare attributes
+bash BioSample/collect.sh 10
+
+datamash check < BioSample/biosample.tsv
+#111 lines, 37 fields
+
+cp BioSample/attributes.lst summary/
+cp BioSample/biosample.tsv summary/
+
+```
+
+## Count species and strains
 
 ```shell
 cd ~/data/Trichoderma/
-mkdir -p summary
 
-cat ../Fungi/summary/collect.pass.csv |
+cat summary/collect.pass.csv |
     sed -e '1d' |
     tr "," "\t" |
     tsv-select -f 1,3 |
-    nwr append stdin -c 2 -r species -r genus -r family -r order |
-    tsv-filter --str-eq "5:Hypocreaceae" \
+    nwr append stdin -c 2 -r species -r genus -r family -r order \
     > summary/strains.taxon.tsv
 
 bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 1
 
 ```
 
-## Count and group strains
-
-```shell
-cd ~/data/alignment/Trichoderma
-
-for dir in $(find ASSEMBLY -maxdepth 1 -mindepth 1 -type d | sort); do
-    1>&2 echo "==> ${dir}"
-    name=$(basename ${dir})
-
-    find ${dir} -type f -name "*_genomic.fna.gz" |
-        grep -v "_from_" | # exclude CDS and rna
-        xargs cat |
-        faops n50 -C -S stdin |
-        (echo -e "name\t${name}" && cat) |
-        datamash transpose
-done |
-    tsv-uniq |
-    tee ASSEMBLY/n50.tsv
-
-cat ASSEMBLY/n50.tsv |
-    tsv-filter \
-        -H --or \
-        --le 4:100 \
-        --ge 2:100000 |
-    tsv-filter -H --ge 3:1000000 |
-    tr "\t" "," \
-    > ASSEMBLY/n50.pass.csv
-
-wc -l ASSEMBLY/n50*
-#  66 ASSEMBLY/n50.pass.csv
-#  78 ASSEMBLY/n50.tsv
-
-tsv-join \
-    ASSEMBLY/Trichoderma.assembly.collect.csv \
-    --delimiter "," -H --key-fields 1 \
-    --filter-file ASSEMBLY/n50.pass.csv \
-    > ASSEMBLY/Trichoderma.assembly.pass.csv
-
-wc -l ASSEMBLY/Trichoderma.assembly*csv
-#   78 ASSEMBLY/Trichoderma.assembly.collect.csv
-#   66 ASSEMBLY/Trichoderma.assembly.pass.csv
-
-```
-
-* strains
-
-```shell
-cd ~/data/alignment/Trichoderma
-
-# list strains
-mkdir -p taxon
-
-rm taxon/*
-cat ASSEMBLY/Trichoderma.assembly.pass.csv |
-    sed -e '1d' |
-    tr "," "\t" |
-    tsv-select -f 1,2,3 |
-    nwr append stdin -c 3 -r species -r genus -r family -r order |
-    parallel --col-sep "\t" --no-run-if-empty --linebuffer -k -j 1 '
-        if [[ "{#}" -eq "1" ]]; then
-            rm strains.lst
-            rm genus.tmp
-            rm species.tmp
-        fi
-
-        echo {1} >> strains.lst
-
-        echo {5} >> genus.tmp
-        echo {1} >> taxon/{5}
-
-        echo {4} >> species.tmp
-
-        printf "%s\t%s\t%d\t%s\t%s\t%s\t%s\n" {1} {2} {3} {4} {5} {6} {7}
-    ' \
-    > strains.taxon.tsv
-
-cat genus.tmp | tsv-uniq > genus.lst
-cat species.tmp | tsv-uniq > species.lst
-
-# Omit strains without protein annotations
-for STRAIN in $(cat strains.lst); do
-    if ! compgen -G "ASSEMBLY/${STRAIN}/*_protein.faa.gz" > /dev/null; then
-        echo ${STRAIN}
-    fi
-    if ! compgen -G "ASSEMBLY/${STRAIN}/*_cds_from_genomic.fna.gz" > /dev/null; then
-        echo ${STRAIN}
-    fi
-done |
-    tsv-uniq \
-    > omit.lst
-
-rm *.tmp
-
-```
-
-## NCBI taxonomy
-
-Done by `bp_taxonomy2tree.pl` from BioPerl.
-
-```shell
-mkdir -p ~/data/alignment/Trichoderma/tree
-cd ~/data/alignment/Trichoderma/tree
-
-bp_taxonomy2tree.pl -e \
-    $(
-        cat ../species.lst |
-            tr " " "_" |
-            parallel echo '-s {}'
-    ) |
-    sed 's/Trichoderma/T/g' \
-    > ncbi.nwk
-
-nw_display -s -b 'visibility:hidden' -w 600 -v 30 ncbi.nwk |
-    rsvg-convert -o Trichoderma.ncbi.png
-
-```
+| #family            | genus            | species                     | count |
+|--------------------|------------------|-----------------------------|-------|
+| Hypocreaceae       | Cladobotryum     | Cladobotryum protrusum      | 1     |
+|                    | Escovopsis       | Escovopsis weberi           | 2     |
+|                    | Hypomyces        | Hypomyces perniciosus       | 1     |
+|                    |                  | Hypomyces rosellus          | 1     |
+|                    | Mycogone         | Mycogone perniciosa         | 1     |
+|                    | Sphaerostilbella | Sphaerostilbella broomeana  | 1     |
+|                    | Trichoderma      | Trichoderma afroharzianum   | 5     |
+|                    |                  | Trichoderma arundinaceum    | 4     |
+|                    |                  | Trichoderma asperelloides   | 2     |
+|                    |                  | Trichoderma asperellum      | 14    |
+|                    |                  | Trichoderma atrobrunneum    | 1     |
+|                    |                  | Trichoderma atroviride      | 8     |
+|                    |                  | Trichoderma breve           | 2     |
+|                    |                  | Trichoderma brevicrassum    | 1     |
+|                    |                  | Trichoderma citrinoviride   | 4     |
+|                    |                  | Trichoderma cornu-damae     | 1     |
+|                    |                  | Trichoderma erinaceum       | 2     |
+|                    |                  | Trichoderma gamsii          | 3     |
+|                    |                  | Trichoderma gracile         | 1     |
+|                    |                  | Trichoderma guizhouense     | 1     |
+|                    |                  | Trichoderma hamatum         | 1     |
+|                    |                  | Trichoderma harzianum       | 13    |
+|                    |                  | Trichoderma koningii        | 1     |
+|                    |                  | Trichoderma koningiopsis    | 4     |
+|                    |                  | Trichoderma lentiforme      | 1     |
+|                    |                  | Trichoderma longibrachiatum | 5     |
+|                    |                  | Trichoderma parareesei      | 1     |
+|                    |                  | Trichoderma pseudokoningii  | 1     |
+|                    |                  | Trichoderma reesei          | 15    |
+|                    |                  | Trichoderma semiorbis       | 1     |
+|                    |                  | Trichoderma simmonsii       | 1     |
+|                    |                  | Trichoderma virens          | 9     |
+|                    |                  | Trichoderma viride          | 1     |
+| Saccharomycetaceae | Saccharomyces    | Saccharomyces cerevisiae    | 1     |
 
 ## Raw phylogenetic tree by MinHash
 
