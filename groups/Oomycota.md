@@ -293,3 +293,21 @@ cat ASSEMBLY/counts.tsv |
 | n50.pass.csv     | 94    |
 | omit.lst         | 305   |
 | collect.pass.csv | 94    |
+
+### Rsync to hpcc
+
+```bash
+rsync -avP \
+    ~/data/Oomycota/ \
+    wangq@202.119.37.251:data/Oomycota
+
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/Oomycota/ \
+    wangq@58.213.64.36:data/Oomycota
+
+# rsync -avP wangq@202.119.37.251:data/Oomycota/ ~/data/Oomycota
+
+# rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Oomycota/ ~/data/Oomycota
+
+```
