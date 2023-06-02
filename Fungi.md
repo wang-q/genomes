@@ -48,26 +48,27 @@ Download all genomes and analyze representative strains.
 nwr member Fungi |
     grep -v " sp." |
     tsv-summarize -H -g rank --count |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    sed 's/-\s*|$/-:|/'
 
 ```
 
 | rank          | count |
 |---------------|------:|
 | kingdom       |     1 |
-| no rank       |  4577 |
-| species       | 64236 |
+| no rank       |  4623 |
+| species       | 65297 |
 | subkingdom    |     1 |
-| class         |    64 |
-| order         |   240 |
-| family        |   901 |
-| genus         |  7410 |
+| class         |    65 |
+| order         |   242 |
+| family        |   904 |
+| genus         |  7466 |
 | phylum        |    10 |
 | subphylum     |    14 |
-| strain        |  2237 |
-| varietas      |  1053 |
-| subspecies    |   161 |
-| forma         |   207 |
+| strain        |  2236 |
+| varietas      |  1060 |
+| subspecies    |   162 |
+| forma         |   210 |
 | isolate       |    29 |
 | subclass      |    19 |
 | clade         |    26 |
@@ -111,7 +112,7 @@ nwr member Fungi -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#7410 genus.list
+#7466 genus.list
 
 for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
     echo "
@@ -257,13 +258,13 @@ done |
     > GB5.tsv
 
 wc -l RS*.tsv GB*.tsv
-#    81 RS1.tsv
-#   487 RS2.tsv
+#    91 RS1.tsv
+#   499 RS2.tsv
 #     1 GB1.tsv
 #     4 GB2.tsv
-#    79 GB3.tsv
-#   250 GB4.tsv
-#  3256 GB5.tsv
+#    85 GB3.tsv
+#   281 GB4.tsv
+#  3395 GB5.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -274,13 +275,13 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     83
-#RS2     492
+#RS1     94
+#RS2     504
 #GB1     109
-#GB2     750
-#GB3     6643
-#GB4     1268
-#GB5     12494
+#GB2     770
+#GB3     7260
+#GB4     1325
+#GB5     13371
 
 ```
 
@@ -356,7 +357,7 @@ If a refseq assembly is available, the corresponding genbank one is not download
 cd ~/data/Fungi/summary
 
 cat reference.tsv |
-    tsv-select -H -f organism_name,species,genus,ftp_path,assembly_level,assembly_accession \
+    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
 # RS2
@@ -369,8 +370,8 @@ SPECIES=$(
 
 echo "
     SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level,
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
         assembly_accession
     FROM ar
     WHERE 1=1
@@ -380,7 +381,7 @@ echo "
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
 
-# Avoid refseq in genbank
+# Preference for refseq
 cat raw.tsv |
     cut -f 6 \
     > rs.acc.tsv
@@ -395,8 +396,8 @@ SPECIES=$(
 
 echo "
     SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level,
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
         gbrs_paired_asm
     FROM ar
     WHERE 1=1
@@ -404,37 +405,37 @@ echo "
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 6 -e \
+    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#12499 lines, 6 fields
+#13877 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
     tsv-uniq |
-    tsv-select -f 1-5 |
-    perl ~/Scripts/withncbi/taxon/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
-    (echo -e '#name\tftp_path\torganism\tassembly_level' && cat ) |
+    tsv-select -f 1-6 |
+    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
     perl -nl -a -F"," -e '
         BEGIN{my %seen};
         /^#/ and print and next;
         /^organism_name/i and next;
         $seen{$F[3]}++; # ftp_path
         $seen{$F[3]} > 1 and next;
-        $seen{$F[5]}++; # abbr_name
-        $seen{$F[5]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\n}, $F[5], $F[3], $F[1], $F[4];
+        $seen{$F[6]}++; # abbr_name
+        $seen{$F[6]} > 1 and next;
+        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
         ' |
     tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
-    keep-header -- sort -k3,3 -k1,1 \
+    keep-header -- tsv-sort -k4,4 -k1,1 \
     > Fungi.assembly.tsv
 
 datamash check < Fungi.assembly.tsv
-#12495 lines, 4 fields
+#13610 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Fungi.assembly.tsv |
@@ -462,21 +463,9 @@ rm raw*.*sv
 ```shell
 cd ~/data/Fungi
 
-cat ~/Scripts/genomes/assembly/Fungi.assembly.tsv |
-    tsv-filter -v --str-in-fld 2:http
-
-nwr assembly ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
-    -o ASSEMBLY
-
-# Remove dirs not in the list
-find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
-    tr "/" "\t" |
-    cut -f 2 |
-    tsv-join --exclude -k 1 -f ASSEMBLY/url.tsv -d 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        echo Remove {}
-        rm -fr ASSEMBLY/{}
-    '
+nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    --ass \
+    -o .
 
 # Run
 bash ASSEMBLY/rsync.sh
@@ -484,22 +473,26 @@ bash ASSEMBLY/rsync.sh
 # Check md5; create check.lst
 bash ASSEMBLY/check.sh
 
+# Put the misplaced directory in the right place
+#bash ASSEMBLY/reorder.sh
+
+# N50 C S; create n50.tsv and n50.pass.csv
+bash ASSEMBLY/n50.sh 100000 1000 1000000
+
+# Adjust parameters passed to `n50.sh`
+cat ASSEMBLY/n50.tsv |
+    tsv-filter -H --str-in-fld "name:_GCF_" |
+    tsv-summarize -H --min "N50,S" --max "C"
+#N50_min S_min   C_max
+#697391  33215161        533
+
+cat ASSEMBLY/n50.tsv |
+    tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
+#S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
+#32322684        37330627        99165   1578216 167     1054
+
 # Collect; create collect.csv
 bash ASSEMBLY/collect.sh
-
-# Temporary files, possibly caused by an interrupted rsync process
-find ASSEMBLY/ -type f -name ".*" > ASSEMBLY/temp.list
-
-cat ASSEMBLY/temp.list |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        if [[ -f {} ]]; then
-            echo Remove {}
-            rm {}
-        fi
-    '
-
-# N50 C S; create n50.tsv
-bash ASSEMBLY/n50.sh 100000 1000 1000000
 
 # After all completed
 bash ASSEMBLY/finish.sh
@@ -507,7 +500,8 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.csv summary/
 
 cat ASSEMBLY/counts.tsv |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    sed 's/-\s*|$/-:|/'
 
 ```
 
