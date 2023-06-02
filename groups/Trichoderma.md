@@ -44,7 +44,7 @@ There are no noteworthy classification ranks other than species.
 
 nwr member Trichoderma |
     grep -v " sp." |
-    tsv-summarize -H -g 3 --count |
+    tsv-summarize -H -g rank --count |
     mlr --itsv --omd cat
 
 nwr lineage Trichoderma |
