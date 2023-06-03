@@ -282,8 +282,17 @@ bash ASSEMBLY/rsync.sh
 # Check md5; create check.lst
 bash ASSEMBLY/check.sh
 
-# Put the misplaced directory in the right place
+# Put the misplaced directory into the right place
 #bash ASSEMBLY/reorder.sh
+#
+# This operation will delete some files in the directory, so please be careful
+#cat ASSEMBLY/remove.list |
+#    parallel --no-run-if-empty --linebuffer -k -j 1 '
+#        if [[ -e "ASSEMBLY/{}" ]]; then
+#            echo Remove {}
+#            rm -fr "ASSEMBLY/{}"
+#        fi
+#    '
 
 # N50 C S; create n50.tsv and n50.pass.csv
 bash ASSEMBLY/n50.sh 100000 1000 1000000
@@ -300,6 +309,8 @@ cat ASSEMBLY/n50.tsv |
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
 #32322684        37330627        99165   1578216 167     1054
 
+# After the above steps are completed, run the following commands.
+
 # Collect; create collect.csv
 bash ASSEMBLY/collect.sh
 
@@ -309,7 +320,8 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.csv summary/
 
 cat ASSEMBLY/counts.tsv |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    sed 's/-\s*|$/-:|/'
 
 ```
 
@@ -345,6 +357,8 @@ rsync -avP \
 
 ```shell
 cd ~/data/Trichoderma
+
+ulimit -n `ulimit -Hn`
 
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --bs \
