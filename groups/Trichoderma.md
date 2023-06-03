@@ -168,7 +168,17 @@ If a refseq assembly is available, the corresponding genbank one is not download
 ```shell
 cd ~/data/Trichoderma/summary
 
-cat ~/Scripts/genomes/assembly/Fungi.reference.tsv |
+echo "
+.headers ON
+
+    SELECT
+        *
+    FROM ar
+    WHERE 1=1
+        AND genus IN ('Saccharomyces')
+        AND refseq_category IN ('reference genome')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
     tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
@@ -195,7 +205,7 @@ echo "
 
 # Preference for refseq
 cat raw.tsv |
-    cut -f 6 \
+    tsv-select -H -f "assembly_accession" \
     > rs.acc.tsv
 
 # GB
@@ -223,7 +233,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#123 lines, 6 fields
+#115 lines, 6 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -247,7 +257,7 @@ cat raw.tsv |
     > Trichoderma.assembly.tsv
 
 datamash check < Trichoderma.assembly.tsv
-#122 lines, 5 fields
+#114 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Trichoderma.assembly.tsv |
@@ -280,6 +290,7 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 bash ASSEMBLY/rsync.sh
 
 # Check md5; create check.lst
+# rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
 # Put the misplaced directory into the right place
@@ -307,7 +318,7 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#32322684        37330627        99165   1578216 167     1054
+#32255196.8      37316984        98936.2 1332095 167     1276.4
 
 # After the above steps are completed, run the following commands.
 
@@ -326,14 +337,14 @@ cat ASSEMBLY/counts.tsv |
 ```
 
 | #item            | count |
-|------------------|-------|
-| url.tsv          | 121   |
-| check.lst        | 121   |
-| collect.csv      | 122   |
-| n50.tsv          | 122   |
-| n50.pass.csv     | 105   |
-| omit.lst         | 81    |
-| collect.pass.csv | 105   |
+|------------------|------:|
+| url.tsv          |   113 |
+| check.lst        |   112 |
+| collect.csv      |   113 |
+| n50.tsv          |   114 |
+| n50.pass.csv     |    97 |
+| omit.lst         |    81 |
+| collect.pass.csv |    96 |
 
 ### Rsync to hpcc
 
@@ -393,46 +404,53 @@ bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 1
 
 ```
 
-| #family            | genus            | species                     | count |
-|--------------------|------------------|-----------------------------|-------|
-| Hypocreaceae       | Cladobotryum     | Cladobotryum protrusum      | 1     |
-|                    | Escovopsis       | Escovopsis weberi           | 2     |
-|                    | Hypomyces        | Hypomyces perniciosus       | 1     |
-|                    |                  | Hypomyces rosellus          | 1     |
-|                    | Mycogone         | Mycogone perniciosa         | 1     |
-|                    | Sphaerostilbella | Sphaerostilbella broomeana  | 1     |
-|                    | Trichoderma      | Trichoderma afroharzianum   | 5     |
-|                    |                  | Trichoderma arundinaceum    | 4     |
-|                    |                  | Trichoderma asperelloides   | 2     |
-|                    |                  | Trichoderma asperellum      | 14    |
-|                    |                  | Trichoderma atrobrunneum    | 1     |
-|                    |                  | Trichoderma atroviride      | 8     |
-|                    |                  | Trichoderma breve           | 2     |
-|                    |                  | Trichoderma brevicrassum    | 1     |
-|                    |                  | Trichoderma citrinoviride   | 4     |
-|                    |                  | Trichoderma cornu-damae     | 1     |
-|                    |                  | Trichoderma erinaceum       | 2     |
-|                    |                  | Trichoderma gamsii          | 3     |
-|                    |                  | Trichoderma gracile         | 1     |
-|                    |                  | Trichoderma guizhouense     | 1     |
-|                    |                  | Trichoderma hamatum         | 1     |
-|                    |                  | Trichoderma harzianum       | 13    |
-|                    |                  | Trichoderma koningii        | 1     |
-|                    |                  | Trichoderma koningiopsis    | 4     |
-|                    |                  | Trichoderma lentiforme      | 1     |
-|                    |                  | Trichoderma longibrachiatum | 5     |
-|                    |                  | Trichoderma parareesei      | 1     |
-|                    |                  | Trichoderma pseudokoningii  | 1     |
-|                    |                  | Trichoderma reesei          | 15    |
-|                    |                  | Trichoderma semiorbis       | 1     |
-|                    |                  | Trichoderma simmonsii       | 1     |
-|                    |                  | Trichoderma virens          | 9     |
-|                    |                  | Trichoderma viride          | 1     |
-| Saccharomycetaceae | Saccharomyces    | Saccharomyces cerevisiae    | 1     |
+| #family            | genus         | species                     | count |
+|--------------------|---------------|-----------------------------|------:|
+| Hypocreaceae       | Cladobotryum  | Cladobotryum protrusum      |     1 |
+|                    | Escovopsis    | Escovopsis weberi           |     2 |
+|                    | Hypomyces     | Hypomyces perniciosus       |     1 |
+|                    |               | Hypomyces rosellus          |     1 |
+|                    | Trichoderma   | Trichoderma afroharzianum   |     4 |
+|                    |               | Trichoderma arundinaceum    |     4 |
+|                    |               | Trichoderma asperelloides   |     2 |
+|                    |               | Trichoderma asperellum      |    13 |
+|                    |               | Trichoderma atrobrunneum    |     1 |
+|                    |               | Trichoderma atroviride      |     7 |
+|                    |               | Trichoderma breve           |     1 |
+|                    |               | Trichoderma brevicrassum    |     1 |
+|                    |               | Trichoderma citrinoviride   |     3 |
+|                    |               | Trichoderma erinaceum       |     2 |
+|                    |               | Trichoderma gamsii          |     2 |
+|                    |               | Trichoderma gracile         |     1 |
+|                    |               | Trichoderma guizhouense     |     1 |
+|                    |               | Trichoderma hamatum         |     1 |
+|                    |               | Trichoderma harzianum       |    10 |
+|                    |               | Trichoderma koningii        |     1 |
+|                    |               | Trichoderma koningiopsis    |     4 |
+|                    |               | Trichoderma lentiforme      |     1 |
+|                    |               | Trichoderma longibrachiatum |     5 |
+|                    |               | Trichoderma pseudokoningii  |     1 |
+|                    |               | Trichoderma reesei          |    13 |
+|                    |               | Trichoderma semiorbis       |     1 |
+|                    |               | Trichoderma simmonsii       |     1 |
+|                    |               | Trichoderma virens          |     8 |
+|                    |               | Trichoderma viride          |     1 |
+| Saccharomycetaceae | Saccharomyces | Saccharomyces cerevisiae    |     1 |
 
-## Raw phylogenetic tree by MinHash
+## MinHash
+
+### Raw phylogenetic tree by MinHash
 
 ```shell
+cd ~/data/Trichoderma
+
+nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    --mh \
+    -o .
+
+#
+bash MinHash/compute.sh
+
 mkdir -p ~/data/alignment/Trichoderma/mash
 cd ~/data/alignment/Trichoderma/mash
 
