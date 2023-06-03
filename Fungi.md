@@ -463,6 +463,8 @@ rm raw*.*sv
 ```shell
 cd ~/data/Fungi
 
+ulimit -n `ulimit -Hn`
+
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --ass \
     -o .
@@ -473,23 +475,34 @@ bash ASSEMBLY/rsync.sh
 # Check md5; create check.lst
 bash ASSEMBLY/check.sh
 
-# Put the misplaced directory in the right place
+# Put the misplaced directory into the right place
 #bash ASSEMBLY/reorder.sh
+#
+# This operation will delete some files in the directory, so please be careful
+#cat ASSEMBLY/remove.list |
+#    parallel --no-run-if-empty --linebuffer -k -j 1 '
+#        if [[ -e "ASSEMBLY/{}" ]]; then
+#            echo Remove {}
+#            rm -fr "ASSEMBLY/{}"
+#        fi
+#    '
 
 # N50 C S; create n50.tsv and n50.pass.csv
-bash ASSEMBLY/n50.sh 100000 1000 1000000
+bash ASSEMBLY/n50.sh 100000 2000 1000000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50,S" --max "C"
 #N50_min S_min   C_max
-#697391  33215161        533
+#32179   2187595 2016
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#32322684        37330627        99165   1578216 167     1054
+#11669611.8      32573156        28389.2 405060  322     4542.2
+
+# After the above steps are completed, run the following commands.
 
 # Collect; create collect.csv
 bash ASSEMBLY/collect.sh
@@ -504,6 +517,16 @@ cat ASSEMBLY/counts.tsv |
     sed 's/-\s*|$/-:|/'
 
 ```
+
+| #item            |  count |
+|------------------|-------:|
+| url.tsv          | 13,609 |
+| check.lst        | 13,609 |
+| collect.csv      | 13,610 |
+| n50.tsv          | 13,610 |
+| n50.pass.csv     |  9,833 |
+| omit.lst         |  8,926 |
+| collect.pass.csv |  9,833 |
 
 ### Rsync to hpcc
 
@@ -528,77 +551,22 @@ rsync -avP \
 ```shell
 cd ~/data/Fungi
 
-mkdir -p biosample
-
 ulimit -n `ulimit -Hn`
 
-cat ASSEMBLY/collect.csv |
-    tsv-select -H -d, -f BioSample |
-    grep "^SAM" |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        if [ ! -s biosample/{}.txt ]; then
-            >&2 echo {}
-            curl -fsSL "https://www.ncbi.nlm.nih.gov/biosample/?term={}&report=full&format=text" -o biosample/{}.txt
-#            curl -fsSL "https://www.ebi.ac.uk/biosamples/samples/{}" -o biosample/{}.json
-        fi
-    '
+nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    --bs \
+    -o .
 
-# Allowing samples not in the list
-find biosample -name "SAM*.txt" | wc -l
-# 4061
+bash BioSample/download.sh
 
-find biosample -name "SAM*.txt" |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        cat {} |
-            perl -nl -e '\''
-                print $1 if m{\s+\/([\w_ ]+)=};
-            '\''
-    ' |
-    tsv-uniq --at-least 50 | # ignore rare attributes
-    grep -v "^INSDC" |
-    grep -v "^ENA" \
-    > summary/attributes.lst
+# Ignore rare attributes
+bash BioSample/collect.sh 10
 
-cat summary/attributes.lst |
-    (echo -e "BioSample" && cat) |
-    tr '\n' '\t' |
-    sed 's/\t$/\n/' \
-    > summary/biosample.tsv
+datamash check < BioSample/biosample.tsv
+#111 lines, 37 fields
 
-find biosample -name "SAM*.txt" |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        >&2 echo {/.}
-        cat {} |
-            perl -nl -MPath::Tiny -e '\''
-                BEGIN {
-                    our @keys = grep {/\S/} path(q{summary/attributes.lst})->lines({chomp => 1});
-                    our %stat = ();
-                }
-
-                m(\s+\/([\w_ ]+)=\"(.+)\") or next;
-                my $k = $1;
-                my $v = $2;
-                if ( $v =~ m(\bNA|missing|Not applicable|not collected|not available|not provided|N\/A|not known|unknown\b)i ) {
-                    $stat{$k} = q();
-                } else {
-                    $stat{$k} = $v;
-                }
-
-                END {
-                    my @c;
-                    for my $key ( @keys ) {
-                        if (exists $stat{$key}) {
-                            push @c, $stat{$key};
-                        }
-                        else {
-                            push @c, q();
-                        }
-                    }
-                    print join(qq{\t}, q{{/.}}, @c);
-                }
-            '\''
-    ' \
-    >> summary/biosample.tsv
+cp BioSample/attributes.lst summary/
+cp BioSample/biosample.tsv summary/
 
 ```
 
@@ -621,7 +589,7 @@ echo "
     > summary/assembly_accession.lst
 
 wc -l summary/assembly_accession.lst
-#5278 assembly_accession.lst
+#5495 assembly_accession.lst
 
 cat ASSEMBLY/collect.csv |
     tsv-select -H -d, -f Taxid |
@@ -631,7 +599,7 @@ cat ASSEMBLY/collect.csv |
     tsv-select -f 2 |
     tsv-uniq |
     wc -l
-#659
+#3384
 
 cat summary/collect.pass.csv |
     tsv-select -H -d, -f Taxid |
@@ -641,7 +609,7 @@ cat summary/collect.pass.csv |
     tsv-select -f 2 |
     tsv-uniq |
     wc -l
-#654
+#2564
 
 cat summary/collect.pass.csv |
     tsv-filter -H -d, --or \
@@ -652,7 +620,7 @@ cat summary/collect.pass.csv |
     > summary/representative.lst
 
 wc -l summary/representative.lst
-#639 summary/representative.lst
+#3023 summary/representative.lst
 
 cat summary/collect.pass.csv |
     sed -e '1d' |
@@ -661,56 +629,34 @@ cat summary/collect.pass.csv |
     nwr append stdin -c 2 -r species -r genus -r family -r order \
     > summary/strains.taxon.tsv
 
-cat ~/Scripts/genomes/assembly/Fungi.assembly.tsv |
-    tsv-summarize -H -g 3 --count |
-    tsv-filter -H --ge 2:50 |
-    mlr --itsv --omd cat
-
-cat summary/strains.taxon.tsv |
-    tsv-summarize -g 3 --count |
-    ( echo -e 'organism\tcount' && cat ) |
-    tsv-filter -H --ge 2:50 |
-    mlr --itsv --omd cat
+bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 50
 
 ```
 
-| organism                 | count |
-|--------------------------|-------|
-| Aspergillus flavus       | 144   |
-| Aspergillus fumigatus    | 80    |
-| Aspergillus niger        | 96    |
-| Aspergillus oryzae       | 90    |
-| Botryosphaeria dothidea  | 131   |
-| Candida albicans         | 64    |
-| Cryphonectria parasitica | 92    |
-| Fusarium graminearum     | 114   |
-| Komagataella phaffii     | 129   |
-| Ophidiomyces ophidiicola | 63    |
-| Parastagonospora nodorum | 171   |
-| Penicillium chrysogenum  | 78    |
-| Pyricularia oryzae       | 251   |
-| Rhodotorula mucilaginosa | 66    |
-| Saccharomyces cerevisiae | 111   |
-| Saitozyma podzolica      | 56    |
-| Venturia inaequalis      | 85    |
-
-| organism                 | count |
-|--------------------------|-------|
-| Aspergillus flavus       | 136   |
-| Aspergillus fumigatus    | 74    |
-| Aspergillus niger        | 94    |
-| Aspergillus oryzae       | 90    |
-| Botryosphaeria dothidea  | 128   |
-| Candida albicans         | 53    |
-| Cryphonectria parasitica | 68    |
-| Fusarium graminearum     | 112   |
-| Komagataella phaffii     | 127   |
-| Ophidiomyces ophidiicola | 63    |
-| Parastagonospora nodorum | 163   |
-| Penicillium chrysogenum  | 77    |
-| Pyricularia oryzae       | 170   |
-| Rhodotorula mucilaginosa | 65    |
-| Saccharomyces cerevisiae | 111   |
+| #family             | genus                     | species                  | count |
+|---------------------|---------------------------|--------------------------|------:|
+| Aspergillaceae      | Aspergillus               | Aspergillus flavus       |   192 |
+|                     |                           | Aspergillus fumigatus    |   249 |
+|                     |                           | Aspergillus niger        |   112 |
+|                     |                           | Aspergillus oryzae       |   103 |
+|                     | Penicillium               | Penicillium chrysogenum  |    83 |
+| Botryosphaeriaceae  | Botryosphaeria            | Botryosphaeria dothidea  |    76 |
+| Cryphonectriaceae   | Cryphonectria             | Cryphonectria parasitica |    69 |
+| Cryptococcaceae     | Cryptococcus              | Cryptococcus neoformans  |   115 |
+| Debaryomycetaceae   | Candida                   | Candida albicans         |    61 |
+| Metschnikowiaceae   | Candida/Metschnikowiaceae | [Candida] auris          |   129 |
+| Nectriaceae         | Fusarium                  | Fusarium graminearum     |   121 |
+|                     |                           | Fusarium oxysporum       |   258 |
+| Onygenaceae         | Ophidiomyces              | Ophidiomyces ophidiicola |    74 |
+| Phaeosphaeriaceae   | Parastagonospora          | Parastagonospora nodorum |   167 |
+| Phaffomycetaceae    | Komagataella              | Komagataella phaffii     |   134 |
+| Pleosporaceae       | Alternaria                | Alternaria alternata     |    85 |
+| Pyriculariaceae     | Pyricularia               | Pyricularia oryzae       |   168 |
+| Saccharomycetaceae  | Nakaseomyces              | Nakaseomyces glabratus   |    54 |
+|                     | Saccharomyces             | Saccharomyces cerevisiae |  1409 |
+|                     | Torulaspora               | Torulaspora delbrueckii  |    68 |
+| Sporidiobolaceae    | Rhodotorula               | Rhodotorula mucilaginosa |   109 |
+| Trimorphomycetaceae | Saitozyma                 | Saitozyma podzolica      |    50 |
 
 ### Order
 
@@ -844,7 +790,14 @@ cat summary/genus.count.tsv |
 
 ### ReRoot
 
-小孢子虫 (Microsporidia) 可以当作真菌的基部类群, 也可以当作真菌的姊妹类群
+* 小孢子虫 (Microsporidia) 可以当作真菌的基部类群, 也可以当作真菌的姊妹类群
+
+* 芽枝霉门 (Blastocladiomycota) 是真菌的基部类群
+
+* for the latter steps, use the following three as the outgroups
+    * Allom_macrog_ATCC_38327_GCA_000151295_1
+    * Enc_hell_ATCC_50504_GCF_000277815_2
+    * Nemat_major_JUm2507_GCF_021653875_1
 
 ```shell
 cd ~/data/Fungi
@@ -852,20 +805,42 @@ cd ~/data/Fungi
 cat summary/strains.taxon.tsv |
     nwr append stdin -c 2 -r phylum -r subkingdom |
     tsv-filter --str-ne "8:Dikarya" | # 双核亚界
+    tsv-filter --str-ne "7:Mucoromycota" | # 毛霉门
+    tsv-filter --str-ne "7:Zoopagomycota" | #
+    tsv-filter --str-ne "7:Chytridiomycota" | # 壶菌门
     tsv-select -f 1,3,7 |
     tsv-sort -k3,3 -k1,1 |
-    tsv-filter --or \
-        --str-in-fld "2:Mitosporidium" \
-        --str-in-fld "2:Nematocida" \
-        --str-in-fld "2:Nosema" |
-    grep -v -Fw -f ASSEMBLY/omit.lst
-#Mit_dap_GCF_000760515_2 Mitosporidium daphniae  Microsporidia
-#Nem_aus_GCF_000738915_1 Nematocida ausubeli     Microsporidia
-#Nem_homos_GCF_024244095_1       Nematocida homosporus   Microsporidia
-#Nem_maj_GCF_021653875_1 Nematocida major        Microsporidia
-#Nem_minor_GCF_024244105_1       Nematocida minor        Microsporidia
-#Nem_pari_ERTm1_GCF_000250985_1  Nematocida parisii      Microsporidia
-#No_cera_GCF_000988165_1 Nosema ceranae  Microsporidia
+    grep -v -Fw -f ASSEMBLY/omit.lst |
+    tsv-summarize -g 3,2 --count
+#Blastocladiomycota      Allomyces arbusculus    1
+#Blastocladiomycota      Allomyces javanicus     1
+#Blastocladiomycota      Allomyces macrogynus    1
+#Blastocladiomycota      Blastocladiella emersonii       1
+#Blastocladiomycota      Catenaria anguillulae   1
+#Blastocladiomycota      Paraphysoderma sedebokerense    1
+#Microsporidia   Edhazardia aedis        1
+#Microsporidia   Encephalitozoon cuniculi        4
+#Microsporidia   Encephalitozoon hellem  5
+#Microsporidia   Encephalitozoon intestinalis    3
+#Microsporidia   Encephalitozoon romaleae        2
+#Microsporidia   Enterocytozoon hepatopenaei     1
+#Microsporidia   Nematocida ausubeli     3
+#Microsporidia   Nematocida displodere   1
+#Microsporidia   Nematocida major        2
+#Microsporidia   Nematocida parisii      3
+#Microsporidia   Nosema ceranae  1
+#Microsporidia   Ordospora colligata     5
+#Microsporidia   Vittaforma corneae      2
+
+cat summary/collect.pass.csv |
+    tsv-filter -H -d, --not-blank RefSeq_category |
+    tsv-filter -H -d, --or \
+        --str-in-fld "2:Allomyces" \
+        --str-in-fld "2:Blastocladiella" \
+        --str-in-fld "2:Encephalitozoon" \
+        --str-in-fld "2:Nematocida" |
+    grep -v -Fw -f ASSEMBLY/omit.lst |
+    tsv-select -H -d, -f "name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
 
 ```
 
