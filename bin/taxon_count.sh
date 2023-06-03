@@ -28,7 +28,7 @@ fi
 
 # Set default parameters
 TSV_FILE=$1
-MIN_COUNT=${3:-1}
+MIN_COUNT=${2:-1}
 
 #----------------------------#
 # Run
@@ -59,4 +59,5 @@ cat ${TSV_FILE} |
             print join qq(\t), ($F[2], $F[3]);
         ' |
     (echo -e '#family\tgenus\tspecies\tcount' && cat) |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    sed 's/-\s*|$/-:|/'
