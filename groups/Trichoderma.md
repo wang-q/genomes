@@ -266,18 +266,31 @@ cat Trichoderma.assembly.tsv |
 cat Trichoderma.assembly.tsv |
     tsv-filter --str-not-in-fld 2:ftp
 
-# Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
+# Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Trichoderma.assembly.tsv
+#
+# Save the file to another directory to prevent accidentally changing it
 # cp Trichoderma.assembly.tsv ~/Scripts/genomes/assembly
-
-# Comment out unneeded strains
 
 # Cleaning
 rm raw*.*sv
 
 ```
 
-### Rsync and check
+### Download and check
+
+* When `rsync.sh` is interrupted, run `check.sh` before restarting
+* For projects that have finished downloading, but have renamed strains, you can run `reorder.sh` to
+  avoid re-downloading
+* The parameters of `n50.sh` should be determined by the distribution of the description statistics
+* `collect.sh` generates a file of type `.csv`, which is intended to be opened by spreadsheet
+  software.
+* `finish.sh` generates the following files
+    * `omit.lst` - no annotations
+    * `collect.pass.csv` - passes the n50 check
+    * `rep.lst` - representative or reference strains
+    * `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
+    * `counts.tsv`
 
 ```shell
 cd ~/data/Trichoderma
@@ -329,6 +342,7 @@ bash ASSEMBLY/collect.sh
 bash ASSEMBLY/finish.sh
 
 cp ASSEMBLY/collect.pass.csv summary/
+cp ASSEMBLY/strains.taxon.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
     mlr --itsv --omd cat |
@@ -345,6 +359,17 @@ cat ASSEMBLY/counts.tsv |
 | n50.pass.csv     |    97 |
 | omit.lst         |    81 |
 | collect.pass.csv |    96 |
+| #item             | count |
+|-------------------|------:|
+| url.tsv           |   113 |
+| check.lst         |   112 |
+| collect.csv       |   113 |
+| n50.tsv           |   114 |
+| n50.pass.csv      |    97 |
+| collect.pass.csv  |    96 |
+| omit.lst          |    81 |
+| rep.lst           |    30 |
+| strains.taxon.tsv |    95 |
 
 ### Rsync to hpcc
 
