@@ -439,84 +439,29 @@ bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 1
 
 ## MinHash
 
-### Raw phylogenetic tree by MinHash
-
 ```shell
 cd ~/data/Trichoderma
 
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --mh \
+    --height 0.4 \
     -o .
 
-#
+# Compute assembly sketches
 bash MinHash/compute.sh
 
-mkdir -p ~/data/alignment/Trichoderma/mash
-cd ~/data/alignment/Trichoderma/mash
-
-for strain in $(cat ../strains.lst ); do
-    2>&1 echo "==> ${strain}"
-
-    if [[ -e ${strain}.msh ]]; then
-        continue
-    fi
-
-    find ../ASSEMBLY/${strain} -name "*_genomic.fna.gz" |
-        grep -v "_from_" |
-        xargs cat |
-        mash sketch -k 21 -s 100000 -p 8 - -I "${strain}" -o ${strain}
-done
-
-mash triangle -E -p 8 -l <(
-    cat ../strains.lst | parallel echo "{}.msh"
-    ) \
-    > dist.tsv
-
-# fill matrix with lower triangle
-tsv-select -f 1-3 dist.tsv |
-    (tsv-select -f 2,1,3 dist.tsv && cat) |
-    (
-        cut -f 1 dist.tsv |
-            tsv-uniq |
-            parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
-        cat
-    ) \
-    > dist_full.tsv
-
-cat dist_full.tsv |
-    Rscript -e '
-        library(readr);
-        library(tidyr);
-        library(ape);
-        pair_dist <- read_tsv(file("stdin"), col_names=F);
-        tmp <- pair_dist %>%
-            pivot_wider( names_from = X2, values_from = X3, values_fill = list(X3 = 1.0) )
-        tmp <- as.matrix(tmp)
-        mat <- tmp[,-1]
-        rownames(mat) <- tmp[,1]
-
-        dist_mat <- as.dist(mat)
-        clusters <- hclust(dist_mat, method = "ward.D2")
-        tree <- as.phylo(clusters)
-        write.tree(phy=tree, file="tree.nwk")
-
-        group <- cutree(clusters, h=0.4) # k=5
-        groups <- as.data.frame(group)
-        groups$ids <- rownames(groups)
-        rownames(groups) <- NULL
-        groups <- groups[order(groups$group), ]
-        write_tsv(groups, "groups.tsv")
-    '
+# Distances between sketches and hierarchical clustering
+bash MinHash/dist.sh
 
 ```
 
 ### Tweak the mash tree
 
 ```shell
-mkdir -p ~/data/alignment/Trichoderma/tree
-cd ~/data/alignment/Trichoderma/tree
+mkdir -p ~/data/Trichoderma/tree
+cd ~/data/Trichoderma/tree
 
-nw_reroot ../mash/tree.nwk C_pro_GCA_004303015_1 H_per_GCA_008477525_1 |
+nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
     nw_order -c n - \
     > mash.reroot.newick
 
@@ -535,7 +480,7 @@ for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick mash.${GROUP_NAME}.newick
     cat condense.map >> mash.condensed.map
@@ -547,21 +492,17 @@ done
 nw_display -s -b 'visibility:hidden' -w 600 -v 30 mash.species.newick |
     rsvg-convert -o Trichoderma.mash.png
 
-# cp Trichoderma.mash.png ~/Scripts/withncbi/image/Trichoderma.png
-
 ```
-
-![Trichoderma.png](../image/Trichoderma.png)
 
 ## Groups and targets
 
-Review `ASSEMBLY/Trichoderma.assembly.pass.csv` and `mash/groups.tsv`.
+Review `ASSEMBLY/Trichoderma.assembly.pass.csv` and `MinHash/groups.tsv`.
 
 Create `ARRAY` manually with a format `group::target`.
 
-Target criteria:
+Target selecting criteria:
 
-* Prefer Sander sequenced assemblies
+* Prefer Sanger sequenced assemblies
 * RefSeq_category with `Representative Genome`
 * Assembly_level with `Complete Genome` or `Chromosome`
 
