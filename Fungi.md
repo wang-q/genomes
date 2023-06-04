@@ -540,9 +540,41 @@ rsync -avP \
     ~/data/Fungi/ \
     wangq@58.213.64.36:data/Fungi
 
+# scp -P 8804 ./nwr wangq@58.213.64.36:bin
+
 # rsync -avP wangq@202.119.37.251:data/Fungi/ ~/data/Fungi
 
 # rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Fungi/ ~/data/Fungi
+
+```
+
+For such huge collections, we can rsync files in parallel.
+
+```shell
+# Copy Directory Structure
+rsync -avP \
+    -e 'ssh -p 8804' \
+    -f"+ */" -f"- *" \
+    ~/data/Fungi/ \
+    wangq@58.213.64.36:data/Fungi
+
+# Transfer species directories in
+cat ~/data/Fungi/ASSEMBLY/url.tsv |
+    tsv-select -f 3 |
+    tsv-uniq |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        echo -e "\n==> {}"
+        rsync -avP \
+            -e "ssh -p 8804" \
+            ~/data/Fungi/ASSEMBLY/{}/ \
+            wangq@58.213.64.36:data/Fungi/ASSEMBLY/{}
+    '
+
+# rsync other files
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/Fungi/ \
+    wangq@58.213.64.36:data/Fungi
 
 ```
 
@@ -557,6 +589,7 @@ nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --bs \
     -o .
 
+# Run this script twice and it will re-download the failed files
 bash BioSample/download.sh
 
 # Ignore rare attributes
