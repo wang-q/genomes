@@ -1008,7 +1008,7 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.family.newick |
 
 ## Non-redundant strains within species
 
-If the ANI value between two strains was less than 0.005, the two strains were considered as
+If the ANI value between two strains is less than 0.005, the two strains are considered to be
 redundant.
 
 ```shell
