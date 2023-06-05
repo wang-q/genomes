@@ -14,8 +14,8 @@ Genus *Trichoderma* as an example.
     * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
 - [MinHash](#minhash)
-    * [Tweak the minhash tree](#tweak-the-minhash-tree)
-- [Count species and strains](#count-species-and-strains)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+- [Count valid species and strains](#count-valid-species-and-strains)
 - [Groups and targets](#groups-and-targets)
 - [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
 - [Generate alignments](#generate-alignments)
@@ -41,7 +41,6 @@ https://doi.org/10.1038/s41579-022-00819-5
 There are no noteworthy classification ranks other than species.
 
 ```shell
-
 nwr member Trichoderma |
     grep -v " sp." |
     tsv-summarize -H -g rank --count |
@@ -344,7 +343,7 @@ bash ASSEMBLY/check.sh
 #bash ASSEMBLY/reorder.sh
 #
 # This operation will delete some files in the directory, so please be careful
-#cat ASSEMBLY/remove.list |
+#cat ASSEMBLY/remove.lst |
 #    parallel --no-run-if-empty --linebuffer -k -j 1 '
 #        if [[ -e "ASSEMBLY/{}" ]]; then
 #            echo Remove {}
@@ -379,20 +378,20 @@ cp ASSEMBLY/collect.pass.csv summary/
 
 cat ASSEMBLY/counts.tsv |
     mlr --itsv --omd cat |
-    sed 's/-\s*|$/-:|/'
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 ```
 
 | #item            | count |
 |------------------|------:|
 | url.tsv          |   113 |
-| check.lst        |   112 |
-| collect.csv      |   113 |
+| check.lst        |   113 |
+| collect.csv      |   114 |
 | n50.tsv          |   114 |
 | n50.pass.csv     |    97 |
-| collect.pass.csv |    96 |
+| collect.pass.csv |    97 |
 | omit.lst         |    81 |
-| rep.lst          |    30 |
+| rep.lst          |    31 |
 
 ### Rsync to hpcc
 
@@ -466,8 +465,7 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --pass \
     --ani_ab 0.05 \
     --ani_nr 0.005 \
-    --height 0.4 \
-    -o .
+    --height 0.4
 
 # Compute assembly sketches
 bash MinHash/compute.sh
@@ -491,7 +489,10 @@ bash MinHash/dist.sh
 
 ```
 
-### Tweak the minhash tree
+### Condense branches in the minhash tree
+
+* This phylo-tree is not really formal, and shouldn't be used to interpret phylogenetic relationship
+* It is just used to find more abnormal strains
 
 ```shell
 mkdir -p ~/data/Trichoderma/tree
@@ -503,10 +504,10 @@ nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
 
 # rank::col
 ARRAY=(
-#    'order::6'
-#    'family::5'
-#    'genus::4'
-    'species::3'
+#    'order::5'
+#    'family::4'
+#    'genus::3'
+    'species::2'
 )
 
 rm minhash.condensed.map
@@ -516,7 +517,7 @@ for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../ASSEMBLY/strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../Count/strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick minhash.${GROUP_NAME}.newick
     cat condense.map >> minhash.condensed.map
@@ -530,7 +531,7 @@ nw_display -s -b 'visibility:hidden' -w 600 -v 30 minhash.species.newick |
 
 ```
 
-## Count species and strains
+## Count valid species and strains
 
 ```shell
 cd ~/data/Trichoderma/
@@ -538,6 +539,7 @@ cd ~/data/Trichoderma/
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --count \
     --pass \
+    --not-in MinHash/abnormal.lst \
     --rank genus \
     --lineage family --lineage genus
 
@@ -547,15 +549,22 @@ bash Count/strains.sh
 # genus.lst genus.count.tsv
 bash Count/rank.sh
 
-
-cp ASSEMBLY/strains.taxon.tsv summary/
-
 cat Count/genus.count.tsv |
     mlr --itsv --omd cat
+
+cp Count/strains.taxon.tsv summary/
 
 bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 1 "family genus species"
 
 ```
+
+| #genus        | #species | #strains |
+|---------------|----------|----------|
+| Cladobotryum  | 1        | 1        |
+| Escovopsis    | 1        | 2        |
+| Hypomyces     | 1        | 2        |
+| Saccharomyces | 1        | 1        |
+| Trichoderma   | 1        | 87       |
 
 | #family            | genus         | species                     | count |
 |--------------------|---------------|-----------------------------|------:|
