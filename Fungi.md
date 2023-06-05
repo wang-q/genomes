@@ -558,7 +558,7 @@ rsync -avP \
     ~/data/Fungi/ \
     wangq@58.213.64.36:data/Fungi
 
-# Transfer species directories in
+# Transfer species directories in parallel
 cat ~/data/Fungi/ASSEMBLY/url.tsv |
     tsv-select -f 3 |
     tsv-uniq |
