@@ -300,7 +300,7 @@ cat Count/genus.before.tsv |
 
 ```
 
-| #genus           | #species | #strains |
+| genus            | #species | #strains |
 |------------------|----------|----------|
 | Cladobotryum     | 1        | 1        |
 | Escovopsis       | 1        | 2        |
@@ -323,6 +323,7 @@ cat Count/genus.before.tsv |
 * `finish.sh` generates the following files
     * `omit.lst` - no annotations
     * `collect.pass.csv` - passes the n50 check
+    * `pass.lst` - passes the n50 check
     * `rep.lst` - representative or reference strains
     * `counts.tsv`
 
@@ -390,6 +391,7 @@ cat ASSEMBLY/counts.tsv |
 | n50.tsv          |   114 |
 | n50.pass.csv     |    97 |
 | collect.pass.csv |    97 |
+| pass.lst         |    96 |
 | omit.lst         |    81 |
 | rep.lst          |    31 |
 
@@ -440,8 +442,8 @@ Estimate nucleotide divergences among strains.
 
 * Abnormal strains
     * If the maximum value of ANI between strains within a species is greater than *0.05*, the
-      median and maximum value will be reported. Strains that cannot be linked by median ANI will be
-      considered as abnormal strains.
+      median and maximum value will be reported. Strains that cannot be linked by the median
+      ANI, e.g., have no similar strains in the species, will be considered as abnormal strains.
     * It may consist of two scenarios:
         1. Wrong species identification
         2. Poor assembly quality
@@ -462,9 +464,9 @@ cd ~/data/Trichoderma
 
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --mh \
-    --pass \
-    --ani_ab 0.05 \
-    --ani_nr 0.005 \
+    --in ASSEMBLY/pass.lst \
+    --ani-ab 0.05 \
+    --ani-nr 0.005 \
     --height 0.4
 
 # Compute assembly sketches
@@ -491,7 +493,8 @@ bash MinHash/dist.sh
 
 ### Condense branches in the minhash tree
 
-* This phylo-tree is not really formal, and shouldn't be used to interpret phylogenetic relationship
+* This phylo-tree is not really formal, and shouldn't be used to interpret phylogenetic
+  relationships
 * It is just used to find more abnormal strains
 
 ```shell
@@ -531,14 +534,55 @@ nw_display -s -b 'visibility:hidden' -w 600 -v 30 minhash.species.newick |
 
 ```
 
-## Count valid species and strains
+## Count valid species and strains for *protein families*
 
 ```shell
 cd ~/data/Trichoderma/
 
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --count \
-    --pass \
+    --in ASSEMBLY/pass.lst \
+    --not-in MinHash/abnormal.lst \
+    --not-in ASSEMBLY/omit.lst \
+    --rank genus
+
+# strains.taxon.tsv
+bash Count/strains.sh
+
+# genus.lst genus.count.tsv
+bash Count/rank.sh
+
+cat Count/genus.count.tsv |
+    mlr --itsv --omd cat
+
+# copy to summary/
+cp Count/strains.taxon.tsv summary/protein.taxon.tsv
+
+```
+
+| genus         | #species | #strains |
+|---------------|----------|----------|
+| Escovopsis    | 1        | 1        |
+| Saccharomyces | 1        | 1        |
+| Trichoderma   | 16       | 24       |
+
+## Collect proteins
+
+```shell
+cd ~/data/Trichoderma/
+
+
+
+```
+
+## Count valid species and strains for *genomic alignments*
+
+```shell
+cd ~/data/Trichoderma/
+
+nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    --count \
+    --in ASSEMBLY/pass.lst \
     --not-in MinHash/abnormal.lst \
     --rank genus \
     --lineage family --lineage genus
@@ -552,19 +596,20 @@ bash Count/rank.sh
 cat Count/genus.count.tsv |
     mlr --itsv --omd cat
 
-cp Count/strains.taxon.tsv summary/
-
 bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 1 "family genus species"
+
+# copy to summary/
+cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ```
 
-| #genus        | #species | #strains |
+| genus         | #species | #strains |
 |---------------|----------|----------|
 | Cladobotryum  | 1        | 1        |
 | Escovopsis    | 1        | 2        |
-| Hypomyces     | 1        | 2        |
+| Hypomyces     | 2        | 2        |
 | Saccharomyces | 1        | 1        |
-| Trichoderma   | 1        | 87       |
+| Trichoderma   | 26       | 87       |
 
 | #family            | genus         | species                     | count |
 |--------------------|---------------|-----------------------------|------:|
