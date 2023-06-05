@@ -276,6 +276,38 @@ rm raw*.*sv
 
 ```
 
+### Count before download
+
+```shell
+cd ~/data/Trichoderma
+
+nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    --count \
+    --rank genus
+
+# strains.taxon.tsv
+bash Count/strains.sh
+
+# genus.lst and genus.count.tsv
+bash Count/rank.sh
+
+mv Count/genus.count.tsv Count/genus.before.tsv
+
+cat Count/genus.before.tsv |
+    mlr --itsv --omd cat
+
+```
+
+| #genus           | #species | #strains |
+|------------------|----------|----------|
+| Cladobotryum     | 1        | 1        |
+| Escovopsis       | 1        | 2        |
+| Hypomyces        | 2        | 2        |
+| Mycogone         | 1        | 1        |
+| Saccharomyces    | 1        | 1        |
+| Sphaerostilbella | 1        | 1        |
+| Trichoderma      | 31       | 105      |
+
 ### Download and check
 
 * When `rsync.sh` is interrupted, run `check.sh` before restarting
