@@ -9,12 +9,13 @@ Genus *Trichoderma* as an example.
     * [Species with assemblies](#species-with-assemblies)
 - [Download all assemblies](#download-all-assemblies)
     * [Create assembly.tsv](#create-assemblytsv)
+    * [Count before download](#count-before-download)
     * [Download and check](#download-and-check)
     * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
-- [Count species and strains](#count-species-and-strains)
 - [MinHash](#minhash)
     * [Tweak the minhash tree](#tweak-the-minhash-tree)
+- [Count species and strains](#count-species-and-strains)
 - [Groups and targets](#groups-and-targets)
 - [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
 - [Generate alignments](#generate-alignments)
@@ -278,6 +279,8 @@ rm raw*.*sv
 
 ### Count before download
 
+* `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
+
 ```shell
 cd ~/data/Trichoderma
 
@@ -313,6 +316,8 @@ cat Count/genus.before.tsv |
 * When `rsync.sh` is interrupted, run `check.sh` before restarting
 * For projects that have finished downloading, but have renamed strains, you can run `reorder.sh` to
   avoid re-downloading
+    * `misplaced.tsv`
+    * `remove.list`
 * The parameters of `n50.sh` should be determined by the distribution of the description statistics
 * `collect.sh` generates a file of type `.csv`, which is intended to be opened by spreadsheet
   software.
@@ -320,15 +325,13 @@ cat Count/genus.before.tsv |
     * `omit.lst` - no annotations
     * `collect.pass.csv` - passes the n50 check
     * `rep.lst` - representative or reference strains
-    * `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
     * `counts.tsv`
 
 ```shell
 cd ~/data/Trichoderma
 
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
-    --ass \
-    -o .
+    --ass
 
 # Run
 bash ASSEMBLY/rsync.sh
@@ -373,7 +376,6 @@ bash ASSEMBLY/collect.sh
 bash ASSEMBLY/finish.sh
 
 cp ASSEMBLY/collect.pass.csv summary/
-cp ASSEMBLY/strains.taxon.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
     mlr --itsv --omd cat |
@@ -381,17 +383,16 @@ cat ASSEMBLY/counts.tsv |
 
 ```
 
-| #item             | count |
-|-------------------|------:|
-| url.tsv           |   113 |
-| check.lst         |   112 |
-| collect.csv       |   113 |
-| n50.tsv           |   114 |
-| n50.pass.csv      |    97 |
-| collect.pass.csv  |    96 |
-| omit.lst          |    81 |
-| rep.lst           |    30 |
-| strains.taxon.tsv |    95 |
+| #item            | count |
+|------------------|------:|
+| url.tsv          |   113 |
+| check.lst        |   112 |
+| collect.csv      |   113 |
+| n50.tsv          |   114 |
+| n50.pass.csv     |    97 |
+| collect.pass.csv |    96 |
+| omit.lst         |    81 |
+| rep.lst          |    30 |
 
 ### Rsync to hpcc
 
@@ -419,8 +420,7 @@ cd ~/data/Trichoderma
 ulimit -n `ulimit -Hn`
 
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
-    --bs \
-    -o .
+    --bs
 
 bash BioSample/download.sh
 
@@ -434,55 +434,6 @@ cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
 
 ```
-
-## Count species and strains
-
-```shell
-cd ~/data/Trichoderma/
-
-cat summary/collect.pass.csv |
-    sed -e '1d' |
-    tr "," "\t" |
-    tsv-select -f 1,3 |
-    nwr append stdin -c 2 -r species -r genus -r family -r order \
-    > summary/strains.taxon.tsv
-
-bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 1
-
-```
-
-| #family            | genus         | species                     | count |
-|--------------------|---------------|-----------------------------|------:|
-| Hypocreaceae       | Cladobotryum  | Cladobotryum protrusum      |     1 |
-|                    | Escovopsis    | Escovopsis weberi           |     2 |
-|                    | Hypomyces     | Hypomyces perniciosus       |     1 |
-|                    |               | Hypomyces rosellus          |     1 |
-|                    | Trichoderma   | Trichoderma afroharzianum   |     4 |
-|                    |               | Trichoderma arundinaceum    |     4 |
-|                    |               | Trichoderma asperelloides   |     2 |
-|                    |               | Trichoderma asperellum      |    13 |
-|                    |               | Trichoderma atrobrunneum    |     1 |
-|                    |               | Trichoderma atroviride      |     7 |
-|                    |               | Trichoderma breve           |     1 |
-|                    |               | Trichoderma brevicrassum    |     1 |
-|                    |               | Trichoderma citrinoviride   |     3 |
-|                    |               | Trichoderma erinaceum       |     2 |
-|                    |               | Trichoderma gamsii          |     2 |
-|                    |               | Trichoderma gracile         |     1 |
-|                    |               | Trichoderma guizhouense     |     1 |
-|                    |               | Trichoderma hamatum         |     1 |
-|                    |               | Trichoderma harzianum       |    10 |
-|                    |               | Trichoderma koningii        |     1 |
-|                    |               | Trichoderma koningiopsis    |     4 |
-|                    |               | Trichoderma lentiforme      |     1 |
-|                    |               | Trichoderma longibrachiatum |     5 |
-|                    |               | Trichoderma pseudokoningii  |     1 |
-|                    |               | Trichoderma reesei          |    13 |
-|                    |               | Trichoderma semiorbis       |     1 |
-|                    |               | Trichoderma simmonsii       |     1 |
-|                    |               | Trichoderma virens          |     8 |
-|                    |               | Trichoderma viride          |     1 |
-| Saccharomycetaceae | Saccharomyces | Saccharomyces cerevisiae    |     1 |
 
 ## MinHash
 
@@ -578,6 +529,66 @@ nw_display -s -b 'visibility:hidden' -w 600 -v 30 minhash.species.newick |
     rsvg-convert -o Trichoderma.minhash.png
 
 ```
+
+## Count species and strains
+
+```shell
+cd ~/data/Trichoderma/
+
+nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    --count \
+    --pass \
+    --rank genus \
+    --lineage family --lineage genus
+
+# strains.taxon.tsv
+bash Count/strains.sh
+
+# genus.lst genus.count.tsv
+bash Count/rank.sh
+
+
+cp ASSEMBLY/strains.taxon.tsv summary/
+
+cat Count/genus.count.tsv |
+    mlr --itsv --omd cat
+
+bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 1 "family genus species"
+
+```
+
+| #family            | genus         | species                     | count |
+|--------------------|---------------|-----------------------------|------:|
+| Hypocreaceae       | Cladobotryum  | Cladobotryum protrusum      |     1 |
+|                    | Escovopsis    | Escovopsis weberi           |     2 |
+|                    | Hypomyces     | Hypomyces perniciosus       |     1 |
+|                    |               | Hypomyces rosellus          |     1 |
+|                    | Trichoderma   | Trichoderma afroharzianum   |     4 |
+|                    |               | Trichoderma arundinaceum    |     4 |
+|                    |               | Trichoderma asperelloides   |     2 |
+|                    |               | Trichoderma asperellum      |    13 |
+|                    |               | Trichoderma atrobrunneum    |     1 |
+|                    |               | Trichoderma atroviride      |     7 |
+|                    |               | Trichoderma breve           |     1 |
+|                    |               | Trichoderma brevicrassum    |     1 |
+|                    |               | Trichoderma citrinoviride   |     3 |
+|                    |               | Trichoderma erinaceum       |     2 |
+|                    |               | Trichoderma gamsii          |     2 |
+|                    |               | Trichoderma gracile         |     1 |
+|                    |               | Trichoderma guizhouense     |     1 |
+|                    |               | Trichoderma hamatum         |     1 |
+|                    |               | Trichoderma harzianum       |    10 |
+|                    |               | Trichoderma koningii        |     1 |
+|                    |               | Trichoderma koningiopsis    |     4 |
+|                    |               | Trichoderma lentiforme      |     1 |
+|                    |               | Trichoderma longibrachiatum |     5 |
+|                    |               | Trichoderma pseudokoningii  |     1 |
+|                    |               | Trichoderma reesei          |    13 |
+|                    |               | Trichoderma semiorbis       |     1 |
+|                    |               | Trichoderma simmonsii       |     1 |
+|                    |               | Trichoderma virens          |     8 |
+|                    |               | Trichoderma viride          |     1 |
+| Saccharomycetaceae | Saccharomyces | Saccharomyces cerevisiae    |     1 |
 
 ## Groups and targets
 
