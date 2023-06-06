@@ -571,15 +571,29 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 ```shell
 cd ~/data/Trichoderma/
 
-
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --pro \
     --in ASSEMBLY/pass.lst \
     --not-in MinHash/abnormal.lst \
     --not-in ASSEMBLY/omit.lst
 
+# collect proteins
+bash Protein/collect.sh
+
+
+cat Protein/counts.tsv |
+    mlr --itsv --omd cat
 
 ```
+
+| #item                          | count   |
+|--------------------------------|---------|
+| Proteins                       | 275,985 |
+| Unique headers and annotations | 275,985 |
+| Unique proteins                | 275,985 |
+| all.replace.fa                 | 275,985 |
+| all.annotation.tsv             | 275,986 |
+| all.info.tsv                   | 275,986 |
 
 ## Count valid species and strains for *genomic alignments*
 
