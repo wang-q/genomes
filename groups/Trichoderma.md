@@ -572,6 +572,12 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 cd ~/data/Trichoderma/
 
 
+nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    --pro \
+    --in ASSEMBLY/pass.lst \
+    --not-in MinHash/abnormal.lst \
+    --not-in ASSEMBLY/omit.lst
+
 
 ```
 
