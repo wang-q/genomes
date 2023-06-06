@@ -82,25 +82,31 @@ Ref.:
 mkdir -p ~/data/HMM/bac120
 cd ~/data/HMM/bac120
 
-cp ~/Scripts/genomes/data/bac120.tsv ~/data/HMM/bac120/
+cp ~/Scripts/genomes/data/bac120.tsv .
 
-mkdir -p HMM
-
-cat ~/Scripts/genomes/data/bac120.tsv |
+cat bac120.tsv |
     sed '1d' |
-    tsv-select -f 1 |
+    tsv-select -f 1 \
+    > bac120.lst
+
+mkdir -p hmm
+
+cat bac120.lst |
     grep '^TIGR' |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        tar --directory HMM -xzvf ../TIGRFAM/TIGRFAMs_14.0_HMM.tar.gz {}.HMM
+        tar --directory hmm -xzvf ../TIGRFAM/TIGRFAMs_14.0_HMM.tar.gz {}.HMM
     '
 
-cat ~/Scripts/genomes/data/bac120.tsv |
-    sed '1d' |
-    tsv-select -f 1 |
+cat bac120.lst |
     grep -v '^TIGR' |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        curl -L http://pfam.xfam.org/family/{}/hmm > HMM/{}.HMM
+        curl -L http://pfam.xfam.org/family/{}/hmm > hmm/{}.HMM
     '
+
+GZIP=-9 tar cvfz bac120.tar.gz \
+    bac120.lst \
+    bac120.tsv \
+    hmm/
 
 ```
 
@@ -116,7 +122,8 @@ We use hmmbuild to build hmm models from sequence alignments.
 mkdir -p ~/data/HMM/fungi61
 cd ~/data/HMM/fungi61
 
-mkdir -p HMM
+mkdir -p fatsa
+mkdir -p hmm
 
 curl -L https://ufcg.steineggerlab.com/ufcg/genes > genes.html
 
@@ -127,13 +134,21 @@ cat genes.html |
 #https://ufcg.steineggerlab.workers.dev/msa/ACT1_aligned.fasta
 cat fungi61.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        curl -L https://ufcg.steineggerlab.workers.dev/msa/{}_aligned.fasta > HMM/{}.fasta
+        if [ -s fatsa/{}.fasta ]; then
+            exit
+        fi
+        curl -L https://ufcg.steineggerlab.workers.dev/msa/{}_aligned.fasta > fatsa/{}.fasta
     '
 
 cat fungi61.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        esl-reformat stockholm HMM/{}.fasta > HMM/{}.sto
-        hmmbuild HMM/{}.hmm HMM/{}.sto
+        esl-reformat stockholm fatsa/{}.fasta > fatsa/{}.sto
+        hmmbuild hmm/{}.HMM fatsa/{}.sto
     '
+
+GZIP=-9 tar cvfz fungi61.tar.gz \
+    fungi61.lst \
+    genes.html \
+    hmm/
 
 ```
