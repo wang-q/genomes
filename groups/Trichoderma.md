@@ -15,7 +15,14 @@ Genus *Trichoderma* as an example.
 - [BioSample](#biosample)
 - [MinHash](#minhash)
     * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-- [Count valid species and strains](#count-valid-species-and-strains)
+- [Count valid species and strains for *protein
+  families*](#count-valid-species-and-strains-for-protein-families)
+- [Collect proteins](#collect-proteins)
+- [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
+    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+- [Count valid species and strains for *genomic
+  alignments*](#count-valid-species-and-strains-for-genomic-alignments)
 - [Groups and targets](#groups-and-targets)
 - [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
 - [Generate alignments](#generate-alignments)
@@ -745,11 +752,15 @@ trimal -in Protein/fungi61.aln.fa -out Protein/fungi61.trim.fa -automated1
 faops size Protein/fungi61.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#111589
-#14051
+#28706
+#20432
 
 # To make it faster
 FastTree -fastest -noml Protein/fungi61.trim.fa > Protein/fungi61.trim.newick
+
+nw_reroot Protein/fungi61.trim.newick Sa_cer_S288C |
+    nw_order -c n - \
+    > Protein/fungi61.reroot.newick
 
 ```
 
