@@ -536,7 +536,7 @@ for item in "${ARRAY[@]}" ; do
 done
 
 # png
-nw_display -s -b 'visibility:hidden' -w 600 -v 30 minhash.species.newick |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.species.newick |
     rsvg-convert -o Trichoderma.minhash.png
 
 ```
