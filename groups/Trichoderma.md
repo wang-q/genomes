@@ -580,9 +580,9 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 # collect proteins
 bash Protein/collect.sh
 
-
 cat Protein/counts.tsv |
     mlr --itsv --omd cat
+
 
 ```
 
@@ -594,6 +594,164 @@ cat Protein/counts.tsv |
 | all.replace.fa                 | 275,985 |
 | all.annotation.tsv             | 275,986 |
 | all.info.tsv                   | 275,986 |
+
+## Phylogenetics with fungi61
+
+### Find corresponding proteins by `hmmsearch`
+
+* 61 fungal marker genes
+    * Ref.: https://doi.org/10.1093/nar/gkac894
+
+* The `E_VALUE` was manually adjusted to 1e-20 to reach a balance between sensitivity and
+  speciality.
+
+```shell
+cd ~/data/Trichoderma
+
+# The fungi61 HMM set
+nwr kb fungi61 -o HMM
+
+E_VALUE=1e-20
+
+# Find all genes
+for marker in $(cat HMM/fungi61.lst); do
+    echo >&2 "==> marker [${marker}]"
+
+    mkdir -p Protein/${marker}
+
+    cat Protein/species.tsv |
+        tsv-join -f ASSEMBLY/pass.lst -k 1 |
+        tsv-join -e -f MinHash/abnormal.lst -k 1 |
+        tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 1 "
+            if [[ ! -d ASSEMBLY/{2}/{1} ]]; then
+                exit
+            fi
+
+            gzip -dcf ASSEMBLY/{2}/{1}/*_protein.faa.gz |
+                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/${marker}.HMM - |
+                grep '>>' |
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), \$1, {1}; '
+        " \
+        > Protein/${marker}/replace.tsv
+
+    echo >&2
+done
+
+```
+
+### Align and concat marker genes to create species tree
+
+```shell
+cd ~/data/Trichoderma
+
+cat HMM/fungi61.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        cat Protein/{}/replace.tsv |
+            wc -l
+    ' |
+    tsv-summarize --quantile 1:0.25,0.5,0.75
+#25      25      56
+
+cat HMM/fungi61.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo {}
+        cat Protein/{}/replace.tsv |
+            wc -l
+    ' |
+    paste - - |
+    tsv-filter --invert --ge 2:20 --le 2:30 |
+    cut -f 1 \
+    > Protein/fungi61.omit.lst
+
+# Extract sequences
+# Multiple copies slow down the alignment process
+cat HMM/fungi61.lst |
+    grep -v -Fx -f Protein/fungi61.omit.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo >&2 "==> marker [{}]"
+
+        cat Protein/{}/replace.tsv \
+            > Protein/{}/{}.replace.tsv
+
+        faops some Protein/all.uniq.fa.gz <(
+            cat Protein/{}/{}.replace.tsv |
+                cut -f 1 |
+                tsv-uniq
+            ) stdout \
+            > Protein/{}/{}.pro.fa
+    '
+
+# Align each markers with muscle
+cat HMM/fungi61.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        echo >&2 "==> marker [{}]"
+        if [ ! -s Protein/{}/{}.pro.fa ]; then
+            exit
+        fi
+        if [ -s Protein/{}/{}.aln.fa ]; then
+            exit
+        fi
+
+        muscle -quiet -in Protein/{}/{}.pro.fa -out Protein/{}/{}.aln.fa
+    '
+
+for marker in $(cat HMM/fungi61.lst); do
+    echo >&2 "==> marker [${marker}]"
+    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+
+    # sometimes `muscle` can not produce alignments
+    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    # 1 name to many names
+    cat Protein/${marker}/${marker}.replace.tsv |
+        parallel --no-run-if-empty --linebuffer -k -j 4 "
+            faops replace -s Protein/${marker}/${marker}.aln.fa <(echo {}) stdout
+        " \
+        > Protein/${marker}/${marker}.replace.fa
+done
+
+# Concat marker genes
+for marker in $(cat HMM/fungi61.lst); do
+    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    # sequences in one line
+    faops filter -l 0 Protein/${marker}/${marker}.replace.fa stdout
+
+    # empty line for .fas
+    echo
+done \
+    > Protein/fungi61.aln.fas
+
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f MinHash/abnormal.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+    cut -f 1 |
+    fasops concat Protein/fungi61.aln.fas stdin -o Protein/fungi61.aln.fa
+
+# Trim poorly aligned regions with `TrimAl`
+trimal -in Protein/fungi61.aln.fa -out Protein/fungi61.trim.fa -automated1
+
+faops size Protein/fungi61.*.fa |
+    tsv-uniq -f 2 |
+    cut -f 2
+#111589
+#14051
+
+# To make it faster
+FastTree -fastest -noml Protein/fungi61.trim.fa > Protein/fungi61.trim.newick
+
+```
 
 ## Count valid species and strains for *genomic alignments*
 
