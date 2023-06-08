@@ -785,7 +785,11 @@ bash Count/rank.sh
 cat Count/genus.count.tsv |
     mlr --itsv --omd cat
 
-bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 1 "family genus species"
+bash Count/lineage.sh
+
+cat Count/lineage.count.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
@@ -820,7 +824,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |                    |               | Trichoderma gracile         |     1 |
 |                    |               | Trichoderma guizhouense     |     1 |
 |                    |               | Trichoderma hamatum         |     1 |
-|                    |               | Trichoderma harzianum       |    10 |
+|                    |               | Trichoderma harzianum       |     7 |
 |                    |               | Trichoderma koningii        |     1 |
 |                    |               | Trichoderma koningiopsis    |     4 |
 |                    |               | Trichoderma lentiforme      |     1 |
