@@ -500,6 +500,49 @@ bash MinHash/dist.sh
 
 ```
 
+### Condense branches in the minhash tree
+
+* This phylo-tree is not really formal/correct, and shouldn't be used to interpret phylogenetic
+  relationships
+* It is just used to find more abnormal strains
+
+```shell
+mkdir -p ~/data/Trichoderma/tree
+cd ~/data/Trichoderma/tree
+
+nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
+    nw_order -c n - \
+    > minhash.reroot.newick
+
+# rank::col
+ARRAY=(
+#    'order::5'
+#    'family::4'
+#    'genus::3'
+    'species::2'
+)
+
+rm minhash.condensed.map
+CUR_TREE=minhash.reroot.newick
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../Count/strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick minhash.${GROUP_NAME}.newick
+    cat condense.map >> minhash.condensed.map
+
+    CUR_TREE=minhash.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.species.newick |
+    rsvg-convert -o Trichoderma.minhash.png
+
+```
+
 ## Count valid species and strains for *protein families*
 
 ```shell
