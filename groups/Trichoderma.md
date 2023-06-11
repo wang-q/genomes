@@ -51,7 +51,8 @@ There are no noteworthy classification ranks other than species.
 nwr member Trichoderma |
     grep -v " sp." |
     tsv-summarize -H -g rank --count |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 nwr lineage Trichoderma |
     tsv-filter --str-ne 1:clade |
@@ -64,13 +65,13 @@ nwr lineage Trichoderma |
 ```
 
 | rank     | count |
-|----------|-------|
-| genus    | 1     |
-| species  | 443   |
-| no rank  | 1     |
-| varietas | 2     |
-| strain   | 14    |
-| forma    | 2     |
+|----------|------:|
+| genus    |     1 |
+| species  |   443 |
+| no rank  |     1 |
+| varietas |     2 |
+| strain   |    14 |
+| forma    |     2 |
 
 | #rank      | sci_name          | tax_id |
 |------------|-------------------|--------|
@@ -471,6 +472,7 @@ cd ~/data/Trichoderma
 
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --mh \
+    --parallel 16 \
     --in ASSEMBLY/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005 \
@@ -495,49 +497,6 @@ bash MinHash/nr.sh
 
 # Distances between all selected sketches, then hierarchical clustering
 bash MinHash/dist.sh
-
-```
-
-### Condense branches in the minhash tree
-
-* This phylo-tree is not really formal, and shouldn't be used to interpret phylogenetic
-  relationships
-* It is just used to find more abnormal strains
-
-```shell
-mkdir -p ~/data/Trichoderma/tree
-cd ~/data/Trichoderma/tree
-
-nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
-    nw_order -c n - \
-    > minhash.reroot.newick
-
-# rank::col
-ARRAY=(
-#    'order::5'
-#    'family::4'
-#    'genus::3'
-    'species::2'
-)
-
-rm minhash.condensed.map
-CUR_TREE=minhash.reroot.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../Count/strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick minhash.${GROUP_NAME}.newick
-    cat condense.map >> minhash.condensed.map
-
-    CUR_TREE=minhash.${GROUP_NAME}.newick
-done
-
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.species.newick |
-    rsvg-convert -o Trichoderma.minhash.png
 
 ```
 
@@ -617,11 +576,12 @@ cd ~/data/Trichoderma
 
 # The fungi61 HMM set
 nwr kb fungi61 -o HMM
+cp HMM/fungi61.lst HMM/marker.lst
 
 E_VALUE=1e-20
 
 # Find all genes
-for marker in $(cat HMM/fungi61.lst); do
+for marker in $(cat HMM/marker.lst); do
     echo >&2 "==> marker [${marker}]"
 
     mkdir -p Protein/${marker}
@@ -652,7 +612,7 @@ done
 ```shell
 cd ~/data/Trichoderma
 
-cat HMM/fungi61.lst |
+cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         cat Protein/{}/replace.tsv |
             wc -l
@@ -660,7 +620,7 @@ cat HMM/fungi61.lst |
     tsv-summarize --quantile 1:0.25,0.5,0.75
 #25      25      56
 
-cat HMM/fungi61.lst |
+cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo {}
         cat Protein/{}/replace.tsv |
@@ -669,12 +629,12 @@ cat HMM/fungi61.lst |
     paste - - |
     tsv-filter --invert --ge 2:20 --le 2:30 |
     cut -f 1 \
-    > Protein/fungi61.omit.lst
+    > Protein/marker.omit.lst
 
 # Extract sequences
 # Multiple copies slow down the alignment process
-cat HMM/fungi61.lst |
-    grep -v -Fx -f Protein/fungi61.omit.lst |
+cat HMM/marker.lst |
+    grep -v -Fx -f Protein/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo >&2 "==> marker [{}]"
 
@@ -690,7 +650,7 @@ cat HMM/fungi61.lst |
     '
 
 # Align each markers with muscle
-cat HMM/fungi61.lst |
+cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
         echo >&2 "==> marker [{}]"
         if [ ! -s Protein/{}/{}.pro.fa ]; then
@@ -703,7 +663,7 @@ cat HMM/fungi61.lst |
         muscle -quiet -in Protein/{}/{}.pro.fa -out Protein/{}/{}.aln.fa
     '
 
-for marker in $(cat HMM/fungi61.lst); do
+for marker in $(cat HMM/marker.lst); do
     echo >&2 "==> marker [${marker}]"
     if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
         continue
@@ -723,7 +683,7 @@ for marker in $(cat HMM/fungi61.lst); do
 done
 
 # Concat marker genes
-for marker in $(cat HMM/fungi61.lst); do
+for marker in $(cat HMM/marker.lst); do
     if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
         continue
     fi
@@ -839,7 +799,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ## Groups and targets
 
-Review `ASSEMBLY/Trichoderma.assembly.pass.csv` and `MinHash/groups.tsv`.
+Review `ASSEMBLY/Trichoderma.pass.csv` and `MinHash/groups.tsv`.
 
 Create `ARRAY` manually with a format `group::target`.
 
