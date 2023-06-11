@@ -49,7 +49,7 @@ nwr member Fungi |
     grep -v " sp." |
     tsv-summarize -H -g rank --count |
     mlr --itsv --omd cat |
-    sed 's/-\s*|$/-:|/'
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 ```
 
@@ -383,7 +383,7 @@ echo "
 
 # Preference for refseq
 cat raw.tsv |
-    cut -f 6 \
+    tsv-select -H -f "assembly_accession" \
     > rs.acc.tsv
 
 # GB5
@@ -411,7 +411,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#13877 lines, 7 fields
+#13376 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -435,7 +435,7 @@ cat raw.tsv |
     > Fungi.assembly.tsv
 
 datamash check < Fungi.assembly.tsv
-#13610 lines, 5 fields
+#13109 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Fungi.assembly.tsv |
@@ -444,21 +444,64 @@ cat Fungi.assembly.tsv |
 cat Fungi.assembly.tsv |
     tsv-filter --str-not-in-fld 2:ftp
 
-cat Fungi.assembly.tsv |
-    tsv-filter --or --str-in-fld 1:genomosp --str-in-fld 1:genomovar
-
-# Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
+# Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Fungi.assembly.tsv
+#
+# Save the file to another directory to prevent accidentally changing it
 # cp Fungi.assembly.tsv ~/Scripts/genomes/assembly
-
-# Comment out unneeded strains
 
 # Cleaning
 rm raw*.*sv
 
 ```
 
-### Rsync and check
+### Count before download
+
+* `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
+
+```shell
+cd ~/data/Fungi
+
+nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    --count \
+    --rank genus
+
+# strains.taxon.tsv
+bash Count/strains.sh
+
+# genus.lst and genus.count.tsv
+bash Count/rank.sh
+
+cat Count/genus.count.tsv |
+    keep-header -- tsv-sort -k1,1 |
+    tsv-filter -H --ge 3:100 |
+    mlr --itsv --omd cat
+
+```
+
+| genus                     | #species | #strains |
+|---------------------------|----------|----------|
+| Alternaria                | 31       | 157      |
+| Aspergillus               | 133      | 1072     |
+| Aureobasidium             | 11       | 154      |
+| Botryosphaeria            | 3        | 141      |
+| Candida                   | 18       | 186      |
+| Candida/Metschnikowiaceae | 9        | 158      |
+| Colletotrichum            | 60       | 225      |
+| Cryphonectria             | 7        | 110      |
+| Cryptococcus              | 11       | 149      |
+| Fusarium                  | 188      | 1216     |
+| Komagataella              | 7        | 181      |
+| Parastagonospora          | 2        | 189      |
+| Penicillium               | 103      | 459      |
+| Pyricularia               | 3        | 381      |
+| Rhodotorula               | 10       | 158      |
+| Saccharomyces             | 11       | 1765     |
+| Torulaspora               | 8        | 101      |
+| Trichoderma               | 31       | 105      |
+| Zygosaccharomyces         | 9        | 136      |
+
+### Download and check
 
 ```shell
 cd ~/data/Fungi
@@ -466,20 +509,20 @@ cd ~/data/Fungi
 ulimit -n `ulimit -Hn`
 
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
-    --ass \
-    -o .
+    --ass
 
 # Run
 bash ASSEMBLY/rsync.sh
 
 # Check md5; create check.lst
+# rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
 # Put the misplaced directory into the right place
 #bash ASSEMBLY/reorder.sh
 #
 # This operation will delete some files in the directory, so please be careful
-#cat ASSEMBLY/remove.list |
+#cat ASSEMBLY/remove.lst |
 #    parallel --no-run-if-empty --linebuffer -k -j 1 '
 #        if [[ -e "ASSEMBLY/{}" ]]; then
 #            echo Remove {}
@@ -500,7 +543,7 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#11669611.8      32573156        28389.2 405060  322     4542.2
+#11671954.4      32505046        26704.8 368791.5        349.5   4717.6
 
 # After the above steps are completed, run the following commands.
 
@@ -514,19 +557,21 @@ cp ASSEMBLY/collect.pass.csv summary/
 
 cat ASSEMBLY/counts.tsv |
     mlr --itsv --omd cat |
-    sed 's/-\s*|$/-:|/'
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 ```
 
 | #item            |  count |
 |------------------|-------:|
-| url.tsv          | 13,609 |
-| check.lst        | 13,609 |
-| collect.csv      | 13,610 |
-| n50.tsv          | 13,610 |
-| n50.pass.csv     |  9,833 |
+| url.tsv          | 13,108 |
+| check.lst        | 13,108 |
+| collect.csv      | 13,109 |
+| n50.tsv          | 13,109 |
+| n50.pass.csv     |  9,345 |
+| collect.pass.csv |  9,345 |
+| pass.lst         |  9,344 |
 | omit.lst         |  8,926 |
-| collect.pass.csv |  9,833 |
+| rep.lst          |  2,543 |
 
 ### Rsync to hpcc
 
@@ -555,8 +600,8 @@ For such huge collections, we can rsync files in parallel.
 rsync -avP \
     -e 'ssh -p 8804' \
     -f"+ */" -f"- *" \
-    ~/data/Fungi/ \
-    wangq@58.213.64.36:data/Fungi
+    wangq@58.213.64.36:data/Fungi/ \
+    ~/data/Fungi
 
 # Transfer species directories in parallel
 cat ~/data/Fungi/ASSEMBLY/url.tsv |
@@ -566,8 +611,8 @@ cat ~/data/Fungi/ASSEMBLY/url.tsv |
         echo -e "\n==> {}"
         rsync -avP \
             -e "ssh -p 8804" \
-            ~/data/Fungi/ASSEMBLY/{}/ \
-            wangq@58.213.64.36:data/Fungi/ASSEMBLY/{}
+            wangq@58.213.64.36:data/Fungi/ASSEMBLY/{}/ \
+            ~/data/Fungi/ASSEMBLY/{}
     '
 
 # rsync other files
@@ -586,8 +631,7 @@ cd ~/data/Fungi
 ulimit -n `ulimit -Hn`
 
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
-    --bs \
-    -o .
+    --bs
 
 # Run this script twice and it will re-download the failed files
 bash BioSample/download.sh
@@ -596,10 +640,51 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 10
 
 datamash check < BioSample/biosample.tsv
-#111 lines, 37 fields
+#12865 lines, 169 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
+
+```
+
+## MinHash
+
+```shell
+cd ~/data/Fungi/
+
+nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    --mh \
+    --parallel 16 \
+    --in ASSEMBLY/pass.lst \
+    --ani-ab 0.05 \
+    --ani-nr 0.005
+
+# Compute assembly sketches
+bash MinHash/compute.sh
+
+#find MinHash -name "*.msh" -empty | wc -l
+
+# Distances within species
+bash MinHash/species.sh
+
+# Abnormal strains
+bash MinHash/abnormal.sh
+
+cat MinHash/abnormal.lst | wc -l
+#359
+
+# Non-redundant strains within species
+bash MinHash/nr.sh
+
+# Distances between all selected sketches, then hierarchical clustering
+nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    --mh \
+    --parallel 16 \
+    --in ASSEMBLY/rep.lst \
+    --not-in MinHash/abnormal.lst \
+    --height 0.4
+
+bash MinHash/dist.sh
 
 ```
 
@@ -874,97 +959,6 @@ cat summary/collect.pass.csv |
         --str-in-fld "2:Nematocida" |
     grep -v -Fw -f ASSEMBLY/omit.lst |
     tsv-select -H -d, -f "name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
-
-```
-
-## MinHash
-
-### Compute MinHash
-
-```shell
-mkdir -p ~/data/Fungi/mash
-cd ~/data/Fungi/mash
-
-# Remove .msh files not in the list
-find . -maxdepth 1 -mindepth 1 -type f -name "*.msh" |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        basename {} .msh
-    ' |
-    tsv-join --exclude -k 1 -f ../ASSEMBLY/url.tsv -d 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        echo Remove {}
-        rm {}.msh
-    '
-
-# Compute MinHash
-cat ../ASSEMBLY/url.tsv |
-    cut -f 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        if [[ -e {}.msh ]]; then
-            exit
-        fi
-
-        2>&1 echo "==> {}"
-
-        find ../ASSEMBLY/{} -name "*_genomic.fna.gz" |
-            grep -v "_from_" |
-            xargs cat |
-            mash sketch -k 21 -s 100000 -p 2 - -I "{}" -o {}
-    '
-
-```
-
-### Raw phylo-tree of representative assemblies
-
-```shell
-mkdir -p ~/data/Fungi/tree
-cd ~/data/Fungi/tree
-
-mash triangle -E -p 8 -l <(
-    cat ../summary/representative.lst |
-        parallel --no-run-if-empty --linebuffer -k -j 1 '
-            if [[ -e ../mash/{}.msh ]]; then
-                echo "../mash/{}.msh"
-            fi
-        '
-    ) \
-    > mash.dist.tsv
-
-# Fill matrix with lower triangle
-tsv-select -f 1-3 mash.dist.tsv |
-    (tsv-select -f 2,1,3 mash.dist.tsv && cat) |
-    (
-        cut -f 1 mash.dist.tsv |
-            tsv-uniq |
-            parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
-        cat
-    ) \
-    > mash.dist_full.tsv
-
-cat mash.dist_full.tsv |
-    Rscript -e '
-        library(readr);
-        library(tidyr);
-        library(ape);
-        pair_dist <- read_tsv(file("stdin"), col_names=F);
-        tmp <- pair_dist %>%
-            pivot_wider( names_from = X2, values_from = X3, values_fill = list(X3 = 1.0) )
-        tmp <- as.matrix(tmp)
-        mat <- tmp[,-1]
-        rownames(mat) <- tmp[,1]
-
-        dist_mat <- as.dist(mat)
-        clusters <- hclust(dist_mat, method = "ward.D2")
-        tree <- as.phylo(clusters)
-        write.tree(phy=tree, file="tree.nwk")
-
-        group <- cutree(clusters, h=0.5) # k=3
-        groups <- as.data.frame(group)
-        groups$ids <- rownames(groups)
-        rownames(groups) <- NULL
-        groups <- groups[order(groups$group), ]
-        write_tsv(groups, "groups.tsv")
-    '
 
 ```
 
