@@ -326,11 +326,11 @@ cat Count/genus.before.tsv |
     * `misplaced.tsv`
     * `remove.list`
 * The parameters of `n50.sh` should be determined by the distribution of the description statistics
-* `collect.sh` generates a file of type `.csv`, which is intended to be opened by spreadsheet
+* `collect.sh` generates a file of type `.tsv`, which is intended to be opened by spreadsheet
   software.
 * `finish.sh` generates the following files
     * `omit.lst` - no annotations
-    * `collect.pass.csv` - passes the n50 check
+    * `collect.pass.tsv` - passes the n50 check
     * `pass.lst` - passes the n50 check
     * `rep.lst` - representative or reference strains
     * `counts.tsv`
@@ -360,7 +360,7 @@ bash ASSEMBLY/check.sh
 #        fi
 #    '
 
-# N50 C S; create n50.tsv and n50.pass.csv
+# N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 100000 1000 1000000
 
 # Adjust parameters passed to `n50.sh`
@@ -377,31 +377,31 @@ cat ASSEMBLY/n50.tsv |
 
 # After the above steps are completed, run the following commands.
 
-# Collect; create collect.csv
+# Collect; create collect.tsv
 bash ASSEMBLY/collect.sh
 
 # After all completed
 bash ASSEMBLY/finish.sh
 
-cp ASSEMBLY/collect.pass.csv summary/
+cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
     mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
 
-| #item            | count |
-|------------------|------:|
-| url.tsv          |   113 |
-| check.lst        |   113 |
-| collect.csv      |   114 |
-| n50.tsv          |   114 |
-| n50.pass.csv     |    97 |
-| collect.pass.csv |    97 |
-| pass.lst         |    96 |
-| omit.lst         |    81 |
-| rep.lst          |    31 |
+| #item            | fields | lines |
+|------------------|-------:|------:|
+| url.tsv          |      3 |   113 |
+| check.lst        |      1 |   113 |
+| collect.tsv      |     20 |   114 |
+| n50.tsv          |      4 |   114 |
+| n50.pass.tsv     |      4 |    97 |
+| collect.pass.tsv |     23 |    97 |
+| pass.lst         |      1 |    96 |
+| omit.lst         |      1 |    81 |
+| rep.lst          |      1 |    31 |
 
 ### Rsync to hpcc
 
@@ -592,7 +592,6 @@ bash Protein/collect.sh
 cat Protein/counts.tsv |
     mlr --itsv --omd cat
 
-
 ```
 
 | #item                          | count   |
@@ -765,6 +764,10 @@ nw_reroot Protein/fungi61.trim.newick Sa_cer_S288C |
     nw_order -c n - \
     > Protein/fungi61.reroot.newick
 
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 Protein/fungi61.reroot.newick |
+    rsvg-convert -o tree/Trichoderma.marker.png
+
 ```
 
 ## Count valid species and strains for *genomic alignments*
@@ -842,31 +845,47 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ## Groups and targets
 
-Review `ASSEMBLY/Trichoderma.pass.csv` and `MinHash/groups.tsv`.
+Grouping criteria:
 
-Create `ARRAY` manually with a format `group::target`.
+* The mash tree and the marker protein tree
+* `MinHash/groups.tsv`
 
 Target selecting criteria:
 
+* `ASSEMBLY/collect.pass.tsv`
 * Prefer Sanger sequenced assemblies
 * RefSeq_category with `Representative Genome`
 * Assembly_level with `Complete Genome` or `Chromosome`
 
+Create a Bash `ARRAY` manually with a format of `group::target`.
+
 ```shell
-mkdir -p ~/data/alignment/Trichoderma/taxon
-cd ~/data/alignment/Trichoderma/taxon
+mkdir -p ~/data/Trichoderma/taxon
+cd ~/data/Trichoderma/taxon
 
-cp ../mash/tree.nwk .
-cp ../mash/groups.tsv .
+cat ../ASSEMBLY/collect.pass.tsv |
+    tsv-filter -H --str-eq annotations:Yes --le C:100 |
+    tsv-select -H -f name,Assembly_level,Genome_coverage,Sequencing_technology,N50,C \
+    > potential-target.tsv
 
-echo -e "#Serial\tGroup\tCount\tTarget" > group_target.tsv
+cat ../ASSEMBLY/collect.pass.tsv |
+    tsv-filter -H --or \
+        --str-eq Assembly_level:"Complete Genome" \
+        --str-eq Assembly_level:"Chromosome" \
+        --le C:50 |
+    tsv-select -H -f name,Assembly_level,Genome_coverage,Sequencing_technology,N50,C \
+    > complete-genome.tsv
 
-# groups accroding `groups.tsv`
+echo -e "#Serial\tGroup\tTarget\tCount" > group_target.tsv
+
+# groups according `groups.tsv`
 ARRAY=(
-    'C_E_H::H_ros_GCA_011799845_1'
-    'T_har_vire::T_vire_Gv29_8_GCA_000170995_2'
-    'T_asperellum_atrov::T_atrov_IMI_206040_GCA_000171015_2'
-    'T_lon_ree::T_ree_QM6a_GCA_000167675_2'
+    'C_E_H::E_web_GCA_001278495_1' # 1
+    'T_afr_har::T_har_CGMCC_20739_GCA_019097725_1' # 3
+    'T_asperello_asperellum::T_asperellum_FT101_GCA_020647865_1' # 5
+    'T_atrov_koningio::T_atrov_IMI_206040_GCF_000171015_1' # 6
+    'T_cit_lon_ree::T_ree_QM6a_GCF_000167675_1' # 7
+    'T_vire::T_vire_Gv29_8_GCF_000170995_1' # 8
 )
 
 for item in "${ARRAY[@]}" ; do
@@ -874,30 +893,31 @@ for item in "${ARRAY[@]}" ; do
     TARGET_NAME="${item##*::}"
 
     SERIAL=$(
-        cat ../mash/groups.tsv |
+        cat ../MinHash/groups.tsv |
             tsv-filter --str-eq 2:${TARGET_NAME} |
             tsv-select -f 1
     )
 
-    cat groups.tsv |
+    cat ../MinHash/groups.tsv |
         tsv-filter --str-eq 1:${SERIAL} |
-        tsv-select -f 2 \
+        tsv-select -f 2 |
+        tsv-join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
         > ${GROUP_NAME}
 
     COUNT=$(cat ${GROUP_NAME} | wc -l )
 
-    echo -e "${SERIAL}\t${GROUP_NAME}\t${COUNT}\t${TARGET_NAME}" >> group_target.tsv
+    echo -e "${SERIAL}\t${GROUP_NAME}\t${TARGET_NAME}\t${COUNT}" >> group_target.tsv
 
 done
 
 # Custom groups
 ARRAY=(
-    'Trichoderma::T_ree_QM6a_GCA_000167675_2'
-    'Trichoderma_reesei::T_ree_QM6a_GCA_000167675_2'
-    'Trichoderma_asperellum::T_asperellum_CBS_433_97_GCA_003025105_1'
-    'Trichoderma_harzianum::T_har_CBS_226_95_GCA_003025095_1'
-    'Trichoderma_atroviride::T_atrov_IMI_206040_GCA_000171015_2'
-    'Trichoderma_virens::T_vire_Gv29_8_GCA_000170995_2'
+    'Trichoderma::T_ree_QM6a_GCF_000167675_1'
+    'Trichoderma_reesei::T_ree_QM6a_GCF_000167675_1'
+    'Trichoderma_asperellum::T_asperellum_FT101_GCA_020647865_1'
+    'Trichoderma_harzianum::T_har_CGMCC_20739_GCA_019097725_1'
+    'Trichoderma_atroviride::T_atrov_IMI_206040_GCF_000171015_1'
+    'Trichoderma_virens::T_vire_Gv29_8_GCF_000170995_1'
 )
 
 SERIAL=100
@@ -909,80 +929,95 @@ for item in "${ARRAY[@]}" ; do
     GROUP_NAME_2=$(echo $GROUP_NAME | tr "_" " ")
 
     if [ "$GROUP_NAME" = "Trichoderma" ]; then
-        cat ../ASSEMBLY/Trichoderma.assembly.pass.csv |
-            tsv-filter -H -d"," --not-blank RefSeq_category |
+        cat ../ASSEMBLY/collect.pass.tsv |
+            tsv-filter -H --not-blank RefSeq_category |
             sed '1d' |
-            cut -d"," -f 1 \
+            tsv-select -f 1 \
+            > T.tmp
+        echo "C_pro_CCMJ2080_GCA_004303015_1" >> T.tmp
+        echo "E_web_EWB_GCA_003055145_1" >> T.tmp
+        echo "E_web_GCA_001278495_1" >> T.tmp
+        echo "H_perniciosus_HP10_GCA_008477525_1" >> T.tmp
+        echo "H_ros_CCMJ2808_GCA_011799845_1" >> T.tmp
+        cat T.tmp |
+            tsv-uniq |
+            tsv-join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
             > ${GROUP_NAME}
-        echo "C_pro_GCA_004303015_1" >> ${GROUP_NAME}
-        echo "E_web_GCA_003055145_1" >> ${GROUP_NAME}
-        echo "H_per_GCA_008477525_1" >> ${GROUP_NAME}
-        echo "H_ros_GCA_011799845_1" >> ${GROUP_NAME}
+
     else
-        cat ../ASSEMBLY/Trichoderma.assembly.pass.csv |
-            cut -d"," -f 1,2 |
+        cat ../ASSEMBLY/collect.pass.tsv |
+            tsv-select -f 1,2 |
             grep "${GROUP_NAME_2}" |
-            cut -d"," -f 1 \
+            tsv-select -f 1 |
+            tsv-join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
             > ${GROUP_NAME}
     fi
 
     COUNT=$(cat ${GROUP_NAME} | wc -l )
 
-    echo -e "${SERIAL}\t${GROUP_NAME}\t${COUNT}\t${TARGET_NAME}" >> group_target.tsv
+    echo -e "${SERIAL}\t${GROUP_NAME}\t${TARGET_NAME}\t${COUNT}" >> group_target.tsv
 
 done
 
-mlr --itsv --omd cat group_target.tsv
-
-cat ../ASSEMBLY/Trichoderma.assembly.pass.csv |
-    tsv-filter -H -d, --str-eq Assembly_level:"Complete Genome" |
-    tsv-select -H -d, -f name \
-    > complete-genome.lst
-
+cat group_target.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 ```
 
-| #Serial | Group                  | Count | Target                                  |
-|---------|------------------------|-------|-----------------------------------------|
-| 1       | C_E_H                  | 6     | H_ros_GCA_011799845_1                   |
-| 2       | T_har_vire             | 20    | T_vire_Gv29_8_GCA_000170995_2           |
-| 3       | T_asperellum_atrov     | 23    | T_atrov_IMI_206040_GCA_000171015_2      |
-| 4       | T_lon_ree              | 16    | T_ree_QM6a_GCA_000167675_2              |
-| 101     | Trichoderma            | 31    | T_ree_QM6a_GCA_000167675_2              |
-| 102     | Trichoderma_reesei     | 10    | T_ree_QM6a_GCA_000167675_2              |
-| 103     | Trichoderma_asperellum | 10    | T_asperellum_CBS_433_97_GCA_003025105_1 |
-| 104     | Trichoderma_harzianum  | 7     | T_har_CBS_226_95_GCA_003025095_1        |
-| 105     | Trichoderma_atroviride | 7     | T_atrov_IMI_206040_GCA_000171015_2      |
-| 106     | Trichoderma_virens     | 6     | T_vire_Gv29_8_GCA_000170995_2           |
+| #Serial | Group                  | Target                             | Count |
+|---------|------------------------|------------------------------------|------:|
+| 1       | C_E_H                  | E_web_GCA_001278495_1              |     5 |
+| 3       | T_afr_har              | T_har_CGMCC_20739_GCA_019097725_1  |    20 |
+| 5       | T_asperello_asperellum | T_asperellum_FT101_GCA_020647865_1 |    16 |
+| 6       | T_atrov_koningio       | T_atrov_IMI_206040_GCF_000171015_1 |    15 |
+| 7       | T_cit_lon_ree          | T_ree_QM6a_GCF_000167675_1         |    25 |
+| 8       | T_vire                 | T_vire_Gv29_8_GCF_000170995_1      |     9 |
+| 101     | Trichoderma            | T_ree_QM6a_GCF_000167675_1         |    32 |
+| 102     | Trichoderma_reesei     | T_ree_QM6a_GCF_000167675_1         |    13 |
+| 103     | Trichoderma_asperellum | T_asperellum_FT101_GCA_020647865_1 |    13 |
+| 104     | Trichoderma_harzianum  | T_har_CGMCC_20739_GCA_019097725_1  |    10 |
+| 105     | Trichoderma_atroviride | T_atrov_IMI_206040_GCF_000171015_1 |     7 |
+| 106     | Trichoderma_virens     | T_vire_Gv29_8_GCF_000170995_1      |     8 |
 
 ## Prepare sequences for `egaz`
 
 * `--perseq` for Chromosome-level assemblies and targets
-    * means split fasta by names, target or good assembles should set it
-* `--species Fungi` specify the species or clade of this group for RepeatMasker
+    * means split fasta by names, targets or good assembles should set it
 
 ```shell
-cd ~/data/alignment/Trichoderma/
+cd ~/data/Trichoderma
+
+# /share/home/wangq/homebrew/Cellar/repeatmasker@4.1.1/4.1.1/libexec/famdb.py \
+#   -i /share/home/wangq/homebrew/Cellar/repeatmasker@4.1.1/4.1.1/libexec/Libraries/RepeatMaskerLib.h5 \
+#   lineage Fungi
 
 # prep
 egaz template \
     ASSEMBLY \
-    --prep -o GENOMES \
-    $( cat taxon/group_target.tsv | sed -e '1d' | cut -f 4 | parallel -j 1 echo " --perseq {} " ) \
-    $( cat taxon/complete-genome.lst | parallel -j 1 echo " --perseq {} " ) \
+    --prep -o Genome \
+    $( cat taxon/group_target.tsv |
+        sed -e '1d' | cut -f 3 |
+        parallel -j 1 echo " --perseq {} "
+    ) \
+    $( cat taxon/complete-genome.tsv |
+        sed '1d' | cut -f 1 |
+        parallel -j 1 echo " --perseq {} "
+    ) \
     --min 5000 --about 5000000 \
-    -v --repeatmasker "--species Fungi --parallel 24"
+    -v --repeatmasker "--parallel 16"
 
-bash GENOMES/0_prep.sh
+bash Genome/0_prep.sh
 
 # gff
-for n in $(cat taxon/group_target.tsv | sed -e '1d' | cut -f 4 ) \
-    $( cat taxon/complete-genome.lst ) \
+for n in \
+    $(cat taxon/group_target.tsv | sed -e '1d' | cut -f 3 ) \
+    $( cat taxon/potential-target.tsv | sed -e '1d' | cut -f 1 ) \
     ; do
     FILE_GFF=$(find ASSEMBLY -type f -name "*_genomic.gff.gz" | grep "${n}")
     echo >&2 "==> Processing ${n}/${FILE_GFF}"
 
-    gzip -dc ${FILE_GFF} > GENOMES/${n}/chr.gff
+    gzip -dc ${FILE_GFF} > Genome/${n}/chr.gff
 done
 
 ```
@@ -990,18 +1025,18 @@ done
 ## Generate alignments
 
 ```shell
-cd ~/data/alignment/Trichoderma/
+cd ~/data/Trichoderma
 
 cat taxon/group_target.tsv |
     sed -e '1d' |
     parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 1 '
-        echo -e "==> Group: [{2}]\tTarget: [{4}]\n"
+        echo -e "==> Group: [{2}]\tTarget: [{3}]\n"
 
         egaz template \
-            GENOMES/{4} \
-            $(cat taxon/{2} | grep -v -x "{4}" | xargs -I[] echo "GENOMES/[]") \
+            Genome/{3} \
+            $(cat taxon/{2} | grep -v -x "{3}" | xargs -I[] echo "Genome/[]") \
             --multi -o groups/{2}/ \
-            --tree taxon/tree.nwk \
+            --tree MinHash/tree.nwk \
             --parallel 8 -v
 
         bash groups/{2}/1_pair.sh
@@ -1022,7 +1057,7 @@ Use Tatr_IMI_206040 as target
 Tatr_IMI_206040;qs=Tatr_XS2015,,
 
 ```bash
-cd ~/data/alignment/trichoderma
+cd ~/data/Trichoderma/Alignment
 
 egaz template \
     GENOMES/Tatr_IMI_206040 \
