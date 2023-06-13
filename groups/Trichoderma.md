@@ -1034,10 +1034,10 @@ cat taxon/group_target.tsv |
 
         egaz template \
             Genome/{3} \
-            $(cat taxon/{2} | grep -v -x "{3}" | xargs -I[] echo "Genome/[]") \
+            $(cat taxon/{2} | cut -f 1 | grep -v -x "{3}" | xargs -I[] echo "Genome/[]") \
             --multi -o groups/{2}/ \
             --tree MinHash/tree.nwk \
-            --parallel 8 -v
+            --parallel 16 -v
 
         bash groups/{2}/1_pair.sh
         bash groups/{2}/3_multi.sh
@@ -1047,37 +1047,5 @@ cat taxon/group_target.tsv |
 find groups -mindepth 1 -maxdepth 3 -type d -name "*_raw" | parallel -r rm -fr
 find groups -mindepth 1 -maxdepth 3 -type d -name "*_fasta" | parallel -r rm -fr
 find . -mindepth 1 -maxdepth 3 -type f -name "output.*" | parallel -r rm
-
-```
-
-Use Tatr_IMI_206040 as target
-
-* No results for Tatr_IMI_206040vsTkon_JCM_1883
-
-Tatr_IMI_206040;qs=Tatr_XS2015,,
-
-```bash
-cd ~/data/Trichoderma/Alignment
-
-egaz template \
-    GENOMES/Tatr_IMI_206040 \
-    GENOMES/Tree_QM6a \
-    GENOMES/Tvir_Gv29_8 \
-    --multi -o multi/ \
-    --multiname sanger --order \
-    --parallel 8 -v
-
-bash multi/1_pair.sh
-bash multi/3_multi.sh
-
-egaz template \
-    GENOMES/Tatr_IMI_206040 \
-    $(find GENOMES -maxdepth 1 -mindepth 1 -type d -path "*/????*" | grep -v "Tatr_IMI_206040"| grep -v "Tkon_JCM_1883") \
-    --multi -o multi/ \
-    --tree mash/tree.nwk \
-    --parallel 8 -v
-
-bash multi/1_pair.sh
-bash multi/3_multi.sh
 
 ```
