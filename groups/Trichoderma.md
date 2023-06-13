@@ -304,19 +304,20 @@ bash Count/rank.sh
 mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
 
 | genus            | #species | #strains |
-|------------------|----------|----------|
-| Cladobotryum     | 1        | 1        |
-| Escovopsis       | 1        | 2        |
-| Hypomyces        | 2        | 2        |
-| Mycogone         | 1        | 1        |
-| Saccharomyces    | 1        | 1        |
-| Sphaerostilbella | 1        | 1        |
-| Trichoderma      | 31       | 105      |
+|------------------|---------:|---------:|
+| Cladobotryum     |        1 |        1 |
+| Escovopsis       |        1 |        2 |
+| Hypomyces        |        2 |        2 |
+| Mycogone         |        1 |        1 |
+| Saccharomyces    |        1 |        1 |
+| Sphaerostilbella |        1 |        1 |
+| Trichoderma      |       31 |      105 |
 
 ### Download and check
 
@@ -543,7 +544,84 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.species.newick |
 
 ```
 
-## Count valid species and strains for *protein families*
+## Count valid species and strains
+
+### For *genomic alignments*
+
+```shell
+cd ~/data/Trichoderma/
+
+nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    --count \
+    --in ASSEMBLY/pass.lst \
+    --not-in MinHash/abnormal.lst \
+    --rank genus \
+    --lineage family --lineage genus
+
+# strains.taxon.tsv
+bash Count/strains.sh
+
+# .lst and .count.tsv
+bash Count/rank.sh
+
+cat Count/genus.count.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+# Can accept N_COUNT
+bash Count/lineage.sh 50
+
+cat Count/lineage.count.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
+
+# copy to summary/
+cp Count/strains.taxon.tsv summary/genome.taxon.tsv
+
+```
+
+| genus         | #species | #strains |
+|---------------|----------|----------|
+| Cladobotryum  | 1        | 1        |
+| Escovopsis    | 1        | 2        |
+| Hypomyces     | 2        | 2        |
+| Saccharomyces | 1        | 1        |
+| Trichoderma   | 26       | 87       |
+
+| #family            | genus         | species                     | count |
+|--------------------|---------------|-----------------------------|------:|
+| Hypocreaceae       | Cladobotryum  | Cladobotryum protrusum      |     1 |
+|                    | Escovopsis    | Escovopsis weberi           |     2 |
+|                    | Hypomyces     | Hypomyces perniciosus       |     1 |
+|                    |               | Hypomyces rosellus          |     1 |
+|                    | Trichoderma   | Trichoderma afroharzianum   |     4 |
+|                    |               | Trichoderma arundinaceum    |     4 |
+|                    |               | Trichoderma asperelloides   |     2 |
+|                    |               | Trichoderma asperellum      |    13 |
+|                    |               | Trichoderma atrobrunneum    |     1 |
+|                    |               | Trichoderma atroviride      |     7 |
+|                    |               | Trichoderma breve           |     1 |
+|                    |               | Trichoderma brevicrassum    |     1 |
+|                    |               | Trichoderma citrinoviride   |     3 |
+|                    |               | Trichoderma erinaceum       |     2 |
+|                    |               | Trichoderma gamsii          |     2 |
+|                    |               | Trichoderma gracile         |     1 |
+|                    |               | Trichoderma guizhouense     |     1 |
+|                    |               | Trichoderma hamatum         |     1 |
+|                    |               | Trichoderma harzianum       |     7 |
+|                    |               | Trichoderma koningii        |     1 |
+|                    |               | Trichoderma koningiopsis    |     4 |
+|                    |               | Trichoderma lentiforme      |     1 |
+|                    |               | Trichoderma longibrachiatum |     5 |
+|                    |               | Trichoderma pseudokoningii  |     1 |
+|                    |               | Trichoderma reesei          |    13 |
+|                    |               | Trichoderma semiorbis       |     1 |
+|                    |               | Trichoderma simmonsii       |     1 |
+|                    |               | Trichoderma virens          |     8 |
+|                    |               | Trichoderma viride          |     1 |
+| Saccharomycetaceae | Saccharomyces | Saccharomyces cerevisiae    |     1 |
+
+### For *protein families*
 
 ```shell
 cd ~/data/Trichoderma/
@@ -558,11 +636,12 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 # strains.taxon.tsv
 bash Count/strains.sh
 
-# genus.lst genus.count.tsv
+# .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
@@ -769,79 +848,6 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 Protein/fungi61.reroot.newick
     rsvg-convert -o tree/Trichoderma.marker.png
 
 ```
-
-## Count valid species and strains for *genomic alignments*
-
-```shell
-cd ~/data/Trichoderma/
-
-nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
-    --count \
-    --in ASSEMBLY/pass.lst \
-    --not-in MinHash/abnormal.lst \
-    --rank genus \
-    --lineage family --lineage genus
-
-# strains.taxon.tsv
-bash Count/strains.sh
-
-# genus.lst genus.count.tsv
-bash Count/rank.sh
-
-cat Count/genus.count.tsv |
-    mlr --itsv --omd cat
-
-bash Count/lineage.sh
-
-cat Count/lineage.count.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
-
-# copy to summary/
-cp Count/strains.taxon.tsv summary/genome.taxon.tsv
-
-```
-
-| genus         | #species | #strains |
-|---------------|----------|----------|
-| Cladobotryum  | 1        | 1        |
-| Escovopsis    | 1        | 2        |
-| Hypomyces     | 2        | 2        |
-| Saccharomyces | 1        | 1        |
-| Trichoderma   | 26       | 87       |
-
-| #family            | genus         | species                     | count |
-|--------------------|---------------|-----------------------------|------:|
-| Hypocreaceae       | Cladobotryum  | Cladobotryum protrusum      |     1 |
-|                    | Escovopsis    | Escovopsis weberi           |     2 |
-|                    | Hypomyces     | Hypomyces perniciosus       |     1 |
-|                    |               | Hypomyces rosellus          |     1 |
-|                    | Trichoderma   | Trichoderma afroharzianum   |     4 |
-|                    |               | Trichoderma arundinaceum    |     4 |
-|                    |               | Trichoderma asperelloides   |     2 |
-|                    |               | Trichoderma asperellum      |    13 |
-|                    |               | Trichoderma atrobrunneum    |     1 |
-|                    |               | Trichoderma atroviride      |     7 |
-|                    |               | Trichoderma breve           |     1 |
-|                    |               | Trichoderma brevicrassum    |     1 |
-|                    |               | Trichoderma citrinoviride   |     3 |
-|                    |               | Trichoderma erinaceum       |     2 |
-|                    |               | Trichoderma gamsii          |     2 |
-|                    |               | Trichoderma gracile         |     1 |
-|                    |               | Trichoderma guizhouense     |     1 |
-|                    |               | Trichoderma hamatum         |     1 |
-|                    |               | Trichoderma harzianum       |     7 |
-|                    |               | Trichoderma koningii        |     1 |
-|                    |               | Trichoderma koningiopsis    |     4 |
-|                    |               | Trichoderma lentiforme      |     1 |
-|                    |               | Trichoderma longibrachiatum |     5 |
-|                    |               | Trichoderma pseudokoningii  |     1 |
-|                    |               | Trichoderma reesei          |    13 |
-|                    |               | Trichoderma semiorbis       |     1 |
-|                    |               | Trichoderma simmonsii       |     1 |
-|                    |               | Trichoderma virens          |     8 |
-|                    |               | Trichoderma viride          |     1 |
-| Saccharomycetaceae | Saccharomyces | Saccharomyces cerevisiae    |     1 |
 
 ## Groups and targets
 
