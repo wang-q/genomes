@@ -1217,34 +1217,6 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 fungi61.genus.newick |
 
 ```
 
-```shell
-cd ~/data/Fungi/tree
-
-nw_reroot ../MProtein/tree.nwk Enc_hell_ATCC_50504_GCF_000277815_2 Nemat_major_JUm2507_GCF_021653875_1 |
-    nw_order -c n - \
-    > minhash.reroot.newick
-
-rm minhash.condensed.map
-CUR_TREE=minhash.reroot.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick minhash.${GROUP_NAME}.newick
-    cat condense.map >> minhash.condensed.map
-
-    CUR_TREE=minhash.${GROUP_NAME}.newick
-done
-
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.genus.newick |
-    rsvg-convert -o Fungi.minhash.png
-
-```
-
 ## InterProScan on all proteins of representative and typical strains
 
 To be filled by other projects
