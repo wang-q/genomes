@@ -4,6 +4,27 @@ All genomes of *Archaea*
 
 <!-- toc -->
 
+- [Strain info](#strain-info)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+- [Download all assemblies](#download-all-assemblies)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [Count before download](#count-before-download)
+    * [Download and check](#download-and-check)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+- [BioSample](#biosample)
+- [MinHash](#minhash)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+- [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments*](#for-genomic-alignments)
+    * [For *protein families*](#for-protein-families)
+- [Collect proteins](#collect-proteins)
+- [Phylogenetics with ar53](#phylogenetics-with-ar53)
+    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+
+<!-- tocstop -->
+
 ## Strain info
 
 * [Archaea](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2157)
@@ -648,7 +669,6 @@ cat Protein/counts.tsv |
 | all.annotation.tsv             | 2,079,141 |
 | all.info.tsv                   | 2,079,141 |
 
-
 ## Phylogenetics with ar53
 
 ### Find corresponding proteins by `hmmsearch`
@@ -805,6 +825,5 @@ FastTree -fastest -noml Protein/ar53.trim.fa > Protein/ar53.trim.newick
 # png
 nw_display -s -b 'visibility:hidden' -w 1200 -v 20 Protein/ar53.trim.newick |
     rsvg-convert -o tree/Archaea.ar53.png
-
 
 ```
