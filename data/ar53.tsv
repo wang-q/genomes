@@ -1,0 +1,54 @@
+Marker Id	Name	Description	Length (bp)	Single copy (%)	Ubiquity (%)
+PF00410	Ribosomal_S8	Ribosomal protein S8	126	89.82	90.60
+PF00466	Ribosomal_L10	Ribosomal protein L10	100	90.28	90.99
+PF00687	Ribosomal_L1	Ribosomal protein L1p/L10e family	204	90.64	91.85
+PF00827	Ribosomal_L15e	Ribosomal L15	189	87.59	90.03
+PF00900	Ribosomal_S4e	Ribosomal family S4e	75	88.98	89.40
+PF01000	RNA_pol_A_bac	RNA polymerase Rpb3/RpoA insert domain	112	92.16	92.94
+PF01015	Ribosomal_S3Ae	Ribosomal S3Ae family	195	89.15	90.72
+PF01090	Ribosomal_S19e	Ribosomal protein S19e	137	89.88	90.83
+PF01200	Ribosomal_S28e	Ribosomal protein S28e	64	91.24	91.99
+PF01280	Ribosomal_L19e	Ribosomal protein L19e	144	89.78	90.96
+PF04919	DUF655	Protein of unknown function (DUF655)	181	91.82	93.48
+PF07541	EIF_2_alpha	Eukaryotic translation initiation factor 2 alpha subunit	114	89.83	90.87
+TIGR00037	eIF_5A	translation elongation factor IF5A	130	89.39	90.05
+TIGR00064	ftsY	signal recognition particle-docking protein FtsY	279	87.87	88.45
+TIGR00111	pelota	mRNA surveillance protein pelota	351	79.88	80.67
+TIGR00134	gatE_arch	glutamyl-tRNA(Gln) amidotransferase, subunit E	622	89.13	91.02
+TIGR00279	uL16_euk_arch	ribosomal protein uL16	172	89.42	90.15
+TIGR00291	RNA_SBDS	rRNA metabolism protein, SBDS family	231	91.74	92.28
+TIGR00323	eIF-6	putative translation initiation factor eIF-6	215	78.94	79.38
+TIGR00335	primase_sml	putative DNA primase, eukaryotic-type, small subunit	324	73.78	74.93
+TIGR00373	TIGR00373	transcription factor E	162	65.09	67.57
+TIGR00405	KOW_elon_Spt5	transcription elongation factor Spt5	145	91.13	91.86
+TIGR00448	rpoE	DNA-directed RNA polymerase	179	91.42	91.76
+TIGR00483	EF-1_alpha	translation elongation factor EF-1, subunit alpha	427	83.89	87.22
+TIGR00491	aIF-2	translation initiation factor aIF-2	594	89.62	90.19
+TIGR00522	dph5	diphthine synthase	258	84.16	84.69
+TIGR00967	3a0501s007	preprotein translocase, SecY subunit	414	78.17	79.29
+TIGR00982	uS12_E_A	ribosomal protein uS12	139	90.16	90.73
+TIGR01008	uS3_euk_arch	ribosomal protein uS3	195	88.95	89.31
+TIGR01012	uS2_euk_arch	ribosomal protein uS2	196	91.92	92.71
+TIGR01018	uS4_arch	ribosomal protein uS4	162	91.91	92.58
+TIGR01020	uS5_euk_arch	ribosomal protein uS5	212	89.94	90.56
+TIGR01028	uS7_euk_arch	ribosomal protein uS7	186	90.43	90.83
+TIGR01046	uS10_euk_arch	ribosomal protein uS10	99	88.04	88.75
+TIGR01052	top6b	DNA topoisomerase VI, B subunit	488	84.06	88.58
+TIGR01171	rplB_bact	ribosomal protein uL2	275	12.20	12.28
+TIGR01213	pseudo_Pus10arc	tRNA pseudouridine(54/55) synthase	387	72.86	74.64
+TIGR01952	nusA_arch	NusA family KH domain protein, archaeal	141	73.78	77.81
+TIGR02236	recomb_radA	DNA repair and recombination protein RadA	311	83.97	88.56
+TIGR02338	gimC_beta	prefoldin, beta subunit	110	84.07	84.40
+TIGR02389	RNA_pol_rpoA2	DNA-directed RNA polymerase, subunit A''	367	78.77	79.21
+TIGR02390	RNA_pol_rpoA1	DNA-directed RNA polymerase subunit A'	867	83.01	83.57
+TIGR03626	L3_arch	ribosomal protein uL3	331	80.08	80.28
+TIGR03627	uS9_arch	ribosomal protein uS9	130	66.05	66.40
+TIGR03628	arch_S11P	ribosomal protein uS11	117	65.05	65.30
+TIGR03629	uS13_arch	ribosomal protein uS13	144	55.37	55.54
+TIGR03670	rpoB_arch	DNA-directed RNA polymerase subunit B	599	83.00	83.37
+TIGR03671	cca_archaeal	CCA-adding enzyme	410	81.36	82.00
+TIGR03672	rpl4p_arch	50S ribosomal protein uL4	251	71.12	71.30
+TIGR03673	uL14_arch	50S ribosomal protein uL14	131	47.78	47.90
+TIGR03674	fen_arch	flap structure-specific endonuclease	338	78.04	80.17
+TIGR03676	aRF1/eRF1	peptide chain release factor 1, archaeal and eukaryotic forms	403	86.76	91.06
+TIGR03680	eif2g_arch	translation initiation factor 2, gamma subunit	407	81.29	81.42

@@ -76,6 +76,7 @@ Ref.:
 
 1. Nature Microbiology volume 2, pages 1533–1542 (2017)
     * Save Supplementary Table 6 to `data/bac120.tsv`
+    * https://doi.org/10.1038/s41564-017-0012-7
 2. Nature Biotechnology volume 36, pages 996–1004 (2018)
 
 ```shell
@@ -106,6 +107,54 @@ cat bac120.lst |
 GZIP=-9 tar cvfz bac120.tar.gz \
     bac120.lst \
     bac120.tsv \
+    hmm/
+
+```
+
+## 53 archaeal proteins `ar53`
+
+Ref.:
+
+1. Recovery of nearly 8,000 metagenome-assembled genomes substantially expands the tree of life.
+   Nat Microbiol 2, 1533–1542 (2017).
+    * Supplementary Table 7 listed 122 marker genes
+    * https://doi.org/10.1038/s41564-017-0012-7
+2. A standardized archaeal taxonomy for the Genome Taxonomy Database.
+   Nat Microbiol 6, 946–959 (2021).
+    * https://doi.org/10.1038/s41564-021-00918-8
+
+https://data.gtdb.ecogenomic.org/releases/release214/214.1/auxillary_files/ar53_msa_marker_info_r214.tsv
+
+```shell
+mkdir -p ~/data/HMM/ar53
+cd ~/data/HMM/ar53
+
+cp ~/Scripts/genomes/data/ar53.tsv .
+
+cat ar53.tsv |
+    sed '1d' |
+    tsv-select -f 1 \
+    > ar53.lst
+
+mkdir -p hmm
+
+cat ar53.lst |
+    grep '^TIGR' |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        tar --directory hmm -xzvf ../TIGRFAM/TIGRFAMs_14.0_HMM.tar.gz {}.HMM
+    '
+
+cat ar53.lst |
+    grep -v '^TIGR' |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        curl -L https://www.ebi.ac.uk/interpro/wwwapi//entry/pfam/{}?annotation=hmm |
+            gzip -dc \
+            > hmm/{}.HMM
+    '
+
+GZIP=-9 tar cvfz ar53.tar.gz \
+    ar53.lst \
+    ar53.tsv \
     hmm/
 
 ```

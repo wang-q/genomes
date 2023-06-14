@@ -1,10 +1,10 @@
 Marker ID	Name	Description	Length (aa)
-PF02576.12	DUF150	Uncharacterised BCR, YhbC family COG0779	141
-PF01025.14	GrpE	GrpE	166
-PF03726.9	PNPase	Polyribonucleotide nucleotidyltransferase, RNA binding domain	83
-PF00466.15	Ribosomal_L10	Ribosomal protein L10	100
-PF00410.14	Ribosomal_S8	Ribosomal protein S8	129
-PF00380.14	Ribosomal_S9	Ribosomal protein S9/S16	121
+PF02576	DUF150	Uncharacterised BCR, YhbC family COG0779	141
+PF01025	GrpE	GrpE	166
+PF03726	PNPase	Polyribonucleotide nucleotidyltransferase, RNA binding domain	83
+PF00466	Ribosomal_L10	Ribosomal protein L10	100
+PF00410	Ribosomal_S8	Ribosomal protein S8	129
+PF00380	Ribosomal_S9	Ribosomal protein S9/S16	121
 TIGR00006	TIGR00006	16S rRNA (cytosine(1402)-N(4))-methyltransferase	310
 TIGR00019	prfA	peptide chain release factor 1	361
 TIGR00020	prfB	peptide chain release factor 2	365
