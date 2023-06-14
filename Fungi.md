@@ -268,7 +268,7 @@ wc -l RS*.tsv GB*.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
-        if [ -e ${C}${N}.tsv ]; then
+        if [ -e "${C}${N}.tsv" ]; then
             printf "${C}${N}\t"
             cat ${C}${N}.tsv |
                 tsv-summarize --sum 3
@@ -472,34 +472,37 @@ bash Count/strains.sh
 # genus.lst and genus.count.tsv
 bash Count/rank.sh
 
-cat Count/genus.count.tsv |
+mv Count/genus.count.tsv Count/genus.before.tsv
+
+cat Count/genus.before.tsv |
     keep-header -- tsv-sort -k1,1 |
     tsv-filter -H --ge 3:100 |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
 
 | genus                     | #species | #strains |
-|---------------------------|----------|----------|
-| Alternaria                | 31       | 157      |
-| Aspergillus               | 133      | 1072     |
-| Aureobasidium             | 11       | 154      |
-| Botryosphaeria            | 3        | 141      |
-| Candida                   | 18       | 186      |
-| Candida/Metschnikowiaceae | 9        | 158      |
-| Colletotrichum            | 60       | 225      |
-| Cryphonectria             | 7        | 110      |
-| Cryptococcus              | 11       | 149      |
-| Fusarium                  | 188      | 1216     |
-| Komagataella              | 7        | 181      |
-| Parastagonospora          | 2        | 189      |
-| Penicillium               | 103      | 459      |
-| Pyricularia               | 3        | 381      |
-| Rhodotorula               | 10       | 158      |
-| Saccharomyces             | 11       | 1765     |
-| Torulaspora               | 8        | 101      |
-| Trichoderma               | 31       | 105      |
-| Zygosaccharomyces         | 9        | 136      |
+|---------------------------|---------:|---------:|
+| Alternaria                |       31 |      157 |
+| Aspergillus               |      133 |     1072 |
+| Aureobasidium             |       11 |      154 |
+| Botryosphaeria            |        3 |      141 |
+| Candida                   |       18 |      186 |
+| Candida/Metschnikowiaceae |        9 |      158 |
+| Colletotrichum            |       60 |      225 |
+| Cryphonectria             |        7 |      110 |
+| Cryptococcus              |       11 |      149 |
+| Fusarium                  |      188 |     1216 |
+| Komagataella              |        7 |      181 |
+| Parastagonospora          |        2 |      189 |
+| Penicillium               |      103 |      459 |
+| Pyricularia               |        3 |      381 |
+| Rhodotorula               |       10 |      158 |
+| Saccharomyces             |       11 |     1765 |
+| Torulaspora               |        8 |      101 |
+| Trichoderma               |       31 |      105 |
+| Zygosaccharomyces         |        9 |      136 |
 
 ### Download and check
 
@@ -530,7 +533,12 @@ bash ASSEMBLY/check.sh
 #        fi
 #    '
 
-# N50 C S; create n50.tsv and n50.pass.csv
+find ASSEMBLY/ -name "*_genomic.fna.gz" |
+    grep -v "_from_" |
+    wc -l
+#13108
+
+# N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 100000 2000 1000000
 
 # Adjust parameters passed to `n50.sh`
@@ -547,31 +555,31 @@ cat ASSEMBLY/n50.tsv |
 
 # After the above steps are completed, run the following commands.
 
-# Collect; create collect.csv
+# Collect; create collect.tsv
 bash ASSEMBLY/collect.sh
 
 # After all completed
 bash ASSEMBLY/finish.sh
 
-cp ASSEMBLY/collect.pass.csv summary/
+cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
     mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
 
-| #item            |  count |
-|------------------|-------:|
-| url.tsv          | 13,108 |
-| check.lst        | 13,108 |
-| collect.csv      | 13,109 |
-| n50.tsv          | 13,109 |
-| n50.pass.csv     |  9,345 |
-| collect.pass.csv |  9,345 |
-| pass.lst         |  9,344 |
-| omit.lst         |  8,926 |
-| rep.lst          |  2,543 |
+| #item            | fields |  lines |
+|------------------|-------:|-------:|
+| url.tsv          |      3 | 13,108 |
+| check.lst        |      1 | 13,108 |
+| collect.tsv      |     20 | 13,109 |
+| n50.tsv          |      4 | 13,109 |
+| n50.pass.tsv     |      4 |  9,345 |
+| collect.pass.tsv |     23 |  9,345 |
+| pass.lst         |      1 |  9,344 |
+| omit.lst         |      1 |  8,926 |
+| rep.lst          |      1 |  2,543 |
 
 ### Rsync to hpcc
 
@@ -647,6 +655,72 @@ cp BioSample/biosample.tsv summary/
 
 ```
 
+## Divergence of Fungi
+
+Ref.:
+
+1. A genome-scale phylogeny of the kingdom Fungi. Cur Biology, 2021.
+   https://doi.org/10.1016/j.cub.2021.01.074
+
+![1-s2.0-S0960982221001391-fx1_lrg.jpg](images%2F1-s2.0-S0960982221001391-fx1_lrg.jpg)
+
+### ReRoot
+
+* 小孢子虫 (Microsporidia) 可以当作真菌的基部类群, 也可以当作真菌的姊妹类群
+
+* 芽枝霉门 (Blastocladiomycota) 是真菌的基部类群
+
+* For the latter steps, use the following two as the outgroups
+    * Enc_hell_ATCC_50504_GCF_000277815_2
+    * Nemat_ausu_ERTm6_GCF_000738915_1
+
+```shell
+cd ~/data/Fungi
+
+cat summary/collect.pass.tsv |
+    tsv-select -f 1,3 |
+    sed '1d' |
+    grep -v -Fw -f ASSEMBLY/omit.lst |
+    nwr append stdin -c 2 -r species -r phylum -r subkingdom |
+    tsv-filter --str-ne "5:Dikarya" | # 双核亚界
+    tsv-filter --str-ne "4:Mucoromycota" | # 毛霉门
+    tsv-filter --str-ne "4:Zoopagomycota" | #
+    tsv-filter --str-ne "4:Chytridiomycota" | # 壶菌门
+    tsv-select -f 1,3,4 |
+    tsv-sort -k3,3 -k1,1 |
+    tsv-summarize -g 3,2 --count
+#Blastocladiomycota      Allomyces arbusculus    1
+#Blastocladiomycota      Allomyces javanicus     1
+#Blastocladiomycota      Allomyces macrogynus    1
+#Blastocladiomycota      Blastocladiella emersonii       1
+#Blastocladiomycota      Catenaria anguillulae   1
+#Blastocladiomycota      Paraphysoderma sedebokerense    1
+#Microsporidia   Edhazardia aedis        1
+#Microsporidia   Encephalitozoon cuniculi        3
+#Microsporidia   Encephalitozoon hellem  4
+#Microsporidia   Encephalitozoon intestinalis    2
+#Microsporidia   Encephalitozoon romaleae        1
+#Microsporidia   Enterocytozoon hepatopenaei     1
+#Microsporidia   Nematocida ausubeli     2
+#Microsporidia   Nematocida displodere   1
+#Microsporidia   Nematocida major        1
+#Microsporidia   Nematocida parisii      2
+#Microsporidia   Nosema ceranae  1
+#Microsporidia   Ordospora colligata     4
+#Microsporidia   Vittaforma corneae      1
+
+cat summary/collect.pass.tsv |
+    tsv-filter -H --not-blank RefSeq_category |
+    tsv-filter -H --or \
+        --str-in-fld "2:Allomyces" \
+        --str-in-fld "2:Blastocladiella" \
+        --str-in-fld "2:Encephalitozoon" \
+        --str-in-fld "2:Nematocida" |
+    grep -v -Fw -f ASSEMBLY/omit.lst |
+    tsv-select -H -f "name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
+
+```
+
 ## MinHash
 
 ```shell
@@ -676,11 +750,35 @@ cat MinHash/abnormal.lst | wc -l
 # Non-redundant strains within species
 bash MinHash/nr.sh
 
+find MinHash -name "mash.dist.tsv" -size +0 | wc -l
+#808
+
+find MinHash -name "redundant.lst" -size +0 | wc -l
+#503
+
+find MinHash -name "redundant.lst" -empty | wc -l
+#304
+
+find MinHash -name "NR.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/NR.lst
+wc -l summary/NR.lst
+#2403
+
+## All representative should be in NR
+#cat ASSEMBLY/rep.lst |
+#    grep -v -F -f summary/NR.lst
+
 # Distances between all selected sketches, then hierarchical clustering
+cd ~/data/Fungi/
+
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --mh \
     --parallel 16 \
     --in ASSEMBLY/rep.lst \
+    --not-in ASSEMBLY/omit.lst \
     --not-in MinHash/abnormal.lst \
     --height 0.4
 
@@ -688,698 +786,282 @@ bash MinHash/dist.sh
 
 ```
 
-## Count species and strains
+### Condense branches in the minhash tree
 
 ```shell
-cd ~/data/Fungi
-
-echo "
-    SELECT
-        assembly_accession
-    FROM ar
-    WHERE 1=1
-        AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '%symbiont %'
-        AND refseq_category IN ('reference genome', 'representative genome')
-        AND assembly_level IN ('Complete Genome', 'Chromosome')
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
-    > summary/assembly_accession.lst
-
-wc -l summary/assembly_accession.lst
-#5495 assembly_accession.lst
-
-cat ASSEMBLY/collect.csv |
-    tsv-select -H -d, -f Taxid |
-    sed '1d' |
-    tsv-uniq |
-    nwr append stdin -r species |
-    tsv-select -f 2 |
-    tsv-uniq |
-    wc -l
-#3384
-
-cat summary/collect.pass.csv |
-    tsv-select -H -d, -f Taxid |
-    sed '1d' |
-    tsv-uniq |
-    nwr append stdin -r species |
-    tsv-select -f 2 |
-    tsv-uniq |
-    wc -l
-#2564
-
-cat summary/collect.pass.csv |
-    tsv-filter -H -d, --or \
-        --istr-eq "RefSeq_category:reference genome" --istr-eq "RefSeq_category:representative genome" |
-    grep -v "symbiont " |
-    tsv-select -H -d, -f name |
-    sed '1d' \
-    > summary/representative.lst
-
-wc -l summary/representative.lst
-#3023 summary/representative.lst
-
-cat summary/collect.pass.csv |
-    sed -e '1d' |
-    tr "," "\t" |
-    tsv-select -f 1,3 |
-    nwr append stdin -c 2 -r species -r genus -r family -r order \
-    > summary/strains.taxon.tsv
-
-bash ~/Scripts/genomes/bin/taxon_count.sh summary/strains.taxon.tsv 50
-
-```
-
-| #family             | genus                     | species                  | count |
-|---------------------|---------------------------|--------------------------|------:|
-| Aspergillaceae      | Aspergillus               | Aspergillus flavus       |   192 |
-|                     |                           | Aspergillus fumigatus    |   249 |
-|                     |                           | Aspergillus niger        |   112 |
-|                     |                           | Aspergillus oryzae       |   103 |
-|                     | Penicillium               | Penicillium chrysogenum  |    83 |
-| Botryosphaeriaceae  | Botryosphaeria            | Botryosphaeria dothidea  |    76 |
-| Cryphonectriaceae   | Cryphonectria             | Cryphonectria parasitica |    69 |
-| Cryptococcaceae     | Cryptococcus              | Cryptococcus neoformans  |   115 |
-| Debaryomycetaceae   | Candida                   | Candida albicans         |    61 |
-| Metschnikowiaceae   | Candida/Metschnikowiaceae | [Candida] auris          |   129 |
-| Nectriaceae         | Fusarium                  | Fusarium graminearum     |   121 |
-|                     |                           | Fusarium oxysporum       |   258 |
-| Onygenaceae         | Ophidiomyces              | Ophidiomyces ophidiicola |    74 |
-| Phaeosphaeriaceae   | Parastagonospora          | Parastagonospora nodorum |   167 |
-| Phaffomycetaceae    | Komagataella              | Komagataella phaffii     |   134 |
-| Pleosporaceae       | Alternaria                | Alternaria alternata     |    85 |
-| Pyriculariaceae     | Pyricularia               | Pyricularia oryzae       |   168 |
-| Saccharomycetaceae  | Nakaseomyces              | Nakaseomyces glabratus   |    54 |
-|                     | Saccharomyces             | Saccharomyces cerevisiae |  1409 |
-|                     | Torulaspora               | Torulaspora delbrueckii  |    68 |
-| Sporidiobolaceae    | Rhodotorula               | Rhodotorula mucilaginosa |   109 |
-| Trimorphomycetaceae | Saitozyma                 | Saitozyma podzolica      |    50 |
-
-### Order
-
-```shell
-cd ~/data/Fungi
-
-# Group by order
-cat summary/collect.pass.csv |
-    sed -e '1d' |
-    tsv-select -d, -f 3 |
-    tsv-uniq |
-    nwr append stdin -r order |
-    tsv-select -f 2 |
-    tsv-uniq |
-    grep -v "NA" |
-    sort \
-    > summary/order.lst
-
-cat summary/order.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        n_species=$(cat summary/collect.pass.csv |
-            sed "1d" |
-            tsv-select -d, -f 3 |
-            nwr append stdin -r order -r species |
-            grep {} |
-            tsv-select -f 1,3 |
-            tsv-uniq |
-            wc -l)
-
-        n_strains=$(cat summary/collect.pass.csv |
-            sed "1d" |
-            tsv-select -d, -f 3 |
-            nwr append stdin -r order |
-            grep {} |
-            wc -l)
-
-        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
-    ' |
-    nwr append stdin --id |
-    tsv-select -f 5,4,2,3 |
-    tsv-sort -k2,2 |
-    tsv-filter --ge 4:50 |
-    (echo -e '#tax_id\torder\t#species\t#strains' && cat) |
-    mlr --itsv --omd cat
-
-```
-
-| #tax_id | order             | #species | #strains |
-|---------|-------------------|----------|----------|
-| 451869  | Botryosphaeriales | 5        | 140      |
-| 34395   | Chaetothyriales   | 23       | 50       |
-| 5114    | Diaporthales      | 9        | 76       |
-| 5042    | Eurotiales        | 107      | 719      |
-| 5125    | Hypocreales       | 137      | 440      |
-| 639021  | Magnaporthales    | 10       | 176      |
-| 33183   | Onygenales        | 37       | 116      |
-| 92860   | Pleosporales      | 51       | 288      |
-| 4892    | Saccharomycetales | 279      | 803      |
-| 231213  | Sporidiobolales   | 3        | 67       |
-| 5234    | Tremellales       | 36       | 112      |
-| 5267    | Ustilaginales     | 13       | 52       |
-
-### Genus
-
-```shell
-cd ~/data/Fungi
-
-# Group by genus
-cat summary/collect.pass.csv |
-    sed -e '1d' |
-    tsv-select -d, -f 3 |
-    tsv-uniq |
-    nwr append stdin -r genus |
-    tsv-select -f 2 |
-    tsv-uniq |
-    grep -v "NA" |
-    sort \
-    > summary/genus.lst
-
-cat summary/genus.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        n_species=$(cat summary/collect.pass.csv |
-            sed "1d" |
-            tsv-select -d, -f 3 |
-            nwr append stdin -r genus -r species |
-            grep {} |
-            tsv-select -f 1,3 |
-            tsv-uniq |
-            wc -l)
-
-        n_strains=$(cat summary/collect.pass.csv |
-            sed "1d" |
-            tsv-select -d, -f 3 |
-            nwr append stdin -r genus |
-            grep {} |
-            wc -l)
-
-        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
-    ' |
-    nwr append stdin --id |
-    tsv-select -f 5,4,2,3 |
-    tsv-sort -k2,2 \
-    > summary/genus.count.tsv
-
-cat summary/genus.count.tsv |
-    tsv-filter --ge 4:50 |
-    (echo -e '#tax_id\tgenus\t#species\t#strains' && cat) |
-    mlr --itsv --omd cat
-
-```
-
-| #tax_id | genus                     | #species | #strains |
-|---------|---------------------------|----------|----------|
-| 5598    | Alternaria                | 20       | 69       |
-| 5052    | Aspergillus               | 70       | 468      |
-| 45132   | Botryosphaeria            | 1        | 128      |
-| 5475    | Candida                   | 55       | 150      |
-| 2964429 | Candida/Metschnikowiaceae | 6        | 55       |
-| 5115    | Cryphonectria             | 2        | 68       |
-| 5206    | Cryptococcus              | 27       | 55       |
-| 5506    | Fusarium                  | 44       | 251      |
-| 460517  | Komagataella              | 4        | 128      |
-| 27320   | Metschnikowia             | 10       | 61       |
-| 1387562 | Ophidiomyces              | 1        | 63       |
-| 1351751 | Parastagonospora          | 2        | 163      |
-| 5073    | Penicillium               | 23       | 214      |
-| 48558   | Pyricularia               | 9        | 175      |
-| 5533    | Rhodotorula               | 3        | 67       |
-| 4930    | Saccharomyces             | 128      | 214      |
-| 5543    | Trichoderma               | 40       | 97       |
-
-### ReRoot
-
-* 小孢子虫 (Microsporidia) 可以当作真菌的基部类群, 也可以当作真菌的姊妹类群
-
-* 芽枝霉门 (Blastocladiomycota) 是真菌的基部类群
-
-* for the latter steps, use the following three as the outgroups
-    * Allom_macrog_ATCC_38327_GCA_000151295_1
-    * Enc_hell_ATCC_50504_GCF_000277815_2
-    * Nemat_major_JUm2507_GCF_021653875_1
-
-```shell
-cd ~/data/Fungi
-
-cat summary/strains.taxon.tsv |
-    nwr append stdin -c 2 -r phylum -r subkingdom |
-    tsv-filter --str-ne "8:Dikarya" | # 双核亚界
-    tsv-filter --str-ne "7:Mucoromycota" | # 毛霉门
-    tsv-filter --str-ne "7:Zoopagomycota" | #
-    tsv-filter --str-ne "7:Chytridiomycota" | # 壶菌门
-    tsv-select -f 1,3,7 |
-    tsv-sort -k3,3 -k1,1 |
-    grep -v -Fw -f ASSEMBLY/omit.lst |
-    tsv-summarize -g 3,2 --count
-#Blastocladiomycota      Allomyces arbusculus    1
-#Blastocladiomycota      Allomyces javanicus     1
-#Blastocladiomycota      Allomyces macrogynus    1
-#Blastocladiomycota      Blastocladiella emersonii       1
-#Blastocladiomycota      Catenaria anguillulae   1
-#Blastocladiomycota      Paraphysoderma sedebokerense    1
-#Microsporidia   Edhazardia aedis        1
-#Microsporidia   Encephalitozoon cuniculi        4
-#Microsporidia   Encephalitozoon hellem  5
-#Microsporidia   Encephalitozoon intestinalis    3
-#Microsporidia   Encephalitozoon romaleae        2
-#Microsporidia   Enterocytozoon hepatopenaei     1
-#Microsporidia   Nematocida ausubeli     3
-#Microsporidia   Nematocida displodere   1
-#Microsporidia   Nematocida major        2
-#Microsporidia   Nematocida parisii      3
-#Microsporidia   Nosema ceranae  1
-#Microsporidia   Ordospora colligata     5
-#Microsporidia   Vittaforma corneae      2
-
-cat summary/collect.pass.csv |
-    tsv-filter -H -d, --not-blank RefSeq_category |
-    tsv-filter -H -d, --or \
-        --str-in-fld "2:Allomyces" \
-        --str-in-fld "2:Blastocladiella" \
-        --str-in-fld "2:Encephalitozoon" \
-        --str-in-fld "2:Nematocida" |
-    grep -v -Fw -f ASSEMBLY/omit.lst |
-    tsv-select -H -d, -f "name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
-
-```
-
-### Tweak the mash tree
-
-```shell
+mkdir -p ~/data/Fungi/tree
 cd ~/data/Fungi/tree
 
-nw_reroot tree.nwk Mit_dap_GCF_000760515_2 No_cera_GCF_000988165_1 |
+nw_reroot ../MinHash/tree.nwk Enc_hell_ATCC_50504_GCF_000277815_2 Nemat_ausu_ERTm6_GCF_000738915_1 |
     nw_order -c n - \
-    > mash.reroot.newick
+    > minhash.reroot.newick
+
+# Avoid "Candida/Metschnikowiaceae"
+cat ../Count/strains.taxon.tsv |
+    sed "s/\//_/g" \
+    > strains.taxon.tsv
 
 # rank::col
 ARRAY=(
-    'order::6'
-    'family::5'
-#    'genus::4'
-#    'species::3'
+    'order::5'
+    'family::4'
+    'genus::3'
+#    'species::2'
 )
 
-rm mash.condensed.map
-CUR_TREE=mash.reroot.newick
+rm minhash.condensed.map
+CUR_TREE=minhash.reroot.newick
 
 for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
 
-    mv condense.newick mash.${GROUP_NAME}.newick
-    cat condense.map >> mash.condensed.map
+    mv condense.newick minhash.${GROUP_NAME}.newick
+    cat condense.map >> minhash.condensed.map
 
-    CUR_TREE=mash.${GROUP_NAME}.newick
+    CUR_TREE=minhash.${GROUP_NAME}.newick
 done
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.family.newick |
-    rsvg-convert -o Fungi.mash.png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.genus.newick |
+    rsvg-convert -o Fungi.minhash.png
 
 ```
 
-## Non-redundant strains within species
+## Count valid species and strains
 
-If the ANI value between two strains is less than 0.005, the two strains are considered to be
-redundant.
+### For *genomic alignments*
 
 ```shell
-cd ~/data/Fungi
+cd ~/data/Fungi/
 
-mkdir NR
+nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    --count \
+    --in ASSEMBLY/pass.lst \
+    --not-in MinHash/abnormal.lst \
+    --rank order --rank genus \
+    --lineage family --lineage genus
 
-ANI_VALUE=0.005
+# strains.taxon.tsv
+bash Count/strains.sh
 
-cat summary/strains.taxon.tsv |
-    tsv-summarize -H -g 3 --count |
-    tsv-filter -H --ge 2:2 \
-    > NR/species.tsv
+# .lst and .count.tsv
+bash Count/rank.sh
 
-tsv-summarize NR/species.tsv -H --count --sum count
-#count   count_sum
-#197     3043
+cat Count/order.count.tsv |
+    tsv-filter -H --ge "3:50" |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
-# each species
-cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 10 |
-while read SPECIES; do
-    1>&2 echo "==> ${SPECIES}"
+cat Count/genus.count.tsv |
+    tsv-filter -H --ge "3:50" |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
-    SPECIES_=$(
-        echo "${SPECIES}" |
-            tr " " "_"
-    )
+# Can accept N_COUNT
+bash Count/lineage.sh 50
 
-    mkdir -p NR/${SPECIES_}
+cat Count/lineage.count.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
-    cat summary/strains.taxon.tsv |
-        tsv-filter --str-eq "3:${SPECIES}" |
-        tsv-select -f 1 \
-        > "NR/${SPECIES_}/assembly.lst"
-
-    1>&2 echo "    mash distances"
-
-    if [[ ! -f "NR/${SPECIES_}/mash.dist.tsv" ]]; then
-        mash triangle -E -p 8 -l <(
-            cat "NR/${SPECIES_}/assembly.lst" |
-                parallel --no-run-if-empty --linebuffer -k -j 1 '
-                    if [[ -e mash/{}.msh ]]; then
-                        echo "mash/{}.msh"
-                    fi
-                '
-            ) \
-            > "NR/${SPECIES_}/mash.dist.tsv"
-    fi
-
-    1>&2 echo "    List NR"
-
-    cat "NR/${SPECIES_}/mash.dist.tsv" |
-        tsv-filter --ff-str-ne 1:2 --le "3:${ANI_VALUE}" \
-        > "NR/${SPECIES_}/redundant.dist.tsv"
-
-    cat "NR/${SPECIES_}/redundant.dist.tsv" |
-        perl -nla -F"\t" -MGraph::Undirected -e '
-            BEGIN {
-                our $g = Graph::Undirected->new;
-            }
-
-            $g->add_edge($F[0], $F[1]);
-
-            END {
-                for my $cc ( $g->connected_components ) {
-                    print join qq{\t}, sort @{$cc};
-                }
-            }
-        ' \
-        > "NR/${SPECIES_}/connected_components.tsv"
-
-    cat "NR/${SPECIES_}/connected_components.tsv" |
-        perl -nla -MPath::Tiny -F"\t" -e '
-            BEGIN {
-                our %rep = map { ($_, 1) } path(q{summary/representative.lst})->lines({chomp => 1});
-            }
-
-            # Representative strains are preferred
-            if ( grep { $rep{$_} } @F ) {
-                @F = grep { ! $rep{$_} } @F
-            }
-            else {
-                shift @F;
-            }
-            printf qq{%s\n}, $_ for @F;
-            ' \
-        > "NR/${SPECIES_}/redundant.lst"
-
-    cat "NR/${SPECIES_}/assembly.lst" |
-        tsv-join --exclude -f "NR/${SPECIES_}/redundant.lst" \
-        > "NR/${SPECIES_}/NR.lst"
-
-done
-
-find NR -name "redundant.lst" -size +0 | wc -l
-#152
-
-find NR -name "redundant.lst" -empty | wc -l
-#45
-
-find NR -name "NR.lst" |
-    xargs cat |
-    sort |
-    uniq \
-    > summary/NR.lst
-
-wc -l summary/NR.lst
-#728 summary/NR.lst
+# copy to summary/
+cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ```
 
-### Genus
+| order             | #species | #strains |
+|-------------------|---------:|---------:|
+| Agaricales        |      138 |      192 |
+| Botryosphaeriales |       19 |      134 |
+| Chaetothyriales   |       41 |      107 |
+| Diaporthales      |       41 |      135 |
+| Dothideales       |       13 |       65 |
+| Eurotiales        |      246 |     1408 |
+| Glomerellales     |       65 |      194 |
+| Helotiales        |       83 |      107 |
+| Hypocreales       |      271 |     1003 |
+| Magnaporthales    |        8 |      177 |
+| Mucorales         |       52 |       74 |
+| Mycosphaerellales |       55 |      148 |
+| Onygenales        |       39 |      177 |
+| Ophiostomatales   |       54 |       82 |
+| Pleosporales      |      129 |      523 |
+| Polyporales       |       60 |       82 |
+| Russulales        |       32 |       51 |
+| Saccharomycetales |      436 |     2791 |
+| Sordariales       |       21 |       62 |
+| Sporidiobolales   |       10 |      141 |
+| Tremellales       |       32 |      204 |
+| Trichosporonales  |       29 |       51 |
+| Ustilaginales     |       34 |       85 |
+| Xylariales        |       86 |      152 |
+
+| genus                     | #species | #strains |
+|---------------------------|---------:|---------:|
+| Alternaria                |       31 |      150 |
+| Aspergillus               |      116 |      896 |
+| Aureobasidium             |       11 |       62 |
+| Botryosphaeria            |        1 |       70 |
+| Calonectria               |       15 |       54 |
+| Candida                   |       17 |      118 |
+| Candida/Metschnikowiaceae |        9 |      141 |
+| Colletotrichum            |       50 |      133 |
+| Cryphonectria             |        6 |       82 |
+| Cryptococcus              |       11 |      128 |
+| Exophiala                 |       11 |       50 |
+| Fusarium                  |      115 |      666 |
+| Komagataella              |        7 |      167 |
+| Metschnikowia             |       30 |       50 |
+| Nakaseomyces              |        6 |       52 |
+| Ogataea                   |       23 |       79 |
+| Ophidiomyces              |        1 |       73 |
+| Parastagonospora          |        1 |      166 |
+| Penicillium               |       96 |      405 |
+| Pichia                    |       12 |       51 |
+| Pyricularia               |        3 |      172 |
+| Rhodotorula               |        9 |      140 |
+| Saccharomyces             |       11 |     1497 |
+| Torulaspora               |        7 |       76 |
+| Trichoderma               |       26 |       88 |
+| Trichophyton              |       11 |       52 |
+| Ustilago                  |       14 |       56 |
+| Verticillium              |       10 |       53 |
+| Zymoseptoria              |        3 |       50 |
+
+| #family            | genus                     | species                  | count |
+|--------------------|---------------------------|--------------------------|------:|
+| Aspergillaceae     | Aspergillus               | Aspergillus flavus       |   190 |
+|                    |                           | Aspergillus fumigatus    |   246 |
+|                    |                           | Aspergillus niger        |   106 |
+|                    |                           | Aspergillus oryzae       |   102 |
+|                    | Penicillium               | Penicillium chrysogenum  |    83 |
+| Botryosphaeriaceae | Botryosphaeria            | Botryosphaeria dothidea  |    70 |
+| Cryphonectriaceae  | Cryphonectria             | Cryphonectria parasitica |    68 |
+| Cryptococcaceae    | Cryptococcus              | Cryptococcus neoformans  |    98 |
+| Debaryomycetaceae  | Candida                   | Candida albicans         |    60 |
+| Metschnikowiaceae  | Candida/Metschnikowiaceae | [Candida] auris          |   128 |
+| Nectriaceae        | Fusarium                  | Fusarium graminearum     |   120 |
+|                    |                           | Fusarium oxysporum       |   253 |
+| Onygenaceae        | Ophidiomyces              | Ophidiomyces ophidiicola |    73 |
+| Phaeosphaeriaceae  | Parastagonospora          | Parastagonospora nodorum |   166 |
+| Phaffomycetaceae   | Komagataella              | Komagataella phaffii     |   133 |
+| Pleosporaceae      | Alternaria                | Alternaria alternata     |    84 |
+| Pyriculariaceae    | Pyricularia               | Pyricularia oryzae       |   167 |
+| Saccharomycetaceae | Saccharomyces             | Saccharomyces cerevisiae |  1398 |
+|                    | Torulaspora               | Torulaspora delbrueckii  |    60 |
+| Sporidiobolaceae   | Rhodotorula               | Rhodotorula mucilaginosa |   106 |
+
+### For *protein families*
 
 ```shell
-cd ~/data/Fungi
+cd ~/data/Fungi/
 
-cat summary/genus.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        n_species=$(
-            cat summary/collect.pass.csv |
-                sed "1d" |
-                grep -F -w -f <( cat summary/NR.lst summary/representative.lst | sort | uniq ) |
-                tsv-select -d, -f 3 |
-                nwr append stdin -r genus -r species |
-                grep {} |
-                tsv-select -f 1,3 |
-                tsv-uniq |
-                wc -l
-        )
+nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    --count \
+    --in ASSEMBLY/pass.lst \
+    --not-in MinHash/abnormal.lst \
+    --not-in ASSEMBLY/omit.lst \
+    --rank genus
 
-        n_strains=$(
-            cat summary/collect.pass.csv |
-                sed "1d" |
-                grep -F -w -f <( cat summary/NR.lst summary/representative.lst | sort | uniq ) |
-                tsv-select -d, -f 3 |
-                nwr append stdin -r genus |
-                grep {} |
-                wc -l
-        )
+# strains.taxon.tsv
+bash Count/strains.sh
 
-        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
-    ' |
-    nwr append stdin --id |
-    tsv-select -f 5,4,2,3 |
-    tsv-sort -k2,2 |
-    tsv-filter --ge 4:10 |
-    (echo -e '#tax_id\tgenus\t#species\t#strains' && cat) |
+# .lst and .count.tsv
+bash Count/rank.sh
+
+cat Count/genus.count.tsv |
+    tsv-filter -H --ge "3:50" |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+# copy to summary/
+cp Count/strains.taxon.tsv summary/protein.taxon.tsv
+
+```
+
+| genus            | #species | #strains |
+|------------------|---------:|---------:|
+| Aspergillus      |       79 |      355 |
+| Colletotrichum   |       29 |       54 |
+| Cryptococcus     |       10 |       53 |
+| Fusarium         |       43 |      140 |
+| Ogataea          |        7 |       55 |
+| Ophidiomyces     |        1 |       69 |
+| Parastagonospora |        1 |      153 |
+| Penicillium      |       71 |      193 |
+| Saccharomyces    |        9 |      410 |
+
+## Collect proteins
+
+```shell
+cd ~/data/Fungi/
+
+nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    --pro \
+    --in ASSEMBLY/pass.lst \
+    --in ASSEMBLY/rep.lst \
+    --in summary/NR.lst \
+    --not-in MinHash/abnormal.lst \
+    --not-in ASSEMBLY/omit.lst
+
+# collect proteins
+bash Protein/collect.sh
+
+cat Protein/counts.tsv |
     mlr --itsv --omd cat
 
 ```
 
-| #tax_id | genus                     | #species | #strains |
-|---------|---------------------------|----------|----------|
-| 5598    | Alternaria                | 20       | 44       |
-| 5052    | Aspergillus               | 60       | 103      |
-| 5579    | Aureobasidium             | 6        | 16       |
-| 5581    | Beauveria                 | 2        | 10       |
-| 45132   | Botryosphaeria            | 1        | 26       |
-| 5475    | Candida                   | 30       | 41       |
-| 2964429 | Candida/Metschnikowiaceae | 5        | 11       |
-| 5455    | Colletotrichum            | 15       | 15       |
-| 5206    | Cryptococcus              | 11       | 14       |
-| 5112    | Epichloe                  | 14       | 16       |
-| 5506    | Fusarium                  | 40       | 87       |
-| 300275  | Lachancea                 | 9        | 10       |
-| 27320   | Metschnikowia             | 9        | 15       |
-| 1351751 | Parastagonospora          | 2        | 11       |
-| 5073    | Penicillium               | 15       | 28       |
-| 5296    | Puccinia                  | 7        | 13       |
-| 48558   | Pyricularia               | 4        | 14       |
-| 1322061 | Rhizoctonia               | 6        | 16       |
-| 4930    | Saccharomyces             | 25       | 41       |
-| 1890244 | Saitozyma                 | 1        | 15       |
-| 5094    | Talaromyces               | 8        | 12       |
-| 5543    | Trichoderma               | 36       | 61       |
-| 1047167 | Zymoseptoria              | 5        | 12       |
-
-## Groups and targets
-
-Review `summary/collect.pass.csv` and `tree/groups.tsv`
-
-## Collect proteins
-
-### `all.pro.fa`
-
-```shell
-cd ~/data/Fungi
-
-mkdir -p PROTEINS
-
-cat summary/representative.lst | wc -l
-#609
-
-cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst | wc -l
-#529
-
-for STRAIN in $(cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst); do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
-done |
-    pigz -p4 \
-    > PROTEINS/all.pro.fa.gz
-
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    perl -nl -e '
-        BEGIN { our %seen; our $h; }
-
-        if (/^>/) {
-            $h = (split(" ", $_))[0];
-            $seen{$h}++;
-            $_ = $h;
-        }
-        print if $seen{$h} == 1;
-    ' |
-    pigz -p4 \
-    > PROTEINS/all.uniq.fa.gz
-
-# counting proteins
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#5.4M
-
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    grep "^>" |
-    tsv-uniq |
-    wc -l |
-    numfmt --to=si
-#5.4M
-
-# annotations may be different
-gzip -dcf PROTEINS/all.uniq.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#5.4M
-
-```
-
-### `all.replace.fa`
-
-```shell
-cd ~/data/Fungi
-
-rm PROTEINS/all.strain.tsv PROTEINS/all.replace.fa.gz
-
-for STRAIN in $(cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst); do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
-        grep "^>" |
-        cut -d" " -f 1 |
-        sed "s/^>//" |
-        STRAIN=${STRAIN} perl -nl -e '
-            $n = $_;
-            $s = $n;
-            $s =~ s/\.\d+//;
-            printf qq{%s\t%s_%s\t%s\n}, $n, $ENV{STRAIN}, $s, $ENV{STRAIN};
-        ' \
-    > PROTEINS/${STRAIN}.replace.tsv
-
-    cut -f 2,3 PROTEINS/${STRAIN}.replace.tsv >> PROTEINS/all.strain.tsv
-
-    faops replace -s \
-        ASSEMBLY/${STRAIN}/*_protein.faa.gz \
-        <(cut -f 1,2 PROTEINS/${STRAIN}.replace.tsv) \
-        stdout |
-        pigz -p4 \
-        >> PROTEINS/all.replace.fa.gz
-
-    rm PROTEINS/${STRAIN}.replace.tsv
-done
-
-gzip -dcf PROTEINS/all.replace.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#5.4M
-
-(echo -e "#name\tstrain" && cat PROTEINS/all.strain.tsv)  \
-    > temp &&
-    mv temp PROTEINS/all.strain.tsv
-
-faops size PROTEINS/all.replace.fa.gz > PROTEINS/all.replace.sizes
-
-(echo -e "#name\tsize" && cat PROTEINS/all.replace.sizes) > PROTEINS/all.size.tsv
-
-rm PROTEINS/all.replace.sizes
-
-```
-
-### `all.info.tsv`
-
-```shell
-cd ~/data/Fungi
-
-for STRAIN in $(cat summary/representative.lst | grep -v -Fx -f ASSEMBLY/omit.lst); do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
-        grep "^>" |
-        sed "s/^>//" |
-        perl -nl -e '/\[.+\[/ and s/\[/\(/; print' |
-        perl -nl -e '/\].+\]/ and s/\]/\)/; print' |
-        perl -nl -e 's/\s+\[.+?\]$//g; print' |
-        perl -nl -e 's/MULTISPECIES: //g; print' |
-        STRAIN=${STRAIN} perl -nl -e '
-            /^(\w+)\.\d+\s+(.+)$/ or next;
-            printf qq{%s_%s\t%s\n}, $ENV{STRAIN}, $1, $2;
-        '
-done \
-    > PROTEINS/all.annotation.tsv
-
-cat PROTEINS/all.annotation.tsv |
-    wc -l |
-    numfmt --to=si
-#5.4M
-
-(echo -e "#name\tannotation" && cat PROTEINS/all.annotation.tsv) \
-    > temp &&
-    mv temp PROTEINS/all.annotation.tsv
-
-# check differences
-cat PROTEINS/all.size.tsv |
-    grep -F -f <(cut -f 1 PROTEINS/all.annotation.tsv) -v
-
-tsv-join \
-    PROTEINS/all.strain.tsv \
-    --data-fields 1 \
-    -f PROTEINS/all.size.tsv \
-    --key-fields 1 \
-    --append-fields 2 \
-    > PROTEINS/all.strain_size.tsv
-
-tsv-join \
-    PROTEINS/all.strain_size.tsv \
-    --data-fields 1 \
-    -f PROTEINS/all.annotation.tsv \
-    --key-fields 1 \
-    --append-fields 2 \
-    > PROTEINS/all.info.tsv
-
-cat PROTEINS/all.info.tsv |
-    wc -l |
-    numfmt --to=si
-#5.4M
-
-```
+| #item                          | count     |
+|--------------------------------|-----------|
+| Proteins                       | 3,761,901 |
+| Unique headers and annotations | 3,761,901 |
+| Unique proteins                | 3,761,901 |
+| all.replace.fa                 | 3,761,901 |
+| all.annotation.tsv             | 3,761,902 |
+| all.info.tsv                   | 3,761,902 |
 
 ## Phylogenetics with fungi61
 
 ### Find corresponding proteins by `hmmsearch`
 
-* Download HMM models as described in [`HMM.md`](HMM.md)
-
-* The `E_VALUE` was manually adjusted to 1e-20 to reach a balance between sensitivity and
-  speciality.
-
 ```shell
-E_VALUE=1e-20
-
 cd ~/data/Fungi
 
+# The fungi61 HMM set
+nwr kb fungi61 -o HMM
+cp HMM/fungi61.lst HMM/marker.lst
+
+E_VALUE=1e-20
+
 # Find all genes
-for marker in $(cat ~/data/HMM/fungi61/fungi61.lst); do
-    >&2 echo "==> marker [${marker}]"
+for marker in $(cat HMM/marker.lst); do
+    echo >&2 "==> marker [${marker}]"
 
-    mkdir -p PROTEINS/${marker}
+    mkdir -p Protein/${marker}
 
-    cat summary/representative.lst |
-        grep -v -Fx -f ASSEMBLY/omit.lst |
-        parallel --no-run-if-empty --linebuffer -k -j 8 "
-            gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
-                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw ~/data/HMM/fungi61/HMM/${marker}.HMM - |
+    cat Protein/species.tsv |
+        tsv-join -f ASSEMBLY/pass.lst -k 1 |
+        tsv-join -f ASSEMBLY/rep.lst -k 1 |
+        tsv-join -f summary/NR.lst -k 1 |
+        tsv-join -e -f MinHash/abnormal.lst -k 1 |
+        tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
+            if [[ ! -d ASSEMBLY/{2}/{1} ]]; then
+                exit
+            fi
+
+            gzip -dcf ASSEMBLY/{2}/{1}/*_protein.faa.gz |
+                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/${marker}.HMM - |
                 grep '>>' |
-                perl -nl -e ' m{>>\s+(\S+)} and printf qq{%s\t%s\n}, \$1, {}; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), \$1, {1}; '
         " \
-        > PROTEINS/${marker}/replace.tsv
+        > Protein/${marker}/replace.tsv
 
-    >&2 echo
-
+    echo >&2
 done
 
 ```
@@ -1389,126 +1071,136 @@ done
 ```shell
 cd ~/data/Fungi
 
-cat ~/data/HMM/fungi61/fungi61.lst |
+cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        cat PROTEINS/{}/replace.tsv |
+        cat Protein/{}/replace.tsv |
             wc -l
     ' |
     tsv-summarize --quantile 1:0.25,0.5,0.75
-#523     543     1341
+#367     382     930
 
-cat ~/data/HMM/fungi61/fungi61.lst |
+cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo {}
-        cat PROTEINS/{}/replace.tsv |
+        cat Protein/{}/replace.tsv |
             wc -l
     ' |
     paste - - |
-    tsv-filter --invert --ge 2:400 --le 2:800 |
+    tsv-filter --invert --ge 2:300 --le 2:500 |
     cut -f 1 \
-    > PROTEINS/fungi61.omit.lst
+    > Protein/marker.omit.lst
 
 # Extract sequences
 # Multiple copies slow down the alignment process
-cat ~/data/HMM/fungi61/fungi61.lst |
-    grep -v -Fx -f PROTEINS/fungi61.omit.lst |
+cat HMM/marker.lst |
+    grep -v -Fx -f Protein/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        >&2 echo "==> marker [{}]"
+        echo >&2 "==> marker [{}]"
 
-        cat PROTEINS/{}/replace.tsv \
-            > PROTEINS/{}/{}.replace.tsv
+        cat Protein/{}/replace.tsv \
+            > Protein/{}/{}.replace.tsv
 
-        faops some PROTEINS/all.uniq.fa.gz <(
-            cat PROTEINS/{}/{}.replace.tsv |
+        faops some Protein/all.uniq.fa.gz <(
+            cat Protein/{}/{}.replace.tsv |
                 cut -f 1 |
                 tsv-uniq
             ) stdout \
-            > PROTEINS/{}/{}.pro.fa
+            > Protein/{}/{}.pro.fa
     '
 
 # Align each markers with muscle
-cat ~/data/HMM/fungi61/fungi61.lst |
+cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
-        >&2 echo "==> marker [{}]"
-        if [ ! -s PROTEINS/{}/{}.pro.fa ]; then
+        echo >&2 "==> marker [{}]"
+        if [ ! -s Protein/{}/{}.pro.fa ]; then
             exit
         fi
-        if [ -s PROTEINS/{}/{}.aln.fa ]; then
+        if [ -s Protein/{}/{}.aln.fa ]; then
             exit
         fi
 
-        muscle -quiet -in PROTEINS/{}/{}.pro.fa -out PROTEINS/{}/{}.aln.fa
+        muscle -quiet -in Protein/{}/{}.pro.fa -out Protein/{}/{}.aln.fa
     '
 
-for marker in $(cat ~/data/HMM/fungi61/fungi61.lst); do
-    >&2 echo "==> marker [${marker}]"
-    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+for marker in $(cat HMM/marker.lst); do
+    echo >&2 "==> marker [${marker}]"
+    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
         continue
     fi
 
     # sometimes `muscle` can not produce alignments
-    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
         continue
     fi
 
     # 1 name to many names
-    cat PROTEINS/${marker}/${marker}.replace.tsv |
+    cat Protein/${marker}/${marker}.replace.tsv |
         parallel --no-run-if-empty --linebuffer -k -j 4 "
-            faops replace -s PROTEINS/${marker}/${marker}.aln.fa <(echo {}) stdout
+            faops replace -s Protein/${marker}/${marker}.aln.fa <(echo {}) stdout
         " \
-        > PROTEINS/${marker}/${marker}.replace.fa
+        > Protein/${marker}/${marker}.replace.fa
 done
 
 # Concat marker genes
-for marker in $(cat ~/data/HMM/fungi61/fungi61.lst); do
-    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+for marker in $(cat HMM/marker.lst); do
+    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
         continue
     fi
-    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
         continue
     fi
 
     # sequences in one line
-    faops filter -l 0 PROTEINS/${marker}/${marker}.replace.fa stdout
+    faops filter -l 0 Protein/${marker}/${marker}.replace.fa stdout
 
     # empty line for .fas
     echo
 done \
-    > PROTEINS/fungi61.aln.fas
+    > Protein/fungi61.aln.fas
 
-cat summary/representative.lst |
-    grep -v -Fx -f ASSEMBLY/omit.lst |
-    fasops concat PROTEINS/fungi61.aln.fas stdin -o PROTEINS/fungi61.aln.fa
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -f ASSEMBLY/rep.lst -k 1 |
+    tsv-join -f summary/NR.lst -k 1 |
+    tsv-join -e -f MinHash/abnormal.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+    cut -f 1 |
+    fasops concat Protein/fungi61.aln.fas stdin -o Protein/fungi61.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
-trimal -in PROTEINS/fungi61.aln.fa -out PROTEINS/fungi61.trim.fa -automated1
+trimal -in Protein/fungi61.aln.fa -out Protein/fungi61.trim.fa -automated1
 
-faops size PROTEINS/fungi61.*.fa |
+faops size Protein/fungi61.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#111589
-#14051
+#91210
+#13874
 
 # To make it faster
-FastTree -fastest -noml PROTEINS/fungi61.trim.fa > PROTEINS/fungi61.trim.newick
+FastTree -fastest -noml Protein/fungi61.trim.fa > Protein/fungi61.trim.newick
 
 ```
 
-### Tweak the concat tree
+### Condense branches in the protein tree
 
 ```shell
 cd ~/data/Fungi/tree
 
-nw_reroot ../PROTEINS/fungi61.trim.newick Mit_dap_GCF_000760515_2 No_cera_GCF_000988165_1 |
+nw_reroot ../Protein/fungi61.trim.newick Mit_dap_GCF_000760515_2 No_cera_GCF_000988165_1 |
     nw_order -c n - \
     > fungi61.reroot.newick
 
+# Avoid "Candida/Metschnikowiaceae"
+cat ../Count/strains.taxon.tsv |
+    sed "s/\//_/g" \
+    > strains.taxon.tsv
+
 # rank::col
 ARRAY=(
-    'order::6'
-    'family::5'
-#    'genus::4'
-#    'species::3'
+    'order::5'
+    'family::4'
+    'genus::3'
+#    'species::2'
 )
 
 rm fungi61.condensed.map
@@ -1518,7 +1210,7 @@ for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick fungi61.${GROUP_NAME}.newick
     cat condense.map >> fungi61.condensed.map
@@ -1527,8 +1219,37 @@ for item in "${ARRAY[@]}" ; do
 done
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 fungi61.family.newick |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 fungi61.genus.newick |
     rsvg-convert -o Fungi.fungi61.png
+
+```
+
+
+```shell
+cd ~/data/Fungi/tree
+
+nw_reroot ../MProtein/tree.nwk Enc_hell_ATCC_50504_GCF_000277815_2 Nemat_major_JUm2507_GCF_021653875_1 |
+    nw_order -c n - \
+    > minhash.reroot.newick
+
+rm minhash.condensed.map
+CUR_TREE=minhash.reroot.newick
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick minhash.${GROUP_NAME}.newick
+    cat condense.map >> minhash.condensed.map
+
+    CUR_TREE=minhash.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.genus.newick |
+    rsvg-convert -o Fungi.minhash.png
 
 ```
 
@@ -1541,11 +1262,6 @@ mkdir -p ~/data/Fungi/STRAINS
 
 ```
 
-## Divergence of Fungi
+## Groups and targets
 
-Ref.:
-
-1. A genome-scale phylogeny of the kingdom Fungi. Cur Biology,
-    2021. https://doi.org/10.1016/j.cub.2021.01.074
-
-![1-s2.0-S0960982221001391-fx1_lrg.jpg](images%2F1-s2.0-S0960982221001391-fx1_lrg.jpg)
+Review `summary/collect.pass.tsv` and `tree/groups.tsv`
