@@ -10,31 +10,24 @@ Download all genomes and analyze representative strains.
     * [Model organisms](#model-organisms)
 - [Download all assemblies](#download-all-assemblies)
     * [Create assembly.tsv](#create-assemblytsv)
-    * [Rsync and check](#rsync-and-check)
-    * [Check N50 of assemblies](#check-n50-of-assemblies)
+    * [Count before download](#count-before-download)
+    * [Download and check](#download-and-check)
     * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
-- [Count species and strains](#count-species-and-strains)
-    * [Order](#order)
-    * [Genus](#genus)
+- [Divergence of Fungi](#divergence-of-fungi)
     * [ReRoot](#reroot)
 - [MinHash](#minhash)
-    * [Compute MinHash](#compute-minhash)
-    * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
-    * [Tweak the mash tree](#tweak-the-mash-tree)
-- [Non-redundant strains within species](#non-redundant-strains-within-species)
-    * [Genus](#genus-1)
-- [Groups and targets](#groups-and-targets)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+- [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments*](#for-genomic-alignments)
+    * [For *protein families*](#for-protein-families)
 - [Collect proteins](#collect-proteins)
-    * [`all.pro.fa`](#allprofa)
-    * [`all.replace.fa`](#allreplacefa)
-    * [`all.info.tsv`](#allinfotsv)
 - [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
     * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-    * [Tweak the concat tree](#tweak-the-concat-tree)
+    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
 - [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-- [Divergence of Fungi](#divergence-of-fungi)
+- [Groups and targets](#groups-and-targets)
 
 <!-- tocstop -->
 
@@ -1223,7 +1216,6 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 fungi61.genus.newick |
     rsvg-convert -o Fungi.fungi61.png
 
 ```
-
 
 ```shell
 cd ~/data/Fungi/tree

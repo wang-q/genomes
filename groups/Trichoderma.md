@@ -15,14 +15,13 @@ Genus *Trichoderma* as an example.
 - [BioSample](#biosample)
 - [MinHash](#minhash)
     * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-- [Count valid species and strains for *protein
-  families*](#count-valid-species-and-strains-for-protein-families)
+- [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments*](#for-genomic-alignments)
+    * [For *protein families*](#for-protein-families)
 - [Collect proteins](#collect-proteins)
 - [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
     * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-- [Count valid species and strains for *genomic
-  alignments*](#count-valid-species-and-strains-for-genomic-alignments)
 - [Groups and targets](#groups-and-targets)
 - [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
 - [Generate alignments](#generate-alignments)
