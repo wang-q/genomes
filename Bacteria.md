@@ -1,6 +1,6 @@
 # Bacteria
 
-All genomes of *Bacteria* and *Archaea*, species by species.
+All genomes of *Bacteria*, species by species.
 
 Download all genomes and analyze representative strains.
 
@@ -43,7 +43,6 @@ Download all genomes and analyze representative strains.
 ## Strain info
 
 * [Bacteria](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2)
-* [Archaea](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2157)
 
 ### List all ranks
 
@@ -51,69 +50,57 @@ Download all genomes and analyze representative strains.
 nwr member Bacteria |
     grep -v " sp." |
     tsv-summarize -H -g rank --count |
-    mlr --itsv --omd cat
-
-nwr member Archaea |
-    grep -v " sp." |
-    tsv-summarize -H -g rank --count |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 ```
 
 | rank             |  count |
 |------------------|-------:|
 | superkingdom     |      1 |
-| phylum           |    173 |
-| class            |    125 |
-| order            |    295 |
-| family           |    747 |
-| no rank          |   6601 |
-| species          | 110253 |
-| genus            |   4972 |
-| clade            |    133 |
-| strain           |  41193 |
-| varietas         |     24 |
-| isolate          |    456 |
-| subspecies       |    708 |
+| phylum           |    179 |
+| no rank          |   6704 |
+| species          | 111042 |
+| class            |    150 |
+| order            |    321 |
+| family           |    797 |
+| genus            |   5053 |
+| strain           |  41351 |
 | subclass         |      6 |
+| subspecies       |    718 |
+| suborder         |      7 |
+| clade            |    134 |
+| isolate          |    455 |
+| varietas         |     24 |
 | forma            |      4 |
 | species group    |     99 |
 | species subgroup |     31 |
-| suborder         |      7 |
 | biotype          |      7 |
-| serotype         |    257 |
-| serogroup        |    143 |
-| subphylum        |      1 |
+| serotype         |    258 |
+| serogroup        |    145 |
 | subgenus         |      1 |
 | tribe            |      2 |
 | pathogroup       |      5 |
 | subfamily        |      1 |
 
-| rank          | count |
-|---------------|------:|
-| superkingdom  |     1 |
-| phylum        |    42 |
-| order         |    60 |
-| no rank       |   328 |
-| species       |  3416 |
-| class         |    34 |
-| family        |    82 |
-| genus         |   257 |
-| clade         |    44 |
-| strain        |   353 |
-| species group |     2 |
-| isolate       |     6 |
-
 ### Species with assemblies
 
-Four levels:
+Three levels:
 
-* '>= 100 genomes'
-    1. With strain ID
-    2. assembly_level: 'Complete Genome', 'Chromosome'
-    3. genome_rep: 'Full'
-* '>= 2 genomes'
-    4. assembly_level: 'Complete Genome', 'Chromosome'
+* RefSeq
+    * '>= 100 genomes'
+        * RS1 - assembly_level: 'Complete Genome', 'Chromosome'
+        * RS2 - genome_rep: 'Full'
+    * '>= 2 genomes'
+        * RS3 - assembly_level: 'Complete Genome', 'Chromosome'
+        * RS4 - genome_rep: 'Full'
+* Genbank
+    * '>= 100 genomes'
+        * GB1 - assembly_level: 'Complete Genome', 'Chromosome'
+        * GB2 - genome_rep: 'Full'
+    * '>= 2 genomes'
+        * GB3 - assembly_level: 'Complete Genome', 'Chromosome'
+        * GB4 - genome_rep: 'Full'
 
 ```shell
 mkdir -p ~/data/Bacteria/summary
@@ -121,9 +108,7 @@ cd ~/data/Bacteria/summary
 
 # should have a valid name of genus
 # NCBI division Bacteria includes Bacteria and Archaea
-nwr member Bacteria Archaea -r genus |
-    grep -v -i "Candidatus " |
-    grep -v -i "candidate " |
+nwr member Bacteria -r genus |
     grep -v " sp." |
     grep -v " spp." |
     sed '1d' |
@@ -133,105 +118,154 @@ nwr member Bacteria Archaea -r genus |
 wc -l genus.list.tsv
 #4470 genus.list
 
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(DISTINCT tax_id) AS count -- with strain ID
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
-        GROUP BY species_id
-        HAVING count >= 100
-        " |
+QUERY="
+    SELECT
+        species_id,
+        species,
+        COUNT(*) AS count
+    FROM ar
+    WHERE 1=1
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
+        REPLACE_1
+        REPLACE_2
+    GROUP BY species_id
+    REPLACE_3
+"
+
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo -e "${QUERY}" |
+        sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
+        sed "s/REPLACE_2/AND assembly_level IN ('Complete Genome', 'Chromosome')/" |
+        sed "s/REPLACE_3/HAVING count >= 100/" |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
     tsv-sort -k2,2 \
-    > L1.tsv
+    > RS1.tsv
 
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
-        GROUP BY species_id
-        HAVING count >= 100
-        " |
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo -e "${QUERY}" |
+        sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
+        sed "s/REPLACE_2/AND genome_rep IN ('Full')/" |
+        sed "s/REPLACE_3/HAVING count >= 100/" |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
     tsv-sort -k2,2 \
-    > L2.tsv
+    > RS2.tsv
 
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND assembly_level IN ('Complete Genome', 'Chromosome', 'Scaffold')
-            AND genome_rep IN ('Full') -- fully representative
-        GROUP BY species_id
-        HAVING count >= 100
-        " |
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo -e "${QUERY}" |
+        sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
+        sed "s/REPLACE_2/AND assembly_level IN ('Complete Genome', 'Chromosome')/" |
+        sed "s/REPLACE_3/HAVING count >= 2/" |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
     tsv-sort -k2,2 \
-    > L3.tsv
+    > RS3.tsv
 
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
-        GROUP BY species_id
-        HAVING count >= 2
-        " |
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo -e "${QUERY}" |
+        sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
+        sed "s/REPLACE_2/AND genome_rep IN ('Full')/" |
+        sed "s/REPLACE_3/HAVING count >= 2/" |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
     tsv-sort -k2,2 \
-    > L4.tsv
+    > RS4.tsv
 
-wc -l L*.tsv
-#    3 L1.tsv
-#   43 L2.tsv
-#  114 L3.tsv
-# 1734 L4.tsv
-# 1894 total
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo -e "${QUERY}" |
+        sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
+        sed "s/REPLACE_2/AND assembly_level IN ('Complete Genome', 'Chromosome')/" |
+        sed "s/REPLACE_3/HAVING count >= 100/" |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > GB1.tsv
 
-for L in L1 L2 L3 L4; do
-    cat ${L}.tsv |
-        tsv-summarize --sum 3
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo -e "${QUERY}" |
+        sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
+        sed "s/REPLACE_2/AND genome_rep IN ('Full')/" |
+        sed "s/REPLACE_3/HAVING count >= 100/" |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > GB2.tsv
+
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo -e "${QUERY}" |
+        sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
+        sed "s/REPLACE_2/AND assembly_level IN ('Complete Genome', 'Chromosome')/" |
+        sed "s/REPLACE_3/HAVING count >= 2/" |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > GB3.tsv
+
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo -e "${QUERY}" |
+        sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
+        sed "s/REPLACE_2/AND genome_rep IN ('Full')/" |
+        sed "s/REPLACE_3/HAVING count >= 2/" |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > GB4.tsv
+
+wc -l RS*.tsv GB*.tsv
+#    48 RS1.tsv
+#   230 RS2.tsv
+#  1741 RS3.tsv
+#  6799 RS4.tsv
+#    53 GB1.tsv
+#   289 GB2.tsv
+#  1822 GB3.tsv
+#  7611 GB4.tsv
+
+for C in RS GB; do
+    for N in $(seq 1 1 10); do
+        if [ -e "${C}${N}.tsv" ]; then
+            printf "${C}${N}\t"
+            cat ${C}${N}.tsv |
+                tsv-summarize --sum 3
+        fi
+    done
 done
-#817
-#15299
-#80300
-#28732
+#RS1     16893
+#RS2     204296
+#RS3     30510
+#RS4     252538
+#GB1     22591
+#GB2     1244156
+#GB3     37300
+#GB4     1299256
 
-cat L3.tsv |
-    tsv-join -f L2.tsv -k 1 -e |
+cat RS2.tsv |
+    tsv-join -f RS1.tsv -k 1 -e |
     tsv-summarize --sum 3
-#13133
+#46739
 
-cat L4.tsv |
-    tsv-join -f L2.tsv -k 1 -e |
-    tsv-join -f L3.tsv -k 1 -e |
+cat RS3.tsv |
+    tsv-join -f RS1.tsv -k 1 -e |
+    tsv-join -f RS2.tsv -k 1 -e |
     tsv-summarize --sum 3
-#10473
+#8084
+
+cat RS4.tsv |
+    tsv-join -f RS1.tsv -k 1 -e |
+    tsv-join -f RS2.tsv -k 1 -e |
+    tsv-join -f RS3.tsv -k 1 -e |
+    tsv-summarize --sum 3
+#20130
 
 ```
 
@@ -302,23 +336,23 @@ cp reference.tsv ~/Scripts/genomes/assembly/Bacteria.reference.tsv
 
 ```
 
-| #tax_id | organism_name                                                    | phylum                |
-|---------|------------------------------------------------------------------|-----------------------|
-| 565050  | Caulobacter vibrioides NA1000                                    | Alphaproteobacteria   |
-| 192222  | Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819      | Epsilonproteobacteria |
-| 208964  | Pseudomonas aeruginosa PAO1                                      | Gammaproteobacteria   |
-| 871585  | Acinetobacter pittii PHEA-2                                      | Gammaproteobacteria   |
-| 511145  | Escherichia coli str. K-12 substr. MG1655                        | Gammaproteobacteria   |
-| 386585  | Escherichia coli O157:H7 str. Sakai                              | Gammaproteobacteria   |
-| 1125630 | Klebsiella pneumoniae subsp. pneumoniae HS11286                  | Gammaproteobacteria   |
-| 99287   | Salmonella enterica subsp. enterica serovar Typhimurium str. LT2 | Gammaproteobacteria   |
-| 198214  | Shigella flexneri 2a str. 301                                    | Gammaproteobacteria   |
-| 227377  | Coxiella burnetii RSA 493                                        | Gammaproteobacteria   |
-| 272561  | Chlamydia trachomatis D/UW-3/CX                                  | Chlamydiae            |
-| 93061   | Staphylococcus aureus subsp. aureus NCTC 8325                    | Bacillota             |
-| 224308  | Bacillus subtilis subsp. subtilis str. 168                       | Bacillota             |
-| 169963  | Listeria monocytogenes EGD-e                                     | Bacillota             |
-| 83332   | Mycobacterium tuberculosis H37Rv                                 | Actinomycetota        |
+| #tax_id | organism_name                                                    | phylum              |
+|---------|------------------------------------------------------------------|---------------------|
+| 565050  | Caulobacter vibrioides NA1000                                    | Alphaproteobacteria |
+| 192222  | Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819      | Campylobacterota    |
+| 208964  | Pseudomonas aeruginosa PAO1                                      | Gammaproteobacteria |
+| 871585  | Acinetobacter pittii PHEA-2                                      | Gammaproteobacteria |
+| 511145  | Escherichia coli str. K-12 substr. MG1655                        | Gammaproteobacteria |
+| 386585  | Escherichia coli O157:H7 str. Sakai                              | Gammaproteobacteria |
+| 1125630 | Klebsiella pneumoniae subsp. pneumoniae HS11286                  | Gammaproteobacteria |
+| 99287   | Salmonella enterica subsp. enterica serovar Typhimurium str. LT2 | Gammaproteobacteria |
+| 198214  | Shigella flexneri 2a str. 301                                    | Gammaproteobacteria |
+| 227377  | Coxiella burnetii RSA 493                                        | Gammaproteobacteria |
+| 272561  | Chlamydia trachomatis D/UW-3/CX                                  | Chlamydiota         |
+| 93061   | Staphylococcus aureus subsp. aureus NCTC 8325                    | Bacillota           |
+| 224308  | Bacillus subtilis subsp. subtilis str. 168                       | Bacillota           |
+| 169963  | Listeria monocytogenes EGD-e                                     | Bacillota           |
+| 83332   | Mycobacterium tuberculosis H37Rv                                 | Actinomycetota      |
 
 ## Download all assemblies
 
@@ -326,22 +360,23 @@ cp reference.tsv ~/Scripts/genomes/assembly/Bacteria.reference.tsv
 
 Three levels:
 
-* '>= 100 genomes'
-    * assembly_level: 'Complete Genome', 'Chromosome'
-    * assembly_level: NOT 'contig'; genome_rep: 'Full'
-* '>= 2 genomes'
-    * assembly_level: 'Complete Genome', 'Chromosome'
+* RefSeq
+    * '>= 100 genomes'
+        * RS1 - assembly_level: 'Complete Genome', 'Chromosome'
+        * RS2 - genome_rep: 'Full'
+    * '>= 2 genomes'
+        * RS3 - assembly_level: 'Complete Genome', 'Chromosome'
 
 ```shell
 cd ~/data/Bacteria/summary
 
 cat reference.tsv |
-    tsv-select -H -f organism_name,species,genus,ftp_path,assembly_level \
+    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
-# L2
+# RS1
 SPECIES=$(
-    cat L2.tsv |
+    cat RS1.tsv |
         cut -f 1 |
         tr "\n" "," |
         sed 's/,$//'
@@ -349,23 +384,21 @@ SPECIES=$(
 
 echo "
     SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
+        assembly_accession
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '% sp.%'
         AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
     " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-filter -H --regex '2:^[A-Z]' \
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
 
-# L3
+# RS2
 SPECIES=$(
-    cat L3.tsv |
-        tsv-join -f L2.tsv -k 1 -e |
+    cat RS2.tsv |
+        tsv-join -f RS1.tsv -k 1 -e |
         cut -f 1 |
         tr "\n" "," |
         sed 's/,$//'
@@ -373,25 +406,22 @@ SPECIES=$(
 
 echo "
     SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
+        assembly_accession
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '% sp.%'
-        AND assembly_level IN ('Complete Genome', 'Chromosome', 'Scaffold')
-        AND genome_rep IN ('Full') -- fully representative
+        AND genome_rep IN ('Full')
     " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-filter -H --regex '2:^[A-Z]' \
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
 
-# L4
+# RS3
 SPECIES=$(
-    cat L4.tsv |
-        tsv-join -f L2.tsv -k 1 -e |
-        tsv-join -f L3.tsv -k 1 -e |
+    cat RS3.tsv |
+        tsv-join -f RS1.tsv -k 1 -e |
+        tsv-join -f RS2.tsv -k 1 -e |
         cut -f 1 |
         tr "\n" "," |
         sed 's/,$//'
@@ -399,44 +429,43 @@ SPECIES=$(
 
 echo "
     SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
+        assembly_accession
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '% sp.%'
-        AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
+        AND assembly_level IN ('Complete Genome', 'Chromosome')
     " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-filter -H --regex '2:^[A-Z]' \
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
 
 datamash check < raw.tsv
-#38788 lines, 5 fields
+#71732 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
     tsv-uniq |
-    perl ~/Scripts/withncbi/taxon/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
-    (echo -e '#name\tftp_path\torganism\tassembly_level' && cat ) |
+    tsv-select -f 1-6 |
+    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
     perl -nl -a -F"," -e '
         BEGIN{my %seen};
         /^#/ and print and next;
         /^organism_name/i and next;
         $seen{$F[3]}++; # ftp_path
         $seen{$F[3]} > 1 and next;
-        $seen{$F[5]}++; # abbr_name
-        $seen{$F[5]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\n}, $F[5], $F[3], $F[1], $F[4];
+        $seen{$F[6]}++; # abbr_name
+        $seen{$F[6]} > 1 and next;
+        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
         ' |
-    keep-header -- sort -k3,3 -k1,1 |
-    tsv-filter -H --regex '1:^[A-Z]' \
+    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
+    keep-header -- tsv-sort -k4,4 -k1,1 \
     > Bacteria.assembly.tsv
 
 datamash check < Bacteria.assembly.tsv
-#38662 lines, 4 fields
+#71686 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacteria.assembly.tsv |
@@ -448,120 +477,147 @@ cat Bacteria.assembly.tsv |
 cat Bacteria.assembly.tsv |
     tsv-filter --or --str-in-fld 1:genomosp --str-in-fld 1:genomovar
 
-# Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
+# Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Bacteria.assembly.tsv
+#
+# Save the file to another directory to prevent accidentally changing it
 # cp Bacteria.assembly.tsv ~/Scripts/genomes/assembly
-
-# Comment out unneeded strains
 
 # Cleaning
 rm raw*.*sv
 
 ```
 
-### rsync and check
+### Count before download
 
-Information of assemblies are collected from *_assembly_report.txt *after* downloading.
-
-**Note**: `*_assembly_report.txt` have `CRLF` at the end of the line.
+* `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
 
 ```shell
 cd ~/data/Bacteria
 
-cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
-    tsv-filter -v --str-in-fld 2:http
+nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
+    --count \
+    --rank genus
 
-nwr assembly ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
-    -o ASSEMBLY
+# strains.taxon.tsv
+bash Count/strains.sh
 
-# Remove dirs not in the list
-find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
-    tr "/" "\t" |
-    cut -f 2 |
-    tsv-join --exclude -k 1 -f ASSEMBLY/url.tsv -d 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        echo Remove {}
-        rm -fr ASSEMBLY/{}
-    '
+# .lst and .count.tsv
+bash Count/rank.sh
 
-# Run
-proxychains4 bash ASSEMBLY/rsync.sh
+mv Count/genus.count.tsv Count/genus.before.tsv
 
-# Check md5
-# rm ASSEMBLY/check.lst
-bash ASSEMBLY/check.sh
-
-# Collect
-bash ASSEMBLY/collect.sh
-
-# Temporary files, possibly caused by an interrupted rsync process
-find ASSEMBLY/ -type f -name ".*" > ASSEMBLY/temp.list
-
-cat ASSEMBLY/temp.list |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        if [[ -f {} ]]; then
-            echo Remove {}
-            rm {}
-        fi
-    '
+cat Count/genus.before.tsv |
+    keep-header -- tsv-sort -k1,1 |
+    tsv-filter -H --ge 3:500 |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
 
-### Check N50 of assemblies
+| genus               | #species | #strains |
+|---------------------|---------:|---------:|
+| Acinetobacter       |       22 |     1340 |
+| Aeromonas           |       11 |      828 |
+| Bacillus            |       32 |     3129 |
+| Bacteroides         |       15 |     1583 |
+| Bifidobacterium     |       12 |     1599 |
+| Bordetella          |        9 |      807 |
+| Burkholderia        |       26 |     2462 |
+| Campylobacter       |       27 |     2111 |
+| Citrobacter         |       11 |      532 |
+| Clostridium         |       20 |     1463 |
+| Corynebacterium     |       34 |      697 |
+| Enterobacter        |       10 |     1692 |
+| Enterococcus        |       12 |     1327 |
+| Escherichia         |        4 |     3358 |
+| Francisella         |        9 |      959 |
+| Haemophilus         |        6 |      898 |
+| Klebsiella          |       10 |     3808 |
+| Lacticaseibacillus  |        5 |      623 |
+| Lactobacillus       |       15 |      951 |
+| Lactococcus         |        8 |      508 |
+| Limosilactobacillus |        5 |      523 |
+| Listeria            |        6 |      748 |
+| Mycobacterium       |       16 |      938 |
+| Mycobacteroides     |        3 |     1920 |
+| Pseudomonas         |       89 |     4079 |
+| Rhizobium           |        9 |      538 |
+| Salmonella          |        2 |     1564 |
+| Shigella            |        4 |     1800 |
+| Staphylococcus      |       35 |     3593 |
+| Stenotrophomonas    |        5 |      758 |
+| Streptococcus       |       38 |     3372 |
+| Vibrio              |       41 |     1548 |
+| Xanthomonas         |       18 |     1346 |
+
+### Download and check
 
 ```shell
 cd ~/data/Bacteria
 
-cat ASSEMBLY/collect.csv | # head |
-    sed '1d' |
-    tsv-select -d "," -f 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 8 '
-        1>&2 echo "==> {}"
+ulimit -n `ulimit -Hn`
 
-        find ASSEMBLY/{} -type f -name "*_genomic.fna.gz" |
-            grep -v "_from_" | # exclude CDS and rna
-            xargs cat |
-            faops n50 -C -S stdin |
-            (echo -e "name\t{}" && cat) |
-            datamash transpose
-    ' |
-    tsv-uniq | # keep the first header
-    tee ASSEMBLY/n50.tsv
+nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
+    --ass
+
+# Run
+bash ASSEMBLY/rsync.sh
+
+# Check md5; create check.lst
+# rm ASSEMBLY/check.lst
+bash ASSEMBLY/check.sh
+
+# Put the misplaced directory into the right place
+#bash ASSEMBLY/reorder.sh
+#
+# This operation will delete some files in the directory, so please be careful
+#cat ASSEMBLY/remove.lst |
+#    parallel --no-run-if-empty --linebuffer -k -j 1 '
+#        if [[ -e "ASSEMBLY/{}" ]]; then
+#            echo Remove {}
+#            rm -fr "ASSEMBLY/{}"
+#        fi
+#    '
+
+find ASSEMBLY/ -name "*_genomic.fna.gz" |
+    grep -v "_from_" |
+    wc -l
+#
+
+# N50 C S; create n50.tsv and n50.pass.tsv
+bash ASSEMBLY/n50.sh 100000 200 1000000
+
+# Adjust parameters passed to `n50.sh`
+cat ASSEMBLY/n50.tsv |
+    tsv-filter -H --str-in-fld "name:_GCF_" |
+    tsv-summarize -H --min "N50,S" --max "C"
+#N50_min S_min   C_max
+#32179   2187595 2016
 
 cat ASSEMBLY/n50.tsv |
-    tsv-filter \
-        -H --or \
-        --le 4:100 \
-        --ge 2:100000 |
-    tsv-filter -H --ge 3:1000000 |
-    tr "\t" "," \
-    > ASSEMBLY/n50.pass.csv
+    tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
+#S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
+#11671954.4      32505046        26704.8 368791.5        349.5   4717.6
+
+# After the above steps are completed, run the following commands.
+
+# Collect; create collect.tsv
+bash ASSEMBLY/collect.sh
+
+# After all completed
+bash ASSEMBLY/finish.sh
+
+cp ASSEMBLY/collect.pass.tsv summary/
+
+cat ASSEMBLY/counts.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 wc -l ASSEMBLY/n50* ASSEMBLY/collect.csv
 #   35159 ASSEMBLY/n50.pass.csv
 #   38660 ASSEMBLY/n50.tsv
 #   38660 ASSEMBLY/collect.csv
-
-# Omit strains without protein annotations
-for STRAIN in $(cat ASSEMBLY/n50.pass.csv | cut -d, -f 1); do
-    if ! compgen -G "ASSEMBLY/${STRAIN}/*_protein.faa.gz" > /dev/null; then
-        echo ${STRAIN}
-    fi
-    if ! compgen -G "ASSEMBLY/${STRAIN}/*_cds_from_genomic.fna.gz" > /dev/null; then
-        echo ${STRAIN}
-    fi
-done |
-    tsv-uniq
-# All OK
-
-tsv-join \
-    ASSEMBLY/collect.csv \
-    --delimiter "," -H --key-fields 1 \
-    --filter-file ASSEMBLY/n50.pass.csv \
-    > summary/collect.pass.csv
-
-wc -l summary/collect.pass.csv
-#35159 summary/collect.pass.csv
 
 ```
 
@@ -591,82 +647,25 @@ rsync -avP \
 
 ## BioSample
 
-ENA's BioSample missed many strains, so NCBI's was used.
-
 ```shell
 cd ~/data/Bacteria
 
-mkdir -p biosample
-
 ulimit -n `ulimit -Hn`
 
-cat ASSEMBLY/collect.csv |
-    tsv-select -H -d, -f BioSample |
-    grep "^SAM" |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        if [ ! -s biosample/{}.txt ]; then
-            >&2 echo {}
-            curl -fsSL "https://www.ncbi.nlm.nih.gov/biosample/?term={}&report=full&format=text" -o biosample/{}.txt
-#            curl -fsSL "https://www.ebi.ac.uk/biosamples/samples/{}" -o biosample/{}.json
-        fi
-    '
+nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+    --bs
 
-# Allowing samples not in the list
-find biosample -name "SAM*.txt" | wc -l
-# 39817
+# Run this script twice and it will re-download the failed files
+bash BioSample/download.sh
 
-find biosample -name "SAM*.txt" |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        cat {} |
-            perl -nl -e '\''
-                print $1 if m{\s+\/([\w_ ]+)=};
-            '\''
-    ' |
-    tsv-uniq --at-least 500 | # ignore rare attributes
-    grep -v "^INSDC" |
-    grep -v "^ENA" \
-    > summary/attributes.lst
+# Ignore rare attributes
+bash BioSample/collect.sh 500
 
-cat summary/attributes.lst |
-    (echo -e "BioSample" && cat) |
-    tr '\n' '\t' |
-    sed 's/\t$/\n/' \
-    > summary/biosample.tsv
+datamash check < BioSample/biosample.tsv
+#
 
-find biosample -name "SAM*.txt" |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        >&2 echo {/.}
-        cat {} |
-            perl -nl -MPath::Tiny -e '\''
-                BEGIN {
-                    our @keys = grep {/\S/} path(q{summary/attributes.lst})->lines({chomp => 1});
-                    our %stat = ();
-                }
-
-                m(\s+\/([\w_ ]+)=\"(.+)\") or next;
-                my $k = $1;
-                my $v = $2;
-                if ( $v =~ m(\bNA|missing|Not applicable|not collected|not available|not provided|N\/A|not known|unknown\b)i ) {
-                    $stat{$k} = q();
-                } else {
-                    $stat{$k} = $v;
-                }
-
-                END {
-                    my @c;
-                    for my $key ( @keys ) {
-                        if (exists $stat{$key}) {
-                            push @c, $stat{$key};
-                        }
-                        else {
-                            push @c, q();
-                        }
-                    }
-                    print join(qq{\t}, q{{/.}}, @c);
-                }
-            '\''
-    ' \
-    >> summary/biosample.tsv
+cp BioSample/attributes.lst summary/
+cp BioSample/biosample.tsv summary/
 
 ```
 
