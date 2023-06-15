@@ -328,6 +328,8 @@ cat Count/genus.before.tsv |
 * The parameters of `n50.sh` should be determined by the distribution of the description statistics
 * `collect.sh` generates a file of type `.tsv`, which is intended to be opened by spreadsheet
   software.
+    * Information of assemblies are collected from *_assembly_report.txt *after* downloading
+    * **Note**: `*_assembly_report.txt` have `CRLF` at the end of the line.
 * `finish.sh` generates the following files
     * `omit.lst` - no annotations
     * `collect.pass.tsv` - passes the n50 check
@@ -422,6 +424,8 @@ rsync -avP \
 ```
 
 ## BioSample
+
+ENA's BioSample missed many strains, so NCBI's was used.
 
 ```shell
 cd ~/data/Trichoderma

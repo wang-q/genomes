@@ -462,7 +462,7 @@ nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
 # strains.taxon.tsv
 bash Count/strains.sh
 
-# genus.lst and genus.count.tsv
+# .lst and .count.tsv
 bash Count/rank.sh
 
 mv Count/genus.count.tsv Count/genus.before.tsv
