@@ -594,15 +594,15 @@ rsync -avP \
 
 ```
 
-For such huge collections, we can rsync files in parallel.
+For such huge collections, we can rsync files inside ASSEMBLY/ in parallel.
 
 ```shell
 # Copy Directory Structure
 rsync -avP \
     -e 'ssh -p 8804' \
     -f"+ */" -f"- *" \
-    wangq@58.213.64.36:data/Fungi/ \
-    ~/data/Fungi
+    wangq@58.213.64.36:data/Fungi/ASSEMBLY/ \
+    ~/data/Fungi/ASSEMBLY
 
 # Transfer species directories in parallel
 cat ~/data/Fungi/ASSEMBLY/url.tsv |
@@ -615,12 +615,6 @@ cat ~/data/Fungi/ASSEMBLY/url.tsv |
             wangq@58.213.64.36:data/Fungi/ASSEMBLY/{}/ \
             ~/data/Fungi/ASSEMBLY/{}
     '
-
-# rsync other files
-rsync -avP \
-    -e 'ssh -p 8804' \
-    ~/data/Fungi/ \
-    wangq@58.213.64.36:data/Fungi
 
 ```
 
