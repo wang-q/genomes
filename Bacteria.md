@@ -85,8 +85,6 @@ nwr member Bacteria |
 
 ### Species with assemblies
 
-Three levels:
-
 * RefSeq
     * '>= 100 genomes'
         * RS1 - assembly_level: 'Complete Genome', 'Chromosome'
@@ -499,8 +497,12 @@ nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     --count \
     --rank genus
 
-# strains.taxon.tsv
+# strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -514,6 +516,15 @@ cat Count/genus.before.tsv |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
+
+| item    | count |
+|---------|------:|
+| strain  | 71685 |
+| species |  1745 |
+| genus   |   525 |
+| family  |   204 |
+| order   |    95 |
+| class   |    44 |
 
 | genus               | #species | #strains |
 |---------------------|---------:|---------:|
@@ -552,6 +563,11 @@ cat Count/genus.before.tsv |
 | Xanthomonas         |       18 |     1346 |
 
 ### Download and check
+
+* A standardized archaeal taxonomy for the Genome Taxonomy Database.
+  Nat Microbiol 6, 946–959 (2021).
+    * Only genomes comprising ≤200 contigs with an N50 of ≥20 kb and with CheckM completeness and
+      contamination estimates of ≥95% and ≤5%, respectively, were considered.
 
 ```shell
 cd ~/data/Bacteria
@@ -639,9 +655,29 @@ rsync -avP \
     wangq@58.213.64.36:data/Bacteria/ \
     ~/data/Bacteria
 
+```
 
-# rsync -avP -e "ssh -T -c chacha20-poly1305@openssh.com -o Compression=no -x" \
-#   wangq@202.119.37.251:data/Bacteria/ASSEMBLY/ ~/data/Bacteria/ASSEMBLY
+For such huge collections, we can rsync files inside ASSEMBLY/ in parallel.
+
+```shell
+# Copy Directory Structure
+rsync -avP \
+    -e 'ssh -p 8804' \
+    -f"+ */" -f"- *" \
+    wangq@58.213.64.36:data/Bacteria/ASSEMBLY/ \
+    ~/data/Bacteria/ASSEMBLY
+
+# Transfer species directories in parallel
+cat ~/data/Bacteria/ASSEMBLY/url.tsv |
+    tsv-select -f 3 |
+    tsv-uniq |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        echo -e "\n==> {}"
+        rsync -avP \
+            -e "ssh -p 8804" \
+            wangq@58.213.64.36:data/Bacteria/ASSEMBLY/{}/ \
+            ~/data/Bacteria/ASSEMBLY/{}
+    '
 
 ```
 
@@ -652,7 +688,7 @@ cd ~/data/Bacteria
 
 ulimit -n `ulimit -Hn`
 
-nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
+nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     --bs
 
 # Run this script twice and it will re-download the failed files
@@ -796,197 +832,6 @@ cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
 | Stenotrophomonas maltophilia  |   373 |
 | Streptococcus pneumoniae      |   208 |
 | Streptococcus pyogenes        |   263 |
-
-### Order
-
-```shell
-cd ~/data/Bacteria
-
-# Group by order
-cat summary/collect.pass.csv |
-    sed -e '1d' |
-    tsv-select -d, -f 3 |
-    tsv-uniq |
-    nwr append stdin -r order |
-    tsv-select -f 2 |
-    tsv-uniq |
-    grep -v "NA" |
-    sort \
-    > summary/order.lst
-
-cat summary/order.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        n_species=$(cat summary/collect.pass.csv |
-            sed "1d" |
-            tsv-select -d, -f 3 |
-            nwr append stdin -r order -r species |
-            grep {} |
-            tsv-select -f 1,3 |
-            tsv-uniq |
-            wc -l)
-
-        n_strains=$(cat summary/collect.pass.csv |
-            sed "1d" |
-            tsv-select -d, -f 3 |
-            nwr append stdin -r order |
-            grep {} |
-            wc -l)
-
-        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
-    ' |
-    nwr append stdin --id |
-    tsv-select -f 5,4,2,3 |
-    tsv-sort -k2,2 |
-    tsv-filter --ge 4:100 |
-    (echo -e '#tax_id\torder\t#species\t#strains' && cat) |
-    mlr --itsv --omd cat
-
-```
-
-| #tax_id | order               | #species | #strains |
-|---------|---------------------|----------|----------|
-| 135624  | Aeromonadales       | 27       | 271      |
-| 135622  | Alteromonadales     | 56       | 135      |
-| 1385    | Bacillales          | 500      | 4610     |
-| 171549  | Bacteroidales       | 102      | 996      |
-| 85004   | Bifidobacteriales   | 89       | 786      |
-| 80840   | Burkholderiales     | 233      | 2014     |
-| 213849  | Campylobacterales   | 204      | 1047     |
-| 51291   | Chlamydiales        | 123      | 262      |
-| 84999   | Coriobacteriales    | 4        | 110      |
-| 85007   | Corynebacteriales   | 350      | 2161     |
-| 91347   | Enterobacterales    | 1055     | 9503     |
-| 186802  | Eubacteriales       | 143      | 540      |
-| 200644  | Flavobacteriales    | 73       | 426      |
-| 356     | Hyphomicrobiales    | 260      | 1095     |
-| 186826  | Lactobacillales     | 457      | 3447     |
-| 118969  | Legionellales       | 32       | 177      |
-| 1643688 | Leptospirales       | 27       | 108      |
-| 85006   | Micrococcales       | 64       | 194      |
-| 2887326 | Moraxellales        | 60       | 869      |
-| 2085    | Mycoplasmatales     | 24       | 115      |
-| 206351  | Neisseriales        | 54       | 350      |
-| 135625  | Pasteurellales      | 91       | 628      |
-| 85009   | Propionibacteriales | 90       | 163      |
-| 72274   | Pseudomonadales     | 254      | 1489     |
-| 204455  | Rhodobacterales     | 39       | 177      |
-| 766     | Rickettsiales       | 97       | 219      |
-| 136     | Spirochaetales      | 61       | 212      |
-| 85011   | Streptomycetales    | 69       | 165      |
-| 72273   | Thiotrichales       | 54       | 269      |
-| 48461   | Verrucomicrobiales  | 2        | 175      |
-| 135623  | Vibrionales         | 88       | 660      |
-| 135614  | Xanthomonadales     | 141      | 792      |
-
-### Genus
-
-```shell
-cd ~/data/Bacteria
-
-# Group by genus
-cat summary/collect.pass.csv |
-    sed -e '1d' |
-    tsv-select -d, -f 3 |
-    tsv-uniq |
-    nwr append stdin -r genus |
-    tsv-select -f 2 |
-    tsv-uniq |
-    grep -v "NA" |
-    sort \
-    > summary/genus.lst
-
-cat summary/genus.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        n_species=$(cat summary/collect.pass.csv |
-            sed "1d" |
-            tsv-select -d, -f 3 |
-            nwr append stdin -r genus -r species |
-            grep {} |
-            tsv-select -f 1,3 |
-            tsv-uniq |
-            wc -l)
-
-        n_strains=$(cat summary/collect.pass.csv |
-            sed "1d" |
-            tsv-select -d, -f 3 |
-            nwr append stdin -r genus |
-            grep {} |
-            wc -l)
-
-        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
-    ' |
-    nwr append stdin --id |
-    tsv-select -f 5,4,2,3 |
-    tsv-sort -k2,2 |
-    tsv-filter --ge 4:100 |
-    (echo -e '#tax_id\tgenus\t#species\t#strains' && cat) |
-    mlr --itsv --omd cat
-
-```
-
-| #tax_id | genus               | #species | #strains |
-|---------|---------------------|----------|----------|
-| 469     | Acinetobacter       | 52       | 795      |
-| 642     | Aeromonas           | 26       | 269      |
-| 357     | Agrobacterium       | 16       | 160      |
-| 239934  | Akkermansia         | 2        | 175      |
-| 1386    | Bacillus            | 193      | 1875     |
-| 816     | Bacteroides         | 42       | 657      |
-| 1678    | Bifidobacterium     | 83       | 769      |
-| 517     | Bordetella          | 23       | 807      |
-| 234     | Brucella            | 95       | 278      |
-| 32008   | Burkholderia        | 103      | 692      |
-| 194     | Campylobacter       | 107      | 598      |
-| 810     | Chlamydia           | 122      | 260      |
-| 544     | Citrobacter         | 16       | 208      |
-| 1870884 | Clostridioides      | 19       | 151      |
-| 1485    | Clostridium         | 61       | 273      |
-| 102106  | Collinsella         | 4        | 110      |
-| 1716    | Corynebacterium     | 83       | 358      |
-| 413496  | Cronobacter         | 8        | 184      |
-| 1912216 | Cutibacterium       | 79       | 119      |
-| 547     | Enterobacter        | 30       | 778      |
-| 1350    | Enterococcus        | 32       | 672      |
-| 551     | Erwinia             | 15       | 227      |
-| 561     | Escherichia         | 191      | 2910     |
-| 237     | Flavobacterium      | 11       | 119      |
-| 262     | Francisella         | 50       | 185      |
-| 724     | Haemophilus         | 16       | 212      |
-| 209     | Helicobacter        | 82       | 423      |
-| 570     | Klebsiella          | 72       | 2430     |
-| 2759736 | Lacticaseibacillus  | 23       | 219      |
-| 2767842 | Lactiplantibacillus | 14       | 228      |
-| 1578    | Lactobacillus       | 59       | 245      |
-| 1357    | Lactococcus         | 26       | 186      |
-| 445     | Legionella          | 19       | 132      |
-| 171     | Leptospira          | 27       | 108      |
-| 2767887 | Ligilactobacillus   | 11       | 115      |
-| 2742598 | Limosilactobacillus | 16       | 144      |
-| 1637    | Listeria            | 103      | 388      |
-| 75984   | Mannheimia          | 15       | 116      |
-| 1763    | Mycobacterium       | 202      | 708      |
-| 670516  | Mycobacteroides     | 18       | 948      |
-| 482     | Neisseria           | 35       | 310      |
-| 53335   | Pantoea             | 17       | 156      |
-| 375288  | Parabacteroides     | 9        | 138      |
-| 745     | Pasteurella         | 17       | 145      |
-| 2800373 | Priestia            | 10       | 134      |
-| 583     | Proteus             | 7        | 132      |
-| 286     | Pseudomonas         | 234      | 1434     |
-| 48736   | Ralstonia           | 17       | 141      |
-| 379     | Rhizobium           | 39       | 413      |
-| 590     | Salmonella          | 479      | 1389     |
-| 613     | Serratia            | 21       | 191      |
-| 620     | Shigella            | 24       | 174      |
-| 1279    | Staphylococcus      | 97       | 1899     |
-| 40323   | Stenotrophomonas    | 11       | 249      |
-| 1301    | Streptococcus       | 183      | 1279     |
-| 1883    | Streptomyces        | 68       | 163      |
-| 104267  | Tenacibaculum       | 7        | 113      |
-| 157     | Treponema           | 30       | 141      |
-| 662     | Vibrio              | 76       | 625      |
-| 338     | Xanthomonas         | 108      | 441      |
-| 629     | Yersinia            | 58       | 250      |
 
 ## MinHash
 
