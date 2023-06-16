@@ -264,8 +264,12 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --count \
     --rank genus
 
-# strains.taxon.tsv
+# strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 # genus.lst and genus.count.tsv
 bash Count/rank.sh
@@ -279,6 +283,15 @@ cat Count/genus.before.tsv |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
+
+| item    | count |
+|---------|------:|
+| strain  |  1378 |
+| species |   602 |
+| genus   |   163 |
+| family  |    46 |
+| order   |    30 |
+| class   |    16 |
 
 | genus              | #species | #strains |
 |--------------------|---------:|---------:|
@@ -517,8 +530,12 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --rank order --rank genus \
     --lineage family --lineage genus
 
-# strains.taxon.tsv
+# strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -544,6 +561,15 @@ cat Count/lineage.count.tsv |
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ```
+
+| item    | count |
+|---------|------:|
+| strain  |   943 |
+| species |   547 |
+| genus   |   158 |
+| family  |    45 |
+| order   |    29 |
+| class   |    15 |
 
 | order              | #species | #strains |
 |--------------------|---------:|---------:|
@@ -602,8 +628,12 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --not-in ASSEMBLY/omit.lst \
     --rank genus
 
-# strains.taxon.tsv
+# strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -617,6 +647,15 @@ cat Count/genus.count.tsv |
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 ```
+
+| item    | count |
+|---------|------:|
+| strain  |   928 |
+| species |   544 |
+| genus   |   157 |
+| family  |    45 |
+| order   |    29 |
+| class   |    15 |
 
 | genus              | #species | #strains |
 |--------------------|---------:|---------:|
