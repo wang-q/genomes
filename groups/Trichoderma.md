@@ -116,7 +116,7 @@ while read RANK_ID; do
         WHERE 1=1
             AND genus_id = ${RANK_ID}
             AND species NOT LIKE '% sp.%'
-            AND species NOT LIKE '% x %'
+            AND species NOT LIKE '% x %' -- Crossbreeding of two species
             AND genome_rep IN ('Full')
         GROUP BY species_id
         HAVING count >= 1
@@ -167,13 +167,22 @@ done
 
 ## Download all assemblies
 
-### Create assembly.tsv
+### Create .assembly.tsv
 
-If a refseq assembly is available, the corresponding genbank one is not downloaded
+This step is pretty important
+
+* `nwr kb formats` will give the formatting requirements for `.assembly.tsv`.
+
+* The naming of assemblies has two aspects:
+    * for program operation they are unique identifiers;
+    * for researchers, they should provide taxonomic information.
+
+If a RefSeq assembly is available, the corresponding GenBank one will not be listed
 
 ```shell
 cd ~/data/Trichoderma/summary
 
+# Reference genome
 echo "
 .headers ON
 
@@ -294,7 +303,7 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --count \
     --rank genus
 
-# strains.taxon.tsv
+# strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
 
 # genus.lst and genus.count.tsv
