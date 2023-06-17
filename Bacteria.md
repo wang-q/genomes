@@ -664,8 +664,8 @@ For such huge collections, we can rsync files inside ASSEMBLY/ in parallel.
 rsync -avP \
     -e 'ssh -p 8804' \
     -f"+ */" -f"- *" \
-    wangq@58.213.64.36:data/Bacteria/ASSEMBLY/ \
-    ~/data/Bacteria/ASSEMBLY
+    ~/data/Bacteria/ASSEMBLY/ \
+    wangq@58.213.64.36:data/Bacteria/ASSEMBLY
 
 # Transfer species directories in parallel
 cat ~/data/Bacteria/ASSEMBLY/url.tsv |
@@ -675,8 +675,8 @@ cat ~/data/Bacteria/ASSEMBLY/url.tsv |
         echo -e "\n==> {}"
         rsync -avP \
             -e "ssh -p 8804" \
-            wangq@58.213.64.36:data/Bacteria/ASSEMBLY/{}/ \
-            ~/data/Bacteria/ASSEMBLY/{}
+            ~/data/Bacteria/ASSEMBLY/{}/
+            wangq@58.213.64.36:data/Bacteria/ASSEMBLY/{} \
     '
 
 ```
