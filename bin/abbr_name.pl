@@ -150,9 +150,18 @@ while ( my $line = <> ) {
         $strain =~ s/\bvariant\b//gi;
         $strain =~ s/\bgenomovar\b//gi;
         $strain =~ s/\bgenomosp\b//gi;
+
         $strain =~ s/\bbreed\b//gi;
         $strain =~ s/\bcultivar\b//gi;
         $strain =~ s/\becotype\b//gi;
+
+        $strain =~ s/\bn\/a\b//;
+        $strain =~ s/\bNA\b//;
+
+        $strain =~ s/\bmicrobial\b//gi;
+        $strain =~ s/\bclinical\b//gi;
+        $strain =~ s/\bpathogenic\b//gi;
+        $strain =~ s/\bisolate\b//gi;
     }
 
     s/\W+/_/g for ( $strain, $species, $genus );
