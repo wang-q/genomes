@@ -462,6 +462,8 @@ cp BioSample/biosample.tsv summary/
 Estimate nucleotide divergences among strains.
 
 * Abnormal strains
+    * This [paper](https://doi.org/10.1038/s41467-018-07641-9) showed that >95% intra-species and
+      and <83% inter-species ANI values.
     * If the maximum value of ANI between strains within a species is greater than *0.05*, the
       median and maximum value will be reported. Strains that cannot be linked by the median
       ANI, e.g., have no similar strains in the species, will be considered as abnormal strains.

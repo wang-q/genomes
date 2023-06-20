@@ -459,8 +459,12 @@ nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --count \
     --rank genus
 
-# strains.taxon.tsv
+# strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -585,8 +589,6 @@ rsync -avP \
     -e 'ssh -p 8804' \
     ~/data/Fungi/ \
     wangq@58.213.64.36:data/Fungi
-
-# scp -P 8804 ./nwr wangq@58.213.64.36:bin
 
 # rsync -avP wangq@202.119.37.251:data/Fungi/ ~/data/Fungi
 
