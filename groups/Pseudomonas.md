@@ -37,6 +37,7 @@
 
 * [Pseudomonas](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=286)
 * [Acinetobacter](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=469)
+* [Stenotrophomonas](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=40323)
 
 According to a recent [paper](https://doi.org/10.1128/mSystems.00543-20), there are some order-level
 changes in Gammaproteobacteria. We include both old and new orders.
@@ -61,11 +62,9 @@ mkdir -p ~/data/Pseudomonas
 cd ~/data/Pseudomonas
 
 rm -fr ASSEMBLY
-rm -fr NR
 rm -fr STRAINS
 
 ln -s ../Bacteria/ASSEMBLY ASSEMBLY
-ln -s ../Bacteria/NR NR
 ln -s ../Bacteria/STRAINS STRAINS
 
 ```
@@ -79,7 +78,8 @@ cd ~/data/Pseudomonas
 nwr member Pseudomonas Acinetobacter Stenotrophomonas Serratia Burkholderia Bordetella |
     grep -v " sp." |
     tsv-summarize -H -g 3 --count |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 nwr member Pseudomonas Acinetobacter Stenotrophomonas Burkholderia Bordetella -r "species group" -r "species subgroup" |
     tsv-select -f 1-3 |
@@ -95,28 +95,28 @@ nwr member Pseudomonas Acinetobacter Stenotrophomonas Burkholderia Bordetella -r
 ```
 
 | rank             | count |
-|------------------|-------|
-| genus            | 6     |
-| species          | 686   |
-| strain           | 2380  |
-| subspecies       | 16    |
-| no rank          | 142   |
-| species group    | 10    |
-| species subgroup | 7     |
-| isolate          | 6     |
+|------------------|------:|
+| genus            |     6 |
+| species          |   711 |
+| strain           |  2380 |
+| subspecies       |    15 |
+| no rank          |   143 |
+| species group    |    10 |
+| species subgroup |     7 |
+| isolate          |     6 |
 
 | #tax_id | sci_name                                 | rank             |
 |---------|------------------------------------------|------------------|
-| 2839056 | A. Taxon 24                              | species group    |
 | 909768  | A. calcoaceticus/baumannii complex       | species group    |
+| 2839056 | A. Taxon 24                              | species group    |
 | 87882   | Bu. cepacia complex                      | species group    |
+| 111527  | pseudomallei group                       | species group    |
 | 136841  | P. aeruginosa group                      | species group    |
 | 136842  | P. chlororaphis group                    | species group    |
 | 136843  | P. fluorescens group                     | species group    |
 | 136845  | P. putida group                          | species group    |
 | 136849  | P. syringae group                        | species group    |
 | 995085  | St. maltophilia group                    | species group    |
-| 111527  | pseudomallei group                       | species group    |
 | 2839060 | A. Taxon 24C                             | species subgroup |
 | 2839057 | A. Taxon 24D                             | species subgroup |
 | 2839061 | A. Taxon 24E                             | species subgroup |
@@ -225,46 +225,48 @@ cat species.count.tsv |
 
 | species_id | species                    | RS   | CHR |
 |------------|----------------------------|------|-----|
-| 287        | P. aeruginosa              | 7526 | 648 |
-| 470        | A. baumannii               | 7313 | 531 |
-| 28450      | Bu. pseudomallei           | 1782 | 154 |
+| 287        | P. aeruginosa              | 7816 | 708 |
+| 470        | A. baumannii               | 7520 | 605 |
+| 28450      | Bu. pseudomallei           | 1796 | 154 |
 | 520        | Bo. pertussis              | 878  | 593 |
-| 615        | Se. marcescens             | 874  | 129 |
-| 40324      | St. maltophilia            | 731  | 89  |
-| 317        | P. syringae                | 615  | 51  |
-| 95486      | Bu. cenocepacia            | 522  | 71  |
-| 87883      | Bu. multivorans            | 477  | 79  |
-| 347        | Xanthomonas oryzae         | 413  | 140 |
-| 48296      | A. pittii                  | 385  | 35  |
-| 305        | Ralstonia solanacearum     | 305  | 123 |
-| 294        | P. fluorescens             | 262  | 40  |
-| 292        | Bu. cepacia                | 241  | 20  |
-| 303        | P. putida                  | 226  | 70  |
-| 346        | Xanthomonas citri          | 217  | 111 |
-| 339        | Xanthomonas campestris     | 171  | 54  |
-| 85698      | Achromobacter xylosoxidans | 147  | 23  |
-| 56448      | Xanthomonas arboricola     | 146  | 20  |
-| 2371       | Xylella fastidiosa         | 142  | 47  |
-| 316        | Stutzerimonas stutzeri     | 140  | 27  |
-| 38313      | Shewanella algae           | 112  | 24  |
-| 587753     | P. chlororaphis            | 107  | 61  |
-| 756892     | A. indicus                 | 102  | 21  |
-| 13373      | Bu. mallei                 | 99   | 34  |
-| 518        | Bo. bronchiseptica         | 97   | 25  |
+| 615        | Se. marcescens             | 827  | 125 |
+| 40324      | St. maltophilia            | 744  | 90  |
+| 317        | P. syringae                | 632  | 52  |
+| 95486      | Bu. cenocepacia            | 528  | 71  |
+| 87883      | Bu. multivorans            | 472  | 80  |
+| 347        | Xanthomonas oryzae         | 439  | 164 |
+| 48296      | A. pittii                  | 390  | 39  |
+| 305        | Ralstonia solanacearum     | 319  | 122 |
+| 294        | P. fluorescens             | 260  | 40  |
+| 303        | P. putida                  | 255  | 72  |
+| 292        | Bu. cepacia                | 243  | 21  |
+| 346        | Xanthomonas citri          | 215  | 111 |
+| 339        | Xanthomonas campestris     | 210  | 118 |
+| 2371       | Xylella fastidiosa         | 209  | 57  |
+| 316        | Stutzerimonas stutzeri     | 158  | 28  |
+| 85698      | Achromobacter xylosoxidans | 151  | 23  |
+| 587753     | P. chlororaphis            | 142  | 84  |
+| 56448      | Xanthomonas arboricola     | 135  | 23  |
+| 38313      | Shewanella algae           | 113  | 24  |
+| 13373      | Bu. mallei                 | 108  | 34  |
+| 756892     | A. indicus                 | 98   | 21  |
+| 518        | Bo. bronchiseptica         | 96   | 25  |
 | 519        | Bo. parapertussis          | 94   | 90  |
 | 343        | Xanthomonas translucens    | 94   | 33  |
 | 380021     | P. protegens               | 83   | 27  |
 | 35814      | Bo. holmesii               | 80   | 66  |
-| 57975      | Bu. thailandensis          | 73   | 25  |
+| 57975      | Bu. thailandensis          | 76   | 25  |
 | 337        | Bu. glumae                 | 67   | 51  |
 | 1530123    | A. seifertii               | 60   | 25  |
+| 511        | Alcaligenes faecalis       | 55   | 21  |
+| 29575      | Taylorella equigenitalis   | 43   | 39  |
 | 164546     | Cupriavidus taiwanensis    | 43   | 38  |
 | 476        | Moraxella bovis            | 39   | 37  |
 | 1444770    | Xylella taiwanensis        | 32   | 22  |
 
 ## All assemblies
 
-### List strains of the target genus and remove abnormal strains
+### List strains of the target genus and create assembly.tsv
 
 * Some strains were anomalously labeled and identified by the `mash` ANI values.
     * Pseudom_chl_GCF_001023535_1
@@ -296,126 +298,227 @@ GENUS=(
 
     # Burkholderiales
     Burkholderia
-
     Bordetella
 )
 #GENUS=$(IFS=, ; echo "${GENUS[*]}")
 
-GENUS_ID=$(
-    for G in "${GENUS[@]}"; do echo $G; done |
-        nwr append stdin --id -r genus |
-        cut -f 3 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
+cat ../Bacteria/summary/collect.pass.tsv | # 65357
+    nwr restrict ${GENUS[*]} -f stdin -c 3 | # restrict to these genera 8877
+    tsv-filter -H --le "C:20" --ge "N50:500000" | # more stringent parameters 4047
+    keep-header -- tsv-join -e -f ../Bacteria/ASSEMBLY/omit.lst -k 1 | # 4047
+    keep-header -- tsv-join -e -f ../Bacteria/MinHash/abnormal.lst -k 1 | # 3892
+    keep-header -- sort \
+    > summary/collect.pass.tsv
 
-echo "
-    SELECT
-        DISTINCT assembly_accession
-    FROM ar
-    WHERE 1=1
-        AND genus_id IN ($GENUS_ID)
-        AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '% sp.%'
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    grep -v -i "symbiont " |
-    tsv-filter --str-not-in-fld 1:"[" \
-    > tmp.lst
-
-# strains.taxon.tsv
-cat ../Bacteria/summary/collect.pass.csv |
-    grep -F -f tmp.lst |
-    tsv-select -d, -f 1,3 |
-    tr "," "\t" |
-    sort |
-    tsv-uniq |
-    nwr append stdin -c 2 -r species -r genus -r family -r order \
-    > summary/strains.taxon.tsv
-
-# Abnormal strains
-cat summary/strains.taxon.tsv | tsv-select -f 3 | tsv-uniq | #head -n 1 |
-while read SPECIES; do
-    SPECIES_=$(
-        echo "${SPECIES}" |
-            tr " " "_"
-    )
-
-    # Number of assemblies >= 10
-    N_ASM=$(
-        cat NR/${SPECIES_}/assembly.lst | wc -l
-    )
-    if [[ $N_ASM -lt 10 ]]; then
-        continue
-    fi
-
-    # Max ANI > 0.12
-    D_MAX=$(
-        cat NR/${SPECIES_}/mash.dist.tsv |
-            tsv-summarize --max 3
-    )
-    if (( $(echo "$D_MAX < 0.12" | bc -l) )); then
-        continue
-    fi
-
-    # Link assemblies with median ANI
-    D_MEDIAN=$(
-        cat NR/${SPECIES_}/mash.dist.tsv |
-            tsv-summarize --median 3
-    )
-    cat "NR/${SPECIES_}/mash.dist.tsv" |
-        tsv-filter --ff-str-ne 1:2 --le "3:$D_MEDIAN" |
-        perl -nla -F"\t" -MGraph::Undirected -e '
-            BEGIN {
-                our $g = Graph::Undirected->new;
-            }
-
-            $g->add_edge($F[0], $F[1]);
-
-            END {
-                for my $cc ( $g->connected_components ) {
-                    print join qq{\n}, sort @{$cc};
-                }
-            }
-        ' \
-        > "NR/${SPECIES_}/median.cc.lst"
-
-    1>&2 echo -e "==> ${SPECIES_}\t${D_MEDIAN}\t${D_MAX}"
-    cat NR/${SPECIES_}/assembly.lst |
-        grep -v -F -w -f "NR/${SPECIES_}/median.cc.lst"
-done |
-    tee summary/abnormal.lst
-
-# Recreate summary/strains.taxon.tsv to avoid these assemblies
-cat ../Bacteria/summary/collect.pass.csv |
-    grep -F -f tmp.lst |
-    tsv-select -d, -f 1,3 |
-    tr "," "\t" |
-    sort |
-    tsv-uniq |
-    grep -v -F -w -f summary/abnormal.lst |
-    nwr append stdin -c 2 -r species -r genus -r family -r order \
-    > summary/strains.taxon.tsv
-
-# other lists
-cat summary/strains.taxon.tsv | cut -f 1 | sort | uniq \
-    > summary/strains.lst
-
-cat summary/strains.taxon.tsv | tsv-select -f 4 | sort | uniq \
-    > summary/genus.lst
-
-cat ../Bacteria/summary/collect.pass.csv |
-    grep -F -w -f <(
-        cat ~/Scripts/genomes/assembly/Bacteria.reference.tsv |
-            tsv-select -H -f assembly_accession |
-            sed '1d'
-    ) |
-    cut -d, -f 1 \
-    > summary/reference.lst
+cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    tsv-join -H -f summary/collect.pass.tsv -k 1 \
+    > summary/assembly.tsv
 
 ```
 
-### Extract from `../Bacteria`
+### Count `assembly.tsv`
+
+* `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
+
+```shell
+cd ~/data/Pseudomonas
+
+nwr template summary/assembly.tsv \
+    --count \
+    --rank genus
+
+# strains.taxon.tsv and taxa.tsv
+bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
+
+# .lst and .count.tsv
+bash Count/rank.sh
+
+mv Count/genus.count.tsv Count/genus.before.tsv
+
+cat Count/genus.before.tsv |
+    keep-header -- tsv-sort -k1,1 |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+```
+
+| item    | count |
+|---------|------:|
+| strain  |  3891 |
+| species |   160 |
+| genus   |     8 |
+| family  |     6 |
+| order   |     5 |
+| class   |     2 |
+
+| genus            | #species | #strains |
+|------------------|---------:|---------:|
+| Acinetobacter    |       22 |      830 |
+| Azotobacter      |        2 |        6 |
+| Bordetella       |        9 |      807 |
+| Burkholderia     |       26 |      605 |
+| Pseudomonas      |       81 |     1280 |
+| Serratia         |       11 |      191 |
+| Stenotrophomonas |        5 |      126 |
+| Stutzerimonas    |        4 |       46 |
+
+## MinHash
+
+```shell
+cd ~/data/Pseudomonas/
+
+nwr template summary/assembly.tsv \
+    --mh \
+    --parallel 16 \
+    --ani-ab 0.05 \
+    --ani-nr 0.005
+
+# 0.12
+
+# Compute assembly sketches
+bash MinHash/compute.sh
+
+# Distances within species
+bash MinHash/species.sh
+
+# Abnormal strains
+bash MinHash/abnormal.sh
+
+cat MinHash/abnormal.lst | wc -l
+#48
+
+# Non-redundant strains within species
+bash MinHash/nr.sh
+
+find MinHash -name "mash.dist.tsv" -size +0 | wc -l
+#160
+
+find MinHash -name "redundant.lst" -size +0 | wc -l
+#74
+
+find MinHash -name "redundant.lst" -empty | wc -l
+#86
+
+find MinHash -name "NR.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/NR.lst
+wc -l summary/NR.lst
+#1352
+
+# All representative should be in NR
+cat summary/assembly.tsv |
+    tsv-join -f ASSEMBLY/rep.lst -k 1 |
+    cut -f 1 |
+    grep -v -F -f summary/NR.lst
+
+```
+
+## Count valid species and strains
+
+### For *genomic alignments* and *protein families*
+
+```shell
+cd ~/data/Pseudomonas/
+
+nwr template summary/assembly.tsv \
+    --count \
+    --not-in MinHash/abnormal.lst \
+    --rank order --rank genus \
+    --lineage family --lineage genus
+
+# strains.taxon.tsv
+bash Count/strains.sh
+
+# .lst and .count.tsv
+bash Count/rank.sh
+
+cat Count/order.count.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+cat Count/genus.count.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+# Can accept N_COUNT
+bash Count/lineage.sh 10
+
+cat Count/lineage.count.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
+
+# copy to summary/
+cp Count/strains.taxon.tsv summary/genome.taxon.tsv
+
+```
+
+| order            | #species | #strains |
+|------------------|---------:|---------:|
+| Burkholderiales  |       35 |     1407 |
+| Enterobacterales |       11 |      191 |
+| Moraxellales     |       22 |      829 |
+| Pseudomonadales  |       87 |     1299 |
+| Xanthomonadales  |        5 |      117 |
+
+| genus            | #species | #strains |
+|------------------|---------:|---------:|
+| Acinetobacter    |       22 |      829 |
+| Azotobacter      |        2 |        6 |
+| Bordetella       |        9 |      807 |
+| Burkholderia     |       26 |      600 |
+| Pseudomonas      |       81 |     1251 |
+| Serratia         |       11 |      191 |
+| Stenotrophomonas |        5 |      117 |
+| Stutzerimonas    |        4 |       42 |
+
+| #family          | genus            | species                      | count |
+|------------------|------------------|------------------------------|------:|
+| Alcaligenaceae   | Bordetella       | Bordetella bronchiseptica    |    25 |
+|                  |                  | Bordetella hinzii            |    18 |
+|                  |                  | Bordetella holmesii          |    66 |
+|                  |                  | Bordetella parapertussis     |    90 |
+|                  |                  | Bordetella pertussis         |   593 |
+| Burkholderiaceae | Burkholderia     | Burkholderia ambifaria       |    15 |
+|                  |                  | Burkholderia cenocepacia     |    82 |
+|                  |                  | Burkholderia cepacia         |    19 |
+|                  |                  | Burkholderia contaminans     |    16 |
+|                  |                  | Burkholderia gladioli        |    22 |
+|                  |                  | Burkholderia glumae          |    51 |
+|                  |                  | Burkholderia mallei          |    53 |
+|                  |                  | Burkholderia multivorans     |   102 |
+|                  |                  | Burkholderia pseudomallei    |   152 |
+|                  |                  | Burkholderia thailandensis   |    25 |
+|                  |                  | Burkholderia vietnamiensis   |    18 |
+| Moraxellaceae    | Acinetobacter    | Acinetobacter baumannii      |   601 |
+|                  |                  | Acinetobacter haemolyticus   |    15 |
+|                  |                  | Acinetobacter indicus        |    21 |
+|                  |                  | Acinetobacter johnsonii      |    18 |
+|                  |                  | Acinetobacter junii          |    11 |
+|                  |                  | Acinetobacter nosocomialis   |    17 |
+|                  |                  | Acinetobacter pittii         |    58 |
+|                  |                  | Acinetobacter seifertii      |    25 |
+| Pseudomonadaceae | Pseudomonas      | Pseudomonas aeruginosa       |   706 |
+|                  |                  | Pseudomonas amygdali         |    14 |
+|                  |                  | Pseudomonas chlororaphis     |   100 |
+|                  |                  | Pseudomonas fluorescens      |    12 |
+|                  |                  | Pseudomonas protegens        |    24 |
+|                  |                  | Pseudomonas putida           |    72 |
+|                  |                  | Pseudomonas synxantha        |    10 |
+|                  |                  | Pseudomonas syringae         |    67 |
+|                  |                  | Pseudomonas viridiflava      |    21 |
+|                  | Stutzerimonas    | Stutzerimonas stutzeri       |    31 |
+| Xanthomonadaceae | Stenotrophomonas | Stenotrophomonas maltophilia |   107 |
+| Yersiniaceae     | Serratia         | Serratia marcescens          |   125 |
+|                  |                  | Serratia plymuthica          |    18 |
+|                  |                  | Serratia ureilytica          |    15 |
+
+## Extract from `../Bacteria`
 
 ```shell
 cd ~/data/Pseudomonas
@@ -445,10 +548,6 @@ cat ../Bacteria/summary/NR.lst |
 cat ../Bacteria/summary/representative.lst |
     grep -F -w -f <(cat summary/strains.lst) \
     > summary/representative.lst
-
-# All representative should be in NR
-cat summary/representative.lst |
-    grep -v -F -f summary/NR.lst
 
 wc -l \
     summary/strains.taxon.tsv \
