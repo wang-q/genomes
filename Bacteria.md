@@ -6,41 +6,36 @@ Download all genomes and analyze representative strains.
 
 <!-- toc -->
 
-- [Strain info](#strain-info)
+- [Taxon info](#taxon-info)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
     * [Model organisms](#model-organisms)
 - [Download all assemblies](#download-all-assemblies)
     * [Create assembly.tsv](#create-assemblytsv)
-    * [rsync and check](#rsync-and-check)
-    * [Check N50 of assemblies](#check-n50-of-assemblies)
+    * [Count before download](#count-before-download)
+    * [Download and check](#download-and-check)
     * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
-- [Count species and strains](#count-species-and-strains)
-    * [Order](#order)
-    * [Genus](#genus)
+- [Early divergence of Bacteria](#early-divergence-of-bacteria)
+    * [ReRoot](#reroot)
 - [MinHash](#minhash)
-    * [Compute MinHash](#compute-minhash)
-    * [Raw phylo-tree of representative assemblies](#raw-phylo-tree-of-representative-assemblies)
-    * [Tweak the mash tree](#tweak-the-mash-tree)
-- [Non-redundant strains within species](#non-redundant-strains-within-species)
-    * [Genus](#genus-1)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+- [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments* and *protein
+      families*](#for-genomic-alignments-and-protein-families)
 - [Collect proteins](#collect-proteins)
-    * [`all.pro.fa`](#allprofa)
-    * [`all.replace.fa`](#allreplacefa)
-    * [`all.info.tsv`](#allinfotsv)
 - [Phylogenetics with bac120](#phylogenetics-with-bac120)
     * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-    * [Tweak the concat tree](#tweak-the-concat-tree)
+    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
 - [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-- [Early divergence of Bacteria](#early-divergence-of-bacteria)
+- [Top groups](#top-groups)
     * [Terrabacteria group](#terrabacteria-group)
     * [Proteobacteria](#proteobacteria)
 
 <!-- tocstop -->
 
-## Strain info
+## Taxon info
 
 * [Bacteria](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2)
 
@@ -472,9 +467,6 @@ cat Bacteria.assembly.tsv |
 cat Bacteria.assembly.tsv |
     tsv-filter --str-not-in-fld 2:ftp
 
-cat Bacteria.assembly.tsv |
-    tsv-filter --or --str-in-fld 1:genomosp --str-in-fld 1:genomovar
-
 # Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Bacteria.assembly.tsv
 #
@@ -599,22 +591,22 @@ bash ASSEMBLY/check.sh
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
-#
+#71683
 
 # N50 C S; create n50.tsv and n50.pass.tsv
-bash ASSEMBLY/n50.sh 100000 200 1000000
+bash ASSEMBLY/n50.sh 20000 200 100000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50,S" --max "C"
 #N50_min S_min   C_max
-#32179   2187595 2016
+#0       0       1973
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#11671954.4      32505046        26704.8 368791.5        349.5   4717.6
+#1890984.2       4399977 50433.8 637192  20      181
 
 # After the above steps are completed, run the following commands.
 
@@ -630,12 +622,19 @@ cat ASSEMBLY/counts.tsv |
     mlr --itsv --omd cat |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
-wc -l ASSEMBLY/n50* ASSEMBLY/collect.csv
-#   35159 ASSEMBLY/n50.pass.csv
-#   38660 ASSEMBLY/n50.tsv
-#   38660 ASSEMBLY/collect.csv
-
 ```
+
+| #item            | fields |  lines |
+|------------------|-------:|-------:|
+| url.tsv          |      3 | 71,685 |
+| check.lst        |      1 | 71,685 |
+| collect.tsv      |     20 | 71,686 |
+| n50.tsv          |      4 | 71,686 |
+| n50.pass.tsv     |      4 | 65,357 |
+| collect.pass.tsv |     23 | 65,357 |
+| pass.lst         |      1 | 65,356 |
+| omit.lst         |      1 |      2 |
+| rep.lst          |      1 |  1,499 |
 
 ### Rsync to hpcc
 
@@ -698,652 +697,380 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 500
 
 datamash check < BioSample/biosample.tsv
-#
+# 71588 lines, 64 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
 
 ```
 
-## Count species and strains
+## Early divergence of Bacteria
+
+![molbiolevolmsn247f02_ht.jpeg](images%2Fmolbiolevolmsn247f02_ht.jpeg)
+
+### ReRoot
+
+Thermotogota and Aquificota are basal taxa of bacteria.
+
+* For the latter steps, use the following two as the outgroups
+    * Thermot_petr_RKU_1_GCF_000016785_1
+    * Hyd_thermophilus_TK_6_GCF_000164905_1
 
 ```shell
 cd ~/data/Bacteria
 
-echo "
-    SELECT
-        COUNT(DISTINCT species_id)
-    FROM ar
-    WHERE 1=1
-        AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '% sp.%'
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
-#19169
-
-echo "
-    SELECT
-        COUNT(DISTINCT species_id)
-    FROM ar
-    WHERE 1=1
-        AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '% sp.%'
-        AND assembly_level IN ('Complete Genome', 'Chromosome')
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
-#6580
-
-echo "
-    SELECT
-        assembly_accession
-    FROM ar
-    WHERE 1=1
-        AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '%symbiont %'
-        AND refseq_category IN ('reference genome', 'representative genome')
-        AND assembly_level IN ('Complete Genome', 'Chromosome')
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-filter --str-not-in-fld 1:"[" \
-    > summary/assembly_accession.lst
-
-wc -l summary/assembly_accession.lst
-#5275 assembly_accession.lst
-
-cat ASSEMBLY/collect.csv |
-    tsv-select -H -d, -f Taxid |
-    sed '1d' |
-    tsv-uniq |
-    nwr append stdin -r species |
-    tsv-select -f 2 |
-    tsv-uniq |
-    wc -l
-#1689
-
-cat summary/collect.pass.csv |
-    tsv-select -H -d, -f Taxid |
-    sed '1d' |
-    tsv-uniq |
-    nwr append stdin -r species |
-    tsv-select -f 2 |
-    tsv-uniq |
-    wc -l
-#1656
-
-cat summary/collect.pass.csv |
-    tsv-filter -H -d, --or \
-        --istr-eq "RefSeq_category:reference genome" --istr-eq "RefSeq_category:representative genome" |
-    grep -v "symbiont " |
-    tsv-select -H -d, -f name |
-    sed '1d' \
-    > summary/representative.lst
-
-wc -l summary/representative.lst
-#1396 summary/representative.lst
-
-cat summary/collect.pass.csv |
-    sed -e '1d' |
-    tr "," "\t" |
+cat summary/collect.pass.tsv |
     tsv-select -f 1,3 |
-    nwr append stdin -c 2 -r species -r genus -r family -r order \
-    > summary/strains.taxon.tsv
+    sed '1d' |
+    grep -v -Fw -f ASSEMBLY/omit.lst |
+    nwr append stdin -c 2 -r species -r phylum |
+    tsv-filter --or \
+        --str-eq "4:Thermotogota" \
+        --str-eq "4:Aquificota" |
+    tsv-select -f 1,3,4 |
+    tsv-sort -k3,3 -k1,1 |
+    tsv-summarize -g 3,2 --count
+#Aquificota      Hydrogenobacter thermophilus    2
+#Thermotogota    Fervidobacterium pennivorans    3
+#Thermotogota    Pseudothermotoga hypogea        2
+#Thermotogota    Thermosipho melanesiensis       2
+#Thermotogota    Thermotoga maritima     6
+#Thermotogota    Thermotoga petrophila   2
 
-cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
-    tsv-summarize -H -g 3 --count |
-    tsv-filter -H --gt 2:200 |
-    mlr --itsv --omd cat
+cat summary/collect.pass.tsv |
+    tsv-filter -H --not-blank RefSeq_category |
+    tsv-filter -H --or \
+        --str-in-fld "2:Hydrogenobacter" \
+        --str-in-fld "2:Fervidobacterium" \
+        --str-in-fld "2:Pseudothermotoga" \
+        --str-in-fld "2:Thermosipho" \
+        --str-in-fld "2:Thermotoga" |
+    grep -v -Fw -f ASSEMBLY/omit.lst |
+    tsv-select -H -f "name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
 
 ```
-
-| organism                      | count |
-|-------------------------------|------:|
-| Acinetobacter baumannii       |   531 |
-| Bacillus cereus               |   413 |
-| Bacillus subtilis             |   261 |
-| Bacillus toyonensis           |   238 |
-| Bacillus velezensis           |   278 |
-| Bacteroides ovatus            |   201 |
-| Bifidobacterium longum        |   224 |
-| Bordetella pertussis          |   593 |
-| Campylobacter coli            |   240 |
-| Campylobacter jejuni          |   284 |
-| Cronobacter sakazakii         |   208 |
-| Enterobacter hormaechei       |   270 |
-| Enterococcus faecium          |   313 |
-| Erwinia amylovora             |   211 |
-| Escherichia coli              |  2739 |
-| Helicobacter pylori           |   395 |
-| Klebsiella michiganensis      |   211 |
-| Klebsiella pneumoniae         |  1611 |
-| Klebsiella variicola          |   252 |
-| Lactiplantibacillus plantarum |   211 |
-| Limosilactobacillus reuteri   |   249 |
-| Listeria monocytogenes        |   354 |
-| Mycobacterium tuberculosis    |   546 |
-| Mycobacteroides abscessus     |   946 |
-| Pseudomonas aeruginosa        |   648 |
-| Pseudomonas syringae          |   257 |
-| Rhizobium leguminosarum       |   372 |
-| Salmonella enterica           |  1377 |
-| Shigella sonnei               |  1113 |
-| Staphylococcus aureus         |  1124 |
-| Staphylococcus haemolyticus   |   221 |
-| Stenotrophomonas maltophilia  |   373 |
-| Streptococcus pneumoniae      |   208 |
-| Streptococcus pyogenes        |   263 |
 
 ## MinHash
 
-### Compute MinHash
-
 ```shell
-mkdir -p ~/data/Bacteria/mash
-cd ~/data/Bacteria/mash
+cd ~/data/Bacteria/
 
-# Remove .msh files not in the list
-find . -maxdepth 1 -mindepth 1 -type f -name "*.msh" |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        basename {} .msh
-    ' |
-    tsv-join --exclude -k 1 -f ../ASSEMBLY/url.tsv -d 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        echo Remove {}
-        rm {}.msh
-    '
+nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
+    --mh \
+    --parallel 16 \
+    --in ASSEMBLY/pass.lst \
+    --ani-ab 0.05 \
+    --ani-nr 0.005
 
-# Compute MinHash
-cat ../ASSEMBLY/url.tsv |
-    cut -f 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        if [[ -e {}.msh ]]; then
-            exit
-        fi
+# Compute assembly sketches
+bash MinHash/compute.sh
 
-        2>&1 echo "==> {}"
+#find MinHash -name "*.msh" -empty | wc -l
 
-        find ../ASSEMBLY/{} -name "*_genomic.fna.gz" |
-            grep -v "_from_" |
-            xargs cat |
-            mash sketch -k 21 -s 100000 -p 2 - -I "{}" -o {}
-    '
+# Distances within species
+bash MinHash/species.sh
+
+# Abnormal strains
+bash MinHash/abnormal.sh
+
+cat MinHash/abnormal.lst | wc -l
+#1477
+
+# Non-redundant strains within species
+bash MinHash/nr.sh
+
+find MinHash -name "mash.dist.tsv" -size +0 | wc -l
+#1743
+
+find MinHash -name "redundant.lst" -size +0 | wc -l
+#990
+
+find MinHash -name "redundant.lst" -empty | wc -l
+#753
+
+find MinHash -name "NR.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/NR.lst
+wc -l summary/NR.lst
+#22805
+
+# All representative should be in NR
+cat ASSEMBLY/rep.lst |
+    grep -v -F -f summary/NR.lst
+
+# Distances between all selected sketches, then hierarchical clustering
+cd ~/data/Bacteria/
+
+nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
+    --mh \
+    --parallel 16 \
+    --in ASSEMBLY/rep.lst \
+    --not-in ASSEMBLY/omit.lst \
+    --not-in MinHash/abnormal.lst \
+    --height 0.4
+
+bash MinHash/dist.sh
 
 ```
 
-### Raw phylo-tree of representative assemblies
+### Condense branches in the minhash tree
 
 ```shell
 mkdir -p ~/data/Bacteria/tree
 cd ~/data/Bacteria/tree
 
-mash triangle -E -p 8 -l <(
-    cat ../summary/representative.lst |
-        parallel --no-run-if-empty --linebuffer -k -j 1 '
-            if [[ -e ../mash/{}.msh ]]; then
-                echo "../mash/{}.msh"
-            fi
-        '
-    ) \
-    > mash.dist.tsv
+nw_reroot ../MinHash/tree.nwk Thermot_petr_RKU_1_GCF_000016785_1 Hyd_thermophilus_TK_6_GCF_000164905_1 |
+    nw_order -c n - \
+    > minhash.reroot.newick
 
-# Fill matrix with lower triangle
-tsv-select -f 1-3 mash.dist.tsv |
-    (tsv-select -f 2,1,3 mash.dist.tsv && cat) |
-    (
-        cut -f 1 mash.dist.tsv |
-            tsv-uniq |
-            parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
-        cat
-    ) \
-    > mash.dist_full.tsv
-
-cat mash.dist_full.tsv |
-    Rscript -e '
-        library(readr);
-        library(tidyr);
-        library(ape);
-        pair_dist <- read_tsv(file("stdin"), col_names=F);
-        tmp <- pair_dist %>%
-            pivot_wider( names_from = X2, values_from = X3, values_fill = list(X3 = 1.0) )
-        tmp <- as.matrix(tmp)
-        mat <- tmp[,-1]
-        rownames(mat) <- tmp[,1]
-
-        dist_mat <- as.dist(mat)
-        clusters <- hclust(dist_mat, method = "ward.D2")
-        tree <- as.phylo(clusters)
-        write.tree(phy=tree, file="tree.nwk")
-
-        group <- cutree(clusters, h=0.4) # k=5
-        groups <- as.data.frame(group)
-        groups$ids <- rownames(groups)
-        rownames(groups) <- NULL
-        groups <- groups[order(groups$group), ]
-        write_tsv(groups, "groups.tsv")
-    '
-
-```
-
-### Tweak the mash tree
-
-```shell
-cd ~/data/Bacteria/tree
+# Avoid "Halalkalibacterium (ex Joshi et al. 2022)"
+cat ../Count/strains.taxon.tsv |
+    perl -nla -F"\t" -e '
+        s/\W/_/g for @F;
+        s/_+/_/g for @F;
+        print join qq(\t), @F;
+    ' \
+    > strains.taxon.tsv
 
 # rank::col
 ARRAY=(
-    'order::6'
-    'family::5'
-#    'genus::4'
-    'species::3'
+    'class::6'
+    'order::5'
+    'family::4'
+    'genus::3'
+    'species::2'
 )
 
-rm mash.condensed.map
-CUR_TREE=tree.nwk
+rm minhash.condensed.map
+CUR_TREE=minhash.reroot.newick
 
 for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
 
-    mv condense.newick mash.${GROUP_NAME}.newick
-    cat condense.map >> mash.condensed.map
+    mv condense.newick minhash.${GROUP_NAME}.newick
+    cat condense.map >> minhash.condensed.map
 
-    CUR_TREE=mash.${GROUP_NAME}.newick
+    CUR_TREE=minhash.${GROUP_NAME}.newick
 done
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 mash.species.newick |
-    rsvg-convert -o Bacteria.mash.png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.species.newick |
+    rsvg-convert -o Bacteria.minhash.png
 
 ```
 
-## Non-redundant strains within species
+## Count valid species and strains
 
-This [paper](https://doi.org/10.1038/s41467-018-07641-9) showed that >95% intra-species and and <83%
-inter-species ANI values.
+### For *genomic alignments* and *protein families*
 
 ```shell
-cd ~/data/Bacteria
+cd ~/data/Bacteria/
 
-mkdir NR
+nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
+    --count \
+    --in ASSEMBLY/pass.lst \
+    --not-in MinHash/abnormal.lst \
+    --not-in ASSEMBLY/omit.lst \
+    --rank order --rank genus \
+    --lineage family --lineage genus
 
-cat summary/strains.taxon.tsv |
-    tsv-summarize -H -g 3 --count |
-    tsv-filter -H --ge 2:2 \
-    > NR/species.tsv
+# strains.taxon.tsv
+bash Count/strains.sh
 
-tsv-summarize NR/species.tsv -H --count --sum count
-#count   count_sum
-#1651    35135
+# .lst and .count.tsv
+bash Count/rank.sh
 
-# each species
-cat NR/species.tsv | sed '1d' | tsv-select -f 1 | #head -n 10 |
-while read SPECIES; do
-    1>&2 echo "==> ${SPECIES}"
+cat Count/order.count.tsv |
+    tsv-filter -H --ge "3:500" |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
-    SPECIES_=$(
-        echo "${SPECIES}" |
-            tr " " "_"
-    )
+cat Count/genus.count.tsv |
+    tsv-filter -H --ge "3:500" |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
-    mkdir -p NR/${SPECIES_}
+# Can accept N_COUNT
+bash Count/lineage.sh 300
 
-    cat summary/strains.taxon.tsv |
-        tsv-filter --str-eq "3:${SPECIES}" |
-        tsv-select -f 1 \
-        > "NR/${SPECIES_}/assembly.lst"
+cat Count/lineage.count.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
-    1>&2 echo "    mash distances"
-
-    if [[ ! -f "NR/${SPECIES_}/mash.dist.tsv" ]]; then
-        mash triangle -E -p 8 -l <(
-            cat "NR/${SPECIES_}/assembly.lst" |
-                parallel --no-run-if-empty --linebuffer -k -j 1 '
-                    if [[ -e mash/{}.msh ]]; then
-                        echo "mash/{}.msh"
-                    fi
-                '
-            ) \
-            > "NR/${SPECIES_}/mash.dist.tsv"
-    fi
-
-    1>&2 echo "    List NR"
-
-    cat "NR/${SPECIES_}/mash.dist.tsv" |
-        tsv-filter --ff-str-ne 1:2 --le 3:0.01 \
-        > "NR/${SPECIES_}/redundant.dist.tsv"
-
-    cat "NR/${SPECIES_}/redundant.dist.tsv" |
-        perl -nla -F"\t" -MGraph::Undirected -e '
-            BEGIN {
-                our $g = Graph::Undirected->new;
-            }
-
-            $g->add_edge($F[0], $F[1]);
-
-            END {
-                for my $cc ( $g->connected_components ) {
-                    print join qq{\t}, sort @{$cc};
-                }
-            }
-        ' \
-        > "NR/${SPECIES_}/connected_components.tsv"
-
-    cat "NR/${SPECIES_}/connected_components.tsv" |
-        perl -nla -MPath::Tiny -F"\t" -e '
-            BEGIN {
-                our %rep = map { ($_, 1) } path(q{summary/representative.lst})->lines({chomp => 1});
-            }
-
-            # Representative strains are preferred
-            if ( grep { $rep{$_} } @F ) {
-                @F = grep { ! $rep{$_} } @F
-            }
-            else {
-                shift @F;
-            }
-            printf qq{%s\n}, $_ for @F;
-            ' \
-        > "NR/${SPECIES_}/redundant.lst"
-
-    cat "NR/${SPECIES_}/assembly.lst" |
-        tsv-join --exclude -f "NR/${SPECIES_}/redundant.lst" \
-        > "NR/${SPECIES_}/NR.lst"
-
-done
-
-find NR -name "redundant.lst" -size +0 | wc -l
-#1093
-
-find NR -name "redundant.lst" -empty | wc -l
-#564
-
-find NR -name "NR.lst" |
-    xargs cat |
-    sort |
-    uniq \
-    > summary/NR.lst
-
-wc -l summary/NR.lst
-#8475 summary/NR.lst
+# copy to summary/
+cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ```
 
-### Genus
+| order             | #species | #strains |
+|-------------------|---------:|---------:|
+| Aeromonadales     |       11 |      688 |
+| Bacillales        |      138 |     7693 |
+| Bacteroidales     |       44 |     2296 |
+| Bifidobacteriales |       14 |     1656 |
+| Burkholderiales   |       95 |     3527 |
+| Campylobacterales |       40 |     2614 |
+| Enterobacterales  |      148 |    13596 |
+| Eubacteriales     |       60 |     1861 |
+| Flavobacteriales  |       46 |      847 |
+| Hyphomicrobiales  |       74 |     1450 |
+| Lactobacillales   |      148 |     8118 |
+| Moraxellales      |       28 |     1517 |
+| Mycobacteriales   |       94 |     3604 |
+| Pasteurellales    |       25 |     1644 |
+| Pseudomonadales   |       91 |     3410 |
+| Spirochaetales    |       23 |      516 |
+| Thiotrichales     |       12 |      955 |
+| Vibrionales       |       46 |     1366 |
+| Xanthomonadales   |       32 |     1948 |
+
+| genus              | #species | #strains |
+|--------------------|---------:|---------:|
+| Acinetobacter      |       22 |     1265 |
+| Aeromonas          |       11 |      688 |
+| Bacillus           |       32 |     2846 |
+| Bacteroides        |       15 |     1391 |
+| Bifidobacterium    |       12 |     1577 |
+| Bordetella         |        9 |      807 |
+| Burkholderia       |       26 |     2198 |
+| Campylobacter      |       26 |     2032 |
+| Citrobacter        |       11 |      502 |
+| Clostridium        |       19 |     1315 |
+| Corynebacterium    |       34 |      692 |
+| Enterobacter       |       10 |     1545 |
+| Enterococcus       |       12 |     1291 |
+| Escherichia        |        4 |     3316 |
+| Francisella        |        9 |      871 |
+| Haemophilus        |        6 |      876 |
+| Klebsiella         |       10 |     3567 |
+| Lacticaseibacillus |        5 |      566 |
+| Lactobacillus      |       15 |      596 |
+| Listeria           |        6 |      740 |
+| Mycobacterium      |       16 |      822 |
+| Mycobacteroides    |        3 |     1900 |
+| Pseudomonas        |       81 |     3262 |
+| Salmonella         |        2 |     1557 |
+| Staphylococcus     |       35 |     3446 |
+| Stenotrophomonas   |        5 |      597 |
+| Streptococcus      |       37 |     3193 |
+| Vibrio             |       40 |     1332 |
+| Xanthomonas        |       18 |     1130 |
+
+| #family              | genus            | species                         | count |
+|----------------------|------------------|---------------------------------|------:|
+| Alcaligenaceae       | Bordetella       | Bordetella pertussis            |   593 |
+| Bacillaceae          | Bacillus         | Bacillus subtilis               |   302 |
+|                      |                  | Bacillus velezensis             |   306 |
+| Bacteroidaceae       | Bacteroides      | Bacteroides fragilis            |   355 |
+|                      |                  | Bacteroides uniformis           |   323 |
+| Bifidobacteriaceae   | Bifidobacterium  | Bifidobacterium longum          |   559 |
+| Burkholderiaceae     | Burkholderia     | Burkholderia cenocepacia        |   418 |
+|                      |                  | Burkholderia multivorans        |   454 |
+| Campylobacteraceae   | Campylobacter    | Campylobacter coli              |  1204 |
+| Clostridiaceae       | Clostridium      | Clostridium botulinum           |   399 |
+|                      |                  | Clostridium perfringens         |   523 |
+| Corynebacteriaceae   | Corynebacterium  | Corynebacterium diphtheriae     |   381 |
+| Enterobacteriaceae   | Cronobacter      | Cronobacter sakazakii           |   415 |
+|                      | Escherichia      | Escherichia coli                |  2967 |
+|                      | Klebsiella       | Klebsiella aerogenes            |   355 |
+|                      |                  | Klebsiella michiganensis        |   356 |
+|                      |                  | Klebsiella pneumoniae           |  1718 |
+|                      |                  | Klebsiella variicola            |   619 |
+|                      | Salmonella       | Salmonella enterica             |  1545 |
+| Enterococcaceae      | Enterococcus     | Enterococcus faecium            |   319 |
+| Francisellaceae      | Francisella      | Francisella tularensis          |   829 |
+| Helicobacteraceae    | Helicobacter     | Helicobacter pylori             |   406 |
+| Listeriaceae         | Listeria         | Listeria monocytogenes          |   360 |
+| Moraxellaceae        | Acinetobacter    | Acinetobacter baumannii         |   601 |
+|                      |                  | Acinetobacter pittii            |   347 |
+| Mycobacteriaceae     | Mycobacterium    | Mycobacterium tuberculosis      |   571 |
+|                      | Mycobacteroides  | Mycobacteroides abscessus       |  1887 |
+| Pasteurellaceae      | Haemophilus      | Haemophilus influenzae          |   823 |
+| Propionibacteriaceae | Cutibacterium    | Cutibacterium acnes             |   417 |
+| Pseudomonadaceae     | Pseudomonas      | Pseudomonas aeruginosa          |   706 |
+|                      |                  | Pseudomonas syringae            |   351 |
+|                      |                  | Pseudomonas viridiflava         |  1367 |
+| Rhizobiaceae         | Rhizobium        | Rhizobium leguminosarum         |   440 |
+| Staphylococcaceae    | Staphylococcus   | Staphylococcus aureus           |  1159 |
+|                      |                  | Staphylococcus haemolyticus     |   450 |
+|                      |                  | Staphylococcus pseudintermedius |   401 |
+| Streptococcaceae     | Lactococcus      | Lactococcus lactis              |   307 |
+|                      | Streptococcus    | Streptococcus equi              |   495 |
+| Xanthomonadaceae     | Stenotrophomonas | Stenotrophomonas maltophilia    |   587 |
+
+## Collect proteins
 
 ```shell
-cd ~/data/Bacteria
+cd ~/data/Bacteria/
 
-cat summary/genus.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        n_species=$(
-            cat summary/collect.pass.csv |
-                sed "1d" |
-                grep -F -w -f <( cat summary/NR.lst summary/representative.lst | sort | uniq ) |
-                tsv-select -d, -f 3 |
-                nwr append stdin -r genus -r species |
-                grep {} |
-                tsv-select -f 1,3 |
-                tsv-uniq |
-                wc -l
-        )
+nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
+    --pro \
+    --in ASSEMBLY/pass.lst \
+    --in ASSEMBLY/rep.lst \
+    --in summary/NR.lst \
+    --not-in MinHash/abnormal.lst \
+    --not-in ASSEMBLY/omit.lst
 
-        n_strains=$(
-            cat summary/collect.pass.csv |
-                sed "1d" |
-                grep -F -w -f <( cat summary/NR.lst summary/representative.lst | sort | uniq ) |
-                tsv-select -d, -f 3 |
-                nwr append stdin -r genus |
-                grep {} |
-                wc -l
-        )
+# collect proteins
+bash Protein/collect.sh
 
-        printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
-    ' |
-    nwr append stdin --id |
-    tsv-select -f 5,4,2,3 |
-    tsv-sort -k2,2 |
-    tsv-filter --ge 4:50 |
-    (echo -e '#tax_id\tgenus\t#species\t#strains' && cat) |
+cat Protein/counts.tsv |
     mlr --itsv --omd cat
 
 ```
 
-| #tax_id | genus               | #species | #strains |
-|---------|---------------------|----------|----------|
-| 469     | Acinetobacter       | 37       | 244      |
-| 642     | Aeromonas           | 14       | 166      |
-| 357     | Agrobacterium       | 14       | 79       |
-| 1386    | Bacillus            | 97       | 359      |
-| 816     | Bacteroides         | 30       | 207      |
-| 1678    | Bifidobacterium     | 46       | 275      |
-| 32008   | Burkholderia        | 33       | 123      |
-| 194     | Campylobacter       | 54       | 106      |
-| 544     | Citrobacter         | 15       | 91       |
-| 1485    | Clostridium         | 48       | 123      |
-| 102106  | Collinsella         | 3        | 54       |
-| 1716    | Corynebacterium     | 51       | 96       |
-| 547     | Enterobacter        | 18       | 247      |
-| 1350    | Enterococcus        | 18       | 82       |
-| 561     | Escherichia         | 20       | 181      |
-| 724     | Haemophilus         | 12       | 80       |
-| 209     | Helicobacter        | 55       | 289      |
-| 570     | Klebsiella          | 18       | 121      |
-| 1578    | Lactobacillus       | 35       | 100      |
-| 1357    | Lactococcus         | 12       | 52       |
-| 2742598 | Limosilactobacillus | 7        | 51       |
-| 286     | Pseudomonas         | 161      | 511      |
-| 379     | Rhizobium           | 31       | 159      |
-| 1827    | Rhodococcus         | 18       | 54       |
-| 590     | Salmonella          | 37       | 73       |
-| 613     | Serratia            | 14       | 69       |
-| 1279    | Staphylococcus      | 41       | 100      |
-| 40323   | Stenotrophomonas    | 9        | 132      |
-| 1301    | Streptococcus       | 70       | 370      |
-| 1883    | Streptomyces        | 56       | 87       |
-| 662     | Vibrio              | 57       | 364      |
-| 338     | Xanthomonas         | 55       | 83       |
-
-## Collect proteins
-
-### `all.pro.fa`
-
-```shell
-cd ~/data/Bacteria
-
-mkdir -p PROTEINS
-
-for STRAIN in $(cat summary/representative.lst); do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz
-done |
-    pigz -p4 \
-    > PROTEINS/all.pro.fa.gz
-
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    perl -nl -e '
-        BEGIN { our %seen; our $h; }
-
-        if (/^>/) {
-            $h = (split(" ", $_))[0];
-            $seen{$h}++;
-            $_ = $h;
-        }
-        print if $seen{$h} == 1;
-    ' |
-    pigz -p4 \
-    > PROTEINS/all.uniq.fa.gz
-
-# counting proteins
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#5.2M
-
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    grep "^>" |
-    tsv-uniq |
-    wc -l |
-    numfmt --to=si
-#5.1M
-
-# annotations may be different
-gzip -dcf PROTEINS/all.uniq.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#5.1M
-
-# ribonuclease
-gzip -dcf PROTEINS/all.pro.fa.gz |
-    grep "ribonuclease" |
-    grep -v "deoxyribonuclease" |
-    perl -nl -e 's/^>\w+\.\d+\s+//g; print' |
-    perl -nl -e 's/\s+\[.+?\]$//g; print' |
-    perl -nl -e 's/MULTISPECIES: //g; print' |
-    sort |
-    uniq -c |
-    sort -nr
-
-```
-
-### `all.replace.fa`
-
-```shell
-cd ~/data/Bacteria
-
-rm PROTEINS/all.strain.tsv PROTEINS/all.replace.fa.gz
-for STRAIN in $(cat summary/representative.lst); do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
-        grep "^>" |
-        cut -d" " -f 1 |
-        sed "s/^>//" |
-        STRAIN=${STRAIN} perl -nl -e '
-            $n = $_;
-            $s = $n;
-            $s =~ s/\.\d+//;
-            printf qq{%s\t%s_%s\t%s\n}, $n, $ENV{STRAIN}, $s, $ENV{STRAIN};
-        ' \
-    > PROTEINS/${STRAIN}.replace.tsv
-
-    cut -f 2,3 PROTEINS/${STRAIN}.replace.tsv >> PROTEINS/all.strain.tsv
-
-    faops replace -s \
-        ASSEMBLY/${STRAIN}/*_protein.faa.gz \
-        <(cut -f 1,2 PROTEINS/${STRAIN}.replace.tsv) \
-        stdout |
-        pigz -p4 \
-        >> PROTEINS/all.replace.fa.gz
-
-    rm PROTEINS/${STRAIN}.replace.tsv
-done
-
-gzip -dcf PROTEINS/all.replace.fa.gz |
-    grep "^>" |
-    wc -l |
-    numfmt --to=si
-#5.2M
-
-(echo -e "#name\tstrain" && cat PROTEINS/all.strain.tsv)  \
-    > temp &&
-    mv temp PROTEINS/all.strain.tsv
-
-faops size PROTEINS/all.replace.fa.gz > PROTEINS/all.replace.sizes
-
-(echo -e "#name\tsize" && cat PROTEINS/all.replace.sizes) > PROTEINS/all.size.tsv
-
-rm PROTEINS/all.replace.sizes
-
-```
-
-### `all.info.tsv`
-
-```shell
-cd ~/data/Bacteria
-
-for STRAIN in $(cat summary/representative.lst); do
-    gzip -dcf ASSEMBLY/${STRAIN}/*_protein.faa.gz |
-        grep "^>" |
-        sed "s/^>//" |
-        perl -nl -e '/\[.+\[/ and s/\[/\(/; print' |
-        perl -nl -e '/\].+\]/ and s/\]/\)/; print' |
-        perl -nl -e 's/\s+\[.+?\]$//g; print' |
-        perl -nl -e 's/MULTISPECIES: //g; print' |
-        STRAIN=${STRAIN} perl -nl -e '
-            /^(\w+)\.\d+\s+(.+)$/ or next;
-            printf qq{%s_%s\t%s\n}, $ENV{STRAIN}, $1, $2;
-        '
-done \
-    > PROTEINS/all.annotation.tsv
-
-cat PROTEINS/all.annotation.tsv |
-    wc -l |
-    numfmt --to=si
-#5.2M
-
-(echo -e "#name\tannotation" && cat PROTEINS/all.annotation.tsv) \
-    > temp &&
-    mv temp PROTEINS/all.annotation.tsv
-
-# check differences
-cat PROTEINS/all.size.tsv |
-    grep -F -f <(cut -f 1 PROTEINS/all.annotation.tsv) -v
-
-tsv-join \
-    PROTEINS/all.strain.tsv \
-    --data-fields 1 \
-    -f PROTEINS/all.size.tsv \
-    --key-fields 1 \
-    --append-fields 2 \
-    > PROTEINS/all.strain_size.tsv
-
-tsv-join \
-    PROTEINS/all.strain_size.tsv \
-    --data-fields 1 \
-    -f PROTEINS/all.annotation.tsv \
-    --key-fields 1 \
-    --append-fields 2 \
-    > PROTEINS/all.info.tsv
-
-cat PROTEINS/all.info.tsv |
-    wc -l |
-    numfmt --to=si
-#5.2M
-
-```
+| #item                          | count     |
+|--------------------------------|-----------|
+| Proteins                       | 4,867,166 |
+| Unique headers and annotations | 4,752,989 |
+| Unique proteins                | 4,745,694 |
+| all.replace.fa                 | 4,867,166 |
+| all.annotation.tsv             | 4,867,167 |
+| all.info.tsv                   | 4,867,167 |
 
 ## Phylogenetics with bac120
 
 ### Find corresponding proteins by `hmmsearch`
 
-* Download HMM models as described in [`HMM.md`](HMM.md)
-
-* The `E_VALUE` was manually adjusted to 1e-20 to reach a balance between sensitivity and
-  speciality.
-
 ```shell
-E_VALUE=1e-20
-
 cd ~/data/Bacteria
 
+# The bac120 HMM set
+nwr kb bac120 -o HMM
+cp HMM/bac120.lst HMM/marker.lst
+
+E_VALUE=1e-20
+
 # Find all genes
-for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
-    >&2 echo "==> marker [${marker}]"
+for marker in $(cat HMM/marker.lst); do
+    echo >&2 "==> marker [${marker}]"
 
-    mkdir -p PROTEINS/${marker}
+    mkdir -p Protein/${marker}
 
-    cat summary/representative.lst |
-        parallel --no-run-if-empty --linebuffer -k -j 8 "
-            gzip -dcf ASSEMBLY/{}/*_protein.faa.gz |
-                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw ~/data/HMM/bac120/HMM/${marker}.HMM - |
+    cat Protein/species.tsv |
+        tsv-join -f ASSEMBLY/pass.lst -k 1 |
+        tsv-join -f ASSEMBLY/rep.lst -k 1 |
+        tsv-join -f summary/NR.lst -k 1 |
+        tsv-join -e -f MinHash/abnormal.lst -k 1 |
+        tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
+            if [[ ! -d ASSEMBLY/{2}/{1} ]]; then
+                exit
+            fi
+
+            gzip -dcf ASSEMBLY/{2}/{1}/*_protein.faa.gz |
+                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/${marker}.HMM - |
                 grep '>>' |
-                perl -nl -e ' m{>>\s+(\S+)} and printf qq{%s\t%s\n}, \$1, {}; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), \$1, {1}; '
         " \
-        > PROTEINS/${marker}/replace.tsv
+        > Protein/${marker}/replace.tsv
 
-    >&2 echo
-
+    echo >&2
 done
 
 ```
@@ -1353,132 +1080,144 @@ done
 ```shell
 cd ~/data/Bacteria
 
-cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        cat PROTEINS/{}/replace.tsv |
+        cat Protein/{}/replace.tsv |
             wc -l
     ' |
     tsv-summarize --quantile 1:0.25,0.5,0.75
-# 1385    1429    2168.25
+#1370.5  1394.5  2092.5
 
-cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo {}
-        cat PROTEINS/{}/replace.tsv |
+        cat Protein/{}/replace.tsv |
             wc -l
     ' |
     paste - - |
-    tsv-filter --invert --ge 2:1000 --le 2:2000 |
+    tsv-filter --invert --ge 2:1100 --le 2:1800 |
     cut -f 1 \
-    > PROTEINS/bac120.omit.lst
+    > Protein/marker.omit.lst
 
 # Extract sequences
 # Multiple copies slow down the alignment process
-cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
-    grep -v -Fx -f PROTEINS/bac120.omit.lst |
+cat HMM/marker.lst |
+    grep -v -Fx -f Protein/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        >&2 echo "==> marker [{}]"
+        echo >&2 "==> marker [{}]"
 
-        cat PROTEINS/{}/replace.tsv \
-            > PROTEINS/{}/{}.replace.tsv
+        cat Protein/{}/replace.tsv \
+            > Protein/{}/{}.replace.tsv
 
-        faops some PROTEINS/all.uniq.fa.gz <(
-            cat PROTEINS/{}/{}.replace.tsv |
+        faops some Protein/all.uniq.fa.gz <(
+            cat Protein/{}/{}.replace.tsv |
                 cut -f 1 |
                 tsv-uniq
             ) stdout \
-            > PROTEINS/{}/{}.pro.fa
+            > Protein/{}/{}.pro.fa
     '
 
 # Align each markers with muscle
-cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
+# If running `muscle` fails, you can switch to `mafft`. It's not as accurate, but much faster
+cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
-        >&2 echo "==> marker [{}]"
-        if [ ! -s PROTEINS/{}/{}.pro.fa ]; then
+        echo >&2 "==> marker [{}]"
+        if [ ! -s Protein/{}/{}.pro.fa ]; then
             exit
         fi
-        if [ -s PROTEINS/{}/{}.aln.fa ]; then
+        if [ -s Protein/{}/{}.aln.fa ]; then
             exit
         fi
 
-        muscle -quiet -in PROTEINS/{}/{}.pro.fa -out PROTEINS/{}/{}.aln.fa
+#        muscle -quiet -in Protein/{}/{}.pro.fa -out Protein/{}/{}.aln.fa
+        mafft --auto Protein/{}/{}.pro.fa > Protein/{}/{}.aln.fa
     '
 
-for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
-    >&2 echo "==> marker [${marker}]"
-    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+for marker in $(cat HMM/marker.lst); do
+    echo >&2 "==> marker [${marker}]"
+    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
         continue
     fi
 
     # sometimes `muscle` can not produce alignments
-    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
         continue
     fi
 
     # 1 name to many names
-    cat PROTEINS/${marker}/${marker}.replace.tsv |
+    cat Protein/${marker}/${marker}.replace.tsv |
         parallel --no-run-if-empty --linebuffer -k -j 4 "
-            faops replace -s PROTEINS/${marker}/${marker}.aln.fa <(echo {}) stdout
+            faops replace -s Protein/${marker}/${marker}.aln.fa <(echo {}) stdout
         " \
-        > PROTEINS/${marker}/${marker}.replace.fa
+        > Protein/${marker}/${marker}.replace.fa
 done
 
 # Concat marker genes
-for marker in $(cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1); do
-    if [ ! -s PROTEINS/${marker}/${marker}.pro.fa ]; then
+for marker in $(cat HMM/marker.lst); do
+    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
         continue
     fi
-    if [ ! -s PROTEINS/${marker}/${marker}.aln.fa ]; then
+    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
         continue
     fi
 
     # sequences in one line
-    faops filter -l 0 PROTEINS/${marker}/${marker}.replace.fa stdout
+    faops filter -l 0 Protein/${marker}/${marker}.replace.fa stdout
 
     # empty line for .fas
     echo
 done \
-    > PROTEINS/bac120.aln.fas
+    > Protein/bac120.aln.fas
 
-fasops concat PROTEINS/bac120.aln.fas summary/representative.lst -o PROTEINS/bac120.aln.fa
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -f ASSEMBLY/rep.lst -k 1 |
+    tsv-join -f summary/NR.lst -k 1 |
+    tsv-join -e -f MinHash/abnormal.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+    cut -f 1 |
+    fasops concat Protein/bac120.aln.fas stdin -o Protein/bac120.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
-trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
+trimal -in Protein/bac120.aln.fa -out Protein/bac120.trim.fa -automated1
 
-faops size PROTEINS/bac120.*.fa |
+faops size Protein/bac120.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#94432
-#15688
+#110297
+#17958
 
 # To make it faster
-FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
+FastTree -fastest -noml Protein/bac120.trim.fa > Protein/bac120.trim.newick
 
 ```
 
-### Tweak the concat tree
+### Condense branches in the protein tree
 
 ```shell
 cd ~/data/Bacteria/tree
 
-cp ../PROTEINS/bac120.trim.newick .
+nw_reroot ../Protein/bac120.trim.newick Thermot_petr_RKU_1_GCF_000016785_1 Hyd_thermophilus_TK_6_GCF_000164905_1 |
+    nw_order -c n - \
+    > bac120.reroot.newick
 
 # rank::col
 ARRAY=(
-    'order::6'
-    'family::5'
-#    'genus::4'
-    'species::3'
+    'class::6'
+    'order::5'
+    'family::4'
+    'genus::3'
+    'species::2'
 )
 
 rm bac120.condensed.map
-CUR_TREE=bac120.trim.newick
+CUR_TREE=bac120.reroot.newick
 
 for item in "${ARRAY[@]}" ; do
     GROUP_NAME="${item%%::*}"
     GROUP_COL="${item##*::}"
 
-    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
 
     mv condense.newick bac120.${GROUP_NAME}.newick
     cat condense.map >> bac120.condensed.map
@@ -1501,9 +1240,7 @@ mkdir -p ~/data/Bacteria/STRAINS
 
 ```
 
-## Early divergence of Bacteria
-
-![molbiolevolmsn247f02_ht.jpeg](images%2Fmolbiolevolmsn247f02_ht.jpeg)
+## Top groups
 
 ### Terrabacteria group
 
@@ -1519,8 +1256,6 @@ FAMILY=$(
     nwr member "Terrabacteria group" -r family |
         sed '1d' |
         cut -f 1 |
-        nwr append stdin -r order |
-        cut -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -1533,16 +1268,13 @@ echo "
     WHERE 1=1
         AND family_id IN ($FAMILY)
         AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '% sp.%'
     " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    grep -v -i "symbiont " |
-    tsv-filter --str-not-in-fld 1:"[" \
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     > tmp.tsv
 
 cat ../ASSEMBLY/collect.csv |
     grep -F -f <(cut -f 2 tmp.tsv) |
-    grep -F -f <(cat ../summary/NR.lst ../summary/representative.lst | sort | uniq) |
+    grep -F -f <(cat ../summary/NR.lst ../ASSEMBLY/rep.lst | sort | uniq) |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
     nwr append stdin -c 2 -r species -r genus -r family -r order |
