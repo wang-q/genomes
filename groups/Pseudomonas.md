@@ -164,8 +164,6 @@ SPECIES=$(
         Burkholderiales \
         Serratia \
         -r species |
-        grep -v -i "Candidatus " |
-        grep -v -i "candidate " |
         grep -v " sp." |
         grep -v -E "\bbacterium\b" |
         grep -v -E "symbiont\b" |
@@ -266,13 +264,7 @@ cat species.count.tsv |
 
 ## All assemblies
 
-### List strains of the target genus and create assembly.tsv
-
-* Some strains were anomalously labeled and identified by the `mash` ANI values.
-    * Pseudom_chl_GCF_001023535_1
-    * Pseudom_flu_GCF_900636635_1
-    * Pseudom_puti_GCF_003228315_1 and Pseudom_puti_GCF_020172705_1
-    * Pseudom_syr_GCF_004006335_1
+### Extract from `../Bacteria` and create assembly.tsv
 
 ```shell
 cd ~/data/Pseudomonas
@@ -302,17 +294,29 @@ GENUS=(
 )
 #GENUS=$(IFS=, ; echo "${GENUS[*]}")
 
+cat ../Bacteria/summary/collect.pass.tsv |
+    tsv-filter -H --str-eq "RefSeq_category:Reference Genome" \
+    > summary/collect.pass.tsv
+
 cat ../Bacteria/summary/collect.pass.tsv | # 65357
     nwr restrict ${GENUS[*]} -f stdin -c 3 | # restrict to these genera 8877
     tsv-filter -H --le "C:20" --ge "N50:500000" | # more stringent parameters 4047
-    keep-header -- tsv-join -e -f ../Bacteria/ASSEMBLY/omit.lst -k 1 | # 4047
-    keep-header -- tsv-join -e -f ../Bacteria/MinHash/abnormal.lst -k 1 | # 3892
-    keep-header -- sort \
-    > summary/collect.pass.tsv
+    sed '1d' |
+    tsv-join -e -f ../Bacteria/ASSEMBLY/omit.lst -k 1 | # 4047
+    tsv-join -e -f ../Bacteria/MinHash/abnormal.lst -k 1 | # 3892
+    sort \
+    >> summary/collect.pass.tsv
 
 cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
     tsv-join -H -f summary/collect.pass.tsv -k 1 \
     > summary/assembly.tsv
+
+# biosample.tsv
+cp ../Bacteria/summary/attributes.lst summary/
+
+cat ../Bacteria/summary/biosample.tsv |
+    grep -Fw -f <(cat summary/collect.pass.tsv | tsv-select -H -f BioSample | sort | uniq) \
+    > summary/biosample.tsv
 
 ```
 
@@ -341,6 +345,7 @@ mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
     keep-header -- tsv-sort -k1,1 |
+    tsv-filter -H --ge 3:2 |
     mlr --itsv --omd cat |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
@@ -348,12 +353,12 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  |  3891 |
-| species |   160 |
-| genus   |     8 |
-| family  |     6 |
-| order   |     5 |
-| class   |     2 |
+| strain  |  3904 |
+| species |   172 |
+| genus   |    20 |
+| family  |    15 |
+| order   |    11 |
+| class   |     7 |
 
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
@@ -361,6 +366,7 @@ cat Count/genus.before.tsv |
 | Azotobacter      |        2 |        6 |
 | Bordetella       |        9 |      807 |
 | Burkholderia     |       26 |      605 |
+| Escherichia      |        1 |        2 |
 | Pseudomonas      |       81 |     1280 |
 | Serratia         |       11 |      191 |
 | Stenotrophomonas |        5 |      126 |
@@ -374,10 +380,8 @@ cd ~/data/Pseudomonas/
 nwr template summary/assembly.tsv \
     --mh \
     --parallel 16 \
-    --ani-ab 0.05 \
-    --ani-nr 0.005
-
-# 0.12
+    --ani-ab 0.12 \
+    --ani-nr 0.01
 
 # Compute assembly sketches
 bash MinHash/compute.sh
@@ -389,19 +393,19 @@ bash MinHash/species.sh
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#48
+#8
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
 
 find MinHash -name "mash.dist.tsv" -size +0 | wc -l
-#160
+#162
 
 find MinHash -name "redundant.lst" -size +0 | wc -l
-#74
+#97
 
 find MinHash -name "redundant.lst" -empty | wc -l
-#86
+#64
 
 find MinHash -name "NR.lst" |
     xargs cat |
@@ -409,7 +413,7 @@ find MinHash -name "NR.lst" |
     uniq \
     > summary/NR.lst
 wc -l summary/NR.lst
-#1352
+#874
 
 # All representative should be in NR
 cat summary/assembly.tsv |
@@ -439,10 +443,12 @@ bash Count/strains.sh
 bash Count/rank.sh
 
 cat Count/order.count.tsv |
+    tsv-filter -H --ge "3:2" |
     mlr --itsv --omd cat |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 cat Count/genus.count.tsv |
+    tsv-filter -H --ge "3:2" |
     mlr --itsv --omd cat |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
@@ -460,21 +466,23 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | order            | #species | #strains |
 |------------------|---------:|---------:|
-| Burkholderiales  |       35 |     1407 |
-| Enterobacterales |       11 |      191 |
-| Moraxellales     |       22 |      829 |
-| Pseudomonadales  |       87 |     1299 |
-| Xanthomonadales  |        5 |      117 |
+| Bacillales       |        3 |        3 |
+| Burkholderiales  |       35 |     1412 |
+| Enterobacterales |       15 |      196 |
+| Moraxellales     |       22 |      830 |
+| Pseudomonadales  |       87 |     1324 |
+| Xanthomonadales  |        5 |      126 |
 
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
-| Acinetobacter    |       22 |      829 |
+| Acinetobacter    |       22 |      830 |
 | Azotobacter      |        2 |        6 |
 | Bordetella       |        9 |      807 |
-| Burkholderia     |       26 |      600 |
-| Pseudomonas      |       81 |     1251 |
+| Burkholderia     |       26 |      605 |
+| Escherichia      |        1 |        2 |
+| Pseudomonas      |       81 |     1276 |
 | Serratia         |       11 |      191 |
-| Stenotrophomonas |        5 |      117 |
+| Stenotrophomonas |        5 |      126 |
 | Stutzerimonas    |        4 |       42 |
 
 | #family          | genus            | species                      | count |
@@ -485,7 +493,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |                  |                  | Bordetella parapertussis     |    90 |
 |                  |                  | Bordetella pertussis         |   593 |
 | Burkholderiaceae | Burkholderia     | Burkholderia ambifaria       |    15 |
-|                  |                  | Burkholderia cenocepacia     |    82 |
+|                  |                  | Burkholderia cenocepacia     |    87 |
 |                  |                  | Burkholderia cepacia         |    19 |
 |                  |                  | Burkholderia contaminans     |    16 |
 |                  |                  | Burkholderia gladioli        |    22 |
@@ -501,67 +509,22 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |                  |                  | Acinetobacter johnsonii      |    18 |
 |                  |                  | Acinetobacter junii          |    11 |
 |                  |                  | Acinetobacter nosocomialis   |    17 |
-|                  |                  | Acinetobacter pittii         |    58 |
+|                  |                  | Acinetobacter pittii         |    59 |
 |                  |                  | Acinetobacter seifertii      |    25 |
 | Pseudomonadaceae | Pseudomonas      | Pseudomonas aeruginosa       |   706 |
 |                  |                  | Pseudomonas amygdali         |    14 |
-|                  |                  | Pseudomonas chlororaphis     |   100 |
-|                  |                  | Pseudomonas fluorescens      |    12 |
+|                  |                  | Pseudomonas chlororaphis     |   101 |
+|                  |                  | Pseudomonas fluorescens      |    28 |
 |                  |                  | Pseudomonas protegens        |    24 |
-|                  |                  | Pseudomonas putida           |    72 |
+|                  |                  | Pseudomonas putida           |    77 |
 |                  |                  | Pseudomonas synxantha        |    10 |
-|                  |                  | Pseudomonas syringae         |    67 |
+|                  |                  | Pseudomonas syringae         |    69 |
 |                  |                  | Pseudomonas viridiflava      |    21 |
 |                  | Stutzerimonas    | Stutzerimonas stutzeri       |    31 |
-| Xanthomonadaceae | Stenotrophomonas | Stenotrophomonas maltophilia |   107 |
+| Xanthomonadaceae | Stenotrophomonas | Stenotrophomonas maltophilia |   116 |
 | Yersiniaceae     | Serratia         | Serratia marcescens          |   125 |
 |                  |                  | Serratia plymuthica          |    18 |
 |                  |                  | Serratia ureilytica          |    15 |
-
-## Extract from `../Bacteria`
-
-```shell
-cd ~/data/Pseudomonas
-
-head -n 1 ../Bacteria/summary/collect.pass.csv \
-    > summary/collect.pass.csv
-
-cat ../Bacteria/summary/collect.pass.csv |
-    grep -F -w -f <(cat summary/strains.lst summary/reference.lst) \
-    >> summary/collect.pass.csv
-
-# biosample.tsv
-cp ../Bacteria/summary/attributes.lst summary/
-
-head -n 1 ../Bacteria/summary/biosample.tsv \
-    > summary/biosample.tsv
-
-cat ../Bacteria/summary/biosample.tsv |
-    grep -F -w -f <(cat summary/collect.pass.csv | tsv-select -H -d, -f BioSample | sort | uniq) \
-    >> summary/biosample.tsv
-
-# NR.lst and representative.lst
-cat ../Bacteria/summary/NR.lst |
-    grep -F -w -f <(cat summary/strains.lst) \
-    > summary/NR.lst
-
-cat ../Bacteria/summary/representative.lst |
-    grep -F -w -f <(cat summary/strains.lst) \
-    > summary/representative.lst
-
-wc -l \
-    summary/strains.taxon.tsv \
-    summary/collect.pass.csv \
-    summary/biosample.tsv \
-    summary/NR.lst \
-    summary/representative.lst
-#   4182 summary/strains.taxon.tsv
-#   4196 summary/collect.pass.csv
-#   4203 summary/biosample.tsv
-#   1100 summary/NR.lst
-#    131 summary/representative.lst
-
-```
 
 ### Count strains - Genus
 
@@ -696,29 +659,6 @@ rsync -avP \
     -e 'ssh -p 8804' \
     ~/data/Pseudomonas/ \
     wangq@58.213.64.36:data/Pseudomonas
-
-```
-
-## NCBI taxonomy
-
-Done by `bp_taxonomy2tree.pl` from BioPerl.
-
-```shell
-mkdir -p ~/data/Pseudomonas/tree
-cd ~/data/Pseudomonas/tree
-
-bp_taxonomy2tree.pl -e \
-    $(
-        cat ../summary/strains.taxon.tsv |
-            tsv-select -f 4 |
-            tsv-uniq |
-            tr " " "_" |
-            parallel echo '-s {}'
-    ) \
-    > ncbi.nwk
-
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 ncbi.nwk |
-    rsvg-convert -o Pseudomonas.ncbi.png
 
 ```
 
