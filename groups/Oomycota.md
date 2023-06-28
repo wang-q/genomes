@@ -16,23 +16,24 @@ https://doi.org/10.1016/j.cub.2018.05.062
 nwr member Oomycota |
     grep -v " sp." |
     tsv-summarize -H -g rank --count |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 ```
 
 | rank       | count |
-|------------|-------|
-| phylum     | 1     |
-| no rank    | 55    |
-| family     | 20    |
-| genus      | 85    |
-| species    | 1216  |
-| subspecies | 3     |
-| order      | 11    |
-| strain     | 39    |
-| isolate    | 1     |
-| varietas   | 15    |
-| forma      | 4     |
+|------------|------:|
+| phylum     |     1 |
+| no rank    |    54 |
+| family     |    20 |
+| genus      |    86 |
+| species    |  1219 |
+| subspecies |     3 |
+| order      |    11 |
+| strain     |    39 |
+| isolate    |     1 |
+| varietas   |    15 |
+| forma      |     4 |
 
 ### Species with assemblies
 
@@ -42,8 +43,6 @@ cd ~/data/Oomycota/summary
 
 # should have a valid name of genus
 nwr member Oomycota -r genus |
-    grep -v -i "Candidatus " |
-    grep -v -i "candidate " |
     grep -v " sp." |
     grep -v " spp." |
     sed '1d' |
@@ -51,7 +50,7 @@ nwr member Oomycota -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#85 genus.list
+#86 genus.list
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -97,7 +96,7 @@ done |
 
 wc -l RS*.tsv GB*.tsv
 #   8 RS1.tsv
-# 194 GB1.tsv
+# 197 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -109,7 +108,7 @@ for C in RS GB; do
     done
 done
 #RS1     8
-#GB1     415
+#GB1     429
 
 ```
 
@@ -117,7 +116,7 @@ done
 
 ### Create assembly.tsv
 
-If a refseq assembly is available, the corresponding genbank one is not downloaded
+If a refseq assembly is available, the corresponding genbank one is not listed
 
 ```shell
 cd ~/data/Oomycota/summary
@@ -126,7 +125,7 @@ cat ~/Scripts/genomes/assembly/Fungi.reference.tsv |
     tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
-# RS
+# RS1
 SPECIES=$(
     cat RS1.tsv |
         cut -f 1 |
@@ -149,10 +148,10 @@ echo "
 
 # Preference for refseq
 cat raw.tsv |
-    cut -f 6 \
+    tsv-select -H -f "assembly_accession" \
     > rs.acc.tsv
 
-# GB
+# GB1
 SPECIES=$(
     cat GB1.tsv |
         cut -f 1 |
@@ -177,7 +176,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#435 lines, 6 fields
+#431 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -201,7 +200,7 @@ cat raw.tsv |
     > Oomycota.assembly.tsv
 
 datamash check < Oomycota.assembly.tsv
-#433 lines, 4 fields
+#429 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Oomycota.assembly.tsv |
@@ -210,36 +209,112 @@ cat Oomycota.assembly.tsv |
 cat Oomycota.assembly.tsv |
     tsv-filter --str-not-in-fld 2:ftp
 
-# Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
+# Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Oomycota.assembly.tsv
+#
+# Save the file to another directory to prevent accidentally changing it
 # cp Oomycota.assembly.tsv ~/Scripts/genomes/assembly
-
-# Comment out unneeded strains
 
 # Cleaning
 rm raw*.*sv
 
 ```
 
-### Rsync and check
+### Count before download
+
+* `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
 
 ```shell
 cd ~/data/Oomycota
 
 nwr template ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
-    --ass \
-    -o .
+    --count \
+    --rank genus
+
+# strains.taxon.tsv and taxa.tsv
+bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
+
+# .lst and .count.tsv
+bash Count/rank.sh
+
+mv Count/genus.count.tsv Count/genus.before.tsv
+
+cat Count/genus.before.tsv |
+    keep-header -- tsv-sort -k1,1 |
+    tsv-filter -H --ge 3:2 |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+```
+
+| item    | count |
+|---------|------:|
+| strain  |   428 |
+| species |   198 |
+| genus   |    23 |
+| family  |     8 |
+| order   |     6 |
+| class   |     2 |
+
+| genus             | #species | #strains |
+|-------------------|---------:|---------:|
+| Albugo            |        2 |       10 |
+| Aphanomyces       |        5 |       27 |
+| Elongisporangium  |        5 |        5 |
+| Globisporangium   |       47 |       53 |
+| Halophytophthora  |        2 |        2 |
+| Hyaloperonospora  |        3 |        7 |
+| Lagenidium        |        1 |        3 |
+| Paralagenidium    |        1 |        2 |
+| Peronospora       |        6 |       18 |
+| Phytophthora      |       53 |      191 |
+| Phytopythium      |       14 |       18 |
+| Pilasporangium    |        1 |        3 |
+| Plasmopara        |        4 |       11 |
+| Pseudoperonospora |        2 |        2 |
+| Pythium           |       43 |       66 |
+| Saprolegnia       |        2 |        2 |
+| Sclerospora       |        1 |        2 |
+
+### Download and check
+
+```shell
+cd ~/data/Oomycota
+
+ulimit -n `ulimit -Hn`
+
+nwr template ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
+    --ass
 
 # Run
 bash ASSEMBLY/rsync.sh
 
 # Check md5; create check.lst
+# rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-# Put the misplaced directory in the right place
+# Put the misplaced directory into the right place
 #bash ASSEMBLY/reorder.sh
+#
+# This operation will delete some files in the directory, so please be careful
+#cat ASSEMBLY/remove.lst |
+#    parallel --no-run-if-empty --linebuffer -k -j 1 '
+#        if [[ -e "ASSEMBLY/{}" ]]; then
+#            echo Remove {}
+#            rm -fr "ASSEMBLY/{}"
+#        fi
+#    '
 
-# N50 C S; create n50.tsv and n50.pass.csv
+find ASSEMBLY/ -name "*_genomic.fna.gz" |
+    grep -v "_from_" |
+    wc -l
+#428
+
+# N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 50000 5000 20000000
 
 # Adjust parameters passed to `n50.sh`
@@ -254,28 +329,33 @@ cat ASSEMBLY/n50.tsv |
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
 #35693128        50477035.5      8472.2  25917.5 4826    14503.7
 
-# Collect; create collect.csv
+# After the above steps are completed, run the following commands.
+
+# Collect; create collect.tsv
 bash ASSEMBLY/collect.sh
 
 # After all completed
 bash ASSEMBLY/finish.sh
 
-cp ASSEMBLY/collect.pass.csv summary/
+cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
-    mlr --itsv --omd cat
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
 
-| #item            | count |
-|------------------|-------|
-| url.tsv          | 432   |
-| check.lst        | 432   |
-| collect.csv      | 433   |
-| n50.tsv          | 433   |
-| n50.pass.csv     | 129   |
-| omit.lst         | 307   |
-| collect.pass.csv | 129   |
+| #item            | fields | lines |
+|------------------|-------:|------:|
+| url.tsv          |      3 |   428 |
+| check.lst        |      1 |   428 |
+| collect.tsv      |     20 |   429 |
+| n50.tsv          |      4 |   429 |
+| n50.pass.tsv     |      4 |   124 |
+| collect.pass.tsv |     23 |   124 |
+| pass.lst         |      1 |   123 |
+| omit.lst         |      1 |   308 |
+| rep.lst          |      1 |    66 |
 
 ### Rsync to hpcc
 
@@ -292,5 +372,119 @@ rsync -avP \
 # rsync -avP wangq@202.119.37.251:data/Oomycota/ ~/data/Oomycota
 
 # rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Oomycota/ ~/data/Oomycota
+
+```
+
+## BioSample
+
+```shell
+cd ~/data/Oomycota
+
+ulimit -n `ulimit -Hn`
+
+nwr template ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
+    --bs
+
+# Run this script twice and it will re-download the failed files
+bash BioSample/download.sh
+
+# Ignore rare attributes
+bash BioSample/collect.sh 10
+
+datamash check < BioSample/biosample.tsv
+#424 lines, 36 fields
+
+cp BioSample/attributes.lst summary/
+cp BioSample/biosample.tsv summary/
+
+```
+
+## MinHash
+
+```shell
+cd ~/data/Oomycota/
+
+nwr template ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
+    --mh \
+    --parallel 16 \
+    --in ASSEMBLY/pass.lst \
+    --ani-ab 0.05 \
+    --ani-nr 0.005 \
+    --height 0.4
+
+# Compute assembly sketches
+bash MinHash/compute.sh
+
+#find MinHash -name "*.msh" -empty | wc -l
+
+# Distances within species
+bash MinHash/species.sh
+
+# Abnormal strains
+bash MinHash/abnormal.sh
+
+cat MinHash/abnormal.lst | wc -l
+#359
+
+# Non-redundant strains within species
+bash MinHash/nr.sh
+
+find MinHash -name "NR.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/NR.lst
+wc -l summary/NR.lst
+#49
+
+# Distances between all selected sketches, then hierarchical clustering
+bash MinHash/dist.sh
+
+```
+
+### Condense branches in the minhash tree
+
+```shell
+mkdir -p ~/data/Oomycota/tree
+cd ~/data/Oomycota/tree
+
+nw_order -c n ../MinHash/tree.nwk \
+    > minhash.order.newick
+
+# Avoid non-alphabet characters
+cat ../Count/strains.taxon.tsv |
+    perl -nla -F"\t" -e '
+        s/\W/_/g for @F;
+        s/_+/_/g for @F;
+        print join qq(\t), @F;
+    ' \
+    > strains.taxon.tsv
+
+# rank::col
+ARRAY=(
+    'order::5'
+    'family::4'
+    'genus::3'
+#    'species::2'
+)
+
+rm minhash.condensed.map
+CUR_TREE=minhash.order.newick
+
+for item in "${ARRAY[@]}" ; do
+    GROUP_NAME="${item%%::*}"
+    GROUP_COL="${item##*::}"
+
+    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
+
+    mv condense.newick minhash.${GROUP_NAME}.newick
+    cat condense.map >> minhash.condensed.map
+
+    CUR_TREE=minhash.${GROUP_NAME}.newick
+done
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.genus.newick |
+    rsvg-convert -o Oomycota.minhash.png
 
 ```
