@@ -344,7 +344,7 @@ Two levels:
 * 'Genbank'
     * GB5 - genome_rep: 'Full'
 
-If a refseq assembly is available, the corresponding genbank one is not downloaded
+If a refseq assembly is available, the corresponding genbank one is not listed
 
 ```shell
 cd ~/data/Fungi/summary
