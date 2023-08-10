@@ -22,25 +22,25 @@ Ref.:
 Key genera:
 
 * Acholeplasmatales
-    * *Acholeplasma*: 2147
-    * *Candidatus Phytoplasma*: 33926
+    * *Acholeplasma*
+    * *Candidatus Phytoplasma*
 
 * Anaeroplasmatales
-    * *Anaeroplasma*: 2086
-    * *Asteroleplasma*: 2152
+    * *Anaeroplasma*
+    * *Asteroleplasma*
 
 * Entomoplasmatales
-    * *Entomoplasma*: 46238
-    * *Mesoplasma*: 46239
-    * *Spiroplasma*: 2132
+    * *Entomoplasma*
+    * *Mesoplasma*
+    * *Spiroplasma*
 
 * Mycoplasmatales
-    * *Mycoplasma*: 2093
-    * *Ureaplasma*: 2129
-    * *Candidatus Hepatoplasma*: 295595
+    * *Mycoplasma*
+    * *Ureaplasma*
+    * *Candidatus Hepatoplasma*
 
-* *Candidatus Izimaplasma*: 1912503
+* *Candidatus Izimaplasma*
 
 * Haloplasmatales
-    * *Haloplasma*: 471824
-    * *Inordinaticella*: 1979191
+    * *Haloplasma*
+    * *Inordinaticella*
