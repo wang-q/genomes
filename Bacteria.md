@@ -650,6 +650,10 @@ rsync -avP \
 
 # back
 rsync -avP \
+    wangq@202.119.37.251:data/Bacteria/ \
+    ~/data/Bacteria
+
+rsync -avP \
     -e 'ssh -p 8804' \
     wangq@58.213.64.36:data/Bacteria/ \
     ~/data/Bacteria
