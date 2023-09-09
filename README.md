@@ -40,8 +40,10 @@ nwr ardb --genbank
 
 ```shell
 brew install hmmer easel
+brew install mafft
 brew install brewsci/bio/muscle
 brew install brewsci/bio/fasttree
+brew install brewsci/bio/iqtree2
 brew install brewsci/bio/newick-utils
 brew install brewsci/bio/trimal
 
@@ -62,11 +64,6 @@ cpanm Bio::Tools::Run::Alignment::Clustalw
 cpanm https://github.com/wang-q/Bio-Tools-Phylo-PAML.git
 
 ```
-
-* Pangenome
-
-    * `PPanGGOLiN` is used in this project. Installation steps can be
-      found [here](https://github.com/wang-q/dotfiles/blob/master/others.sh).
 
 ### Other Packages
 
