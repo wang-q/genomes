@@ -484,34 +484,16 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Archaea/tree
 cd ~/data/Archaea/tree
 
-nw_order -c n ../MinHash/tree.nwk \
-    > minhash.sort.newick
+nwr order --an --nd ../MinHash/tree.nwk -o minhash.sort.newick
 
-# rank::col
-ARRAY=(
-    'order::5'
-    'family::4'
-    'genus::3'
-#    'species::2'
-)
+nwr pl-condense --map -r order -r family -r genus \
+    minhash.sort.newick ../Count/species.tsv \
+    -o minhash.condensed.newick
 
-rm minhash.condensed.map
-CUR_TREE=minhash.sort.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../Count/strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick minhash.${GROUP_NAME}.newick
-    cat condense.map >> minhash.condensed.map
-
-    CUR_TREE=minhash.${GROUP_NAME}.newick
-done
+mv condensed.tsv minhash.condensed.tsv
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.genus.newick |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.condensed.newick |
     rsvg-convert -o Archaea.minhash.png
 
 ```
