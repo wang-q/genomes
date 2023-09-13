@@ -4,9 +4,6 @@ use warnings;
 use autodie;
 
 use Getopt::Long qw();
-use FindBin;
-
-use List::MoreUtils::PP;
 
 #----------------------------------------------------------#
 # GetOpt section
@@ -179,9 +176,8 @@ my $count = scalar @fields;
 my @ge = map { $_->[3] ? $_->[2] : () } @fields;
 my @sp = map { $_->[3] ? $_->[1] : () } @fields;
 
-my $ge_of = abbr_most( [ List::MoreUtils::PP::uniq(@ge) ], 1, "Yes" );
-my $sp_of =
-  abbr_most( [ List::MoreUtils::PP::uniq(@sp) ], $min_species, "Yes" );
+my $ge_of = abbr_most( [ uniq(@ge) ], 1,            "Yes" );
+my $sp_of = abbr_most( [ uniq(@sp) ], $min_species, "Yes" );
 
 for my $i ( 0 .. $count - 1 ) {
     if ( $fields[$i]->[3] ) {
@@ -201,6 +197,13 @@ for my $i ( 0 .. $count - 1 ) {
 }
 
 exit;
+
+sub uniq (@) {
+    my %seen = ();
+    my $k;
+    my $seen_undef;
+    return grep { defined $_ ? not $seen{ $k = $_ }++ : not $seen_undef++ } @_;
+}
 
 # from core module Text::Abbrev
 sub abbr {
