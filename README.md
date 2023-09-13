@@ -39,7 +39,8 @@ nwr ardb --genbank
 ### Packages managed by Homebrew
 
 ```shell
-brew install hmmer easel
+brew install hmmer
+brew install brewsci/bio/easel
 brew install mafft
 brew install brewsci/bio/muscle
 brew install brewsci/bio/fasttree
@@ -87,7 +88,6 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
     paste -d $'\t' - - - - - - |
     head -n 9 |
     mlr --itsv --omd cat
-
 
 ```
 

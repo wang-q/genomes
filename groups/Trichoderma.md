@@ -525,36 +525,14 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Trichoderma/tree
 cd ~/data/Trichoderma/tree
 
-nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
-    nw_order -c n - \
+nwr reroot ../MinHash/tree.nwk -n Sa_cer_S288C |
+    nwr order stdin --nd --an \
     > minhash.reroot.newick
 
-# rank::col
-ARRAY=(
-#    'order::5'
-#    'family::4'
-#    'genus::3'
-    'species::2'
-)
+nwr pl-condense -r species minhash.reroot.newick ../Count/species.tsv |
+    nwr tex stdin --bl -o minhash.tex
 
-rm minhash.condensed.map
-CUR_TREE=minhash.reroot.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} ../Count/strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick minhash.${GROUP_NAME}.newick
-    cat condense.map >> minhash.condensed.map
-
-    CUR_TREE=minhash.${GROUP_NAME}.newick
-done
-
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.species.newick |
-    rsvg-convert -o Trichoderma.minhash.png
+tectonic minhash.tex
 
 ```
 
@@ -853,13 +831,14 @@ faops size Protein/fungi61.*.fa |
 # To make it faster
 FastTree -fastest -noml Protein/fungi61.trim.fa > Protein/fungi61.trim.newick
 
-nw_reroot Protein/fungi61.trim.newick Sa_cer_S288C |
-    nw_order -c n - \
+nwr reroot Protein/fungi61.trim.newick -n Sa_cer_S288C |
+    nwr order stdin --nd --an \
     > Protein/fungi61.reroot.newick
 
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 Protein/fungi61.reroot.newick |
-    rsvg-convert -o tree/Trichoderma.marker.png
+# pdf
+nwr tex Protein/fungi61.reroot.newick --bl |
+    tectonic - --outdir tree/
+mv tree/texput.pdf tree/Trichoderma.marker.pdf
 
 ```
 

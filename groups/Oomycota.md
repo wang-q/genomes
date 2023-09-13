@@ -448,43 +448,12 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Oomycota/tree
 cd ~/data/Oomycota/tree
 
-nw_order -c n ../MinHash/tree.nwk \
+nwr order --nd --an ../MinHash/tree.nwk \
     > minhash.order.newick
 
-# Avoid non-alphabet characters
-cat ../Count/strains.taxon.tsv |
-    perl -nla -F"\t" -e '
-        s/\W/_/g for @F;
-        s/_+/_/g for @F;
-        print join qq(\t), @F;
-    ' \
-    > strains.taxon.tsv
+nwr pl-condense -r order -r family -r genus --map minhash.order.newick ../Count/species.tsv |
+    nwr tex stdin --bl -o minhash.tex
 
-# rank::col
-ARRAY=(
-    'order::5'
-    'family::4'
-    'genus::3'
-#    'species::2'
-)
-
-rm minhash.condensed.map
-CUR_TREE=minhash.order.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick minhash.${GROUP_NAME}.newick
-    cat condense.map >> minhash.condensed.map
-
-    CUR_TREE=minhash.${GROUP_NAME}.newick
-done
-
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.genus.newick |
-    rsvg-convert -o Oomycota.minhash.png
+tectonic minhash.tex
 
 ```
