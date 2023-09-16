@@ -610,7 +610,7 @@ rsync -avP \
 cat ~/data/Fungi/ASSEMBLY/url.tsv |
     tsv-select -f 3 |
     tsv-uniq |
-    parallel --no-run-if-empty --linebuffer -k -j 8 '
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo -e "\n==> {}"
         rsync -avP \
             -e "ssh -p 8804" \
@@ -781,40 +781,19 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Fungi/tree
 cd ~/data/Fungi/tree
 
-nw_reroot ../MinHash/tree.nwk Enc_hell_ATCC_50504_GCF_000277815_2 Nemat_ausu_ERTm6_GCF_000738915_1 |
-    nw_order -c n - \
+nwr reroot ../MinHash/tree.nwk -n Enc_hell_ATCC_50504_GCF_000277815_2 -n Nemat_ausu_ERTm6_GCF_000738915_1 |
+    nwr order stdin --nd --an \
     > minhash.reroot.newick
 
-# Avoid "Candida/Metschnikowiaceae"
-cat ../Count/strains.taxon.tsv |
-    sed "s/\//_/g" \
-    > strains.taxon.tsv
+nwr pl-condense -r order -r family -r genus -r species \
+    minhash.reroot.newick ../Count/species.tsv --map \
+    -o minhash.condensed.newick
 
-# rank::col
-ARRAY=(
-    'order::5'
-    'family::4'
-    'genus::3'
-#    'species::2'
-)
-
-rm minhash.condensed.map
-CUR_TREE=minhash.reroot.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick minhash.${GROUP_NAME}.newick
-    cat condense.map >> minhash.condensed.map
-
-    CUR_TREE=minhash.${GROUP_NAME}.newick
-done
+mv condensed.tsv minhash.condense.tsv
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.genus.newick |
+nwr topo --bl minhash.condensed.newick | # remove comments
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - |
     rsvg-convert -o Fungi.minhash.png
 
 ```
@@ -1175,41 +1154,20 @@ FastTree -fastest -noml Protein/fungi61.trim.fa > Protein/fungi61.trim.newick
 ```shell
 cd ~/data/Fungi/tree
 
-nw_reroot ../Protein/fungi61.trim.newick Mit_dap_GCF_000760515_2 No_cera_GCF_000988165_1 |
-    nw_order -c n - \
+nwr reroot ../Protein/fungi61.trim.newick -n Enc_hell_ATCC_50504_GCF_000277815_2 -n Nemat_ausu_ERTm6_GCF_000738915_1 |
+    nwr order stdin --nd --an \
     > fungi61.reroot.newick
 
-# Avoid "Candida/Metschnikowiaceae"
-cat ../Count/strains.taxon.tsv |
-    sed "s/\//_/g" \
-    > strains.taxon.tsv
+nwr pl-condense -r order -r family -r genus -r species \
+    fungi61.reroot.newick ../Count/species.tsv --map \
+    -o fungi61.condensed.newick
 
-# rank::col
-ARRAY=(
-    'order::5'
-    'family::4'
-    'genus::3'
-#    'species::2'
-)
+mv condensed.tsv fungi61.condense.tsv
 
-rm fungi61.condensed.map
-CUR_TREE=fungi61.reroot.newick
+# pdf
+nwr tex fungi61.condensed.newick --bl -o Fungi.fungi61.tex
 
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick fungi61.${GROUP_NAME}.newick
-    cat condense.map >> fungi61.condensed.map
-
-    CUR_TREE=fungi61.${GROUP_NAME}.newick
-done
-
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 fungi61.genus.newick |
-    rsvg-convert -o Fungi.fungi61.png
+tectonic Fungi.fungi61.tex
 
 ```
 
