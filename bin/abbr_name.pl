@@ -198,7 +198,7 @@ for my $i ( 0 .. $count - 1 ) {
 
 exit;
 
-sub uniq (@) {
+sub uniq {
     my %seen = ();
     my $k;
     my $seen_undef;
