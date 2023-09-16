@@ -4,7 +4,7 @@ Genus *Trichoderma* as an example.
 
 <!-- toc -->
 
-- [Strain info](#strain-info)
+- [Taxon info](#taxon-info)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
 - [Download all assemblies](#download-all-assemblies)
@@ -28,7 +28,7 @@ Genus *Trichoderma* as an example.
 
 <!-- tocstop -->
 
-## Strain info
+## Taxon info
 
 * [Trichoderma](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=5543)
 * [Entrez records](http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=5543)
