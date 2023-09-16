@@ -529,8 +529,10 @@ nwr reroot ../MinHash/tree.nwk -n Sa_cer_S288C |
     nwr order stdin --nd --an \
     > minhash.reroot.newick
 
-nwr pl-condense -r species minhash.reroot.newick ../Count/species.tsv |
+nwr pl-condense -r species minhash.reroot.newick ../Count/species.tsv --map |
     nwr tex stdin --bl -o minhash.tex
+
+mv condensed.tsv minhash.condense.tsv
 
 tectonic minhash.tex
 
@@ -561,7 +563,7 @@ cat Count/genus.count.tsv |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 # Can accept N_COUNT
-bash Count/lineage.sh 50
+bash Count/lineage.sh 1
 
 cat Count/lineage.count.tsv |
     mlr --itsv --omd cat |
