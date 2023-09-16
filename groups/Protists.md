@@ -1,6 +1,6 @@
 # Various genera from Protists
 
-Eukaryota without Plants, Metazoa, and Fungi
+Eukaryota other than Plants, Metazoa, and Fungi
 
 <!-- toc -->
 
@@ -18,122 +18,7 @@ Eukaryota without Plants, Metazoa, and Fungi
 
 <!-- tocstop -->
 
-### Species with assemblies
-
-```shell
-mkdir -p ~/data/Protists/summary
-cd ~/data/Protists/summary
-
-# should have a valid name of genus
-nwr member Eukaryota -r genus |
-    grep -v -i "Candidatus " |
-    grep -v -i "candidate " |
-    nwr restrict -e Viridiplantae |
-    nwr restrict -e Metazoa |
-    nwr restrict -e Fungi |
-    sed '1d' |
-    sort -n -k1,1 \
-    > genus.list.tsv
-
-wc -l genus.list.tsv
-#3916 genus.list
-
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    GB=$(
-        echo "
-            SELECT
-                COUNT(*)
-            FROM ar
-            WHERE 1=1
-                AND genus_id = ${RANK_ID}
-            " |
-            sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-    )
-
-    FULL=$(
-        echo "
-            SELECT
-                COUNT(*)
-            FROM ar
-            WHERE 1=1
-                AND genus_id = ${RANK_ID}
-                AND genome_rep IN ('Full')
-            " |
-            sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-    )
-
-    if [[ ${GB} -gt 0 ]]; then
-        echo -e "${RANK_ID}\t${GB}\t${FULL}"
-    fi
-done |
-    nwr append stdin |
-    tsv-select -f 1,4,2-3 |
-    tsv-sort -k3,3nr -k4,4nr -k2,2 |
-    (echo -e '#tax_id\tgenus\tGB\tFULL' && cat) \
-    > genus.count.tsv
-
-wc -l genus.count.tsv
-#255 genus.count.tsv
-
-cat genus.count.tsv |
-    tsv-filter -H --ge GB:5 --ge FULL:1 |
-    mlr --itsv --omd cat
-
-cat genus.count.tsv |
-    tsv-filter -H --ge GB:5 --ge FULL:1 |
-    nwr append stdin -r phylum -r class |
-    keep-header -- sort -k5,5 -k6,6
-
-```
-
-| #tax_id | genus            | GB  | FULL |
-|---------|------------------|-----|------|
-| 4783    | Phytophthora     | 189 | 189  |
-| 5820    | Plasmodium       | 152 | 151  |
-| 5658    | Leishmania       | 72  | 66   |
-| 4797    | Pythium          | 68  | 68   |
-| 5806    | Cryptosporidium  | 65  | 64   |
-| 5690    | Trypanosoma      | 57  | 55   |
-| 1448052 | Globisporangium  | 53  | 53   |
-| 37359   | Plasmodiophora   | 50  | 49   |
-| 44417   | Cyclospora       | 40  | 40   |
-| 5810    | Toxoplasma       | 28  | 28   |
-| 100860  | Aphanomyces      | 27  | 27   |
-| 5754    | Acanthamoeba     | 25  | 25   |
-| 12967   | Blastocystis     | 23  | 23   |
-| 5740    | Giardia          | 22  | 22   |
-| 5864    | Babesia          | 21  | 21   |
-| 795339  | Phytopythium     | 18  | 18   |
-| 5758    | Entamoeba        | 16  | 16   |
-| 5884    | Paramecium       | 16  | 16   |
-| 83373   | Galdieria        | 15  | 15   |
-| 5748    | Nannochloropsis  | 15  | 15   |
-| 5873    | Theileria        | 15  | 14   |
-| 5761    | Naegleria        | 14  | 14   |
-| 5800    | Eimeria          | 14  | 13   |
-| 5986    | Isotricha        | 13  | 13   |
-| 2985    | Ochromonas       | 11  | 11   |
-| 70742   | Peronospora      | 11  | 11   |
-| 4780    | Plasmopara       | 11  | 11   |
-| 2949    | Symbiodinium     | 11  | 11   |
-| 65356   | Albugo           | 10  | 10   |
-| 5782    | Dictyostelium    | 10  | 10   |
-| 47895   | Ophryoscolex     | 10  | 10   |
-| 5655    | Crithidia        | 8   | 8    |
-| 40635   | Entodinium       | 8   | 8    |
-| 5935    | Euplotes         | 8   | 8    |
-| 28000   | Perkinsus        | 8   | 8    |
-| 47893   | Polyplastron     | 8   | 8    |
-| 1003337 | Angomonas        | 6   | 6    |
-| 47888   | Diplodinium      | 6   | 6    |
-| 40637   | Epidinium        | 6   | 6    |
-| 5890    | Tetrahymena      | 6   | 6    |
-| 5721    | Trichomonas      | 6   | 6    |
-| 33652   | Cafeteria        | 5   | 5    |
-| 40805   | Dasytricha       | 5   | 5    |
-| 1448050 | Elongisporangium | 5   | 5    |
-| 184462  | Hyaloperonospora | 5   | 5    |
-| 35127   | Thalassiosira    | 5   | 5    |
+## Taxon info
 
 * Amoebozoa 变形虫
     * Discosea
@@ -228,16 +113,111 @@ cat genus.count.tsv |
     * Chlorophyta (green algae)
     * Streptophyta 链形植物
 
+### Species with assemblies
+
+```shell
+mkdir -p ~/data/Protists/summary
+cd ~/data/Protists/summary
+
+# should have a valid name of genus
+nwr member Eukaryota -r genus |
+    grep -v -i "Candidatus " |
+    grep -v -i "candidate " |
+    nwr restrict -e Viridiplantae |
+    nwr restrict -e Metazoa |
+    nwr restrict -e Fungi |
+    sed '1d' |
+    sort -n -k1,1 \
+    > genus.list.tsv
+
+wc -l genus.list.tsv
+#3966 genus.list
+
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo "
+        SELECT
+            species_id,
+            species,
+            COUNT(*) AS count
+        FROM ar
+        WHERE 1=1
+            AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %' -- Crossbreeding of two species
+            AND genome_rep IN ('Full')
+        GROUP BY species_id
+        HAVING count >= 1
+        " |
+        sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
+done |
+    tsv-sort -k2,2 \
+    > RS1.tsv
+
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
+    echo "
+        SELECT
+            species_id,
+            species,
+            COUNT(*) AS count
+        FROM ar
+        WHERE 1=1
+            AND genus_id = ${RANK_ID}
+            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
+            AND genome_rep IN ('Full')
+        GROUP BY species_id
+        HAVING count >= 1
+        " |
+        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+done |
+    tsv-sort -k2,2 \
+    > GB1.tsv
+
+wc -l RS*.tsv GB*.tsv
+#   94 RS1.tsv
+#  591 GB1.tsv
+
+for C in RS GB; do
+    for N in $(seq 1 1 10); do
+        if [ -e "${C}${N}.tsv" ]; then
+            printf "${C}${N}\t"
+            cat ${C}${N}.tsv |
+                tsv-summarize --sum 3
+        fi
+    done
+done
+#RS1     95
+#GB1     1437
+
+```
+
 ## Download all assemblies
 
-### Create assembly.tsv
+### Create .assembly.tsv
 
 ```shell
 cd ~/data/Protists/summary
 
-GENUS=$(
-    cat genus.count.tsv |
-        grep -v "^#" |
+# Reference genome
+echo "
+.headers ON
+
+    SELECT
+        *
+    FROM ar
+    WHERE 1=1
+        AND genus IN ('Caenorhabditis', 'Arabidopsis', 'Saccharomyces')
+        AND refseq_category IN ('reference genome')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
+    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
+    > raw.tsv
+
+# RS
+SPECIES=$(
+    cat RS1.tsv |
         cut -f 1 |
         tr "\n" "," |
         sed 's/,$//'
@@ -245,37 +225,72 @@ GENUS=$(
 
 echo "
     SELECT
-        organism_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, assembly_level
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
+        assembly_accession
     FROM ar
     WHERE 1=1
-        AND genus_id IN ($GENUS)
+        AND species_id IN ($SPECIES)
+        AND genome_rep IN ('Full')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    >> raw.tsv
+
+# Preference for refseq
+cat raw.tsv |
+    tsv-select -H -f "assembly_accession" \
+    > rs.acc.tsv
+
+# GB
+SPECIES=$(
+    cat GB1.tsv |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
+        species, genus, ftp_path, biosample, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-filter --regex '2:^[A-Za-z ]+$' \
-    > raw.tsv
+    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    >> raw.tsv
+
+cat raw.tsv |
+    tsv-uniq |
+    datamash check
+#1442 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
     tsv-uniq |
-    perl ~/Scripts/withncbi/taxon/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
-    (echo -e '#name\tftp_path\torganism\tassembly_level' && cat ) |
+    tsv-select -f 1-6 |
+    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
     perl -nl -a -F"," -e '
         BEGIN{my %seen};
         /^#/ and print and next;
         /^organism_name/i and next;
         $seen{$F[3]}++; # ftp_path
         $seen{$F[3]} > 1 and next;
-        $seen{$F[5]}++; # abbr_name
-        $seen{$F[5]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\n}, $F[5], $F[3], $F[1], $F[4];
+        $seen{$F[6]}++; # abbr_name
+        $seen{$F[6]} > 1 and next;
+        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
         ' |
-    keep-header -- sort -k3,3 -k1,1 \
+    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
+    keep-header -- tsv-sort -k4,4 -k1,1 \
     > Protists.assembly.tsv
 
 datamash check < Protists.assembly.tsv
-#1408 lines, 4 fields
+#1439 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Protists.assembly.tsv |
@@ -284,147 +299,168 @@ cat Protists.assembly.tsv |
 cat Protists.assembly.tsv |
     tsv-filter --str-not-in-fld 2:ftp
 
-# Edit .tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
+# Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Protists.assembly.tsv
+#
+# Save the file to another directory to prevent accidentally changing it
 # cp Protists.assembly.tsv ~/Scripts/genomes/assembly
-
-# Comment out unneeded strains
 
 # Cleaning
 rm raw*.*sv
 
 ```
 
-### rsync and check
+### Count before download
 
 ```shell
 cd ~/data/Protists
 
-nwr assembly ~/Scripts/genomes/assembly/Protists.assembly.tsv \
-    -o ASSEMBLY
+nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
+    --count \
+    --rank genus
 
-# Remove dirs not in the list
-find ASSEMBLY -maxdepth 1 -mindepth 1 -type d |
-    tr "/" "\t" |
-    cut -f 2 |
-    tsv-join --exclude -k 1 -f ASSEMBLY/url.tsv -d 1 |
-    parallel --no-run-if-empty --linebuffer -k -j 1 '
-        echo Remove {}
-        rm -fr ASSEMBLY/{}
-    '
+# strains.taxon.tsv and taxa.tsv
+bash Count/strains.sh
+
+# genus.lst and genus.count.tsv
+bash Count/rank.sh
+
+mv Count/genus.count.tsv Count/genus.before.tsv
+
+cat Count/genus.before.tsv |
+    keep-header -- tsv-sort -k1,1 |
+    tsv-filter -H --ge 3:5 |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+```
+
+| genus            | #species | #strains |
+|------------------|---------:|---------:|
+| Acanthamoeba     |       16 |       25 |
+| Albugo           |        2 |       10 |
+| Angomonas        |        3 |        6 |
+| Aphanomyces      |        5 |       27 |
+| Babesia          |        8 |       21 |
+| Cafeteria        |        2 |        5 |
+| Crithidia        |        5 |        8 |
+| Cryptosporidium  |       14 |       63 |
+| Cyclospora       |        1 |       40 |
+| Dasytricha       |        1 |        5 |
+| Dictyostelium    |        9 |       10 |
+| Diplodinium      |        2 |        6 |
+| Eimeria          |        9 |       10 |
+| Elongisporangium |        5 |        5 |
+| Entamoeba        |        5 |       16 |
+| Entodinium       |        3 |        8 |
+| Epidinium        |        2 |        6 |
+| Euplotes         |        5 |        7 |
+| Galdieria        |        3 |       15 |
+| Giardia          |        2 |       32 |
+| Globisporangium  |       47 |       53 |
+| Hyaloperonospora |        3 |        7 |
+| Isotricha        |        2 |        6 |
+| Leishmania       |       20 |       62 |
+| Naegleria        |        3 |       14 |
+| Nannochloropsis  |        5 |       14 |
+| Ophryoscolex     |        1 |       10 |
+| Paramecium       |        9 |       16 |
+| Perkinsus        |        3 |        7 |
+| Peronospora      |        6 |       18 |
+| Phytophthora     |       53 |      191 |
+| Phytopythium     |       14 |       18 |
+| Plasmodiophora   |        1 |       49 |
+| Plasmodium       |       20 |      148 |
+| Plasmopara       |        4 |       11 |
+| Polyplastron     |        1 |        8 |
+| Pythium          |       43 |       66 |
+| Symbiodinium     |        5 |        7 |
+| Tetrahymena      |        4 |        6 |
+| Theileria        |        5 |       15 |
+| Toxoplasma       |        1 |       28 |
+| Trichomonas      |        4 |        7 |
+| Trypanosoma      |       11 |       56 |
+
+### Download and check
+
+```shell
+cd ~/data/Protists
+
+ulimit -n `ulimit -Hn`
+
+nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
+    --ass
 
 # Run
-proxychains4 bash ASSEMBLY/rsync.sh
+bash ASSEMBLY/rsync.sh
 
-# md5
+# Check md5; create check.lst
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-# collect
-bash ASSEMBLY/collect.sh
+# Put the misplaced directory into the right place
+#bash ASSEMBLY/reorder.sh
+#
+# This operation will delete some files in the directory, so please be careful
+#cat ASSEMBLY/remove.lst |
+#    parallel --no-run-if-empty --linebuffer -k -j 1 '
+#        if [[ -e "ASSEMBLY/{}" ]]; then
+#            echo Remove {}
+#            rm -fr "ASSEMBLY/{}"
+#        fi
+#    '
 
-```
+find ASSEMBLY/ -name "*_genomic.fna.gz" |
+    grep -v "_from_" |
+    wc -l
+#13108
 
-## Count strains
+# N50 C S; create n50.tsv and n50.pass.tsv
+bash ASSEMBLY/n50.sh 100000 2000 1000000
 
-```bash
-cd ~/data/alignment/Protists
-
-for dir in $(find ASSEMBLY -maxdepth 1 -mindepth 1 -type d | sort); do
-    1>&2 echo "==> ${dir}"
-    name=$(basename ${dir})
-
-    find ${dir} -type f -name "*_genomic.fna.gz" |
-        grep -v "_from_" | # exclude CDS and rna
-        xargs cat |
-        faops n50 -C -S stdin |
-        (echo -e "name\t${name}" && cat) |
-        datamash transpose
-done |
-    tsv-uniq |
-    tee ASSEMBLY/n50.tsv
+# Adjust parameters passed to `n50.sh`
+cat ASSEMBLY/n50.tsv |
+    tsv-filter -H --str-in-fld "name:_GCF_" |
+    tsv-summarize -H --min "N50,S" --max "C"
+#N50_min S_min   C_max
+#32179   2187595 2016
 
 cat ASSEMBLY/n50.tsv |
-    tsv-filter \
-        -H --or \
-        --le 4:3000 \
-        --ge 2:100000 |
-    tsv-filter -H --ge 3:1000000 |
-    tr "\t" "," \
-    > ASSEMBLY/n50.pass.csv
+    tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
+#S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
+#11671954.4      32505046        26704.8 368791.5        349.5   4717.6
 
-wc -l ASSEMBLY/n50*
-#  204 ASSEMBLY/n50.pass.csv
-#  296 ASSEMBLY/n50.tsv
+# After the above steps are completed, run the following commands.
 
-tsv-join \
-    ASSEMBLY/Protists.assembly.collect.csv \
-    --delimiter "," -H --key-fields 1 \
-    --filter-file ASSEMBLY/n50.pass.csv \
-    > ASSEMBLY/Protists.assembly.pass.csv
+# Collect; create collect.tsv
+bash ASSEMBLY/collect.sh
 
-wc -l ASSEMBLY/Protists.assembly*csv
-#   293 ASSEMBLY/Protists.assembly.collect.csv
-#   201 ASSEMBLY/Protists.assembly.pass.csv
+# After all completed
+bash ASSEMBLY/finish.sh
 
-# find potential duplicated strains names
-cat ASSEMBLY/Protists.assembly.pass.csv |
-    cut -d, -f 7 |
-    sort |
-    uniq -c |
-    sort -nr
+cp ASSEMBLY/collect.pass.tsv summary/
+
+cat ASSEMBLY/counts.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
 
+### Rsync to hpcc
+
 ```bash
-cd ~/data/alignment/Protists
+rsync -avP \
+    ~/data/Protists/ \
+    wangq@202.119.37.251:data/Protists
 
-parallel --no-run-if-empty --linebuffer -k -j 4 '
-    n_species=$(cat ASSEMBLY/Protists.assembly.pass.csv |
-        cut -d"," -f 2 |
-        grep -v "Candidatus" |
-        grep "{}" |
-        cut -d" " -f 1,2 |
-        sort |
-        uniq |
-        wc -l)
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/Protists/ \
+    wangq@58.213.64.36:data/Protists
 
-    n_strains=$(cat ASSEMBLY/Protists.assembly.pass.csv |
-        cut -d"," -f 2 |
-        grep -v "Candidatus" |
-        grep "{}" |
-        cut -d" " -f 1,2 |
-        sort |
-        wc -l)
+# rsync -avP wangq@202.119.37.251:data/Protists/ ~/data/Protists
 
-    printf "%s\t%d\t%d\n" {} ${n_species} ${n_strains}
-    ' ::: $(
-        cat ASSEMBLY/Protists.assembly.pass.csv |
-            sed -e '1d' |
-            cut -d"," -f 2 |
-            grep -v "Candidatus" |
-            cut -d" " -f 1 |
-            sort |
-            uniq
-    )
-
-#Acanthamoeba    1       2
-#Babesia 6       7
-#Blastocystis    2       8
-#Crithidia       2       2
-#Cryptosporidium 13      16
-#Dictyostelium   4       4
-#Eimeria 2       2
-#Entamoeba       2       3
-#Giardia 3       6
-#Leishmania      17      25
-#Nannochloropsis 4       8
-#Phytophthora    11      14
-#Plasmodium      20      60
-#Pythium 4       4
-#Theileria       4       6
-#Toxoplasma      1       16
-#Trypanosoma     8       13
+# rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Protists/ ~/data/Protists
 
 ```
 
