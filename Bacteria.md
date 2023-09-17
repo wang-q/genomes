@@ -825,45 +825,18 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Bacteria/tree
 cd ~/data/Bacteria/tree
 
-nw_reroot ../MinHash/tree.nwk Thermot_petr_RKU_1_GCF_000016785_1 Hyd_thermophilus_TK_6_GCF_000164905_1 |
-    nw_order -c n - \
+nwr reroot ../MinHash/tree.nwk -n Thermot_petr_RKU_1_GCF_000016785_1 -n Hyd_thermophilus_TK_6_GCF_000164905_1 |
+    nwr order stdin --nd --an \
     > minhash.reroot.newick
 
-# Avoid "Halalkalibacterium (ex Joshi et al. 2022)"
-cat ../Count/strains.taxon.tsv |
-    perl -nla -F"\t" -e '
-        s/\W/_/g for @F;
-        s/_+/_/g for @F;
-        print join qq(\t), @F;
-    ' \
-    > strains.taxon.tsv
+nwr pl-condense -r class -r order -r family -r genus -r species \
+    minhash.reroot.newick ../Count/species.tsv --map \
+    -o minhash.condensed.newick
 
-# rank::col
-ARRAY=(
-    'class::6'
-    'order::5'
-    'family::4'
-    'genus::3'
-    'species::2'
-)
-
-rm minhash.condensed.map
-CUR_TREE=minhash.reroot.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick minhash.${GROUP_NAME}.newick
-    cat condense.map >> minhash.condensed.map
-
-    CUR_TREE=minhash.${GROUP_NAME}.newick
-done
+mv condensed.tsv minhash.condense.tsv
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.species.newick |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.condensed.newick |
     rsvg-convert -o Bacteria.minhash.png
 
 ```
@@ -1201,36 +1174,18 @@ FastTree -fastest -noml Protein/bac120.trim.fa > Protein/bac120.trim.newick
 ```shell
 cd ~/data/Bacteria/tree
 
-nw_reroot ../Protein/bac120.trim.newick Thermot_petr_RKU_1_GCF_000016785_1 Hyd_thermophilus_TK_6_GCF_000164905_1 |
-    nw_order -c n - \
+nwr reroot ../Protein/bac120.trim.newick -n Thermot_petr_RKU_1_GCF_000016785_1 -n Hyd_thermophilus_TK_6_GCF_000164905_1 |
+    nwr order stdin --nd --an \
     > bac120.reroot.newick
 
-# rank::col
-ARRAY=(
-    'class::6'
-    'order::5'
-    'family::4'
-    'genus::3'
-    'species::2'
-)
+nwr pl-condense -r class -r order -r family -r genus -r species \
+    bac120.reroot.newick ../Count/species.tsv --map \
+    -o bac120.condensed.newick
 
-rm bac120.condensed.map
-CUR_TREE=bac120.reroot.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/genomes/bin/condense_tree.sh ${CUR_TREE} strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick bac120.${GROUP_NAME}.newick
-    cat condense.map >> bac120.condensed.map
-
-    CUR_TREE=bac120.${GROUP_NAME}.newick
-done
+mv condensed.tsv bac120.condense.tsv
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 bac120.species.newick |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 bac120.condensed.newick |
     rsvg-convert -o Bacteria.bac120.png
 
 ```

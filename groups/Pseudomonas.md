@@ -819,33 +819,17 @@ FastTree -fastest -noml PROTEINS/bac120.trim.fa > PROTEINS/bac120.trim.newick
 ```shell
 cd ~/data/Pseudomonas/tree
 
-cp ../PROTEINS/bac120.trim.newick .
+nwr order --nd --an ../PROTEINS/bac120.trim.newick \
+    > bac120.order.newick
 
-# rank::col
-ARRAY=(
-#    'order::6'
-#    'family::5'
-#    'genus::4'
-    'species::3'
-)
+nwr pl-condense -r species \
+    bac120.order.newick ../Count/species.tsv \
+    -o bac120.condensed.newick
 
-rm bac120.condensed.map
-CUR_TREE=bac120.trim.newick
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    GROUP_COL="${item##*::}"
-
-    bash ~/Scripts/withncbi/taxon/condense_tree.sh ${CUR_TREE} ../summary/strains.taxon.tsv 1 ${GROUP_COL}
-
-    mv condense.newick bac120.${GROUP_NAME}.newick
-    cat condense.map >> bac120.condensed.map
-
-    CUR_TREE=bac120.${GROUP_NAME}.newick
-done
+mv condensed.tsv bac120.condense.tsv
 
 # png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 bac120.species.newick |
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 bac120.condensed.newick |
     rsvg-convert -o Pseudomonas.bac120.png
 
 ```
