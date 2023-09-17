@@ -10,7 +10,6 @@ A nice introduction article about Oomycota:
 
 https://doi.org/10.1016/j.cub.2018.05.062
 
-
 ### Symlink
 
 ```shell
@@ -53,79 +52,79 @@ nwr member Oomycota |
 ### Species with assemblies
 
 ```shell
-mkdir -p ~/data/Protists/Oomycota/summary
-cd ~/data/Protists/Oomycota/summary
+cd ~/data/Protists/Oomycota
+mkdir -p summary
 
-# should have a valid name of genus
-nwr member Oomycota -r genus |
-    grep -v " sp." |
-    grep -v " spp." |
-    sed '1d' |
-    sort -n -k1,1 \
-    > genus.list.tsv
+SPECIES=$(
+    nwr member \
+        Oomycota\
+        -r species |
+        grep -v " sp." |
+        sed '1d' |
+        cut -f 1 |
+        sort |
+        uniq
+)
 
-wc -l genus.list.tsv
-#86 genus.list
+for S in $SPECIES; do
+    GB=$(
+        echo "
+            SELECT
+                COUNT(*)
+            FROM ar
+            WHERE 1=1
+                AND species_id = $S
+            " |
+            sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+    )
 
-cat genus.list.tsv | cut -f 1 |
-while read RANK_ID; do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
-            AND species NOT LIKE '% x %'
-            AND genome_rep IN ('Full')
-        GROUP BY species_id
-        HAVING count >= 1
-        " |
-        sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
+    CHR=$(
+        echo "
+            SELECT
+                COUNT(*)
+            FROM ar
+            WHERE 1=1
+                AND species_id = $S
+                AND assembly_level IN ('Complete Genome', 'Chromosome')
+            " |
+            sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
+    )
+
+    if [[ ${GB} -gt 0 ]]; then
+        echo -e "$S\t$GB\t$CHR"
+    fi
 done |
-    tsv-sort -k2,2 \
-    > RS1.tsv
+    nwr append stdin |
+    tsv-select -f 1,4,2-3 |
+    tsv-sort -k3,3nr -k4,4nr -k2,2 |
+    (echo -e 'species_id\tspecies\tGB\tCHR' && cat) \
+    > species.count.tsv
 
-cat genus.list.tsv | cut -f 1 |
-while read RANK_ID; do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
-            AND species NOT LIKE '% x %'
-            AND genome_rep IN ('Full')
-        GROUP BY species_id
-        HAVING count >= 1
-        " |
-        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-done |
-    tsv-sort -k2,2 \
-    > GB1.tsv
-
-wc -l RS*.tsv GB*.tsv
-#   8 RS1.tsv
-# 197 GB1.tsv
-
-for C in RS GB; do
-    for N in $(seq 1 1 10); do
-        if [ -e "${C}${N}.tsv" ]; then
-            printf "${C}${N}\t"
-            cat ${C}${N}.tsv |
-                tsv-summarize --sum 3
-        fi
-    done
-done
-#RS1     8
-#GB1     429
+cat species.count.tsv |
+    tsv-filter -H --ge GB:5 |
+    mlr --itsv --omd cat
 
 ```
+
+| species_id | species                 | GB | CHR |
+|------------|-------------------------|----|-----|
+| 164328     | Phytophthora ramorum    | 28 | 0   |
+| 29920      | Phytophthora cactorum   | 21 | 0   |
+| 114742     | Pythium insidiosum      | 15 | 0   |
+| 112090     | Aphanomyces astaci      | 14 | 0   |
+| 4784       | Phytophthora capsici    | 14 | 0   |
+| 53985      | Phytophthora fragariae  | 13 | 0   |
+| 325452     | Phytophthora kernoviae  | 12 | 0   |
+| 65357      | Albugo candida          | 9  | 0   |
+| 4792       | Phytophthora parasitica | 9  | 0   |
+| 542832     | Peronospora effusa      | 8  | 1   |
+| 4785       | Phytophthora cinnamomi  | 8  | 0   |
+| 100861     | Aphanomyces euteiches   | 7  | 0   |
+| 4787       | Phytophthora infestans  | 6  | 1   |
+| 129355     | Phytophthora lateralis  | 5  | 0   |
+| 129364     | Phytophthora rubi       | 5  | 0   |
+| 4781       | Plasmopara halstedii    | 5  | 0   |
+| 41045      | Pythium oligandrum      | 5  | 0   |
 
 ## All assemblies
 
@@ -133,8 +132,6 @@ done
 
 ```shell
 cd ~/data/Protists/Oomycota/
-
-mkdir -p summary
 
 cat ../summary/collect.pass.tsv |
     tsv-filter -H --str-eq "RefSeq_category:Reference Genome" \
@@ -160,12 +157,12 @@ cat ../summary/biosample.tsv |
 
 ```
 
-### Count before download
+### Count `assembly.tsv`
 
 ```shell
-cd ~/data/Oomycota
+cd ~/data/Protists/Oomycota/
 
-nwr template ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
+nwr template summary/assembly.tsv \
     --count \
     --rank genus
 
@@ -191,169 +188,44 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  |   428 |
-| species |   198 |
+| strain  |   333 |
+| species |   172 |
 | genus   |    23 |
-| family  |     8 |
-| order   |     6 |
-| class   |     2 |
+| family  |     9 |
+| order   |     8 |
+| class   |     4 |
 
-| genus             | #species | #strains |
-|-------------------|---------:|---------:|
-| Albugo            |        2 |       10 |
-| Aphanomyces       |        5 |       27 |
-| Elongisporangium  |        5 |        5 |
-| Globisporangium   |       47 |       53 |
-| Halophytophthora  |        2 |        2 |
-| Hyaloperonospora  |        3 |        7 |
-| Lagenidium        |        1 |        3 |
-| Paralagenidium    |        1 |        2 |
-| Peronospora       |        6 |       18 |
-| Phytophthora      |       53 |      191 |
-| Phytopythium      |       14 |       18 |
-| Pilasporangium    |        1 |        3 |
-| Plasmopara        |        4 |       11 |
-| Pseudoperonospora |        2 |        2 |
-| Pythium           |       43 |       66 |
-| Saprolegnia       |        2 |        2 |
-| Sclerospora       |        1 |        2 |
-
-### Download and check
-
-```shell
-cd ~/data/Oomycota
-
-ulimit -n `ulimit -Hn`
-
-nwr template ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
-    --ass
-
-# Run
-bash ASSEMBLY/rsync.sh
-
-# Check md5; create check.lst
-# rm ASSEMBLY/check.lst
-bash ASSEMBLY/check.sh
-
-# Put the misplaced directory into the right place
-#bash ASSEMBLY/reorder.sh
-#
-# This operation will delete some files in the directory, so please be careful
-#cat ASSEMBLY/remove.lst |
-#    parallel --no-run-if-empty --linebuffer -k -j 1 '
-#        if [[ -e "ASSEMBLY/{}" ]]; then
-#            echo Remove {}
-#            rm -fr "ASSEMBLY/{}"
-#        fi
-#    '
-
-find ASSEMBLY/ -name "*_genomic.fna.gz" |
-    grep -v "_from_" |
-    wc -l
-#428
-
-# N50 C S; create n50.tsv and n50.pass.tsv
-bash ASSEMBLY/n50.sh 50000 5000 20000000
-
-# Adjust parameters passed to `n50.sh`
-cat ASSEMBLY/n50.tsv |
-    tsv-filter -H --str-in-fld "name:_GCF_" |
-    tsv-summarize -H --min "N50,S" --max "C"
-#N50_min S_min   C_max
-#280942  53131624        4921
-
-cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
-#S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#35693128        50477035.5      8472.2  25917.5 4826    14503.7
-
-# After the above steps are completed, run the following commands.
-
-# Collect; create collect.tsv
-bash ASSEMBLY/collect.sh
-
-# After all completed
-bash ASSEMBLY/finish.sh
-
-cp ASSEMBLY/collect.pass.tsv summary/
-
-cat ASSEMBLY/counts.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
-
-```
-
-| #item            | fields | lines |
-|------------------|-------:|------:|
-| url.tsv          |      3 |   428 |
-| check.lst        |      1 |   428 |
-| collect.tsv      |     20 |   429 |
-| n50.tsv          |      4 |   429 |
-| n50.pass.tsv     |      4 |   124 |
-| collect.pass.tsv |     23 |   124 |
-| pass.lst         |      1 |   123 |
-| omit.lst         |      1 |   308 |
-| rep.lst          |      1 |    66 |
-
-### Rsync to hpcc
-
-```bash
-rsync -avP \
-    ~/data/Oomycota/ \
-    wangq@202.119.37.251:data/Oomycota
-
-rsync -avP \
-    -e 'ssh -p 8804' \
-    ~/data/Oomycota/ \
-    wangq@58.213.64.36:data/Oomycota
-
-# rsync -avP wangq@202.119.37.251:data/Oomycota/ ~/data/Oomycota
-
-# rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Oomycota/ ~/data/Oomycota
-
-```
-
-## BioSample
-
-```shell
-cd ~/data/Oomycota
-
-ulimit -n `ulimit -Hn`
-
-nwr template ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
-    --bs
-
-# Run this script twice and it will re-download the failed files
-bash BioSample/download.sh
-
-# Ignore rare attributes
-bash BioSample/collect.sh 10
-
-datamash check < BioSample/biosample.tsv
-#424 lines, 36 fields
-
-cp BioSample/attributes.lst summary/
-cp BioSample/biosample.tsv summary/
-
-```
+| genus            | #species | #strains |
+|------------------|---------:|---------:|
+| Albugo           |        2 |        7 |
+| Aphanomyces      |        5 |       15 |
+| Elongisporangium |        4 |        4 |
+| Globisporangium  |       45 |       49 |
+| Halophytophthora |        2 |        2 |
+| Hyaloperonospora |        3 |        6 |
+| Lagenidium       |        1 |        2 |
+| Peronospora      |        6 |       18 |
+| Phytophthora     |       43 |      153 |
+| Phytopythium     |       14 |       16 |
+| Pilasporangium   |        1 |        3 |
+| Plasmopara       |        3 |        7 |
+| Pythium          |       32 |       40 |
+| Saprolegnia      |        2 |        2 |
 
 ## MinHash
 
 ```shell
-cd ~/data/Oomycota/
+cd ~/data/Protists/Oomycota/
 
-nwr template ~/Scripts/genomes/assembly/Oomycota.assembly.tsv \
+nwr template summary/assembly.tsv \
     --mh \
     --parallel 16 \
-    --in ASSEMBLY/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005 \
     --height 0.4
 
 # Compute assembly sketches
 bash MinHash/compute.sh
-
-#find MinHash -name "*.msh" -empty | wc -l
 
 # Distances within species
 bash MinHash/species.sh
@@ -383,8 +255,8 @@ bash MinHash/dist.sh
 ### Condense branches in the minhash tree
 
 ```shell
-mkdir -p ~/data/Oomycota/tree
-cd ~/data/Oomycota/tree
+mkdir -p ~/data/Protists/Oomycota/tree
+cd ~/data/Protists/Oomycota/tree
 
 nwr order --nd --an ../MinHash/tree.nwk \
     > minhash.order.newick
