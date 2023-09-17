@@ -10,6 +10,21 @@ A nice introduction article about Oomycota:
 
 https://doi.org/10.1016/j.cub.2018.05.062
 
+
+### Symlink
+
+```shell
+mkdir -p ~/data/Protists/Oomycota
+cd ~/data/Protists/Oomycota
+
+rm -fr ASSEMBLY
+rm -fr STRAINS
+
+ln -s ../ASSEMBLY ASSEMBLY
+ln -s ../STRAINS STRAINS
+
+```
+
 ### List all ranks
 
 ```shell
@@ -38,8 +53,8 @@ nwr member Oomycota |
 ### Species with assemblies
 
 ```shell
-mkdir -p ~/data/Oomycota/summary
-cd ~/data/Oomycota/summary
+mkdir -p ~/data/Protists/Oomycota/summary
+cd ~/data/Protists/Oomycota/summary
 
 # should have a valid name of genus
 nwr member Oomycota -r genus |
@@ -112,117 +127,40 @@ done
 
 ```
 
-## Download all assemblies
+## All assemblies
 
-### Create assembly.tsv
-
-If a refseq assembly is available, the corresponding genbank one is not listed
+### Extract from `../Protists` and create assembly.tsv
 
 ```shell
-cd ~/data/Oomycota/summary
+cd ~/data/Protists/Oomycota/
 
-cat ~/Scripts/genomes/assembly/Fungi.reference.tsv |
-    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
-    > raw.tsv
+mkdir -p summary
 
-# RS1
-SPECIES=$(
-    cat RS1.tsv |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
+cat ../summary/collect.pass.tsv |
+    tsv-filter -H --str-eq "RefSeq_category:Reference Genome" \
+    > summary/collect.pass.tsv
 
-echo "
-    SELECT
-        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, biosample, assembly_level,
-        assembly_accession
-    FROM ar
-    WHERE 1=1
-        AND species_id IN ($SPECIES)
-        AND genome_rep IN ('Full')
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
-    >> raw.tsv
+cat ../summary/collect.pass.tsv | # 1243
+    nwr restrict Oomycota -f stdin -c 3 | # belongs to Oomycota 401
+    tsv-filter -H --le "C:10000" --ge "N50:10000" | # more stringent parameters 331
+    sed '1d' |
+    sort \
+    >> summary/collect.pass.tsv
 
-# Preference for refseq
-cat raw.tsv |
-    tsv-select -H -f "assembly_accession" \
-    > rs.acc.tsv
+cat ~/Scripts/genomes/assembly/Protists.assembly.tsv |
+    tsv-join -H -f summary/collect.pass.tsv -k 1 \
+    > summary/assembly.tsv
 
-# GB1
-SPECIES=$(
-    cat GB1.tsv |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
+# biosample.tsv
+cp ../summary/attributes.lst summary/
 
-echo "
-    SELECT
-        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, biosample, assembly_level,
-        gbrs_paired_asm
-    FROM ar
-    WHERE 1=1
-        AND species_id IN ($SPECIES)
-        AND genome_rep IN ('Full')
-    " |
-    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
-    >> raw.tsv
-
-cat raw.tsv |
-    tsv-uniq |
-    datamash check
-#431 lines, 7 fields
-
-# Create abbr.
-cat raw.tsv |
-    grep -v '^#' |
-    tsv-uniq |
-    tsv-select -f 1-6 |
-    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
-    (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
-    perl -nl -a -F"," -e '
-        BEGIN{my %seen};
-        /^#/ and print and next;
-        /^organism_name/i and next;
-        $seen{$F[3]}++; # ftp_path
-        $seen{$F[3]} > 1 and next;
-        $seen{$F[6]}++; # abbr_name
-        $seen{$F[6]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
-        ' |
-    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
-    keep-header -- tsv-sort -k4,4 -k1,1 \
-    > Oomycota.assembly.tsv
-
-datamash check < Oomycota.assembly.tsv
-#429 lines, 5 fields
-
-# find potential duplicate strains or assemblies
-cat Oomycota.assembly.tsv |
-    tsv-uniq -f 1 --repeated
-
-cat Oomycota.assembly.tsv |
-    tsv-filter --str-not-in-fld 2:ftp
-
-# Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
-# vim Oomycota.assembly.tsv
-#
-# Save the file to another directory to prevent accidentally changing it
-# cp Oomycota.assembly.tsv ~/Scripts/genomes/assembly
-
-# Cleaning
-rm raw*.*sv
+cat ../summary/biosample.tsv |
+    grep -Fw -f <(cat summary/collect.pass.tsv | tsv-select -H -f BioSample | sort | uniq) \
+    > summary/biosample.tsv
 
 ```
 
 ### Count before download
-
-* `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
 
 ```shell
 cd ~/data/Oomycota
