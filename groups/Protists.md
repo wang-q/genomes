@@ -413,22 +413,23 @@ bash ASSEMBLY/check.sh
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
-#13108
+#1437
 
 # N50 C S; create n50.tsv and n50.pass.tsv
-bash ASSEMBLY/n50.sh 100000 2000 1000000
+# LEN_N50   N_CONTIG    LEN_SUM
+bash ASSEMBLY/n50.sh 5000 30000 5000000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50,S" --max "C"
 #N50_min S_min   C_max
-#32179   2187595 2016
+#7707    6434485 29495
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#11671954.4      32505046        26704.8 368791.5        349.5   4717.6
+#12251766.7      39138635.5      3923.2  76432.5 1967.5  24056.7
 
 # After the above steps are completed, run the following commands.
 
@@ -445,6 +446,18 @@ cat ASSEMBLY/counts.tsv |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
+
+| #item            | fields | lines |
+|------------------|-------:|------:|
+| url.tsv          |      3 | 1,438 |
+| check.lst        |      1 | 1,438 |
+| collect.tsv      |     20 | 1,439 |
+| n50.tsv          |      4 | 1,439 |
+| n50.pass.tsv     |      4 | 1,243 |
+| collect.pass.tsv |     23 | 1,243 |
+| pass.lst         |      1 | 1,242 |
+| omit.lst         |      1 |   993 |
+| rep.lst          |      1 |   483 |
 
 ### Rsync to hpcc
 
@@ -464,70 +477,231 @@ rsync -avP \
 
 ```
 
-## Raw phylogenetic tree by MinHash
+## BioSample
 
-```bash
-mkdir -p ~/data/alignment/Protists/mash
-cd ~/data/alignment/Protists/mash
+ENA's BioSample missed many strains, so NCBI's was used.
 
-for name in $(cat ../ASSEMBLY/Protists.assembly.pass.csv | sed -e '1d' | cut -d"," -f 1 ); do
-    2>&1 echo "==> ${name}"
+```shell
+cd ~/data/Protists
 
-    if [[ -e ${name}.msh ]]; then
-        continue
-    fi
+ulimit -n `ulimit -Hn`
 
-    find ../ASSEMBLY/${name} -name "*.fsa_nt.gz" -or -name "*_genomic.fna.gz" |
-        grep -v "_from_" |
-        xargs cat |
-        mash sketch -k 21 -s 100000 -p 8 - -I "${name}" -o ${name}
-done
+nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
+    --bs
 
-mash triangle -E -p 8 -l <(
-    cat ../ASSEMBLY/Protists.assembly.pass.csv | sed -e '1d' | cut -d"," -f 1 | parallel echo "{}.msh"
-    ) \
-    > dist.tsv
+bash BioSample/download.sh
 
-# fill matrix with lower triangle
-tsv-select -f 1-3 dist.tsv |
-    (tsv-select -f 2,1,3 dist.tsv && cat) |
-    (
-        cut -f 1 dist.tsv |
-            tsv-uniq |
-            parallel -j 1 --keep-order 'echo -e "{}\t{}\t0"' &&
-        cat
-    ) \
-    > dist_full.tsv
+# Ignore rare attributes
+bash BioSample/collect.sh 10
 
-cat dist_full.tsv |
-    Rscript -e '
-        library(readr);
-        library(tidyr);
-        library(ape);
-        pair_dist <- read_tsv(file("stdin"), col_names=F);
-        tmp <- pair_dist %>%
-            pivot_wider( names_from = X2, values_from = X3, values_fill = list(X3 = 1.0) )
-        tmp <- as.matrix(tmp)
-        mat <- tmp[,-1]
-        rownames(mat) <- tmp[,1]
+datamash check < BioSample/biosample.tsv
+#1421 lines, 81 fields
 
-        dist_mat <- as.dist(mat)
-        clusters <- hclust(dist_mat, method = "ward.D2")
-        tree <- as.phylo(clusters)
-        write.tree(phy=tree, file="tree.nwk")
-
-        group <- cutree(clusters, h=0.5) # k=3
-        groups <- as.data.frame(group)
-        groups$ids <- rownames(groups)
-        rownames(groups) <- NULL
-        groups <- groups[order(groups$group), ]
-        write_tsv(groups, "groups.tsv")
-    '
-
-nw_display -s -b 'visibility:hidden' -w 600 -v 30 tree.nwk |
-    rsvg-convert -o ~/Scripts/withncbi/image/Protists.png
+cp BioSample/attributes.lst summary/
+cp BioSample/biosample.tsv summary/
 
 ```
+
+## MinHash
+
+```shell
+cd ~/data/Protists
+
+nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
+    --mh \
+    --parallel 16 \
+    --in ASSEMBLY/pass.lst \
+    --ani-ab 0.05 \
+    --ani-nr 0.005 \
+    --height 0.4
+
+# Compute assembly sketches
+bash MinHash/compute.sh
+
+# Distances within species
+bash MinHash/species.sh
+
+# Abnormal strains
+bash MinHash/abnormal.sh
+
+cat MinHash/abnormal.lst
+
+# Non-redundant strains within species
+bash MinHash/nr.sh
+
+# Distances between all selected sketches, then hierarchical clustering
+bash MinHash/dist.sh
+
+```
+
+### Condense branches in the minhash tree
+
+```shell
+mkdir -p ~/data/Protists/tree
+cd ~/data/Protists/tree
+
+nwr order ../MinHash/tree.nwk --nd --an \
+    > minhash.order.newick
+
+nwr pl-condense -r order -r family -r genus -r species \
+    minhash.order.newick ../Count/species.tsv --map \
+    -o minhash.condensed.newick
+
+mv condensed.tsv minhash.condense.tsv
+
+# png
+nwr topo --bl minhash.condensed.newick | # remove comments
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - |
+    rsvg-convert -o Protists.minhash.png
+
+```
+
+## Count valid species and strains
+
+### For *genomic alignments*
+
+```shell
+cd ~/data/Protists/
+
+nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
+    --count \
+    --in ASSEMBLY/pass.lst \
+    --not-in MinHash/abnormal.lst \
+    --rank order --rank genus \
+    --lineage family --lineage genus
+
+# strains.taxon.tsv
+bash Count/strains.sh
+
+# .lst and .count.tsv
+bash Count/rank.sh
+
+cat Count/order.count.tsv |
+    tsv-filter -H --ge "3:10" |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+cat Count/genus.count.tsv |
+    tsv-filter -H --ge "3:10" |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+# Can accept N_COUNT
+bash Count/lineage.sh 10
+
+cat Count/lineage.count.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
+
+# copy to summary/
+cp Count/strains.taxon.tsv summary/genome.taxon.tsv
+
+```
+
+| order            | #species | #strains |
+|------------------|---------:|---------:|
+| Albuginales      |        2 |       10 |
+| Dictyosteliales  |       10 |       10 |
+| Diplomonadida    |        3 |       29 |
+| Eucoccidiorida   |       29 |      147 |
+| Eustigmatales    |        5 |       16 |
+| Galdieriales     |        3 |       11 |
+| Haemosporida     |       21 |      137 |
+| Longamoebia      |        6 |       11 |
+| Mastigamoebida   |        6 |       17 |
+| Peniculida       |        9 |       16 |
+| Peronosporales   |       67 |      222 |
+| Piroplasmida     |       13 |       32 |
+| Plasmodiophorida |        3 |       51 |
+| Pythiales        |      105 |      130 |
+| Saprolegniales   |        9 |       27 |
+| Trypanosomatida  |       53 |      135 |
+
+| genus           | #species | #strains |
+|-----------------|---------:|---------:|
+| Albugo          |        2 |       10 |
+| Aphanomyces     |        5 |       23 |
+| Babesia         |        8 |       20 |
+| Cryptosporidium |       14 |       62 |
+| Cyclospora      |        1 |       40 |
+| Entamoeba       |        5 |       16 |
+| Galdieria       |        3 |       11 |
+| Giardia         |        2 |       28 |
+| Globisporangium |       45 |       49 |
+| Leishmania      |       20 |       59 |
+| Naegleria       |        3 |       14 |
+| Nannochloropsis |        4 |       13 |
+| Paramecium      |        9 |       16 |
+| Peronospora     |        6 |       18 |
+| Phytophthora    |       50 |      185 |
+| Phytopythium    |       14 |       17 |
+| Plasmodiophora  |        1 |       49 |
+| Plasmodium      |       20 |      136 |
+| Pythium         |       38 |       54 |
+| Theileria       |        4 |       11 |
+| Toxoplasma      |        1 |       27 |
+| Trypanosoma     |       11 |       45 |
+
+| #family           | genus           | species                  | count |
+|-------------------|-----------------|--------------------------|------:|
+| Cryptosporidiidae | Cryptosporidium | Cryptosporidium hominis  |    15 |
+|                   |                 | Cryptosporidium parvum   |    19 |
+| Eimeriidae        | Cyclospora      | Cyclospora cayetanensis  |    40 |
+| Entamoebidae      | Entamoeba       | Entamoeba histolytica    |    12 |
+| Hexamitidae       | Giardia         | Giardia intestinalis     |    27 |
+| Peronosporaceae   | Phytophthora    | Phytophthora cactorum    |    21 |
+|                   |                 | Phytophthora capsici     |    13 |
+|                   |                 | Phytophthora fragariae   |    13 |
+|                   |                 | Phytophthora kernoviae   |    12 |
+|                   |                 | Phytophthora ramorum     |    28 |
+| Plasmodiidae      | Plasmodium      | Plasmodium falciparum    |    53 |
+|                   |                 | Plasmodium vinckei       |    10 |
+|                   |                 | Plasmodium vivax         |    18 |
+|                   |                 | Plasmodium yoelii        |    11 |
+| Plasmodiophoridae | Plasmodiophora  | Plasmodiophora brassicae |    49 |
+| Pythiaceae        | Pythium         | Pythium insidiosum       |    11 |
+| Saprolegniaceae   | Aphanomyces     | Aphanomyces astaci       |    10 |
+| Sarcocystidae     | Toxoplasma      | Toxoplasma gondii        |    27 |
+| Trypanosomatidae  | Trypanosoma     | Trypanosoma cruzi        |    29 |
+
+### For *protein families*
+
+```shell
+cd ~/data/Protists/
+
+nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
+    --count \
+    --in ASSEMBLY/pass.lst \
+    --not-in MinHash/abnormal.lst \
+    --not-in ASSEMBLY/omit.lst \
+    --rank genus
+
+# strains.taxon.tsv
+bash Count/strains.sh
+
+# .lst and .count.tsv
+bash Count/rank.sh
+
+cat Count/genus.count.tsv |
+    tsv-filter -H --ge "3:10" |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+# copy to summary/
+cp Count/strains.taxon.tsv summary/protein.taxon.tsv
+
+```
+
+| genus           | #species | #strains |
+|-----------------|---------:|---------:|
+| Aphanomyces     |        5 |       21 |
+| Cryptosporidium |       11 |       18 |
+| Leishmania      |       10 |       18 |
+| Peronospora     |        5 |       10 |
+| Phytophthora    |       17 |       69 |
+| Plasmodium      |       19 |       76 |
+| Toxoplasma      |        1 |       14 |
+| Trypanosoma     |       10 |       22 |
 
 ## Groups and targets
 
@@ -552,114 +726,7 @@ Review `ASSEMBLY/Protists.assembly.pass.csv` and `mash/groups.tsv`
 | 20      | Toxoplasma         | 16    | To_gondii_ME49         |                |
 | 21      | Trypanosoma        | 5     | Tr_bruc_brucei_TREU927 |                |
 
-```bash
-mkdir -p ~/data/alignment/Protists/taxon
-cd ~/data/alignment/Protists/taxon
-
-cp ../mash/tree.nwk .
-
-# manually combine Ba_mic
-# manually remove bad assemblies
-cat ../mash/groups.tsv |
-    grep -v "Ba_mic" |
-    grep -v "Cry_bai" |
-    grep -v "En_inv_IP1" |
-    grep -v "L_sp_A" \
-    > groups.tsv
-echo -e "2\tBa_mic" >> groups.tsv
-echo -e "2\tBa_mic_RI" >> groups.tsv
-#echo -e "11\tCr_win_CBS_7118" >> groups.tsv
-#echo -e "11\tCr_dep_CBS_7841" >> groups.tsv
-#echo -e "11\tCr_dep_CBS_7855" >> groups.tsv
-
-ARRAY=(
-    'A_Ei::A_cas'
-    'Babesia::Ba_bov_T2Bo'
-    'Blastocystis::Bl_hom'
-    'Cryptosporidium::Cry_parvum_Iowa_II'
-    'Dictyostelium::D_disc_AX4'
-    'Giardia::G_intes'
-    'Leishmania::L_maj_Friedlin'
-    'Nannochloropsis::N_oce'
-    'Phytophthora::Ph_soj'
-    'Pl_ber_cha_vin_yoe::Pl_yoe'
-    'Pl_kno_viv::Pl_viv'
-    'Pl_falcip::Pl_falcip_3D7'
-    'Pythium::Py_gui'
-    'Theileria::Th_parva_Muguga'
-    'Toxoplasma::To_gondii_ME49'
-    'Trypanosoma::Tr_bruc_brucei_TREU927'
-)
-
-echo -e "#Serial\tGroup\tCount\tTarget\tSequencing" > group_target.tsv
-
-for item in "${ARRAY[@]}" ; do
-    GROUP_NAME="${item%%::*}"
-    TARGET_NAME="${item##*::}"
-
-    SERIAL=$(
-        cat ../mash/groups.tsv |
-            tsv-filter --str-eq 2:${TARGET_NAME} |
-            tsv-select -f 1
-    )
-
-    cat groups.tsv |
-        tsv-filter --str-eq 1:${SERIAL} |
-        tsv-select -f 2 \
-        > ${GROUP_NAME}
-
-    COUNT=$(cat ${GROUP_NAME} | wc -l )
-
-    echo -e "${SERIAL}\t${GROUP_NAME}\t${COUNT}\t${TARGET_NAME}\t" >> group_target.tsv
-
-done
-
-mlr --itsv --omd cat group_target.tsv
-
-cat <<'EOF' > chr-level.list
-Ba_big
-Ba_bov_T2Bo
-Ba_mic_RI
-Cry_parvum_Iowa_II
-D_disc_AX4
-L_braz_MHOM_BR_75_M2904
-L_don
-L_infa_JPCM5
-L_maj_Friedlin
-L_mex_MHOM_GT_2001_U1103
-Pl_falcip_3D7
-Pl_kno_H
-Pl_viv
-Th_ann
-Th_equi_WA
-Th_ori_Shintoku
-Th_parva
-Th_parva_Muguga
-Tr_bruc_brucei_TREU927
-Tr_bruc_gambiense_DAL972
-EOF
-
-```
-
-## Protists: prepare
-
-* Rsync to hpcc
-
-```bash
-rsync -avP \
-    ~/data/alignment/Protists/ \
-    wangq@202.119.37.251:data/alignment/Protists
-
-# rsync -avP wangq@202.119.37.251:data/alignment/Protists/ ~/data/alignment/Protists
-
-```
-
-* `--perseq` for Chromosome-level assemblies and targets
-* Use `Stramenopiles` as `Eukaryota` takes too long to compute
-
-```bash
-cd ~/data/alignment/Protists/
-
+```shell
 $(brew --prefix repeatmasker)/libexec/util/queryRepeatDatabase.pl \
     -species Eukaryota -stat
 #174 ancestral and ubiquitous sequence(s) with a total length of 45804 bp
@@ -683,87 +750,6 @@ $(brew --prefix repeatmasker)/libexec/util/queryRepeatDatabase.pl \
 #174 ancestral and ubiquitous sequence(s) with a total length of 45804 bp
 #3 stramenopiles specific repeats with a total length of 6250 bp
 #620 lineage specific sequence(s) with a total length of 2090320 bp
-
-# prep
-egaz template \
-    ASSEMBLY \
-    --prep -o GENOMES \
-    $( cat taxon/group_target.tsv | sed -e '1d' | cut -f 4 | parallel -j 1 echo " --perseq {} " ) \
-    $( cat taxon/chr-level.list | parallel -j 1 echo " --perseq {} " ) \
-    --min 5000 --about 5000000 \
-    -v --repeatmasker "--species Stramenopiles --parallel 24"
-
-bsub -q mpi -n 24 -J "Protists-0_prep" "bash GENOMES/0_prep.sh"
-
-ls -t output.* | head -n 1 | xargs tail -f | grep "==>"
-
-# gff
-for n in $(cat taxon/group_target.tsv | sed -e '1d' | cut -f 4 ) \
-    $( cat taxon/chr-level.list ) \
-    ; do
-    FILE_GFF=$(find ASSEMBLY -type f -name "*_genomic.gff.gz" | grep "${n}")
-    echo >&2 "==> Processing ${n}/${FILE_GFF}"
-
-    gzip -d -c ${FILE_GFF} > GENOMES/${n}/chr.gff
-done
-
-```
-
-## plasmodium: run
-
-Plasmodium distributed on many branches.
-
-```bash
-cd ~/data/alignment/Protists/
-
-# sanger
-egaz template \
-    GENOMES/Pl_falcip_3D7 \
-    GENOMES/Pl_yoe \
-    GENOMES/Pl_viv \
-    GENOMES/Pl_ber_ANKA \
-    GENOMES/Pl_cha_chabaudi \
-    GENOMES/Pl_cyn_B \
-    GENOMES/Pl_kno_H \
-    GENOMES/Pl_ovale \
-    GENOMES/Pl_rel \
-    --multi -o groups/plasmodium/ \
-    --multiname sanger \
-    --tree taxon/tree.nwk \
-    --parallel 24 -v
-
-bsub -q mpi -n 24 -J "plasmodium-1_pair" "bash groups/plasmodium/1_pair.sh"
-bsub  -w "ended(plasmodium-1_pair)" \
-    -q mpi -n 24 -J "plasmodium-3_multi" "bash groups/plasmodium/3_multi.sh"
-
-```
-
-## Protists: run
-
-```bash
-cd ~/data/alignment/Protists/
-
-cat taxon/group_target.tsv |
-    sed -e '1d' |
-    parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 1 '
-        echo -e "==> Group: [{2}]\tTarget: [{4}]\n"
-
-        egaz template \
-            GENOMES/{4} \
-            $(cat taxon/{2} | grep -v -x "{4}" | xargs -I[] echo "GENOMES/[]") \
-            --multi -o groups/{2}/ \
-            --tree taxon/tree.nwk \
-            --parallel 24 -v
-
-        bsub -q mpi -n 24 -J "{2}-1_pair" "bash groups/{2}/1_pair.sh"
-        bsub -w "ended({2}-1_pair)" \
-            -q mpi -n 24 -J "{2}-3_multi" "bash groups/{2}/3_multi.sh"
-    '
-
-# clean
-find groups -mindepth 1 -maxdepth 3 -type d -name "*_raw" | parallel -r rm -fr
-find groups -mindepth 1 -maxdepth 3 -type d -name "*_fasta" | parallel -r rm -fr
-find . -mindepth 1 -maxdepth 3 -type f -name "output.*" | parallel -r rm
 
 ```
 
