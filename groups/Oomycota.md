@@ -234,7 +234,7 @@ bash MinHash/species.sh
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#359
+#3
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
@@ -245,7 +245,7 @@ find MinHash -name "NR.lst" |
     uniq \
     > summary/NR.lst
 wc -l summary/NR.lst
-#49
+#104
 
 # Distances between all selected sketches, then hierarchical clustering
 bash MinHash/dist.sh
@@ -261,7 +261,8 @@ cd ~/data/Protists/Oomycota/tree
 nwr order --nd --an ../MinHash/tree.nwk \
     > minhash.order.newick
 
-nwr pl-condense -r order -r family -r genus --map minhash.order.newick ../Count/species.tsv |
+nwr pl-condense -r order -r family -r genus --map \
+    minhash.order.newick ../Count/species.tsv |
     nwr tex stdin --bl -o minhash.tex
 
 tectonic minhash.tex
