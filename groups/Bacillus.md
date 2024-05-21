@@ -6,6 +6,10 @@
   * [Symlink](#symlink)
   * [List all ranks](#list-all-ranks)
   * [Species with assemblies](#species-with-assemblies)
+- [Download all assemblies](#download-all-assemblies)
+  * [Create assembly.tsv](#create-assemblytsv)
+  * [Count before download](#count-before-download)
+  * [Download and check](#download-and-check)
 
 <!-- tocstop -->
 
@@ -173,7 +177,7 @@ echo "
         *
     FROM ar
     WHERE 1=1
-        AND genus IN ('Saccharomyces')
+        AND genus IN ('Bacillus')
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
@@ -196,7 +200,6 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
@@ -222,7 +225,6 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
     tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
@@ -231,7 +233,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#1382 lines, 7 fields
+#12796 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -255,7 +257,7 @@ cat raw.tsv |
     > Bacillus.assembly.tsv
 
 datamash check < Bacillus.assembly.tsv
-#1379 lines, 5 fields
+#12788 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacillus.assembly.tsv |
@@ -272,5 +274,124 @@ cat Bacillus.assembly.tsv |
 
 # Cleaning
 rm raw*.*sv
+
+```
+
+### Count before download
+
+* `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
+
+```shell
+cd ~/data/Bacillus
+
+nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
+    --count \
+    --rank genus
+
+# strains.taxon.tsv and taxa.tsv
+bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
+
+# genus.lst and genus.count.tsv
+bash Count/rank.sh
+
+mv Count/genus.count.tsv Count/genus.before.tsv
+
+cat Count/genus.before.tsv |
+    keep-header -- tsv-sort -k1,1 |
+    tsv-filter -H --ge 3:50 |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+```
+
+| item    | count |
+|---------|------:|
+| strain  | 12704 |
+| species |  2721 |
+| genus   |   159 |
+| family  |     5 |
+| order   |     1 |
+| class   |     1 |
+
+| genus              | #species | #strains |
+|--------------------|---------:|---------:|
+| Alicyclobacillus   |       30 |       56 |
+| Alkalihalobacillus |       28 |       78 |
+| Anoxybacillus      |       34 |       90 |
+| Bacillus           |     1045 |     9016 |
+| Brevibacillus      |       60 |      170 |
+| Cytobacillus       |       18 |       87 |
+| Geobacillus        |       55 |      117 |
+| Halobacillus       |       33 |       52 |
+| Heyndrickxia       |        3 |       53 |
+| Lysinibacillus     |       79 |      222 |
+| Neobacillus        |       33 |       58 |
+| Oceanobacillus     |       40 |       62 |
+| Paenibacillus      |      561 |     1029 |
+| Peribacillus       |       25 |      108 |
+| Priestia           |       18 |      352 |
+| Virgibacillus      |       42 |       87 |
+| Weizmannia         |        7 |       69 |
+
+
+### Download and check
+
+```shell
+cd ~/data/Bacillus
+
+nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
+    --ass
+
+# Run
+bash ASSEMBLY/rsync.sh
+
+# Check md5; create check.lst
+# rm ASSEMBLY/check.lst
+bash ASSEMBLY/check.sh
+
+# Put the misplaced directory into the right place
+#bash ASSEMBLY/reorder.sh
+#
+# This operation will delete some files in the directory, so please be careful
+#cat ASSEMBLY/remove.lst |
+#    parallel --no-run-if-empty --linebuffer -k -j 1 '
+#        if [[ -e "ASSEMBLY/{}" ]]; then
+#            echo Remove {}
+#            rm -fr "ASSEMBLY/{}"
+#        fi
+#    '
+
+# N50 C S; create n50.tsv and n50.pass.tsv
+bash ASSEMBLY/n50.sh 100000 500 500000
+
+# Adjust parameters passed to `n50.sh`
+cat ASSEMBLY/n50.tsv |
+    tsv-filter -H --str-in-fld "name:_GCF_" |
+    tsv-summarize -H --min "N50,S" --max "C"
+#N50_min S_min   C_max
+#5379    668961  848
+
+cat ASSEMBLY/n50.tsv |
+    tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
+#S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
+#32255196.8      37316984        98936.2 1332095 167     1276.4
+
+# After the above steps are completed, run the following commands.
+
+# Collect; create collect.tsv
+bash ASSEMBLY/collect.sh
+
+# After all completed
+bash ASSEMBLY/finish.sh
+
+cp ASSEMBLY/collect.pass.tsv summary/
+
+cat ASSEMBLY/counts.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
