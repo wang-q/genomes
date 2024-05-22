@@ -190,6 +190,21 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    >> raw.tsv
+
+echo "
+    SELECT
+        genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
+        genus || ' sp. ', genus, ftp_path, biosample, assembly_level,
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND species LIKE '% sp.%'
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
@@ -215,6 +230,8 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
     tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
