@@ -237,6 +237,20 @@ echo "
     tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
+echo "
+    SELECT
+        genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
+        genus || ' sp. ', genus, ftp_path, biosample, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND species LIKE '% sp.%'
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    >> raw.tsv
+
 cat raw.tsv |
     tsv-uniq |
     datamash check
@@ -317,8 +331,8 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  | 17409 |
-| species |  3594 |
+| strain  | 16095 |
+| species |  1303 |
 | genus   |   169 |
 | family  |     6 |
 | order   |     1 |
@@ -326,25 +340,25 @@ cat Count/genus.before.tsv |
 
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
-| Alicyclobacillus |       30 |       65 |
-| Anoxybacillus    |       35 |      105 |
-| Bacillus         |     1413 |    12180 |
-| Brevibacillus    |       66 |      248 |
-| Cytobacillus     |       39 |      131 |
-| Geobacillus      |       61 |      177 |
-| Halobacillus     |       35 |       55 |
-| Heyndrickxia     |       23 |      176 |
-| Lysinibacillus   |      107 |      350 |
-| Metabacillus     |       27 |       55 |
-| Neobacillus      |       45 |      112 |
-| Niallia          |       24 |       69 |
-| Oceanobacillus   |       54 |       87 |
-| Paenibacillus    |      806 |     1453 |
-| Peribacillus     |       40 |      171 |
-| Priestia         |       28 |      571 |
-| Rossellomorea    |       15 |       63 |
+| Alicyclobacillus |       27 |       67 |
+| Anoxybacillus    |       18 |      112 |
+| Bacillus         |      132 |    10830 |
+| Brevibacillus    |       30 |      248 |
+| Cytobacillus     |       19 |      131 |
+| Geobacillus      |       17 |      178 |
+| Halobacillus     |       24 |       55 |
+| Heyndrickxia     |       13 |      176 |
+| Lysinibacillus   |       27 |      361 |
+| Metabacillus     |       21 |       55 |
+| Neobacillus      |       27 |      113 |
+| Niallia          |        7 |       69 |
+| Oceanobacillus   |       31 |       87 |
+| Paenibacillus    |      294 |     1462 |
+| Peribacillus     |       19 |      174 |
+| Priestia         |       10 |      571 |
+| Rossellomorea    |        7 |       63 |
 | Shouchella       |       11 |       73 |
-| Virgibacillus    |       47 |      109 |
+| Virgibacillus    |       29 |      109 |
 
 ### Download and check
 
