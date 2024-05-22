@@ -395,12 +395,12 @@ cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50,S" --max "C"
 #N50_min S_min   C_max
-#0       0       1976
+#5966    2222169 1976
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#3748962.2       5271792 61791.8 316786  57      262
+#3752678.5       5249709 58246.7 315670.5        55      274
 
 # After the above steps are completed, run the following commands.
 
@@ -420,15 +420,15 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields |  lines |
 |------------------|-------:|-------:|
-| url.tsv          |      3 | 12,787 |
-| check.lst        |      1 | 12,787 |
-| collect.tsv      |     20 | 12,788 |
-| n50.tsv          |      4 | 12,788 |
-| n50.pass.tsv     |      4 | 11,764 |
-| collect.pass.tsv |     23 | 11,764 |
-| pass.lst         |      1 | 11,763 |
-| omit.lst         |      1 |    431 |
-| rep.lst          |      1 |  1,067 |
+| url.tsv          |      3 | 17,510 |
+| check.lst        |      1 | 17,510 |
+| collect.tsv      |     20 | 17,511 |
+| n50.tsv          |      4 | 17,511 |
+| n50.pass.tsv     |      4 | 15,964 |
+| collect.pass.tsv |     23 | 15,964 |
+| pass.lst         |      1 | 15,963 |
+| omit.lst         |      1 |    661 |
+| rep.lst          |      1 |  1,132 |
 
 ### Rsync to hpcc
 
@@ -437,14 +437,7 @@ rsync -avP \
     ~/data/Bacillus/ \
     wangq@202.119.37.251:data/Bacillus
 
-rsync -avP \
-    -e 'ssh -p 8804' \
-    ~/data/Bacillus/ \
-    wangq@58.213.64.36:data/Bacillus
-
 # rsync -avP wangq@202.119.37.251:data/Bacillus/ ~/data/Bacillus
-
-# rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Bacillus/ ~/data/Bacillus
 
 ```
 
