@@ -10,6 +10,13 @@
     * [Create assembly.tsv](#create-assemblytsv)
     * [Count before download](#count-before-download)
     * [Download and check](#download-and-check)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+- [BioSample](#biosample)
+- [MinHash](#minhash)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+- [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments*](#for-genomic-alignments)
+    * [For *protein families*](#for-protein-families)
 
 <!-- tocstop -->
 
