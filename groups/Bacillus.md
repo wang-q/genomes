@@ -3,7 +3,6 @@
 <!-- toc -->
 
 - [Strain info](#strain-info)
-    * [Symlink](#symlink)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
 - [Download all assemblies](#download-all-assemblies)
@@ -38,20 +37,6 @@ We include the following families:
 * *Thermoactinomycetaceae*
 * *Alicyclobacillaceae*
 
-### Symlink
-
-```shell
-mkdir -p ~/data/Bacillus
-cd ~/data/Bacillus
-
-rm -fr ASSEMBLY
-rm -fr STRAINS
-
-ln -s ../Bacteria/ASSEMBLY ASSEMBLY
-ln -s ../Bacteria/STRAINS STRAINS
-
-```
-
 ### List all ranks
 
 ```shell
@@ -73,11 +58,11 @@ nwr member Bacillaceae Paenibacillaceae Sporolactobacillaceae Thermoactinomyceta
 | rank             | count |
 |------------------|------:|
 | family           |     5 |
-| genus            |   182 |
-| species          | 43978 |
-| no rank          |   245 |
+| genus            |   186 |
+| species          | 44915 |
+| subspecies       |    42 |
+| no rank          |   254 |
 | strain           |   751 |
-| subspecies       |    39 |
 | species group    |     5 |
 | species subgroup |     2 |
 | biotype          |     1 |
@@ -110,7 +95,7 @@ nwr member \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#182 genus.list.tsv
+#186 genus.list.tsv
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -149,8 +134,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#  2482 RS1.tsv
-#  2796 GB1.tsv
+#  3328 RS1.tsv
+#  3690 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -161,8 +146,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     10128
-#GB1     12794
+#RS1     13439
+#GB1     17569
 
 ```
 
@@ -182,7 +167,7 @@ echo "
         *
     FROM ar
     WHERE 1=1
-        AND genus IN ('Bacillus')
+        AND genus IN ('Bacillus', 'Staphylococcus')
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
@@ -238,7 +223,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#12796 lines, 7 fields
+#17520 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -262,7 +247,7 @@ cat raw.tsv |
     > Bacillus.assembly.tsv
 
 datamash check < Bacillus.assembly.tsv
-#12788 lines, 5 fields
+#17511 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacillus.assembly.tsv |
@@ -315,32 +300,34 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  | 12704 |
-| species |  2721 |
-| genus   |   159 |
-| family  |     5 |
+| strain  | 17409 |
+| species |  3594 |
+| genus   |   169 |
+| family  |     6 |
 | order   |     1 |
 | class   |     1 |
 
-| genus              | #species | #strains |
-|--------------------|---------:|---------:|
-| Alicyclobacillus   |       30 |       56 |
-| Alkalihalobacillus |       28 |       78 |
-| Anoxybacillus      |       34 |       90 |
-| Bacillus           |     1045 |     9016 |
-| Brevibacillus      |       60 |      170 |
-| Cytobacillus       |       18 |       87 |
-| Geobacillus        |       55 |      117 |
-| Halobacillus       |       33 |       52 |
-| Heyndrickxia       |        3 |       53 |
-| Lysinibacillus     |       79 |      222 |
-| Neobacillus        |       33 |       58 |
-| Oceanobacillus     |       40 |       62 |
-| Paenibacillus      |      561 |     1029 |
-| Peribacillus       |       25 |      108 |
-| Priestia           |       18 |      352 |
-| Virgibacillus      |       42 |       87 |
-| Weizmannia         |        7 |       69 |
+| genus            | #species | #strains |
+|------------------|---------:|---------:|
+| Alicyclobacillus |       30 |       65 |
+| Anoxybacillus    |       35 |      105 |
+| Bacillus         |     1413 |    12180 |
+| Brevibacillus    |       66 |      248 |
+| Cytobacillus     |       39 |      131 |
+| Geobacillus      |       61 |      177 |
+| Halobacillus     |       35 |       55 |
+| Heyndrickxia     |       23 |      176 |
+| Lysinibacillus   |      107 |      350 |
+| Metabacillus     |       27 |       55 |
+| Neobacillus      |       45 |      112 |
+| Niallia          |       24 |       69 |
+| Oceanobacillus   |       54 |       87 |
+| Paenibacillus    |      806 |     1453 |
+| Peribacillus     |       40 |      171 |
+| Priestia         |       28 |      571 |
+| Rossellomorea    |       15 |       63 |
+| Shouchella       |       11 |       73 |
+| Virgibacillus    |       47 |      109 |
 
 ### Download and check
 
