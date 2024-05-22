@@ -448,6 +448,28 @@ rsync -avP \
 
 ```
 
+For such huge collections, we can rsync files inside ASSEMBLY/ in parallel.
+
+```shell
+# Copy Directory Structure
+rsync -avP \
+    -f"+ */" -f"- *" \
+    ~/data/Bacillus/ASSEMBLY/ \
+    wangq@202.119.37.251:data/Bacillus/ASSEMBLY
+
+# Transfer species directories in parallel
+cat ~/data/Bacillus/ASSEMBLY/url.tsv |
+    tsv-select -f 3 |
+    tsv-uniq |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        echo -e "\n==> {}"
+        rsync -avP \
+            ~/data/Bacillus/ASSEMBLY/{}/
+            wangq@202.119.37.251:data/Bacillus/ASSEMBLY/{} \
+    '
+
+```
+
 ## BioSample
 
 ```shell
