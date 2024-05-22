@@ -3,13 +3,13 @@
 <!-- toc -->
 
 - [Strain info](#strain-info)
-  * [Symlink](#symlink)
-  * [List all ranks](#list-all-ranks)
-  * [Species with assemblies](#species-with-assemblies)
+    * [Symlink](#symlink)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
 - [Download all assemblies](#download-all-assemblies)
-  * [Create assembly.tsv](#create-assemblytsv)
-  * [Count before download](#count-before-download)
-  * [Download and check](#download-and-check)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [Count before download](#count-before-download)
+    * [Download and check](#download-and-check)
 
 <!-- tocstop -->
 
@@ -17,8 +17,6 @@
 
 * [Bacillus](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=1386)
 * [Paenibacillus](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=44249)
-
-近期的一些系统基因组学研究改变了Bacillales目的认识。
 
 A recent phylogenomics [study](https://doi.org/10.1016/j.syapm.2018.10.007) has altered our
 understanding of the order Bacillales.
@@ -337,7 +335,6 @@ cat Count/genus.before.tsv |
 | Virgibacillus      |       42 |       87 |
 | Weizmannia         |        7 |       69 |
 
-
 ### Download and check
 
 ```shell
@@ -366,19 +363,19 @@ bash ASSEMBLY/check.sh
 #    '
 
 # N50 C S; create n50.tsv and n50.pass.tsv
-bash ASSEMBLY/n50.sh 100000 500 500000
+bash ASSEMBLY/n50.sh 50000 500 500000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50,S" --max "C"
 #N50_min S_min   C_max
-#5379    668961  848
+#0       0       1976
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#32255196.8      37316984        98936.2 1332095 167     1276.4
+#3748962.2       5271792 61791.8 316786  57      262
 
 # After the above steps are completed, run the following commands.
 
@@ -393,5 +390,59 @@ cp ASSEMBLY/collect.pass.tsv summary/
 cat ASSEMBLY/counts.tsv |
     mlr --itsv --omd cat |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+
+```
+
+| #item            | fields |  lines |
+|------------------|-------:|-------:|
+| url.tsv          |      3 | 12,787 |
+| check.lst        |      1 | 12,787 |
+| collect.tsv      |     20 | 12,788 |
+| n50.tsv          |      4 | 12,788 |
+| n50.pass.tsv     |      4 | 11,764 |
+| collect.pass.tsv |     23 | 11,764 |
+| pass.lst         |      1 | 11,763 |
+| omit.lst         |      1 |    431 |
+| rep.lst          |      1 |  1,067 |
+
+### Rsync to hpcc
+
+```bash
+rsync -avP \
+    ~/data/Bacillus/ \
+    wangq@202.119.37.251:data/Bacillus
+
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/Bacillus/ \
+    wangq@58.213.64.36:data/Bacillus
+
+# rsync -avP wangq@202.119.37.251:data/Bacillus/ ~/data/Bacillus
+
+# rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Bacillus/ ~/data/Bacillus
+
+```
+
+## BioSample
+
+```shell
+cd ~/data/Bacillus
+
+ulimit -n `ulimit -Hn`
+
+nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
+    --bs
+
+# Run this script twice and it will re-download the failed files
+bash BioSample/download.sh
+
+# Ignore rare attributes
+bash BioSample/collect.sh 50
+
+datamash check < BioSample/biosample.tsv
+#1373 lines, 41 fields
+
+cp BioSample/attributes.lst summary/
+cp BioSample/biosample.tsv summary/
 
 ```
