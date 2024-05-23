@@ -431,15 +431,15 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields |  lines |
 |------------------|-------:|-------:|
-| url.tsv          |      3 | 17,511 |
-| check.lst        |      1 | 17,511 |
-| collect.tsv      |     20 | 17,512 |
-| n50.tsv          |      4 | 17,512 |
-| n50.pass.tsv     |      4 | 15,965 |
-| collect.pass.tsv |     23 | 15,965 |
-| pass.lst         |      1 | 15,964 |
+| url.tsv          |      3 | 17,513 |
+| check.lst        |      1 | 17,513 |
+| collect.tsv      |     20 | 17,514 |
+| n50.tsv          |      4 | 17,514 |
+| n50.pass.tsv     |      4 | 15,967 |
+| collect.pass.tsv |     23 | 15,967 |
+| pass.lst         |      1 | 15,966 |
 | omit.lst         |      1 |    661 |
-| rep.lst          |      1 |  1,133 |
+| rep.lst          |      1 |  1,135 |
 | sp.lst           |      1 |  2,400 |
 
 ### Rsync to hpcc
@@ -492,7 +492,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 50
 
 datamash check < BioSample/biosample.tsv
-#17484 lines, 91 fields
+#17486 lines, 91 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -563,7 +563,7 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Bacillus/tree
 cd ~/data/Bacillus/tree
 
-nw_reroot ../MinHash/tree.nwk Lis_mono_EGD_e Staphyloc_aure_aureus_NCTC_8325 |
+nw_reroot ../MinHash/tree.nwk Desu_alkalia_AHT28_GCF_001730225_1 Desu_sti_MLFW_2_GCF_001742305_1 |
     nwr order stdin --nd --an \
     > minhash.reroot.newick
 
@@ -628,12 +628,12 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  | 13634 |
-| species |  1206 |
-| genus   |   165 |
-| family  |     6 |
-| order   |     1 |
-| class   |     1 |
+| strain  | 13637 |
+| species |  1209 |
+| genus   |   167 |
+| family  |     8 |
+| order   |     2 |
+| class   |     2 |
 
 | family                 | #species | #strains |
 |------------------------|---------:|---------:|
@@ -642,39 +642,38 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Paenibacillaceae       |      370 |     1404 |
 | Sporolactobacillaceae  |       23 |       33 |
 | Thermoactinomycetaceae |       41 |       68 |
-
-| genus              | #species | #strains |
-|--------------------|---------:|---------:|
-| Aeribacillus       |        3 |       23 |
-| Alicyclobacillus   |       22 |       37 |
-| Aneurinibacillus   |        7 |       32 |
-| Anoxybacillus      |       13 |       58 |
-| Bacillus           |      130 |     9791 |
-| Brevibacillus      |       30 |      208 |
-| Cohnella           |       31 |       35 |
-| Cytobacillus       |       19 |       90 |
-| Fictibacillus      |       12 |       24 |
-| Geobacillus        |       17 |      106 |
-| Gracilibacillus    |       20 |       25 |
-| Halobacillus       |       24 |       38 |
-| Heyndrickxia       |       13 |      110 |
-| Lysinibacillus     |       27 |      259 |
-| Mesobacillus       |       10 |       20 |
-| Metabacillus       |       20 |       39 |
-| Neobacillus        |       24 |       47 |
-| Niallia            |        6 |       52 |
-| Oceanobacillus     |       30 |       65 |
-| Paenibacillus      |      278 |     1100 |
-| Parageobacillus    |        7 |       36 |
-| Peribacillus       |       18 |      136 |
-| Priestia           |       10 |      496 |
-| Psychrobacillus    |       10 |       27 |
-| Rossellomorea      |        7 |       29 |
-| Schinkia           |        1 |       24 |
-| Shouchella         |       11 |       68 |
-| Sporolactobacillus |       13 |       22 |
-| Thermoactinomyces  |        5 |       23 |
-| Virgibacillus      |       25 |       75 |
+| genus                  | #species | #strains |
+| ---                    |      --: |      --: |
+| Aeribacillus           |        3 |       23 |
+| Alicyclobacillus       |       22 |       37 |
+| Aneurinibacillus       |        7 |       32 |
+| Anoxybacillus          |       13 |       58 |
+| Bacillus               |      130 |     9791 |
+| Brevibacillus          |       30 |      208 |
+| Cohnella               |       31 |       35 |
+| Cytobacillus           |       19 |       90 |
+| Fictibacillus          |       12 |       24 |
+| Geobacillus            |       17 |      106 |
+| Gracilibacillus        |       20 |       25 |
+| Halobacillus           |       24 |       38 |
+| Heyndrickxia           |       13 |      110 |
+| Lysinibacillus         |       27 |      259 |
+| Mesobacillus           |       10 |       20 |
+| Metabacillus           |       20 |       39 |
+| Neobacillus            |       24 |       47 |
+| Niallia                |        6 |       52 |
+| Oceanobacillus         |       30 |       65 |
+| Paenibacillus          |      278 |     1100 |
+| Parageobacillus        |        7 |       36 |
+| Peribacillus           |       18 |      136 |
+| Priestia               |       10 |      496 |
+| Psychrobacillus        |       10 |       27 |
+| Rossellomorea          |        7 |       29 |
+| Schinkia               |        1 |       24 |
+| Shouchella             |       11 |       68 |
+| Sporolactobacillus     |       13 |       22 |
+| Thermoactinomyces      |        5 |       23 |
+| Virgibacillus          |       25 |       75 |
 
 | #family                | genus                 | species                             | count |
 |------------------------|-----------------------|-------------------------------------|------:|
@@ -811,12 +810,12 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  | 13294 |
-| species |  1197 |
-| genus   |   165 |
-| family  |     6 |
-| order   |     1 |
-| class   |     1 |
+| strain  | 13297 |
+| species |  1200 |
+| genus   |   167 |
+| family  |     8 |
+| order   |     2 |
+| class   |     2 |
 
 | genus                 | #species | #strains |
 |-----------------------|---------:|---------:|
