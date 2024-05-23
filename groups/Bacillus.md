@@ -862,3 +862,90 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | Terribacillus         |        4 |       15 |
 | Thermoactinomyces     |        5 |       23 |
 | Virgibacillus         |       25 |       74 |
+
+## Clustering proteins
+
+```shell
+cd ~/data/Bacillus
+
+mkdir -p Clust
+cd Clust
+
+GREEN=
+RED=
+NC=
+if tty -s < /dev/fd/1 2> /dev/null; then
+    GREEN='\033[0;32m'
+    RED='\033[0;31m'
+    NC='\033[0m' # No Color
+fi
+log_warn () {
+    echo >&2 -e "${RED}==> $@ <==${NC}"
+}
+
+log_info () {
+    echo >&2 -e "${GREEN}==> $@${NC}"
+}
+
+log_debug () {
+    echo >&2 -e "==> $@"
+}
+
+export -f log_warn
+export -f log_info
+export -f log_debug
+
+cat ../MinHash/species.tsv |
+    tsv-join -f ../ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f ../ASSEMBLY/omit.lst -k 1 | head -n 100 \
+    > species.tsv
+
+cat species.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    log_info "${SPECIES}"
+    mkdir -p "${SPECIES}"
+
+    cat species.tsv |
+        tsv-filter --str-eq "2:${SPECIES}" \
+        > "${SPECIES}"/strains.tsv
+
+    cat "${SPECIES}"/strains.tsv |
+        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 1 '
+            if [[ ! -d "../ASSEMBLY/{2}/{1}" ]]; then
+                exit
+            fi
+
+            gzip -dcf ../ASSEMBLY/{2}/{1}/*_protein.faa.gz
+        ' |
+        faops filter -u stdin stdout |
+        pigz -p4 \
+        > "${SPECIES}"/pro.fa.gz
+
+    cat "${SPECIES}"/strains.tsv |
+        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 1 '
+            if [[ ! -d "../ASSEMBLY/{2}/{1}" ]]; then
+                exit
+            fi
+
+            gzip -dcf ../ASSEMBLY/{2}/{1}/*_protein.faa.gz |
+                grep "^>" |
+                cut -d" " -f 1 |
+                sed "s/^>//" |
+                perl -nl -e '\''
+                    $n = $_;
+                    $s = $n;
+                    $s =~ s/\.\d+//;
+                    printf qq(%s\t%s_%s\t%s\n), $n, {1}, $s, {1};
+                '\''
+        ' \
+        > "${SPECIES}"/replace.tsv
+
+done
+
+#cluster-representative cluster-member
+mmseqs easy-cluster Aeribacillus_pallidus/pro.fa.gz clusterRes tmp \
+    --min-seq-id 0.99 -c 0.99 --remove-tmp-files
+
+```
