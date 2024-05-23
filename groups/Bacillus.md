@@ -480,7 +480,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 50
 
 datamash check < BioSample/biosample.tsv
-#12766 lines, 84 fields
+#17483 lines, 91 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -509,7 +509,7 @@ bash MinHash/species.sh
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#540
+#1266
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
@@ -526,8 +526,8 @@ find MinHash -name "redundant.lst" |
     > summary/redundant.lst
 
 wc -l summary/NR.lst summary/redundant.lst
-#  4072 summary/NR.lst
-#  5475 summary/redundant.lst
+#  7016 summary/NR.lst
+#  8202 summary/redundant.lst
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Bacillus/
