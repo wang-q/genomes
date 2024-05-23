@@ -167,7 +167,7 @@ echo "
         *
     FROM ar
     WHERE 1=1
-        AND genus IN ('Bacillus', 'Staphylococcus')
+        AND genus IN ('Bacillus', 'Staphylococcus', 'Listeria')
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
@@ -254,7 +254,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#17520 lines, 7 fields
+#17521 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -278,7 +278,7 @@ cat raw.tsv |
     > Bacillus.assembly.tsv
 
 datamash check < Bacillus.assembly.tsv
-#17511 lines, 5 fields
+#17512 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacillus.assembly.tsv |
@@ -331,10 +331,10 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  | 16095 |
-| species |  1303 |
-| genus   |   169 |
-| family  |     6 |
+| strain  | 16096 |
+| species |  1304 |
+| genus   |   170 |
+| family  |     7 |
 | order   |     1 |
 | class   |     1 |
 
@@ -551,6 +551,10 @@ bash MinHash/dist.sh
 ```shell
 mkdir -p ~/data/Bacillus/tree
 cd ~/data/Bacillus/tree
+
+nwr reroot ../MinHash/tree.nwk -n Thermot_petr_RKU_1_GCF_000016785_1 |
+    nwr order stdin --nd --an \
+    > minhash.reroot.newick
 
 nwr order --an --nd ../MinHash/tree.nwk -o minhash.sort.newick
 
