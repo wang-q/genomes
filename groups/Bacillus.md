@@ -37,18 +37,27 @@ We include the following families:
 * *Thermoactinomycetaceae*
 * *Alicyclobacillaceae*
 
+* *Desulfuribacillaceae* as closet outgroups
+
 ### List all ranks
 
 ```shell
 mkdir -p ~/data/Bacillus
 cd ~/data/Bacillus
 
-nwr member Bacillaceae Paenibacillaceae Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae |
+nwr member \
+    Bacillaceae Paenibacillaceae \
+    Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Desulfuribacillaceae |
     tsv-summarize -H -g 3 --count |
     mlr --itsv --omd cat |
     perl -nl -e 's/-\s*\|$/-:|/; print'
 
-nwr member Bacillaceae Paenibacillaceae Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae -r "species group" -r "species subgroup" |
+nwr member \
+    Bacillaceae Paenibacillaceae \
+    Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Desulfuribacillaceae \
+    -r "species group" -r "species subgroup" |
     tsv-select -f 1-3 |
     keep-header -- tsv-sort -k3,3 -k2,2 |
     mlr --itsv --omd cat
@@ -57,11 +66,11 @@ nwr member Bacillaceae Paenibacillaceae Sporolactobacillaceae Thermoactinomyceta
 
 | rank             | count |
 |------------------|------:|
-| family           |     5 |
-| genus            |   186 |
-| species          | 44915 |
+| family           |     6 |
+| genus            |   187 |
+| species          | 44918 |
 | subspecies       |    42 |
-| no rank          |   254 |
+| no rank          |   255 |
 | strain           |   751 |
 | species group    |     5 |
 | species subgroup |     2 |
@@ -88,14 +97,16 @@ cd ~/data/Bacillus/summary
 
 # should have a valid name of genus
 nwr member \
-    Bacillaceae Paenibacillaceae Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Bacillaceae Paenibacillaceae \
+    Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Desulfuribacillaceae \
     -r genus |
     sed '1d' |
     sort -n -k1,1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#186 genus.list.tsv
+#187 genus.list.tsv
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -134,8 +145,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#  3328 RS1.tsv
-#  3690 GB1.tsv
+#  3330 RS1.tsv
+#  3692 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -146,8 +157,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     13439
-#GB1     17569
+#RS1     13441
+#GB1     17571
 
 ```
 
@@ -254,7 +265,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#17521 lines, 7 fields
+#17523 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -278,7 +289,7 @@ cat raw.tsv |
     > Bacillus.assembly.tsv
 
 datamash check < Bacillus.assembly.tsv
-#17512 lines, 5 fields
+#17514 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacillus.assembly.tsv |
@@ -331,12 +342,12 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  | 16096 |
-| species |  1304 |
-| genus   |   170 |
-| family  |     7 |
-| order   |     1 |
-| class   |     1 |
+| strain  | 16098 |
+| species |  1306 |
+| genus   |   171 |
+| family  |     8 |
+| order   |     2 |
+| class   |     2 |
 
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
