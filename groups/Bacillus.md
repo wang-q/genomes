@@ -642,38 +642,39 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Paenibacillaceae       |      370 |     1404 |
 | Sporolactobacillaceae  |       23 |       33 |
 | Thermoactinomycetaceae |       41 |       68 |
-| genus                  | #species | #strains |
-| ---                    |      --: |      --: |
-| Aeribacillus           |        3 |       23 |
-| Alicyclobacillus       |       22 |       37 |
-| Aneurinibacillus       |        7 |       32 |
-| Anoxybacillus          |       13 |       58 |
-| Bacillus               |      130 |     9791 |
-| Brevibacillus          |       30 |      208 |
-| Cohnella               |       31 |       35 |
-| Cytobacillus           |       19 |       90 |
-| Fictibacillus          |       12 |       24 |
-| Geobacillus            |       17 |      106 |
-| Gracilibacillus        |       20 |       25 |
-| Halobacillus           |       24 |       38 |
-| Heyndrickxia           |       13 |      110 |
-| Lysinibacillus         |       27 |      259 |
-| Mesobacillus           |       10 |       20 |
-| Metabacillus           |       20 |       39 |
-| Neobacillus            |       24 |       47 |
-| Niallia                |        6 |       52 |
-| Oceanobacillus         |       30 |       65 |
-| Paenibacillus          |      278 |     1100 |
-| Parageobacillus        |        7 |       36 |
-| Peribacillus           |       18 |      136 |
-| Priestia               |       10 |      496 |
-| Psychrobacillus        |       10 |       27 |
-| Rossellomorea          |        7 |       29 |
-| Schinkia               |        1 |       24 |
-| Shouchella             |       11 |       68 |
-| Sporolactobacillus     |       13 |       22 |
-| Thermoactinomyces      |        5 |       23 |
-| Virgibacillus          |       25 |       75 |
+
+| genus              | #species | #strains |
+|--------------------|---------:|---------:|
+| Aeribacillus       |        3 |       23 |
+| Alicyclobacillus   |       22 |       37 |
+| Aneurinibacillus   |        7 |       32 |
+| Anoxybacillus      |       13 |       58 |
+| Bacillus           |      130 |     9791 |
+| Brevibacillus      |       30 |      208 |
+| Cohnella           |       31 |       35 |
+| Cytobacillus       |       19 |       90 |
+| Fictibacillus      |       12 |       24 |
+| Geobacillus        |       17 |      106 |
+| Gracilibacillus    |       20 |       25 |
+| Halobacillus       |       24 |       38 |
+| Heyndrickxia       |       13 |      110 |
+| Lysinibacillus     |       27 |      259 |
+| Mesobacillus       |       10 |       20 |
+| Metabacillus       |       20 |       39 |
+| Neobacillus        |       24 |       47 |
+| Niallia            |        6 |       52 |
+| Oceanobacillus     |       30 |       65 |
+| Paenibacillus      |      278 |     1100 |
+| Parageobacillus    |        7 |       36 |
+| Peribacillus       |       18 |      136 |
+| Priestia           |       10 |      496 |
+| Psychrobacillus    |       10 |       27 |
+| Rossellomorea      |        7 |       29 |
+| Schinkia           |        1 |       24 |
+| Shouchella         |       11 |       68 |
+| Sporolactobacillus |       13 |       22 |
+| Thermoactinomyces  |        5 |       23 |
+| Virgibacillus      |       25 |       75 |
 
 | #family                | genus                 | species                             | count |
 |------------------------|-----------------------|-------------------------------------|------:|
@@ -897,17 +898,17 @@ export -f log_debug
 
 cat ../MinHash/species.tsv |
     tsv-join -f ../ASSEMBLY/pass.lst -k 1 |
-    tsv-join -e -f ../ASSEMBLY/omit.lst -k 1 | head -n 100 \
-    > species.tsv
+    tsv-join -e -f ../ASSEMBLY/omit.lst -k 1 | head -n 50 \
+    > species-f.tsv
 
-cat species.tsv |
+cat species-f.tsv |
     tsv-select -f 2 |
     tsv-uniq |
 while read SPECIES; do
     log_info "${SPECIES}"
     mkdir -p "${SPECIES}"
 
-    cat species.tsv |
+    cat species-f.tsv |
         tsv-filter --str-eq "2:${SPECIES}" \
         > "${SPECIES}"/strains.tsv
 
@@ -942,10 +943,45 @@ while read SPECIES; do
         ' \
         > "${SPECIES}"/replace.tsv
 
+    #cluster-representative cluster-member
+    mmseqs easy-cluster "${SPECIES}"/pro.fa.gz "${SPECIES}"/res tmp \
+        --min-seq-id 0.99 -c 0.99 --remove-tmp-files
+
+    rm "${SPECIES}"/res_all_seqs.fasta
+    pigz -p4 "${SPECIES}"/res_rep_seq.fasta
+
 done
 
-#cluster-representative cluster-member
-mmseqs easy-cluster Aeribacillus_pallidus/pro.fa.gz clusterRes tmp \
-    --min-seq-id 0.99 -c 0.99 --remove-tmp-files
+cat species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    log_info "${SPECIES}"
+
+    N_STRAIN=$(cat "${SPECIES}"/strains.tsv | wc -l)
+    N_TOTAL=$(cat "${SPECIES}"/replace.tsv | wc -l)
+    N_DEDUP=$(cat "${SPECIES}"/res_cluster.tsv | wc -l)
+    N_REP=$(
+        cat "${SPECIES}"/res_cluster.tsv |
+            tsv-select -f 1 | tsv-uniq |
+            wc -l
+        )
+
+    printf "#item\tcount\n" \
+        > "${SPECIES}"/counts.tsv
+
+    printf "strain\t%s\n" "${N_STRAIN}" \
+        >> "${SPECIES}"/counts.tsv
+
+    printf "total\t%s\n" "${N_TOTAL}" \
+        >> "${SPECIES}"/counts.tsv
+
+    printf "dedup\t%s\n" "${N_DEDUP}" \
+        >> "${SPECIES}"/counts.tsv
+
+    printf "rep\t%s\n" "${N_REP}" \
+        >> "${SPECIES}"/counts.tsv
+
+done
 
 ```
