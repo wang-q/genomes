@@ -864,6 +864,27 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | Thermoactinomyces     |        5 |       23 |
 | Virgibacillus         |       25 |       74 |
 
+
+## Collect proteins
+
+```shell
+cd ~/data/Bacillus/
+
+nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
+    --pro \
+    --in ASSEMBLY/pass.lst \
+    --not-in ASSEMBLY/omit.lst \
+    --clust-id 0.95 \
+    --clust-cov 0.95
+
+# collect proteins
+bash Protein/collect.sh
+
+cat Protein/counts.tsv |
+    mlr --itsv --omd cat
+
+```
+
 ## Clustering proteins
 
 ```shell
@@ -945,7 +966,7 @@ while read SPECIES; do
 
     #cluster-representative cluster-member
     mmseqs easy-cluster "${SPECIES}"/pro.fa.gz "${SPECIES}"/res tmp \
-        --min-seq-id 0.99 -c 0.99 --remove-tmp-files
+        --min-seq-id 0.99 -c 0.99 --remove-tmp-files -v 2
 
     rm "${SPECIES}"/res_all_seqs.fasta
     pigz -p4 "${SPECIES}"/res_rep_seq.fasta
