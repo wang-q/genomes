@@ -210,7 +210,7 @@ echo "
 echo "
     SELECT
         genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
-        genus || ' sp. ', genus, ftp_path, biosample, assembly_level,
+        genus || ' sp.', genus, ftp_path, biosample, assembly_level,
         assembly_accession
     FROM ar
     WHERE 1=1
@@ -251,7 +251,7 @@ echo "
 echo "
     SELECT
         genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
-        genus || ' sp. ', genus, ftp_path, biosample, assembly_level,
+        genus || ' sp.', genus, ftp_path, biosample, assembly_level,
         gbrs_paired_asm
     FROM ar
     WHERE 1=1
