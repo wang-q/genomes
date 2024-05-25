@@ -47,6 +47,7 @@ brew install brewsci/bio/fasttree
 brew install brewsci/bio/iqtree2
 brew install brewsci/bio/newick-utils
 brew install brewsci/bio/trimal
+brew install mmseqs2
 
 brew install datamash
 brew install miller
