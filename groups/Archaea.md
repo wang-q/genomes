@@ -703,19 +703,31 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
 # collect proteins
 bash Protein/collect.sh
 
+# clustering
+bash Protein/compute.sh
+
+# counts
+bash Protein/count.sh
+
 cat Protein/counts.tsv |
+    tsv-summarize -H --count --sum 2-5 |
+    sed 's/^count/species/' |
+    datamash transpose |
+    perl -nla -F"\t" -MNumber::Format -e '
+        printf qq(%s\t%s\n), $F[0], Number::Format::format_number($F[1], 0,);
+        ' |
+    (echo -e "#item\tcount" && cat) |
     mlr --itsv --omd cat
 
 ```
 
-| #item                          | count     |
-|--------------------------------|-----------|
-| Proteins                       | 2,079,140 |
-| Unique headers and annotations | 1,854,309 |
-| Unique proteins                | 1,843,330 |
-| all.replace.fa                 | 2,079,140 |
-| all.annotation.tsv             | 2,079,141 |
-| all.info.tsv                   | 2,079,141 |
+| #item      | count     |
+|------------|-----------|
+| species    | 702       |
+| strain_sum | 1,230     |
+| total_sum  | 3,481,813 |
+| dedup_sum  | 2,571,530 |
+| rep_sum    | 2,260,903 |
 
 ## Phylogenetics with ar53
 
