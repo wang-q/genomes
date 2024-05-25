@@ -34,6 +34,7 @@ All genomes of *Archaea*
 ```shell
 nwr member Archaea |
     grep -v " sp." |
+    grep -v " x " |
     tsv-summarize -H -g rank --count |
     mlr --itsv --omd cat |
     perl -nl -e 's/-\s*\|$/-:|/; print'
@@ -43,13 +44,13 @@ nwr member Archaea |
 | rank          | count |
 |---------------|------:|
 | superkingdom  |     1 |
-| phylum        |    44 |
-| order         |    66 |
-| no rank       |   333 |
-| species       |  3461 |
-| class         |    39 |
-| family        |    89 |
-| genus         |   265 |
+| phylum        |    47 |
+| no rank       |   392 |
+| species       |  3592 |
+| class         |    44 |
+| order         |    75 |
+| family        |   107 |
+| genus         |   302 |
 | clade         |    43 |
 | strain        |   352 |
 | species group |     2 |
@@ -73,7 +74,7 @@ nwr member Archaea -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#265 genus.list
+#302 genus.list
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -118,8 +119,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#  586 RS1.tsv
-#  603 GB1.tsv
+#  698 RS1.tsv
+#  853 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -130,8 +131,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     1136
-#GB1     1380
+#RS1     1396
+#GB1     2120
 
 ```
 
@@ -174,6 +175,8 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
@@ -200,6 +203,8 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
@@ -209,7 +214,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#1382 lines, 7 fields
+#2122 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -233,7 +238,7 @@ cat raw.tsv |
     > Archaea.assembly.tsv
 
 datamash check < Archaea.assembly.tsv
-#1379 lines, 5 fields
+#2119 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Archaea.assembly.tsv |
@@ -286,29 +291,33 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  |  1378 |
-| species |   602 |
-| genus   |   163 |
-| family  |    46 |
-| order   |    30 |
-| class   |    16 |
+| strain  |  2118 |
+| species |   852 |
+| genus   |   283 |
+| family  |   105 |
+| order   |    70 |
+| class   |    41 |
 
-| genus              | #species | #strains |
-|--------------------|---------:|---------:|
-| Haloarcula         |       15 |       29 |
-| Halobacterium      |        7 |       24 |
-| Haloferax          |       17 |       37 |
-| Halorubrum         |       37 |       94 |
-| Metallosphaera     |        8 |       20 |
-| Methanobacterium   |       13 |       28 |
-| Methanobrevibacter |       15 |      137 |
-| Methanococcus      |        4 |       30 |
-| Methanoculleus     |        8 |       29 |
-| Methanosarcina     |       11 |      103 |
-| Methanothrix       |        3 |       33 |
-| Natrinema          |       22 |       34 |
-| Sulfolobus         |        2 |       83 |
-| Thermococcus       |       33 |       47 |
+| genus                | #species | #strains |
+|----------------------|---------:|---------:|
+| Ferroplasma          |        2 |       20 |
+| Haloarcula           |       21 |       41 |
+| Halobacterium        |        9 |       45 |
+| Haloferax            |       17 |       40 |
+| Halorubrum           |       39 |      100 |
+| Metallosphaera       |        8 |       21 |
+| Methanobacterium     |       14 |       36 |
+| Methanobrevibacter   |       14 |      204 |
+| Methanococcus        |        4 |       37 |
+| Methanoculleus       |       10 |       41 |
+| Methanomethylophilus |        1 |       25 |
+| Methanosarcina       |       11 |      120 |
+| Methanothermobacter  |        5 |       22 |
+| Methanothrix         |        3 |       68 |
+| Natrinema            |       23 |       36 |
+| Nitrosopumilus       |       11 |       22 |
+| Sulfolobus           |        3 |       85 |
+| Thermococcus         |       35 |       50 |
 
 ### Download and check
 
@@ -345,12 +354,12 @@ cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50,S" --max "C"
 #N50_min S_min   C_max
-#5379    668961  848
+#5302    449376  848
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#32255196.8      37316984        98936.2 1332095 167     1276.4
+#1217613.4       2223383.5       11649.6 209669.5        28      216
 
 # After the above steps are completed, run the following commands.
 
@@ -370,15 +379,16 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields | lines |
 |------------------|-------:|------:|
-| url.tsv          |      3 | 1,378 |
-| check.lst        |      1 | 1,378 |
-| collect.tsv      |     20 | 1,379 |
-| n50.tsv          |      4 | 1,379 |
-| n50.pass.tsv     |      4 | 1,000 |
-| collect.pass.tsv |     23 | 1,000 |
-| pass.lst         |      1 |   999 |
-| omit.lst         |      1 |   122 |
-| rep.lst          |      1 |   536 |
+| url.tsv          |      3 | 2,118 |
+| check.lst        |      1 | 2,118 |
+| collect.tsv      |     20 | 2,119 |
+| n50.tsv          |      4 | 2,119 |
+| n50.pass.tsv     |      4 | 1,291 |
+| collect.pass.tsv |     23 | 1,291 |
+| pass.lst         |      1 | 1,290 |
+| omit.lst         |      1 |   331 |
+| rep.lst          |      1 |   632 |
+| sp.lst           |      1 |     1 |
 
 ### Rsync to hpcc
 
@@ -415,7 +425,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 50
 
 datamash check < BioSample/biosample.tsv
-#1373 lines, 41 fields
+#2114 lines, 55 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -444,7 +454,7 @@ bash MinHash/species.sh
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#56
+#65
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
@@ -461,8 +471,8 @@ find MinHash -name "redundant.lst" |
     > summary/redundant.lst
 
 wc -l summary/NR.lst summary/redundant.lst
-#  347 summary/NR.lst
-#  236 summary/redundant.lst
+#  450 summary/NR.lst
+#  302 summary/redundant.lst
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Archaea/
@@ -484,10 +494,13 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Archaea/tree
 cd ~/data/Archaea/tree
 
-nwr order --an --nd ../MinHash/tree.nwk -o minhash.sort.newick
+nw_reroot ../MinHash/tree.nwk Saccharom_cere_S288C |
+    nwr order stdin --nd --an \
+    > minhash.reroot.newick
 
 nwr pl-condense --map -r order -r family -r genus \
-    minhash.sort.newick ../Count/species.tsv \
+    minhash.reroot.newick ../Count/species.tsv |
+    nwr order stdin --nd --an \
     -o minhash.condensed.newick
 
 mv condensed.tsv minhash.condensed.tsv
@@ -546,57 +559,67 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  |   943 |
-| species |   547 |
-| genus   |   158 |
-| family  |    45 |
-| order   |    29 |
-| class   |    15 |
+| strain  |  1225 |
+| species |   708 |
+| genus   |   229 |
+| family  |    76 |
+| order   |    50 |
+| class   |    27 |
 
 | order              | #species | #strains |
 |--------------------|---------:|---------:|
-| Halobacteriales    |      122 |      175 |
-| Haloferacales      |      102 |      174 |
-| Methanobacteriales |       29 |       91 |
-| Methanococcales    |       15 |       38 |
-| Methanomicrobiales |       34 |       39 |
-| Methanosarcinales  |       34 |       65 |
-| Natrialbales       |       71 |       89 |
-| Sulfolobales       |       25 |      127 |
-| Thermococcales     |       39 |       48 |
+| Desulfurococcales  |       18 |       21 |
+| Halobacteriales    |      350 |      518 |
+| Methanobacteriales |       30 |      114 |
+| Methanococcales    |       15 |       44 |
+| Methanomicrobiales |       42 |       48 |
+| Methanosarcinales  |       45 |       86 |
+| Sulfolobales       |       27 |      133 |
+| Thermococcales     |       41 |       51 |
 
 | genus              | #species | #strains |
 |--------------------|---------:|---------:|
-| Haloarcula         |       14 |       26 |
-| Haloferax          |       16 |       35 |
-| Halorubrum         |       26 |       67 |
-| Methanobacterium   |       13 |       23 |
-| Methanobrevibacter |        9 |       54 |
-| Methanococcus      |        4 |       26 |
-| Methanosarcina     |       10 |       28 |
-| Natrinema          |       20 |       27 |
+| Haloarcula         |       21 |       38 |
+| Halobacterium      |        8 |       27 |
+| Haloferax          |       16 |       38 |
+| Halorubrum         |       29 |       74 |
+| Methanobacterium   |       14 |       25 |
+| Methanobrevibacter |        8 |       71 |
+| Methanococcus      |        4 |       32 |
+| Methanosarcina     |       10 |       37 |
+| Natrinema          |       21 |       29 |
 | Sulfolobus         |        2 |       76 |
-| Thermococcus       |       32 |       38 |
+| Thermococcus       |       34 |       41 |
 
-| #family             | genus              | species                     | count |
-|---------------------|--------------------|-----------------------------|------:|
-| Haloarculaceae      | Haloarcula         | Haloarcula hispanica        |     7 |
-| Halobacteriaceae    | Halobacterium      | Halobacterium hubeiense     |     8 |
-|                     |                    | Halobacterium salinarum     |     7 |
-| Haloferacaceae      | Haloferax          | Haloferax volcanii          |     6 |
-|                     | Halogeometricum    | Halogeometricum borinquense |     5 |
-| Halorubraceae       | Halorubrum         | Halorubrum ezzemoulense     |    38 |
-| Methanobacteriaceae | Methanobacterium   | Methanobacterium formicicum |     6 |
-|                     | Methanobrevibacter | Methanobrevibacter smithii  |    37 |
-|                     |                    | Methanobrevibacter woesei   |     5 |
-| Methanococcaceae    | Methanococcus      | Methanococcus maripaludis   |    20 |
-| Methanomicrobiaceae | Methanoculleus     | Methanoculleus bourgensis   |     5 |
-| Methanosarcinaceae  | Methanosarcina     | Methanosarcina mazei        |    11 |
-|                     |                    | Methanosarcina thermophila  |     5 |
-| Sulfolobaceae       | Metallosphaera     | Metallosphaera sedula       |    10 |
-|                     | Saccharolobus      | Saccharolobus solfataricus  |    13 |
-|                     | Sulfolobus         | Sulfolobus acidocaldarius   |    55 |
-|                     |                    | Sulfolobus islandicus       |    21 |
+| #family                         | genus                         | species                                       | count |
+|---------------------------------|-------------------------------|-----------------------------------------------|------:|
+| Candidatus Haiyanarchaeaceae    | Candidatus Haiyanarchaeum     | Candidatus Haiyanarchaeum thermophilum        |     5 |
+| Candidatus Methanomethylicaceae | Candidatus Methanosuratincola | Candidatus Methanosuratincola petrocarbonis   |    10 |
+| Candidatus Wolframiiraptoraceae | Candidatus Terraquivivens     | Candidatus Terraquivivens tengchongensis      |     7 |
+| Haloarculaceae                  | Haloarcula                    | Haloarcula argentinensis                      |     5 |
+|                                 |                               | Haloarcula hispanica                          |     8 |
+| Halobacteriaceae                | Halobacterium                 | Halobacterium hubeiense                       |     8 |
+|                                 |                               | Halobacterium salinarum                       |    12 |
+| Haloferacaceae                  | Haloferax                     | Haloferax alexandrinus                        |     5 |
+|                                 |                               | Haloferax mediterranei                        |     5 |
+|                                 |                               | Haloferax volcanii                            |     7 |
+|                                 | Halogeometricum               | Halogeometricum borinquense                   |     5 |
+|                                 | Halorubrum                    | Halorubrum ezzemoulense                       |    38 |
+|                                 |                               | Halorubrum lacusprofundi                      |     5 |
+| Methanobacteriaceae             | Methanobacterium              | Methanobacterium formicicum                   |     6 |
+|                                 | Methanobrevibacter            | Methanobrevibacter smithii                    |    52 |
+|                                 |                               | Methanobrevibacter woesei                     |     7 |
+|                                 | Methanothermobacter           | Methanothermobacter wolfeii                   |     5 |
+| Methanococcaceae                | Methanococcus                 | Methanococcus maripaludis                     |    26 |
+| Methanomassiliicoccaceae        | Methanomassiliicoccus         | Candidatus Methanomassiliicoccus intestinalis |     5 |
+| Methanomethylophilaceae         | Methanomethylophilus          | Methanomethylophilus alvi                     |     7 |
+| Methanomicrobiaceae             | Methanoculleus                | Methanoculleus bourgensis                     |     5 |
+| Methanosarcinaceae              | Methanosarcina                | Methanosarcina mazei                          |    13 |
+|                                 |                               | Methanosarcina thermophila                    |    12 |
+| Sulfolobaceae                   | Metallosphaera                | Metallosphaera sedula                         |    11 |
+|                                 | Saccharolobus                 | Saccharolobus solfataricus                    |    13 |
+|                                 | Sulfolobus                    | Sulfolobus acidocaldarius                     |    55 |
+|                                 |                               | Sulfolobus islandicus                         |    21 |
 
 ### For *protein families*
 
@@ -632,34 +655,38 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  |   928 |
-| species |   544 |
-| genus   |   157 |
-| family  |    45 |
-| order   |    29 |
-| class   |    15 |
+| strain  |  1170 |
+| species |   688 |
+| genus   |   217 |
+| family  |    72 |
+| order   |    46 |
+| class   |    25 |
 
-| genus              | #species | #strains |
-|--------------------|---------:|---------:|
-| Haloarcula         |       14 |       25 |
-| Halobacterium      |        5 |       18 |
-| Halobellus         |        9 |       11 |
-| Haloferax          |       16 |       35 |
-| Halomicroarcula    |        8 |       13 |
-| Haloplanus         |        8 |       10 |
-| Halorubrum         |       26 |       67 |
-| Metallosphaera     |        7 |       17 |
-| Methanobacterium   |       13 |       23 |
-| Methanobrevibacter |        9 |       48 |
-| Methanococcus      |        4 |       26 |
-| Methanoculleus     |        8 |       13 |
-| Methanohalophilus  |        6 |       14 |
-| Methanosarcina     |       10 |       28 |
-| Natrinema          |       20 |       27 |
-| Natronorubrum      |        9 |       13 |
-| Saccharolobus      |        3 |       18 |
-| Sulfolobus         |        2 |       75 |
-| Thermococcus       |       32 |       38 |
+| genus               | #species | #strains |
+|---------------------|---------:|---------:|
+| Haladaptatus        |        7 |       10 |
+| Haloarcula          |       20 |       36 |
+| Halobacterium       |        8 |       27 |
+| Halobellus          |        9 |       11 |
+| Haloferax           |       16 |       38 |
+| Halomicroarcula     |       11 |       16 |
+| Haloplanus          |        8 |       10 |
+| Halorubrum          |       29 |       74 |
+| Halorussus          |       16 |       17 |
+| Metallosphaera      |        7 |       18 |
+| Methanobacterium    |       14 |       24 |
+| Methanobrevibacter  |        8 |       66 |
+| Methanococcus       |        4 |       30 |
+| Methanoculleus      |       10 |       15 |
+| Methanohalophilus   |        6 |       14 |
+| Methanosarcina      |       10 |       35 |
+| Methanothermobacter |        4 |       10 |
+| Natrinema           |       21 |       29 |
+| Natronorubrum       |        9 |       13 |
+| Nitrosopumilus      |       10 |       11 |
+| Saccharolobus       |        3 |       18 |
+| Sulfolobus          |        2 |       75 |
+| Thermococcus        |       34 |       41 |
 
 ## Collect proteins
 
@@ -669,9 +696,9 @@ cd ~/data/Archaea/
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --pro \
     --in ASSEMBLY/pass.lst \
-    --not-in summary/redundant.lst \
-    --not-in MinHash/abnormal.lst \
-    --not-in ASSEMBLY/omit.lst
+    --not-in ASSEMBLY/omit.lst \
+    --clust-id 0.95 \
+    --clust-cov 0.95
 
 # collect proteins
 bash Protein/collect.sh
