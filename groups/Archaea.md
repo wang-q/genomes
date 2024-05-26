@@ -22,6 +22,7 @@ All genomes of *Archaea*
 - [Phylogenetics with ar53](#phylogenetics-with-ar53)
     * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
 
 <!-- tocstop -->
 
@@ -897,5 +898,27 @@ FastTree -fastest -noml Domain/ar53.trim.fa > Domain/ar53.trim.newick
 # png
 nw_display -s -b 'visibility:hidden' -w 1200 -v 20 Domain/ar53.trim.newick |
     rsvg-convert -o tree/Archaea.ar53.png
+
+```
+
+### Condense branches in the protein tree
+
+```shell
+cd ~/data/Archaea/tree
+
+nw_reroot  ../Domain/ar53.trim.newick Saccharom_cere_S288C |
+    nwr order stdin --nd --an \
+    > ar53.reroot.newick
+
+nwr pl-condense --map -r order -r family -r genus \
+    ar53.reroot.newick ../Count/species.tsv |
+    nwr order stdin --nd --an \
+    -o ar53.condensed.newick
+
+mv condensed.tsv ar53.condense.tsv
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 ar53.condensed.newick |
+    rsvg-convert -o Archaea.ar53.png
 
 ```
