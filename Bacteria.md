@@ -44,6 +44,7 @@ Download all genomes and analyze representative strains.
 ```shell
 nwr member Bacteria |
     grep -v " sp." |
+    grep -v " x " |
     tsv-summarize -H -g rank --count |
     mlr --itsv --omd cat |
     perl -nl -e 's/-\s*\|$/-:|/; print'
@@ -53,26 +54,26 @@ nwr member Bacteria |
 | rank             |  count |
 |------------------|-------:|
 | superkingdom     |      1 |
-| phylum           |    179 |
-| no rank          |   6704 |
-| species          | 111042 |
-| class            |    150 |
-| order            |    321 |
-| family           |    797 |
-| genus            |   5053 |
-| strain           |  41351 |
+| phylum           |    180 |
+| class            |    170 |
+| order            |    381 |
+| family           |    928 |
+| genus            |   5316 |
+| no rank          |   7584 |
+| species          | 113932 |
+| strain           |  41866 |
 | subclass         |      6 |
-| subspecies       |    718 |
+| subspecies       |    709 |
 | suborder         |      7 |
-| clade            |    134 |
+| clade            |    135 |
 | isolate          |    455 |
 | varietas         |     24 |
 | forma            |      4 |
-| species group    |     99 |
+| species group    |    100 |
 | species subgroup |     31 |
 | biotype          |      7 |
-| serotype         |    258 |
-| serogroup        |    145 |
+| serotype         |    256 |
+| serogroup        |    152 |
 | subgenus         |      1 |
 | tribe            |      2 |
 | pathogroup       |      5 |
@@ -81,14 +82,14 @@ nwr member Bacteria |
 ### Species with assemblies
 
 * RefSeq
-    * '>= 100 genomes'
+    * '>= 200 genomes'
         * RS1 - assembly_level: 'Complete Genome', 'Chromosome'
         * RS2 - genome_rep: 'Full'
     * '>= 2 genomes'
         * RS3 - assembly_level: 'Complete Genome', 'Chromosome'
         * RS4 - genome_rep: 'Full'
 * Genbank
-    * '>= 100 genomes'
+    * '>= 200 genomes'
         * GB1 - assembly_level: 'Complete Genome', 'Chromosome'
         * GB2 - genome_rep: 'Full'
     * '>= 2 genomes'
@@ -103,13 +104,13 @@ cd ~/data/Bacteria/summary
 # NCBI division Bacteria includes Bacteria and Archaea
 nwr member Bacteria -r genus |
     grep -v " sp." |
-    grep -v " spp." |
+    grep -v " x " |
     sed '1d' |
     sort -n -k1,1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#4470 genus.list
+#5316 genus.list
 
 QUERY="
     SELECT
@@ -131,7 +132,7 @@ while read RANK_ID; do
     echo -e "${QUERY}" |
         sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
         sed "s/REPLACE_2/AND assembly_level IN ('Complete Genome', 'Chromosome')/" |
-        sed "s/REPLACE_3/HAVING count >= 100/" |
+        sed "s/REPLACE_3/HAVING count >= 200/" |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
     tsv-sort -k2,2 \
@@ -142,7 +143,7 @@ while read RANK_ID; do
     echo -e "${QUERY}" |
         sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
         sed "s/REPLACE_2/AND genome_rep IN ('Full')/" |
-        sed "s/REPLACE_3/HAVING count >= 100/" |
+        sed "s/REPLACE_3/HAVING count >= 200/" |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
     tsv-sort -k2,2 \
@@ -175,7 +176,7 @@ while read RANK_ID; do
     echo -e "${QUERY}" |
         sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
         sed "s/REPLACE_2/AND assembly_level IN ('Complete Genome', 'Chromosome')/" |
-        sed "s/REPLACE_3/HAVING count >= 100/" |
+        sed "s/REPLACE_3/HAVING count >= 200/" |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
@@ -186,7 +187,7 @@ while read RANK_ID; do
     echo -e "${QUERY}" |
         sed "s/REPLACE_1/AND genus_id = ${RANK_ID}/" |
         sed "s/REPLACE_2/AND genome_rep IN ('Full')/" |
-        sed "s/REPLACE_3/HAVING count >= 100/" |
+        sed "s/REPLACE_3/HAVING count >= 200/" |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
@@ -215,14 +216,14 @@ done |
     > GB4.tsv
 
 wc -l RS*.tsv GB*.tsv
-#    48 RS1.tsv
-#   230 RS2.tsv
-#  1741 RS3.tsv
-#  6799 RS4.tsv
-#    53 GB1.tsv
-#   289 GB2.tsv
-#  1822 GB3.tsv
-#  7611 GB4.tsv
+#    20 RS1.tsv
+#   161 RS2.tsv
+#  2037 RS3.tsv
+#  8197 RS4.tsv
+#    27 GB1.tsv
+#   236 GB2.tsv
+#  2172 GB3.tsv
+#  9839 GB4.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -233,32 +234,38 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     16893
-#RS2     204296
-#RS3     30510
-#RS4     252538
-#GB1     22591
-#GB2     1244156
-#GB3     37300
-#GB4     1299256
+#RS1     16010
+#RS2     223231
+#RS3     36561
+#RS4     299245
+#GB1     24358
+#GB2     1577848
+#GB3     46449
+#GB4     1669964
 
 cat RS2.tsv |
     tsv-join -f RS1.tsv -k 1 -e |
     tsv-summarize --sum 3
-#46739
+#71601
 
 cat RS3.tsv |
     tsv-join -f RS1.tsv -k 1 -e |
     tsv-join -f RS2.tsv -k 1 -e |
     tsv-summarize --sum 3
-#8084
+#12059
 
 cat RS4.tsv |
     tsv-join -f RS1.tsv -k 1 -e |
     tsv-join -f RS2.tsv -k 1 -e |
     tsv-join -f RS3.tsv -k 1 -e |
     tsv-summarize --sum 3
-#20130
+#28259
+
+cat RS4.tsv |
+    tsv-join -f RS1.tsv -k 1 -e |
+    tsv-join -f RS2.tsv -k 1 -e |
+    tsv-summarize --sum 3
+#76014
 
 ```
 
@@ -354,11 +361,11 @@ cp reference.tsv ~/Scripts/genomes/assembly/Bacteria.reference.tsv
 Three levels:
 
 * RefSeq
-    * '>= 100 genomes'
+    * '>= 1000 genomes'
         * RS1 - assembly_level: 'Complete Genome', 'Chromosome'
         * RS2 - genome_rep: 'Full'
     * '>= 2 genomes'
-        * RS3 - assembly_level: 'Complete Genome', 'Chromosome'
+        * RS4 - genome_rep: 'Full'
 
 ```shell
 cd ~/data/Bacteria/summary
@@ -410,9 +417,9 @@ echo "
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
 
-# RS3
+# RS4
 SPECIES=$(
-    cat RS3.tsv |
+    cat RS4.tsv |
         tsv-join -f RS1.tsv -k 1 -e |
         tsv-join -f RS2.tsv -k 1 -e |
         cut -f 1 |
@@ -428,13 +435,13 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND assembly_level IN ('Complete Genome', 'Chromosome')
+        AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
 
 datamash check < raw.tsv
-#71732 lines, 7 fields
+#163641 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -458,7 +465,7 @@ cat raw.tsv |
     > Bacteria.assembly.tsv
 
 datamash check < Bacteria.assembly.tsv
-#71686 lines, 5 fields
+#163586 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacteria.assembly.tsv |
@@ -503,56 +510,59 @@ mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
     keep-header -- tsv-sort -k1,1 |
-    tsv-filter -H --ge 3:500 |
+    tsv-filter -H --ge 3:1000 |
     mlr --itsv --omd cat |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
 
-| item    | count |
-|---------|------:|
-| strain  | 71685 |
-| species |  1745 |
-| genus   |   525 |
-| family  |   204 |
-| order   |    95 |
-| class   |    44 |
+| item    |  count |
+|---------|-------:|
+| strain  | 163583 |
+| species |   8195 |
+| genus   |   1963 |
+| family  |    476 |
+| order   |    198 |
+| class   |     86 |
 
-| genus               | #species | #strains |
-|---------------------|---------:|---------:|
-| Acinetobacter       |       22 |     1340 |
-| Aeromonas           |       11 |      828 |
-| Bacillus            |       32 |     3129 |
-| Bacteroides         |       15 |     1583 |
-| Bifidobacterium     |       12 |     1599 |
-| Bordetella          |        9 |      807 |
-| Burkholderia        |       26 |     2462 |
-| Campylobacter       |       27 |     2111 |
-| Citrobacter         |       11 |      532 |
-| Clostridium         |       20 |     1463 |
-| Corynebacterium     |       34 |      697 |
-| Enterobacter        |       10 |     1692 |
-| Enterococcus        |       12 |     1327 |
-| Escherichia         |        4 |     3358 |
-| Francisella         |        9 |      959 |
-| Haemophilus         |        6 |      898 |
-| Klebsiella          |       10 |     3808 |
-| Lacticaseibacillus  |        5 |      623 |
-| Lactobacillus       |       15 |      951 |
-| Lactococcus         |        8 |      508 |
-| Limosilactobacillus |        5 |      523 |
-| Listeria            |        6 |      748 |
-| Mycobacterium       |       16 |      938 |
-| Mycobacteroides     |        3 |     1920 |
-| Pseudomonas         |       89 |     4079 |
-| Rhizobium           |        9 |      538 |
-| Salmonella          |        2 |     1564 |
-| Shigella            |        4 |     1800 |
-| Staphylococcus      |       35 |     3593 |
-| Stenotrophomonas    |        5 |      758 |
-| Streptococcus       |       38 |     3372 |
-| Vibrio              |       41 |     1548 |
-| Xanthomonas         |       18 |     1346 |
+| genus           | #species | #strains |
+|-----------------|---------:|---------:|
+| Acinetobacter   |       70 |     2861 |
+| Aeromonas       |       25 |     1528 |
+| Bacillus        |       77 |     6660 |
+| Bacteroides     |       45 |     2741 |
+| Bifidobacterium |       55 |     2297 |
+| Bordetella      |       18 |     1022 |
+| Brucella        |       25 |     1146 |
+| Burkholderia    |       37 |     4909 |
+| Campylobacter   |       39 |     2974 |
+| Citrobacter     |       16 |     1891 |
+| Clostridium     |       66 |     2325 |
+| Corynebacterium |      125 |     1742 |
+| Enterobacter    |       25 |     2588 |
+| Enterococcus    |       47 |     2120 |
+| Escherichia     |        6 |     4276 |
+| Francisella     |       11 |     1074 |
+| Haemophilus     |       11 |     1069 |
+| Helicobacter    |       35 |     1112 |
+| Klebsiella      |       14 |     6007 |
+| Lactobacillus   |       39 |     1871 |
+| Legionella      |       50 |     1227 |
+| Listeria        |       19 |     1144 |
+| Mycobacterium   |       76 |     1434 |
+| Mycobacteroides |        6 |     2099 |
+| Neisseria       |       34 |     3770 |
+| Proteus         |        9 |     1152 |
+| Pseudomonas     |      250 |     6315 |
+| Salmonella      |        2 |     1823 |
+| Serratia        |       20 |     1973 |
+| Shigella        |        4 |     2541 |
+| Staphylococcus  |       56 |     7025 |
+| Streptococcus   |       81 |     8319 |
+| Streptomyces    |      300 |     1442 |
+| Vibrio          |      107 |     6994 |
+| Xanthomonas     |       37 |     2557 |
+| Yersinia        |       26 |     1480 |
 
 ### Download and check
 
