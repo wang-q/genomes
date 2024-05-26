@@ -2,6 +2,16 @@
 
 <!-- toc -->
 
+- [Taxon info](#taxon-info)
+    * [Symlink](#symlink)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+- [All assemblies](#all-assemblies)
+    * [Extract from `../Protists` and create assembly.tsv](#extract-from-protists-and-create-assemblytsv)
+    * [Count `assembly.tsv`](#count-assemblytsv)
+- [MinHash](#minhash)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+
 <!-- tocstop -->
 
 ## Taxon info
@@ -30,26 +40,28 @@ ln -s ../STRAINS STRAINS
 
 ```shell
 nwr member Oomycota |
-    grep -v " sp." |
+    grep -v " x " |
     tsv-summarize -H -g rank --count |
     mlr --itsv --omd cat |
     perl -nl -e 's/-\s*\|$/-:|/; print'
 
 ```
 
-| rank       | count |
-|------------|------:|
-| phylum     |     1 |
-| no rank    |    54 |
-| family     |    20 |
-| genus      |    86 |
-| species    |  1219 |
-| subspecies |     3 |
-| order      |    11 |
-| strain     |    39 |
-| isolate    |     1 |
-| varietas   |    15 |
-| forma      |     4 |
+| rank            | count |
+|-----------------|------:|
+| phylum          |     1 |
+| no rank         |    62 |
+| family          |    20 |
+| genus           |    86 |
+| species         |  3292 |
+| subspecies      |     3 |
+| order           |    11 |
+| strain          |    40 |
+| isolate         |     3 |
+| varietas        |    12 |
+| forma           |     4 |
+| species group   |     1 |
+| forma specialis |     8 |
 
 ### Species with assemblies
 
@@ -61,7 +73,6 @@ SPECIES=$(
     nwr member \
         Oomycota\
         -r species |
-        grep -v " sp." |
         sed '1d' |
         cut -f 1 |
         sort |
@@ -108,25 +119,29 @@ cat species.count.tsv |
 
 ```
 
-| species_id | species                 | GB | CHR |
-|------------|-------------------------|----|-----|
-| 164328     | Phytophthora ramorum    | 28 | 0   |
-| 29920      | Phytophthora cactorum   | 21 | 0   |
-| 114742     | Pythium insidiosum      | 15 | 0   |
-| 112090     | Aphanomyces astaci      | 14 | 0   |
-| 4784       | Phytophthora capsici    | 14 | 0   |
-| 53985      | Phytophthora fragariae  | 13 | 0   |
-| 325452     | Phytophthora kernoviae  | 12 | 0   |
-| 65357      | Albugo candida          | 9  | 0   |
-| 4792       | Phytophthora parasitica | 9  | 0   |
-| 542832     | Peronospora effusa      | 8  | 1   |
-| 4785       | Phytophthora cinnamomi  | 8  | 0   |
-| 100861     | Aphanomyces euteiches   | 7  | 0   |
-| 4787       | Phytophthora infestans  | 6  | 1   |
-| 129355     | Phytophthora lateralis  | 5  | 0   |
-| 129364     | Phytophthora rubi       | 5  | 0   |
-| 4781       | Plasmopara halstedii    | 5  | 0   |
-| 41045      | Pythium oligandrum      | 5  | 0   |
+| species_id | species                          | GB | CHR |
+|------------|----------------------------------|----|-----|
+| 29920      | Phytophthora cactorum            | 28 | 0   |
+| 164328     | Phytophthora ramorum             | 28 | 0   |
+| 36331      | Globisporangium irregulare       | 22 | 0   |
+| 4784       | Phytophthora capsici             | 17 | 1   |
+| 114742     | Pythium insidiosum               | 15 | 0   |
+| 112090     | Aphanomyces astaci               | 14 | 0   |
+| 53985      | Phytophthora fragariae           | 13 | 0   |
+| 4792       | Phytophthora nicotianae          | 13 | 0   |
+| 325452     | Phytophthora kernoviae           | 12 | 0   |
+| 67593      | Phytophthora sojae               | 11 | 9   |
+| 65357      | Albugo candida                   | 10 | 0   |
+| 529119     | Globisporangium cryptoirregulare | 10 | 0   |
+| 542832     | Peronospora effusa               | 8  | 1   |
+| 4785       | Phytophthora cinnamomi           | 8  | 0   |
+| 100861     | Aphanomyces euteiches            | 7  | 0   |
+| 4787       | Phytophthora infestans           | 6  | 1   |
+| 186163     | Globisporangium cylindrosporum   | 5  | 0   |
+| 129355     | Phytophthora lateralis           | 5  | 0   |
+| 129364     | Phytophthora rubi                | 5  | 0   |
+| 4781       | Plasmopara halstedii             | 5  | 0   |
+| 41045      | Pythium oligandrum               | 5  | 0   |
 
 ## All assemblies
 
@@ -139,9 +154,9 @@ cat ../summary/collect.pass.tsv |
     tsv-filter -H --str-eq "RefSeq_category:Reference Genome" \
     > summary/collect.pass.tsv
 
-cat ../summary/collect.pass.tsv | # 1243
-    nwr restrict Oomycota -f stdin -c 3 | # belongs to Oomycota 401
-    tsv-filter -H --le "C:10000" --ge "N50:10000" | # more stringent parameters 331
+cat ../summary/collect.pass.tsv | # 1611
+    nwr restrict Oomycota -f stdin -c 3 | # belongs to Oomycota 452
+    tsv-filter -H --le "C:10000" --ge "N50:10000" | # more stringent parameters 375
     sed '1d' |
     sort \
     >> summary/collect.pass.tsv
@@ -190,28 +205,27 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  |   333 |
-| species |   172 |
-| genus   |    23 |
-| family  |     9 |
-| order   |     8 |
-| class   |     4 |
+| strain  |   378 |
+| species |   183 |
+| genus   |    24 |
+| family  |    10 |
+| order   |     9 |
+| class   |     5 |
 
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
-| Albugo           |        2 |        7 |
+| Albugo           |        2 |        8 |
 | Aphanomyces      |        5 |       15 |
 | Elongisporangium |        4 |        4 |
-| Globisporangium  |       45 |       49 |
-| Halophytophthora |        2 |        2 |
+| Globisporangium  |       47 |       64 |
 | Hyaloperonospora |        3 |        6 |
-| Lagenidium       |        1 |        2 |
+| Lagenidium       |        2 |        3 |
 | Peronospora      |        6 |       18 |
-| Phytophthora     |       43 |      153 |
-| Phytopythium     |       14 |       16 |
+| Phytophthora     |       50 |      178 |
+| Phytopythium     |       14 |       17 |
 | Pilasporangium   |        1 |        3 |
 | Plasmopara       |        3 |        7 |
-| Pythium          |       32 |       40 |
+| Pythium          |       33 |       42 |
 | Saprolegnia      |        2 |        2 |
 
 ## MinHash
@@ -236,7 +250,7 @@ bash MinHash/species.sh
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#3
+#7
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
@@ -246,8 +260,15 @@ find MinHash -name "NR.lst" |
     sort |
     uniq \
     > summary/NR.lst
-wc -l summary/NR.lst
-#104
+find MinHash -name "redundant.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/redundant.lst
+
+wc -l summary/NR.lst summary/redundant.lst
+# 120 summary/NR.lst
+# 126 summary/redundant.lst
 
 # Distances between all selected sketches, then hierarchical clustering
 bash MinHash/dist.sh
@@ -263,9 +284,14 @@ cd ~/data/Protists/Oomycota/tree
 nwr order --nd --an ../MinHash/tree.nwk \
     > minhash.order.newick
 
-nwr pl-condense -r order -r family -r genus --map \
-    minhash.order.newick ../Count/species.tsv |
-    nwr tex stdin --bl -o minhash.tex
+nwr pl-condense --map -r order -r family -r genus \
+    minhash.order.newick ../MinHash/species.tsv |
+    nwr order stdin --nd --an \
+    -o minhash.condensed.newick
+
+mv condensed.tsv minhash.condensed.tsv
+
+nwr tex minhash.condensed.newick --bl -o minhash.tex
 
 tectonic minhash.tex
 
