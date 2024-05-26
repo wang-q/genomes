@@ -500,7 +500,7 @@ nw_reroot ../MinHash/tree.nwk Saccharom_cere_S288C |
     > minhash.reroot.newick
 
 nwr pl-condense --map -r order -r family -r genus \
-    minhash.reroot.newick ../Count/species.tsv |
+    minhash.reroot.newick ../MinHash/species.tsv |
     nwr order stdin --nd --an \
     -o minhash.condensed.newick
 

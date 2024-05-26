@@ -66,7 +66,7 @@ nwr lineage Trichoderma |
 | rank     | count |
 |----------|------:|
 | genus    |     1 |
-| species  |   443 |
+| species  |   467 |
 | no rank  |     1 |
 | varietas |     2 |
 | strain   |    14 |
@@ -94,10 +94,7 @@ cd ~/data/Trichoderma/summary
 
 # should have a valid name of genus
 nwr member Hypocreaceae -r genus |
-    grep -v -i "Candidatus " |
-    grep -v -i "candidate " |
-    grep -v " sp." |
-    grep -v " spp." |
+    grep -v " x " |
     sed '1d' |
     sort -n -k1,1 \
     > genus.list.tsv
@@ -115,7 +112,6 @@ while read RANK_ID; do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %' -- Crossbreeding of two species
             AND genome_rep IN ('Full')
         GROUP BY species_id
@@ -136,7 +132,6 @@ while read RANK_ID; do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %'
             AND genome_rep IN ('Full')
         GROUP BY species_id
@@ -148,8 +143,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#   8 RS1.tsv
-#  37 GB1.tsv
+#   9 RS1.tsv
+#  55 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -160,8 +155,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     8
-#GB1     113
+#RS1     9
+#GB1     151
 
 ```
 
@@ -213,6 +208,23 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
+        AND genome_rep IN ('Full')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    >> raw.tsv
+
+echo "
+    SELECT
+        genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
+        genus || ' sp.', genus, ftp_path, biosample, assembly_level,
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND species LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
@@ -239,6 +251,24 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
+        AND genome_rep IN ('Full')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    >> raw.tsv
+
+echo "
+    SELECT
+        genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
+        genus || ' sp.', genus, ftp_path, biosample, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND species LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
@@ -248,7 +278,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#115 lines, 6 fields
+#130 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -272,7 +302,7 @@ cat raw.tsv |
     > Trichoderma.assembly.tsv
 
 datamash check < Trichoderma.assembly.tsv
-#114 lines, 5 fields
+#129 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Trichoderma.assembly.tsv |
@@ -306,6 +336,10 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 # strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
 
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
+
 # genus.lst and genus.count.tsv
 bash Count/rank.sh
 
@@ -317,6 +351,15 @@ cat Count/genus.before.tsv |
 
 ```
 
+| item    | count |
+|---------|------:|
+| strain  |   128 |
+| species |    37 |
+| genus   |     7 |
+| family  |     2 |
+| order   |     2 |
+| class   |     2 |
+
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
 | Cladobotryum     |        1 |        1 |
@@ -325,7 +368,7 @@ cat Count/genus.before.tsv |
 | Mycogone         |        1 |        1 |
 | Saccharomyces    |        1 |        1 |
 | Sphaerostilbella |        1 |        1 |
-| Trichoderma      |       31 |      105 |
+| Trichoderma      |       30 |      120 |
 
 ### Download and check
 
@@ -384,7 +427,7 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#32255196.8      37316984        98936.2 1332095 167     1276.4
+#32227802.2      37147726.5      99079.2 1218742 167     1057
 
 # After the above steps are completed, run the following commands.
 
@@ -404,15 +447,16 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields | lines |
 |------------------|-------:|------:|
-| url.tsv          |      3 |   113 |
-| check.lst        |      1 |   113 |
-| collect.tsv      |     20 |   114 |
-| n50.tsv          |      4 |   114 |
-| n50.pass.tsv     |      4 |    97 |
-| collect.pass.tsv |     23 |    97 |
-| pass.lst         |      1 |    96 |
-| omit.lst         |      1 |    81 |
-| rep.lst          |      1 |    31 |
+| url.tsv          |      3 |   128 |
+| check.lst        |      1 |   128 |
+| collect.tsv      |     20 |   129 |
+| n50.tsv          |      4 |   129 |
+| n50.pass.tsv     |      4 |   111 |
+| collect.pass.tsv |     23 |   111 |
+| pass.lst         |      1 |   110 |
+| omit.lst         |      1 |    94 |
+| rep.lst          |      1 |    32 |
+| sp.lst           |      0 |     0 |
 
 ### Rsync to hpcc
 
@@ -450,7 +494,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 10
 
 datamash check < BioSample/biosample.tsv
-#111 lines, 37 fields
+#126 lines, 39 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -487,7 +531,7 @@ cd ~/data/Trichoderma
 
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --mh \
-    --parallel 16 \
+    --parallel 8 \
     --in ASSEMBLY/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005 \
@@ -503,12 +547,29 @@ bash MinHash/species.sh
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst
+#T_har_CBS_354_33_GCA_033847385_1
 #T_har_CGMCC_20739_GCA_019097725_1
 #T_har_Tr1_GCA_002894145_1
 #T_har_ZL_811_GCA_021186515_1
+#T_viri_Th4_GCA_037893215_1
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
+
+find MinHash -name "NR.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/NR.lst
+find MinHash -name "redundant.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/redundant.lst
+
+wc -l summary/NR.lst summary/redundant.lst
+#  55 summary/NR.lst
+#  40 summary/redundant.lst
 
 # Distances between all selected sketches, then hierarchical clustering
 bash MinHash/dist.sh
@@ -525,14 +586,18 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Trichoderma/tree
 cd ~/data/Trichoderma/tree
 
-nwr reroot ../MinHash/tree.nwk -n Sa_cer_S288C |
+nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
     nwr order stdin --nd --an \
     > minhash.reroot.newick
 
-nwr pl-condense -r species minhash.reroot.newick ../Count/species.tsv --map |
-    nwr tex stdin --bl -o minhash.tex
+nwr pl-condense --map -r species \
+    minhash.reroot.newick ../MinHash/species.tsv |
+    nwr order stdin --nd --an \
+    -o minhash.condensed.newick
 
-mv condensed.tsv minhash.condense.tsv
+mv condensed.tsv minhash.condensed.tsv
+
+nwr tex minhash.condensed.newick --bl -o minhash.tex
 
 tectonic minhash.tex
 
