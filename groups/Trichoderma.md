@@ -803,13 +803,12 @@ E_VALUE=1e-20
 for marker in $(cat HMM/marker.lst); do
     echo >&2 "==> marker [${marker}]"
 
-    mkdir -p Protein/${marker}
+    mkdir -p Domain/${marker}
 
-    cat Protein/species.tsv |
-        tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    cat Protein/species-f.tsv |
+        tsv-join -e -f summary/redundant.lst -k 1 |
         tsv-join -e -f MinHash/abnormal.lst -k 1 |
-        tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
-        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 1 "
+        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
             if [[ ! -d ASSEMBLY/{2}/{1} ]]; then
                 exit
             fi
@@ -817,9 +816,9 @@ for marker in $(cat HMM/marker.lst); do
             gzip -dcf ASSEMBLY/{2}/{1}/*_protein.faa.gz |
                 hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/${marker}.HMM - |
                 grep '>>' |
-                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), \$1, {1}; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), \$1, {1}, {2}; '
         " \
-        > Protein/${marker}/replace.tsv
+        > Domain/${marker}/replace.tsv
 
     echo >&2
 done
@@ -833,116 +832,131 @@ cd ~/data/Trichoderma
 
 cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        cat Protein/{}/replace.tsv |
+        cat Domain/{}/replace.tsv |
             wc -l
     ' |
     tsv-summarize --quantile 1:0.25,0.5,0.75
-#25      25      56
+#20      20      45
 
 cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo {}
-        cat Protein/{}/replace.tsv |
+        cat Domain/{}/replace.tsv |
             wc -l
     ' |
     paste - - |
-    tsv-filter --invert --ge 2:20 --le 2:30 |
+    tsv-filter --invert --ge 2:15 --le 2:30 |
     cut -f 1 \
-    > Protein/marker.omit.lst
+    > Domain/marker.omit.lst
 
 # Extract sequences
 # Multiple copies slow down the alignment process
+cat Protein/species-f.tsv |
+    tsv-join -e -f summary/redundant.lst -k 1 |
+    tsv-join -e -f MinHash/abnormal.lst -k 1 |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -f Protein/"${SPECIES}"/pro.fa.gz ]]; then
+        continue
+    fi
+
+    cat Protein/"${SPECIES}"/pro.fa.gz
+done \
+    > Domain/all.uniq.fa.gz
+
 cat HMM/marker.lst |
-    grep -v -Fx -f Protein/marker.omit.lst |
+    grep -v -Fx -f Domain/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo >&2 "==> marker [{}]"
 
-        cat Protein/{}/replace.tsv \
-            > Protein/{}/{}.replace.tsv
+        cat Domain/{}/replace.tsv \
+            > Domain/{}/{}.replace.tsv
 
-        faops some Protein/all.uniq.fa.gz <(
-            cat Protein/{}/{}.replace.tsv |
+        faops some Domain/all.uniq.fa.gz <(
+            cat Domain/{}/{}.replace.tsv |
                 cut -f 1 |
                 tsv-uniq
             ) stdout \
-            > Protein/{}/{}.pro.fa
+            > Domain/{}/{}.pro.fa
     '
 
 # Align each markers with muscle
 cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
         echo >&2 "==> marker [{}]"
-        if [ ! -s Protein/{}/{}.pro.fa ]; then
+        if [ ! -s Domain/{}/{}.pro.fa ]; then
             exit
         fi
-        if [ -s Protein/{}/{}.aln.fa ]; then
+        if [ -s Domain/{}/{}.aln.fa ]; then
             exit
         fi
 
-        muscle -quiet -in Protein/{}/{}.pro.fa -out Protein/{}/{}.aln.fa
+#        muscle -quiet -in Domain/{}/{}.pro.fa -out Domain/{}/{}.aln.fa
+        mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
     '
 
 for marker in $(cat HMM/marker.lst); do
     echo >&2 "==> marker [${marker}]"
-    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
     fi
 
     # sometimes `muscle` can not produce alignments
-    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
         continue
     fi
 
     # 1 name to many names
-    cat Protein/${marker}/${marker}.replace.tsv |
+    cat Domain/${marker}/${marker}.replace.tsv |
+        tsv-select -f 1-2 |
         parallel --no-run-if-empty --linebuffer -k -j 4 "
-            faops replace -s Protein/${marker}/${marker}.aln.fa <(echo {}) stdout
+            faops replace -s Domain/${marker}/${marker}.aln.fa <(echo {}) stdout
         " \
-        > Protein/${marker}/${marker}.replace.fa
+        > Domain/${marker}/${marker}.replace.fa
 done
 
 # Concat marker genes
 for marker in $(cat HMM/marker.lst); do
-    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
     fi
-    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
         continue
     fi
 
     # sequences in one line
-    faops filter -l 0 Protein/${marker}/${marker}.replace.fa stdout
+    faops filter -l 0 Domain/${marker}/${marker}.replace.fa stdout
 
     # empty line for .fas
     echo
 done \
-    > Protein/fungi61.aln.fas
+    > Domain/fungi61.aln.fas
 
-cat Protein/species.tsv |
-    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+cat Protein/species-f.tsv |
+    tsv-join -e -f summary/redundant.lst -k 1 |
     tsv-join -e -f MinHash/abnormal.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
     cut -f 1 |
-    fasops concat Protein/fungi61.aln.fas stdin -o Protein/fungi61.aln.fa
+    fasops concat Domain/fungi61.aln.fas stdin -o Domain/fungi61.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
-trimal -in Protein/fungi61.aln.fa -out Protein/fungi61.trim.fa -automated1
+trimal -in Domain/fungi61.aln.fa -out Domain/fungi61.trim.fa -automated1
 
-faops size Protein/fungi61.*.fa |
+faops size Domain/fungi61.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#28706
-#20432
+#28484
+#20514
 
 # To make it faster
-FastTree -fastest -noml Protein/fungi61.trim.fa > Protein/fungi61.trim.newick
+FastTree -fastest -noml Domain/fungi61.trim.fa > Domain/fungi61.trim.newick
 
-nwr reroot Protein/fungi61.trim.newick -n Sa_cer_S288C |
+nw_reroot Domain/fungi61.trim.newick Sa_cer_S288C |
     nwr order stdin --nd --an \
-    > Protein/fungi61.reroot.newick
+    > Domain/fungi61.reroot.newick
 
 # pdf
-nwr tex Protein/fungi61.reroot.newick --bl |
+nwr tex Domain/fungi61.reroot.newick --bl |
     tectonic - --outdir tree/
 mv tree/texput.pdf tree/Trichoderma.marker.pdf
 
