@@ -449,6 +449,11 @@ rsync -avP \
     ~/data/Bacillus/ \
     wangq@202.119.37.251:data/Bacillus
 
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/Bacillus/ \
+    wangq@58.213.64.36:data/Bacillus
+
 # rsync -avP wangq@202.119.37.251:data/Bacillus/ ~/data/Bacillus
 
 ```
