@@ -2,6 +2,8 @@
 
 <!-- toc -->
 
+<!-- tocstop -->
+
 ## Taxon info
 
 * [Oomycota](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=4762)

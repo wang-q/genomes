@@ -415,6 +415,7 @@ bash ASSEMBLY/check.sh
 #    '
 
 # N50 C S; create n50.tsv and n50.pass.tsv
+# LEN_N50   N_CONTIG    LEN_SUM
 bash ASSEMBLY/n50.sh 100000 1000 1000000
 
 # Adjust parameters passed to `n50.sh`
