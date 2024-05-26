@@ -617,8 +617,12 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --rank genus \
     --lineage family --lineage genus
 
-# strains.taxon.tsv
+# strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -639,13 +643,22 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ```
 
+| item    | count |
+|---------|------:|
+| strain  |   105 |
+| species |    30 |
+| genus   |     5 |
+| family  |     2 |
+| order   |     2 |
+| class   |     2 |
+
 | genus         | #species | #strains |
-|---------------|----------|----------|
-| Cladobotryum  | 1        | 1        |
-| Escovopsis    | 1        | 2        |
-| Hypomyces     | 2        | 2        |
-| Saccharomyces | 1        | 1        |
-| Trichoderma   | 26       | 87       |
+|---------------|---------:|---------:|
+| Cladobotryum  |        1 |        1 |
+| Escovopsis    |        1 |        2 |
+| Hypomyces     |        2 |        2 |
+| Saccharomyces |        1 |        1 |
+| Trichoderma   |       25 |       99 |
 
 | #family            | genus         | species                     | count |
 |--------------------|---------------|-----------------------------|------:|
@@ -653,15 +666,16 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |                    | Escovopsis    | Escovopsis weberi           |     2 |
 |                    | Hypomyces     | Hypomyces perniciosus       |     1 |
 |                    |               | Hypomyces rosellus          |     1 |
-|                    | Trichoderma   | Trichoderma afroharzianum   |     4 |
+|                    | Trichoderma   | Trichoderma afroharzianum   |     5 |
 |                    |               | Trichoderma arundinaceum    |     4 |
-|                    |               | Trichoderma asperelloides   |     2 |
-|                    |               | Trichoderma asperellum      |    13 |
+|                    |               | Trichoderma asperelloides   |     3 |
+|                    |               | Trichoderma asperellum      |    17 |
 |                    |               | Trichoderma atrobrunneum    |     1 |
 |                    |               | Trichoderma atroviride      |     7 |
 |                    |               | Trichoderma breve           |     1 |
 |                    |               | Trichoderma brevicrassum    |     1 |
-|                    |               | Trichoderma citrinoviride   |     3 |
+|                    |               | Trichoderma citrinoviride   |     4 |
+|                    |               | Trichoderma cornu-damae     |     1 |
 |                    |               | Trichoderma erinaceum       |     2 |
 |                    |               | Trichoderma gamsii          |     2 |
 |                    |               | Trichoderma gracile         |     1 |
@@ -669,15 +683,14 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |                    |               | Trichoderma hamatum         |     1 |
 |                    |               | Trichoderma harzianum       |     7 |
 |                    |               | Trichoderma koningii        |     1 |
-|                    |               | Trichoderma koningiopsis    |     4 |
+|                    |               | Trichoderma koningiopsis    |     5 |
 |                    |               | Trichoderma lentiforme      |     1 |
-|                    |               | Trichoderma longibrachiatum |     5 |
-|                    |               | Trichoderma pseudokoningii  |     1 |
-|                    |               | Trichoderma reesei          |    13 |
+|                    |               | Trichoderma longibrachiatum |     7 |
+|                    |               | Trichoderma reesei          |    14 |
 |                    |               | Trichoderma semiorbis       |     1 |
 |                    |               | Trichoderma simmonsii       |     1 |
-|                    |               | Trichoderma virens          |     8 |
-|                    |               | Trichoderma viride          |     1 |
+|                    |               | Trichoderma virens          |     9 |
+|                    |               | Trichoderma viride          |     2 |
 | Saccharomycetaceae | Saccharomyces | Saccharomyces cerevisiae    |     1 |
 
 ### For *protein families*
@@ -692,8 +705,12 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --not-in ASSEMBLY/omit.lst \
     --rank genus
 
-# strains.taxon.tsv
+# strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -707,11 +724,20 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 ```
 
+| item    | count |
+|---------|------:|
+| strain  |    27 |
+| species |    18 |
+| genus   |     3 |
+| family  |     2 |
+| order   |     2 |
+| class   |     2 |
+
 | genus         | #species | #strains |
-|---------------|----------|----------|
-| Escovopsis    | 1        | 1        |
-| Saccharomyces | 1        | 1        |
-| Trichoderma   | 16       | 24       |
+|---------------|---------:|---------:|
+| Escovopsis    |        1 |        1 |
+| Saccharomyces |        1 |        1 |
+| Trichoderma   |       16 |       25 |
 
 ## Collect proteins
 
@@ -721,25 +747,38 @@ cd ~/data/Trichoderma/
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --pro \
     --in ASSEMBLY/pass.lst \
-    --not-in MinHash/abnormal.lst \
-    --not-in ASSEMBLY/omit.lst
+    --not-in ASSEMBLY/omit.lst \
+    --clust-id 0.95 \
+    --clust-cov 0.95
 
 # collect proteins
 bash Protein/collect.sh
 
+# clustering
+bash Protein/compute.sh
+
+# counts
+bash Protein/count.sh
+
 cat Protein/counts.tsv |
+    tsv-summarize -H --count --sum 2-5 |
+    sed 's/^count/species/' |
+    datamash transpose |
+    perl -nla -F"\t" -MNumber::Format -e '
+        printf qq(%s\t%s\n), $F[0], Number::Format::format_number($F[1], 0,);
+        ' |
+    (echo -e "#item\tcount" && cat) |
     mlr --itsv --omd cat
 
 ```
 
-| #item                          | count   |
-|--------------------------------|---------|
-| Proteins                       | 275,985 |
-| Unique headers and annotations | 275,985 |
-| Unique proteins                | 275,985 |
-| all.replace.fa                 | 275,985 |
-| all.annotation.tsv             | 275,986 |
-| all.info.tsv                   | 275,986 |
+| #item      | count   |
+|------------|---------|
+| species    | 18      |
+| strain_sum | 29      |
+| total_sum  | 308,358 |
+| dedup_sum  | 308,358 |
+| rep_sum    | 240,198 |
 
 ## Phylogenetics with fungi61
 
