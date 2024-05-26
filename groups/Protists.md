@@ -448,7 +448,7 @@ bash ASSEMBLY/check.sh
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
-#1437
+#1926
 
 # N50 C S; create n50.tsv and n50.pass.tsv
 # LEN_N50   N_CONTIG    LEN_SUM
@@ -464,7 +464,7 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#12251766.7      39138635.5      3923.2  76432.5 1967.5  24056.7
+#11412690.5      38915944        3313.5  63464.5 1790    29762
 
 # After the above steps are completed, run the following commands.
 
@@ -484,15 +484,16 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields | lines |
 |------------------|-------:|------:|
-| url.tsv          |      3 | 1,438 |
-| check.lst        |      1 | 1,438 |
-| collect.tsv      |     20 | 1,439 |
-| n50.tsv          |      4 | 1,439 |
-| n50.pass.tsv     |      4 | 1,243 |
-| collect.pass.tsv |     23 | 1,243 |
-| pass.lst         |      1 | 1,242 |
-| omit.lst         |      1 |   993 |
-| rep.lst          |      1 |   483 |
+| url.tsv          |      3 | 1,926 |
+| check.lst        |      1 | 1,926 |
+| collect.tsv      |     20 | 1,927 |
+| n50.tsv          |      4 | 1,927 |
+| n50.pass.tsv     |      4 | 1,611 |
+| collect.pass.tsv |     23 | 1,611 |
+| pass.lst         |      1 | 1,610 |
+| omit.lst         |      1 | 1,424 |
+| rep.lst          |      1 |   686 |
+| sp.lst           |      1 |   140 |
 
 ### Rsync to hpcc
 
@@ -530,7 +531,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 10
 
 datamash check < BioSample/biosample.tsv
-#1421 lines, 81 fields
+#1897 lines, 92 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -544,11 +545,10 @@ cd ~/data/Protists
 
 nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
     --mh \
-    --parallel 16 \
+    --parallel 8 \
     --in ASSEMBLY/pass.lst \
     --ani-ab 0.05 \
-    --ani-nr 0.005 \
-    --height 0.4
+    --ani-nr 0.005
 
 # Compute assembly sketches
 bash MinHash/compute.sh
@@ -559,12 +559,36 @@ bash MinHash/species.sh
 # Abnormal strains
 bash MinHash/abnormal.sh
 
-cat MinHash/abnormal.lst
+cat MinHash/abnormal.lst | wc -l
+#112
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
 
+find MinHash -name "NR.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/NR.lst
+find MinHash -name "redundant.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/redundant.lst
+
+wc -l summary/NR.lst summary/redundant.lst
+#  592 summary/NR.lst
+#  588 summary/redundant.lst
+
 # Distances between all selected sketches, then hierarchical clustering
+nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
+    --mh \
+    --parallel 8 \
+    --in ASSEMBLY/pass.lst \
+    --not-in MinHash/abnormal.lst \
+    --not-in summary/redundant.lst \
+    --height 0.4
+
 bash MinHash/dist.sh
 
 ```
@@ -578,11 +602,12 @@ cd ~/data/Protists/tree
 nwr order ../MinHash/tree.nwk --nd --an \
     > minhash.order.newick
 
-nwr pl-condense -r order -r family -r genus -r species \
-    minhash.order.newick ../Count/species.tsv --map \
+nwr pl-condense --map -r order -r family -r genus -r species \
+    minhash.order.newick ../MinHash/species.tsv |
+    nwr order stdin --nd --an \
     -o minhash.condensed.newick
 
-mv condensed.tsv minhash.condense.tsv
+mv condensed.tsv minhash.condensed.tsv
 
 # png
 nwr topo --bl minhash.condensed.newick | # remove comments
@@ -635,69 +660,87 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | order            | #species | #strains |
 |------------------|---------:|---------:|
-| Albuginales      |        2 |       10 |
-| Dictyosteliales  |       10 |       10 |
-| Diplomonadida    |        3 |       29 |
-| Eucoccidiorida   |       29 |      147 |
-| Eustigmatales    |        5 |       16 |
-| Galdieriales     |        3 |       11 |
-| Haemosporida     |       21 |      137 |
-| Longamoebia      |        6 |       11 |
+| Albuginales      |        2 |       11 |
+| Bacillariales    |       10 |       11 |
+| Dictyosteliales  |       10 |       11 |
+| Diplomonadida    |        4 |       34 |
+| Eucoccidiorida   |       32 |      166 |
+| Eustigmatales    |        6 |       18 |
+| Galdieriales     |        4 |       11 |
+| Haemosporida     |       23 |      145 |
+| Longamoebia      |        7 |       14 |
 | Mastigamoebida   |        6 |       17 |
+| Opalinata        |        3 |       43 |
 | Peniculida       |        9 |       16 |
-| Peronosporales   |       67 |      222 |
-| Piroplasmida     |       13 |       32 |
-| Plasmodiophorida |        3 |       51 |
-| Pythiales        |      105 |      130 |
+| Peronosporales   |       76 |      255 |
+| Piroplasmida     |       16 |       37 |
+| Plasmodiophorida |        3 |       53 |
+| Pythiales        |      106 |      148 |
 | Saprolegniales   |        9 |       27 |
-| Trypanosomatida  |       53 |      135 |
+| Stephanodiscales |       10 |       12 |
+| Suessiales       |        8 |       10 |
+| Thalassiosirales |       13 |       15 |
+| Trypanosomatida  |       76 |      200 |
+| Vestibuliferida  |        3 |       10 |
 
 | genus           | #species | #strains |
 |-----------------|---------:|---------:|
-| Albugo          |        2 |       10 |
+| Acanthamoeba    |        6 |       11 |
+| Albugo          |        2 |       11 |
 | Aphanomyces     |        5 |       23 |
-| Babesia         |        8 |       20 |
-| Cryptosporidium |       14 |       62 |
-| Cyclospora      |        1 |       40 |
+| Babesia         |       10 |       24 |
+| Blastocystis    |        2 |       42 |
+| Crithidia       |        8 |       11 |
+| Cryptosporidium |       16 |       73 |
+| Cyclospora      |        1 |       41 |
+| Eimeria         |        9 |       15 |
 | Entamoeba       |        5 |       16 |
-| Galdieria       |        3 |       11 |
-| Giardia         |        2 |       28 |
-| Globisporangium |       45 |       49 |
-| Leishmania      |       20 |       59 |
+| Galdieria       |        4 |       11 |
+| Giardia         |        2 |       32 |
+| Globisporangium |       46 |       67 |
+| Isotricha       |        3 |       10 |
+| Leishmania      |       21 |       91 |
 | Naegleria       |        3 |       14 |
-| Nannochloropsis |        4 |       13 |
+| Nannochloropsis |        5 |       15 |
 | Paramecium      |        9 |       16 |
 | Peronospora     |        6 |       18 |
-| Phytophthora    |       50 |      185 |
+| Phytophthora    |       58 |      217 |
 | Phytopythium    |       14 |       17 |
-| Plasmodiophora  |        1 |       49 |
-| Plasmodium      |       20 |      136 |
+| Plasmodiophora  |        1 |       51 |
+| Plasmodium      |       21 |      143 |
 | Pythium         |       38 |       54 |
-| Theileria       |        4 |       11 |
-| Toxoplasma      |        1 |       27 |
-| Trypanosoma     |       11 |       45 |
+| Theileria       |        5 |       12 |
+| Toxoplasma      |        1 |       28 |
+| Trypanosoma     |       19 |       58 |
 
-| #family           | genus           | species                  | count |
-|-------------------|-----------------|--------------------------|------:|
-| Cryptosporidiidae | Cryptosporidium | Cryptosporidium hominis  |    15 |
-|                   |                 | Cryptosporidium parvum   |    19 |
-| Eimeriidae        | Cyclospora      | Cyclospora cayetanensis  |    40 |
-| Entamoebidae      | Entamoeba       | Entamoeba histolytica    |    12 |
-| Hexamitidae       | Giardia         | Giardia intestinalis     |    27 |
-| Peronosporaceae   | Phytophthora    | Phytophthora cactorum    |    21 |
-|                   |                 | Phytophthora capsici     |    13 |
-|                   |                 | Phytophthora fragariae   |    13 |
-|                   |                 | Phytophthora kernoviae   |    12 |
-|                   |                 | Phytophthora ramorum     |    28 |
-| Plasmodiidae      | Plasmodium      | Plasmodium falciparum    |    53 |
-|                   |                 | Plasmodium vinckei       |    10 |
-|                   |                 | Plasmodium vivax         |    18 |
-|                   |                 | Plasmodium yoelii        |    11 |
-| Plasmodiophoridae | Plasmodiophora  | Plasmodiophora brassicae |    49 |
-| Pythiaceae        | Pythium         | Pythium insidiosum       |    11 |
-| Saprolegniaceae   | Aphanomyces     | Aphanomyces astaci       |    10 |
-| Sarcocystidae     | Toxoplasma      | Toxoplasma gondii        |    27 |
-| Trypanosomatidae  | Trypanosoma     | Trypanosoma cruzi        |    29 |
+| #family           | genus           | species                    | count |
+|-------------------|-----------------|----------------------------|------:|
+| Albuginaceae      | Albugo          | Albugo candida             |    10 |
+| Blastocystidae    | Blastocystis    | Blastocystis sp.           |    40 |
+| Cryptosporidiidae | Cryptosporidium | Cryptosporidium hominis    |    15 |
+|                   |                 | Cryptosporidium parvum     |    25 |
+| Eimeriidae        | Cyclospora      | Cyclospora cayetanensis    |    41 |
+| Entamoebidae      | Entamoeba       | Entamoeba histolytica      |    12 |
+| Hexamitidae       | Giardia         | Giardia intestinalis       |    31 |
+| Peronosporaceae   | Phytophthora    | Phytophthora cactorum      |    28 |
+|                   |                 | Phytophthora capsici       |    16 |
+|                   |                 | Phytophthora fragariae     |    13 |
+|                   |                 | Phytophthora kernoviae     |    12 |
+|                   |                 | Phytophthora nicotianae    |    13 |
+|                   |                 | Phytophthora ramorum       |    28 |
+|                   |                 | Phytophthora sojae         |    11 |
+| Plasmodiidae      | Plasmodium      | Plasmodium falciparum      |    57 |
+|                   |                 | Plasmodium vinckei         |    10 |
+|                   |                 | Plasmodium vivax           |    18 |
+|                   |                 | Plasmodium yoelii          |    11 |
+| Plasmodiophoridae | Plasmodiophora  | Plasmodiophora brassicae   |    51 |
+| Pythiaceae        | Globisporangium | Globisporangium irregulare |    15 |
+|                   | Pythium         | Pythium insidiosum         |    11 |
+| Saprolegniaceae   | Aphanomyces     | Aphanomyces astaci         |    10 |
+| Sarcocystidae     | Toxoplasma      | Toxoplasma gondii          |    28 |
+| Trypanosomatidae  | Leishmania      | Leishmania donovani        |    10 |
+|                   |                 | Leishmania infantum        |    31 |
+|                   | Trypanosoma     | Trypanosoma cruzi          |    34 |
 
 ### For *protein families*
 
@@ -730,11 +773,11 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | genus           | #species | #strains |
 |-----------------|---------:|---------:|
 | Aphanomyces     |        5 |       21 |
-| Cryptosporidium |       11 |       18 |
-| Leishmania      |       10 |       18 |
+| Cryptosporidium |       13 |       22 |
+| Leishmania      |       11 |       19 |
 | Peronospora     |        5 |       10 |
-| Phytophthora    |       17 |       69 |
-| Plasmodium      |       19 |       76 |
+| Phytophthora    |       19 |       72 |
+| Plasmodium      |       20 |       78 |
 | Toxoplasma      |        1 |       14 |
 | Trypanosoma     |       10 |       22 |
 
