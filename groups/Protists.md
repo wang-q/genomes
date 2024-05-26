@@ -121,8 +121,6 @@ cd ~/data/Protists/summary
 
 # should have a valid name of genus
 nwr member Eukaryota -r genus |
-    grep -v -i "Candidatus " |
-    grep -v -i "candidate " |
     nwr restrict -e Viridiplantae |
     nwr restrict -e Metazoa |
     nwr restrict -e Fungi |
@@ -131,7 +129,7 @@ nwr member Eukaryota -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#3966 genus.list
+#4058 genus.list
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -143,7 +141,6 @@ while read RANK_ID; do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %' -- Crossbreeding of two species
             AND genome_rep IN ('Full')
         GROUP BY species_id
@@ -164,7 +161,6 @@ while read RANK_ID; do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %'
             AND genome_rep IN ('Full')
         GROUP BY species_id
@@ -176,8 +172,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#   94 RS1.tsv
-#  591 GB1.tsv
+#   97 RS1.tsv
+#  831 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -188,8 +184,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     95
-#GB1     1437
+#RS1     98
+#GB1     1930
 
 ```
 
@@ -208,7 +204,7 @@ echo "
         *
     FROM ar
     WHERE 1=1
-        AND genus IN ('Caenorhabditis', 'Arabidopsis', 'Saccharomyces')
+        AND genus IN ('Caenorhabditis', 'Drosophila', 'Arabidopsis', 'Saccharomyces')
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
@@ -231,6 +227,23 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
+        AND genome_rep IN ('Full')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    >> raw.tsv
+
+echo "
+    SELECT
+        genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
+        genus || ' sp.', genus, ftp_path, biosample, assembly_level,
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND species LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
@@ -257,6 +270,24 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
+        AND genome_rep IN ('Full')
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    >> raw.tsv
+
+echo "
+    SELECT
+        genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
+        genus || ' sp.', genus, ftp_path, biosample, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND species LIKE '% sp.%'
+        AND species NOT LIKE '% x %'
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
@@ -266,7 +297,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#1442 lines, 7 fields
+#1936 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -290,7 +321,7 @@ cat raw.tsv |
     > Protists.assembly.tsv
 
 datamash check < Protists.assembly.tsv
-#1439 lines, 5 fields
+#1927 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Protists.assembly.tsv |
@@ -322,6 +353,10 @@ nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
 # strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
 
+cat Count/taxa.tsv |
+    mlr --itsv --omd cat |
+    perl -nl -e 's/-\s*\|$/-:|/; print'
+
 # genus.lst and genus.count.tsv
 bash Count/rank.sh
 
@@ -329,57 +364,57 @@ mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
     keep-header -- tsv-sort -k1,1 |
-    tsv-filter -H --ge 3:5 |
+    tsv-filter -H --ge 3:10 |
     mlr --itsv --omd cat |
     perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
 
 ```
 
-| genus            | #species | #strains |
-|------------------|---------:|---------:|
-| Acanthamoeba     |       16 |       25 |
-| Albugo           |        2 |       10 |
-| Angomonas        |        3 |        6 |
-| Aphanomyces      |        5 |       27 |
-| Babesia          |        8 |       21 |
-| Cafeteria        |        2 |        5 |
-| Crithidia        |        5 |        8 |
-| Cryptosporidium  |       14 |       63 |
-| Cyclospora       |        1 |       40 |
-| Dasytricha       |        1 |        5 |
-| Dictyostelium    |        9 |       10 |
-| Diplodinium      |        2 |        6 |
-| Eimeria          |        9 |       10 |
-| Elongisporangium |        5 |        5 |
-| Entamoeba        |        5 |       16 |
-| Entodinium       |        3 |        8 |
-| Epidinium        |        2 |        6 |
-| Euplotes         |        5 |        7 |
-| Galdieria        |        3 |       15 |
-| Giardia          |        2 |       32 |
-| Globisporangium  |       47 |       53 |
-| Hyaloperonospora |        3 |        7 |
-| Isotricha        |        2 |        6 |
-| Leishmania       |       20 |       62 |
-| Naegleria        |        3 |       14 |
-| Nannochloropsis  |        5 |       14 |
-| Ophryoscolex     |        1 |       10 |
-| Paramecium       |        9 |       16 |
-| Perkinsus        |        3 |        7 |
-| Peronospora      |        6 |       18 |
-| Phytophthora     |       53 |      191 |
-| Phytopythium     |       14 |       18 |
-| Plasmodiophora   |        1 |       49 |
-| Plasmodium       |       20 |      148 |
-| Plasmopara       |        4 |       11 |
-| Polyplastron     |        1 |        8 |
-| Pythium          |       43 |       66 |
-| Symbiodinium     |        5 |        7 |
-| Tetrahymena      |        4 |        6 |
-| Theileria        |        5 |       15 |
-| Toxoplasma       |        1 |       28 |
-| Trichomonas      |        4 |        7 |
-| Trypanosoma      |       11 |       56 |
+| item    | count |
+|---------|------:|
+| strain  |  1912 |
+| species |   781 |
+| genus   |   322 |
+| family  |   165 |
+| order   |   108 |
+| class   |    48 |
+
+| genus           | #species | #strains |
+|-----------------|---------:|---------:|
+| Acanthamoeba    |       17 |       28 |
+| Albugo          |        2 |       11 |
+| Aphanomyces     |        5 |       27 |
+| Babesia         |       10 |       25 |
+| Blastocystis    |        2 |       74 |
+| Crithidia       |        8 |       11 |
+| Cryptosporidium |       16 |       76 |
+| Cyclospora      |        1 |       41 |
+| Cyclotella      |        7 |       10 |
+| Dictyostelium   |        9 |       11 |
+| Eimeria         |       11 |       18 |
+| Entamoeba       |        5 |       16 |
+| Galdieria       |        4 |       15 |
+| Giardia         |        2 |       38 |
+| Globisporangium |       47 |       81 |
+| Isotricha       |        3 |       13 |
+| Leishmania      |       21 |      105 |
+| Naegleria       |        3 |       14 |
+| Nannochloropsis |        6 |       16 |
+| Ochromonas      |        2 |       11 |
+| Ophryoscolex    |        1 |       10 |
+| Paramecium      |        9 |       16 |
+| Peronospora     |        6 |       18 |
+| Phytophthora    |       62 |      225 |
+| Phytopythium    |       14 |       18 |
+| Plasmodiophora  |        1 |       51 |
+| Plasmodium      |       21 |      158 |
+| Plasmopara      |        4 |       11 |
+| Pythium         |       44 |       68 |
+| Symbiodinium    |        6 |       11 |
+| Thalassiosira   |       15 |       18 |
+| Theileria       |        6 |       16 |
+| Toxoplasma      |        1 |       29 |
+| Trypanosoma     |       19 |       69 |
 
 ### Download and check
 
