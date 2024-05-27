@@ -597,6 +597,8 @@ bash ASSEMBLY/check.sh
 #            rm -fr "ASSEMBLY/{}"
 #        fi
 #    '
+#
+# find ASSEMBLY -type d -name "*assembly_structure" | xargs rm -fr
 
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
