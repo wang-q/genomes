@@ -50,9 +50,6 @@ are found to be more closely related to *Staphylococcaceae*:
 - *Abyssicoccaceae*
 - *Gemellaceae*
 - *Listeriaceae*
--
-
-*Pasteuriaceae*
 
 ### List all ranks
 
@@ -430,7 +427,7 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#3752678.5       5249709 58246.7 315670.5        55      274
+#3702986.6       5198273 57542   314785  55      274
 
 # After the above steps are completed, run the following commands.
 
@@ -450,16 +447,16 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields |  lines |
 |------------------|-------:|-------:|
-| url.tsv          |      3 | 17,513 |
-| check.lst        |      1 | 17,513 |
-| collect.tsv      |     20 | 17,514 |
-| n50.tsv          |      4 | 17,514 |
-| n50.pass.tsv     |      4 | 15,967 |
-| collect.pass.tsv |     23 | 15,967 |
-| pass.lst         |      1 | 15,966 |
-| omit.lst         |      1 |    661 |
-| rep.lst          |      1 |  1,135 |
-| sp.lst           |      1 |  2,400 |
+| url.tsv          |      3 | 17,987 |
+| check.lst        |      1 | 17,987 |
+| collect.tsv      |     20 | 17,988 |
+| n50.tsv          |      4 | 17,988 |
+| n50.pass.tsv     |      4 | 16,357 |
+| collect.pass.tsv |     23 | 16,357 |
+| pass.lst         |      1 | 16,356 |
+| omit.lst         |      1 |    712 |
+| rep.lst          |      1 |  1,236 |
+| sp.lst           |      1 |  2,565 |
 
 ### Rsync to hpcc
 
@@ -530,7 +527,7 @@ cd ~/data/Bacillus
 
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --mh \
-    --parallel 8 \
+    --parallel 16 \
     --in ASSEMBLY/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005
@@ -545,7 +542,7 @@ bash MinHash/species.sh
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#1266
+#2851
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
@@ -562,8 +559,8 @@ find MinHash -name "redundant.lst" |
     > summary/redundant.lst
 
 wc -l summary/NR.lst summary/redundant.lst
-#  7016 summary/NR.lst
-#  8202 summary/redundant.lst
+#  8022 summary/NR.lst
+#  8250 summary/redundant.lst
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Bacillus/
