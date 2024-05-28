@@ -36,8 +36,20 @@ We include the following families:
 * *Sporolactobacillaceae*
 * *Thermoactinomycetaceae*
 * *Alicyclobacillaceae*
+* *Planococcaceae*
+* *Pasteuriaceae*
 
 * *Desulfuribacillaceae* as closet outgroups
+
+Certainly! Here's a polished version of the paragraph:
+
+According to a recent [publication](https://doi.org/10.1007/s10482-023-01857-6), the families below
+are found to be more closely related to *Staphylococcaceae*:
+
+- *Salinicoccaceae*
+- *Abyssicoccaceae*
+- *Gemellaceae*
+- *Listeriaceae*
 
 ### List all ranks
 
@@ -48,6 +60,7 @@ cd ~/data/Bacillus
 nwr member \
     Bacillaceae Paenibacillaceae \
     Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Planococcaceae Pasteuriaceae \
     Desulfuribacillaceae |
     tsv-summarize -H -g 3 --count |
     mlr --itsv --omd cat |
@@ -56,6 +69,7 @@ nwr member \
 nwr member \
     Bacillaceae Paenibacillaceae \
     Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Planococcaceae Pasteuriaceae \
     Desulfuribacillaceae \
     -r "species group" -r "species subgroup" |
     tsv-select -f 1-3 |
@@ -66,12 +80,12 @@ nwr member \
 
 | rank             | count |
 |------------------|------:|
-| family           |     6 |
-| genus            |   187 |
-| species          | 44918 |
+| family           |     8 |
+| genus            |   209 |
+| species          | 46652 |
 | subspecies       |    42 |
-| no rank          |   255 |
-| strain           |   751 |
+| no rank          |   276 |
+| strain           |   769 |
 | species group    |     5 |
 | species subgroup |     2 |
 | biotype          |     1 |
@@ -99,6 +113,7 @@ cd ~/data/Bacillus/summary
 nwr member \
     Bacillaceae Paenibacillaceae \
     Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Planococcaceae Pasteuriaceae \
     Desulfuribacillaceae \
     -r genus |
     sed '1d' |
@@ -106,7 +121,7 @@ nwr member \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#187 genus.list.tsv
+#209 genus.list.tsv
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -145,8 +160,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#  3330 RS1.tsv
-#  3692 GB1.tsv
+#  3594 RS1.tsv
+#  3980 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -157,8 +172,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     13441
-#GB1     17571
+#RS1     13802
+#GB1     17992
 
 ```
 
@@ -265,7 +280,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#17523 lines, 7 fields
+#17996 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -289,7 +304,7 @@ cat raw.tsv |
     > Bacillus.assembly.tsv
 
 datamash check < Bacillus.assembly.tsv
-#17514 lines, 5 fields
+#17988 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacillus.assembly.tsv |
@@ -342,10 +357,10 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  | 16098 |
-| species |  1306 |
-| genus   |   171 |
-| family  |     8 |
+| strain  | 16531 |
+| species |  1435 |
+| genus   |   191 |
+| family  |    10 |
 | order   |     2 |
 | class   |     2 |
 
@@ -353,7 +368,7 @@ cat Count/genus.before.tsv |
 |------------------|---------:|---------:|
 | Alicyclobacillus |       27 |       67 |
 | Anoxybacillus    |       18 |      112 |
-| Bacillus         |      132 |    10830 |
+| Bacillus         |      132 |    10855 |
 | Brevibacillus    |       30 |      248 |
 | Cytobacillus     |       19 |      131 |
 | Geobacillus      |       17 |      178 |
@@ -364,11 +379,12 @@ cat Count/genus.before.tsv |
 | Neobacillus      |       27 |      113 |
 | Niallia          |        7 |       69 |
 | Oceanobacillus   |       31 |       87 |
-| Paenibacillus    |      294 |     1462 |
+| Paenibacillus    |      294 |     1464 |
 | Peribacillus     |       19 |      174 |
 | Priestia         |       10 |      571 |
 | Rossellomorea    |        7 |       63 |
 | Shouchella       |       11 |       73 |
+| Sporosarcina     |       21 |      122 |
 | Virgibacillus    |       29 |      109 |
 
 ### Download and check
@@ -411,7 +427,7 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#3752678.5       5249709 58246.7 315670.5        55      274
+#3702986.6       5198273 57542   314785  55      274
 
 # After the above steps are completed, run the following commands.
 
@@ -431,16 +447,16 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields |  lines |
 |------------------|-------:|-------:|
-| url.tsv          |      3 | 17,513 |
-| check.lst        |      1 | 17,513 |
-| collect.tsv      |     20 | 17,514 |
-| n50.tsv          |      4 | 17,514 |
-| n50.pass.tsv     |      4 | 15,967 |
-| collect.pass.tsv |     23 | 15,967 |
-| pass.lst         |      1 | 15,966 |
-| omit.lst         |      1 |    661 |
-| rep.lst          |      1 |  1,135 |
-| sp.lst           |      1 |  2,400 |
+| url.tsv          |      3 | 17,987 |
+| check.lst        |      1 | 17,987 |
+| collect.tsv      |     20 | 17,988 |
+| n50.tsv          |      4 | 17,988 |
+| n50.pass.tsv     |      4 | 16,357 |
+| collect.pass.tsv |     23 | 16,357 |
+| pass.lst         |      1 | 16,356 |
+| omit.lst         |      1 |    712 |
+| rep.lst          |      1 |  1,236 |
+| sp.lst           |      1 |  2,565 |
 
 ### Rsync to hpcc
 
@@ -497,7 +513,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 50
 
 datamash check < BioSample/biosample.tsv
-#17486 lines, 91 fields
+#17960 lines, 91 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -511,7 +527,7 @@ cd ~/data/Bacillus
 
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --mh \
-    --parallel 8 \
+    --parallel 16 \
     --in ASSEMBLY/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005
@@ -526,7 +542,7 @@ bash MinHash/species.sh
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#1266
+#2851
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
@@ -543,8 +559,8 @@ find MinHash -name "redundant.lst" |
     > summary/redundant.lst
 
 wc -l summary/NR.lst summary/redundant.lst
-#  7016 summary/NR.lst
-#  8202 summary/redundant.lst
+#  8022 summary/NR.lst
+#  8250 summary/redundant.lst
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Bacillus/
@@ -868,7 +884,6 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | Terribacillus         |        4 |       15 |
 | Thermoactinomyces     |        5 |       23 |
 | Virgibacillus         |       25 |       74 |
-
 
 ## Collect proteins
 
