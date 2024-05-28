@@ -597,6 +597,8 @@ bash ASSEMBLY/check.sh
 #            rm -fr "ASSEMBLY/{}"
 #        fi
 #    '
+#
+# find ASSEMBLY -type d -name "*assembly_structure" | xargs rm -fr
 
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
@@ -604,7 +606,7 @@ find ASSEMBLY/ -name "*_genomic.fna.gz" |
 #71683
 
 # N50 C S; create n50.tsv and n50.pass.tsv
-bash ASSEMBLY/n50.sh 20000 200 100000
+bash ASSEMBLY/n50.sh 20000 500 100000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
