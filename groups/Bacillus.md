@@ -36,8 +36,23 @@ We include the following families:
 * *Sporolactobacillaceae*
 * *Thermoactinomycetaceae*
 * *Alicyclobacillaceae*
+* *Planococcaceae*
+* *Pasteuriaceae*
 
 * *Desulfuribacillaceae* as closet outgroups
+
+Certainly! Here's a polished version of the paragraph:
+
+According to a recent [publication](https://doi.org/10.1007/s10482-023-01857-6), the families below
+are found to be more closely related to *Staphylococcaceae*:
+
+- *Salinicoccaceae*
+- *Abyssicoccaceae*
+- *Gemellaceae*
+- *Listeriaceae*
+-
+
+*Pasteuriaceae*
 
 ### List all ranks
 
@@ -48,6 +63,7 @@ cd ~/data/Bacillus
 nwr member \
     Bacillaceae Paenibacillaceae \
     Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Planococcaceae Pasteuriaceae \
     Desulfuribacillaceae |
     tsv-summarize -H -g 3 --count |
     mlr --itsv --omd cat |
@@ -56,6 +72,7 @@ nwr member \
 nwr member \
     Bacillaceae Paenibacillaceae \
     Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Planococcaceae Pasteuriaceae \
     Desulfuribacillaceae \
     -r "species group" -r "species subgroup" |
     tsv-select -f 1-3 |
@@ -66,12 +83,12 @@ nwr member \
 
 | rank             | count |
 |------------------|------:|
-| family           |     6 |
-| genus            |   187 |
-| species          | 44918 |
+| family           |     8 |
+| genus            |   209 |
+| species          | 46652 |
 | subspecies       |    42 |
-| no rank          |   255 |
-| strain           |   751 |
+| no rank          |   276 |
+| strain           |   769 |
 | species group    |     5 |
 | species subgroup |     2 |
 | biotype          |     1 |
@@ -99,6 +116,7 @@ cd ~/data/Bacillus/summary
 nwr member \
     Bacillaceae Paenibacillaceae \
     Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
+    Planococcaceae Pasteuriaceae \
     Desulfuribacillaceae \
     -r genus |
     sed '1d' |
@@ -106,7 +124,7 @@ nwr member \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#187 genus.list.tsv
+#209 genus.list.tsv
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -145,8 +163,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#  3330 RS1.tsv
-#  3692 GB1.tsv
+#  3594 RS1.tsv
+#  3980 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -157,8 +175,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     13441
-#GB1     17571
+#RS1     13802
+#GB1     17992
 
 ```
 
@@ -265,7 +283,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#17523 lines, 7 fields
+#17996 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -289,7 +307,7 @@ cat raw.tsv |
     > Bacillus.assembly.tsv
 
 datamash check < Bacillus.assembly.tsv
-#17514 lines, 5 fields
+#17988 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacillus.assembly.tsv |
@@ -342,10 +360,10 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  | 16098 |
-| species |  1306 |
-| genus   |   171 |
-| family  |     8 |
+| strain  | 16531 |
+| species |  1435 |
+| genus   |   191 |
+| family  |    10 |
 | order   |     2 |
 | class   |     2 |
 
@@ -353,7 +371,7 @@ cat Count/genus.before.tsv |
 |------------------|---------:|---------:|
 | Alicyclobacillus |       27 |       67 |
 | Anoxybacillus    |       18 |      112 |
-| Bacillus         |      132 |    10830 |
+| Bacillus         |      132 |    10855 |
 | Brevibacillus    |       30 |      248 |
 | Cytobacillus     |       19 |      131 |
 | Geobacillus      |       17 |      178 |
@@ -364,11 +382,12 @@ cat Count/genus.before.tsv |
 | Neobacillus      |       27 |      113 |
 | Niallia          |        7 |       69 |
 | Oceanobacillus   |       31 |       87 |
-| Paenibacillus    |      294 |     1462 |
+| Paenibacillus    |      294 |     1464 |
 | Peribacillus     |       19 |      174 |
 | Priestia         |       10 |      571 |
 | Rossellomorea    |        7 |       63 |
 | Shouchella       |       11 |       73 |
+| Sporosarcina     |       21 |      122 |
 | Virgibacillus    |       29 |      109 |
 
 ### Download and check
@@ -497,7 +516,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 50
 
 datamash check < BioSample/biosample.tsv
-#17486 lines, 91 fields
+#17960 lines, 91 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -868,7 +887,6 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | Terribacillus         |        4 |       15 |
 | Thermoactinomyces     |        5 |       23 |
 | Virgibacillus         |       25 |       74 |
-
 
 ## Collect proteins
 
