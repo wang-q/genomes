@@ -597,13 +597,13 @@ bash ASSEMBLY/check.sh
 #            rm -fr "ASSEMBLY/{}"
 #        fi
 #    '
-#
-# find ASSEMBLY -type d -name "*assembly_structure" | xargs rm -fr
+
+#find ASSEMBLY -type d -name "*assembly_structure" | xargs rm -fr
 
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
-#71683
+#163583
 
 # N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 20000 500 100000
@@ -618,7 +618,7 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#1890984.2       4399977 50433.8 637192  20      181
+#1986616 4098739 40286.6 250927  47      210
 
 # After the above steps are completed, run the following commands.
 
@@ -636,17 +636,18 @@ cat ASSEMBLY/counts.tsv |
 
 ```
 
-| #item            | fields |  lines |
-|------------------|-------:|-------:|
-| url.tsv          |      3 | 71,685 |
-| check.lst        |      1 | 71,685 |
-| collect.tsv      |     20 | 71,686 |
-| n50.tsv          |      4 | 71,686 |
-| n50.pass.tsv     |      4 | 65,357 |
-| collect.pass.tsv |     23 | 65,357 |
-| pass.lst         |      1 | 65,356 |
-| omit.lst         |      1 |      2 |
-| rep.lst          |      1 |  1,499 |
+| #item            | fields |   lines |
+|------------------|-------:|--------:|
+| url.tsv          |      3 | 163,585 |
+| check.lst        |      1 | 163,585 |
+| collect.tsv      |     20 | 163,586 |
+| n50.tsv          |      4 | 163,586 |
+| n50.pass.tsv     |      4 | 157,846 |
+| collect.pass.tsv |     23 | 157,846 |
+| pass.lst         |      1 | 157,845 |
+| omit.lst         |      1 |       2 |
+| rep.lst          |      1 |   7,943 |
+| sp.lst           |      1 |      44 |
 
 ### Rsync to hpcc
 
@@ -675,6 +676,23 @@ rsync -avP \
 For such huge collections, we can rsync files inside ASSEMBLY/ in parallel.
 
 ```shell
+# Copy Directory Structure
+rsync -avP \
+    -f"+ */" -f"- *" \
+    ~/data/Bacteria/ASSEMBLY/ \
+    wangq@202.119.37.251:data/Bacteria/ASSEMBLY
+
+# Transfer species directories in parallel
+cat ~/data/Bacteria/ASSEMBLY/url.tsv |
+    tsv-select -f 3 |
+    tsv-uniq |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        echo -e "\n==> {}"
+        rsync -avP \
+            ~/data/Bacteria/ASSEMBLY/{}/
+            wangq@202.119.37.251:data/Bacteria/ASSEMBLY/{} \
+    '
+
 # Copy Directory Structure
 rsync -avP \
     -e 'ssh -p 8804' \
