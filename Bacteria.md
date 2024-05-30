@@ -598,8 +598,6 @@ bash ASSEMBLY/check.sh
 #        fi
 #    '
 
-#find ASSEMBLY -type d -name "*assembly_structure" | xargs rm -fr
-
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
@@ -649,9 +647,23 @@ cat ASSEMBLY/counts.tsv |
 | rep.lst          |      1 |   7,943 |
 | sp.lst           |      1 |      44 |
 
+### Remove unnecessary files
+
+```shell
+cd ~/data/Bacteria
+
+find ASSEMBLY -type d -name "*assembly_structure" | xargs rm -fr
+find ASSEMBLY -type f -name "annotation_hashes.txt" | xargs rm -f
+find ASSEMBLY -type f -name "*_feature_table.txt.gz" | xargs rm -f
+find ASSEMBLY -type f -name "*_genomic_gaps.txt.gz" | xargs rm -f
+find ASSEMBLY -type f -name "*_protein.gpff.gz" | xargs rm -f
+find ASSEMBLY -type f -name "*_wgsmaster.gbff.gz" | xargs rm -f
+
+```
+
 ### Rsync to hpcc
 
-```bash
+```shell
 rsync -avP \
     ~/data/Bacteria/ \
     wangq@202.119.37.251:data/Bacteria
@@ -735,6 +747,22 @@ datamash check < BioSample/biosample.tsv
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
+
+# Save spaces
+cd ~/data/Bacteria
+cat BioSample/sample.tsv |
+    tsv-select -f 3 |
+    tsv-uniq |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        cd BioSample
+        if [[ ! -d {} ]]; then
+            exit
+        fi
+        if [[ ! -s {}.tar ]]; then
+            echo -e "==> {}"
+            tar -cvf {}.tar --remove-files {}
+        fi
+    '
 
 ```
 
