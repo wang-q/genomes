@@ -40,6 +40,7 @@ Download all genomes and analyze representative strains.
 ```shell
 nwr member Fungi |
     grep -v " sp." |
+    grep -v " x " |
     tsv-summarize -H -g rank --count |
     mlr --itsv --omd cat |
     perl -nl -e 's/-\s*\|$/-:|/; print'
@@ -49,25 +50,25 @@ nwr member Fungi |
 | rank          | count |
 |---------------|------:|
 | kingdom       |     1 |
-| no rank       |  4623 |
-| species       | 65297 |
+| no rank       |  5007 |
+| species       | 69353 |
 | subkingdom    |     1 |
 | class         |    65 |
-| order         |   242 |
-| family        |   904 |
-| genus         |  7466 |
+| order         |   243 |
+| family        |   918 |
+| genus         |  7713 |
 | phylum        |    10 |
 | subphylum     |    14 |
-| strain        |  2236 |
-| varietas      |  1060 |
-| subspecies    |   162 |
-| forma         |   210 |
-| isolate       |    29 |
+| strain        |  2265 |
+| varietas      |  1047 |
+| forma         |   217 |
+| isolate       |     5 |
+| subspecies    |   144 |
 | subclass      |    19 |
-| clade         |    26 |
 | suborder      |    24 |
-| subfamily     |    17 |
+| subfamily     |    19 |
 | subgenus      |    10 |
+| clade         |    27 |
 | section       |    37 |
 | species group |     1 |
 | tribe         |     3 |
@@ -79,16 +80,14 @@ nwr member Fungi |
 In the vast majority of fungal species, only one genome was selected for refseq.
 
 * 'RefSeq'
-    * RS1 - assembly_level: 'Complete Genome', 'Chromosome'
-    * RS2 - genome_rep: 'Full'
+    * RS1 - genome_rep: 'Full'
 * 'Genbank'
     * '>= 20 genomes'
-        * GB1 - With strain ID; assembly_level: 'Complete Genome', 'Chromosome'
-        * GB2 - assembly_level: 'Complete Genome', 'Chromosome'
-        * GB3 - genome_rep: 'Full'
+        * GB1 - assembly_level: 'Complete Genome', 'Chromosome'
+        * GB2 - genome_rep: 'Full'
     * '>= 1 genomes'
-        * GB4 - assembly_level: 'Complete Genome', 'Chromosome'
-        * GB5 - genome_rep: 'Full'
+        * GB3 - assembly_level: 'Complete Genome', 'Chromosome'
+        * GB4 - genome_rep: 'Full'
 
 ```shell
 mkdir -p ~/data/Fungi/summary
@@ -96,10 +95,8 @@ cd ~/data/Fungi/summary
 
 # should have a valid name of genus
 nwr member Fungi -r genus |
-    grep -v -i "Candidatus " |
-    grep -v -i "candidate " |
     grep -v " sp." |
-    grep -v " spp." |
+    grep -v " x " |
     sed '1d' |
     sort -n -k1,1 \
     > genus.list.tsv
