@@ -40,10 +40,19 @@ Download all genomes and analyze representative strains.
 ```shell
 nwr member Fungi |
     grep -v " sp." |
+    grep -v " aff." |
+    grep -v " cf." |
     grep -v " x " |
     tsv-summarize -H -g rank --count |
     mlr --itsv --omd cat |
     perl -nl -e 's/-\s*\|$/-:|/; print'
+
+nwr member Fungi | grep " sp\."
+nwr member Fungi | grep " aff\."
+nwr member Fungi | grep " cf\."
+nwr member Fungi | grep "\." | grep -v " sp\."
+
+nwr member Fungi | grep " x "
 
 ```
 
@@ -51,7 +60,7 @@ nwr member Fungi |
 |---------------|------:|
 | kingdom       |     1 |
 | no rank       |  5007 |
-| species       | 69353 |
+| species       | 60830 |
 | subkingdom    |     1 |
 | class         |    65 |
 | order         |   243 |
@@ -60,7 +69,7 @@ nwr member Fungi |
 | phylum        |    10 |
 | subphylum     |    14 |
 | strain        |  2265 |
-| varietas      |  1047 |
+| varietas      |  1032 |
 | forma         |   217 |
 | isolate       |     5 |
 | subspecies    |   144 |
@@ -80,14 +89,7 @@ nwr member Fungi |
 In the vast majority of fungal species, only one genome was selected for refseq.
 
 * 'RefSeq'
-    * RS1 - genome_rep: 'Full'
 * 'Genbank'
-    * '>= 20 genomes'
-        * GB1 - assembly_level: 'Complete Genome', 'Chromosome'
-        * GB2 - genome_rep: 'Full'
-    * '>= 1 genomes'
-        * GB3 - assembly_level: 'Complete Genome', 'Chromosome'
-        * GB4 - genome_rep: 'Full'
 
 ```shell
 mkdir -p ~/data/Fungi/summary
@@ -95,16 +97,16 @@ cd ~/data/Fungi/summary
 
 # should have a valid name of genus
 nwr member Fungi -r genus |
-    grep -v " sp." |
     grep -v " x " |
     sed '1d' |
     sort -n -k1,1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#7466 genus.list
+#7713 genus.list
 
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
     echo "
         SELECT
             species_id,
@@ -113,10 +115,8 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %'
-            AND assembly_level IN ('Complete Genome', 'Chromosome')
-            AND genome_rep IN ('Full') -- fully representative
+            AND genome_rep IN ('Full')
         GROUP BY species_id
         HAVING count >= 1
         " |
@@ -125,7 +125,8 @@ done |
     tsv-sort -k2,2 \
     > RS1.tsv
 
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
+cat genus.list.tsv | cut -f 1 |
+while read RANK_ID; do
     echo "
         SELECT
             species_id,
@@ -135,126 +136,18 @@ for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
         WHERE 1=1
             AND genus_id = ${RANK_ID}
             AND species NOT LIKE '% sp.%'
-            AND species NOT LIKE '% x %'
             AND genome_rep IN ('Full')
         GROUP BY species_id
         HAVING count >= 1
-        " |
-        sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
-done |
-    tsv-sort -k2,2 \
-    > RS2.tsv
-
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(DISTINCT tax_id) AS count -- with strain ID
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
-            AND species NOT LIKE '% x %'
-            AND assembly_level IN ('Complete Genome', 'Chromosome')
-            AND genome_rep IN ('Full')
-        GROUP BY species_id
-        HAVING count >= 20
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
     tsv-sort -k2,2 \
     > GB1.tsv
 
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
-            AND species NOT LIKE '% x %'
-            AND assembly_level IN ('Complete Genome', 'Chromosome')
-            AND genome_rep IN ('Full')
-        GROUP BY species_id
-        HAVING count >= 20
-        " |
-        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-done |
-    tsv-sort -k2,2 \
-    > GB2.tsv
-
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
-            AND species NOT LIKE '% x %'
-            AND genome_rep IN ('Full')
-        GROUP BY species_id
-        HAVING count >= 20
-        " |
-        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-done |
-    tsv-sort -k2,2 \
-    > GB3.tsv
-
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
-            AND species NOT LIKE '% x %'
-            AND assembly_level IN ('Complete Genome', 'Chromosome')
-        GROUP BY species_id
-        HAVING count >= 1
-        " |
-        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-done |
-    tsv-sort -k2,2 \
-    > GB4.tsv
-
-for RANK_ID in $(cat genus.list.tsv | cut -f 1); do
-    echo "
-        SELECT
-            species_id,
-            species,
-            COUNT(*) AS count
-        FROM ar
-        WHERE 1=1
-            AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
-            AND species NOT LIKE '% x %'
-            AND genome_rep IN ('Full')
-        GROUP BY species_id
-        HAVING count >= 1
-        " |
-        sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
-done |
-    tsv-sort -k2,2 \
-    > GB5.tsv
-
 wc -l RS*.tsv GB*.tsv
-#    91 RS1.tsv
-#   499 RS2.tsv
-#     1 GB1.tsv
-#     4 GB2.tsv
-#    85 GB3.tsv
-#   281 GB4.tsv
-#  3395 GB5.tsv
+#   587 RS1.tsv
+#  4468 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -265,13 +158,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     94
-#RS2     504
-#GB1     109
-#GB2     770
-#GB3     7260
-#GB4     1325
-#GB5     13371
+#RS1     592
+#GB1     16178
 
 ```
 
@@ -286,16 +174,16 @@ cat RS*.tsv GB*.tsv |
     grep "\[" |
     nwr append stdin -r genus |
     head
-#498019  [Candida] auris Candida/Metschnikowiaceae
-#1231522 [Candida] duobushaemulonis      Candida/Metschnikowiaceae
-#45357   [Candida] haemuloni     Candida/Metschnikowiaceae
-#418784  [Candida] pseudohaemulonii      Candida/Metschnikowiaceae
 #561895  [Candida] subhashii     Spathaspora
 #566037  [Ashbya] aceris (nom. inval.)   Eremothecium
-#312227  [Candida] hispaniensis  Candida/Saccharomycetales
-#45354   [Candida] intermedia    Candida/Metschnikowiaceae
-#2093215 [Candida] vulturna (nom. inval.)        Clavispora
 #45518   [Candida] aaseri        Yamadazyma
+#1171601 [Candida] adriatica     Cyberlindnera
+#456249  [Candida] andamanensis (nom. inval.)    Yamadazyma
+#148631  [Candida] anglica       Kurtzmaniella
+#130810  [Candida] arabinofermentans     Ogataea
+#391823  [Candida] ascalaphidarum        Yamadazyma
+#45521   [Candida] atlantica     Yamadazyma
+#45522   [Candida] atmosphaerica Yamadazyma
 
 ```
 
@@ -334,14 +222,9 @@ cp reference.tsv ~/Scripts/genomes/assembly/Fungi.reference.tsv
 
 ### Create assembly.tsv
 
-Two levels:
-
-* 'RefSeq'
-    * RS2 - genome_rep: 'Full'
-* 'Genbank'
-    * GB5 - genome_rep: 'Full'
-
 If a refseq assembly is available, the corresponding genbank one is not listed
+
+Group all questionable strains names under `Genus sp.`.
 
 ```shell
 cd ~/data/Fungi/summary
@@ -350,9 +233,9 @@ cat reference.tsv |
     tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
-# RS2
+# RS
 SPECIES=$(
-    cat RS2.tsv |
+    cat RS1.tsv |
         cut -f 1 |
         tr "\n" "," |
         sed 's/,$//'
@@ -365,8 +248,8 @@ echo "
         assembly_accession
     FROM ar
     WHERE 1=1
-        AND species_id IN ($SPECIES)
         AND genome_rep IN ('Full')
+        AND species_id IN ($SPECIES)
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
@@ -376,9 +259,9 @@ cat raw.tsv |
     tsv-select -H -f "assembly_accession" \
     > rs.acc.tsv
 
-# GB5
+# GB
 SPECIES=$(
-    cat GB5.tsv |
+    cat GB1.tsv |
         cut -f 1 |
         tr "\n" "," |
         sed 's/,$//'
@@ -391,8 +274,32 @@ echo "
         gbrs_paired_asm
     FROM ar
     WHERE 1=1
-        AND species_id IN ($SPECIES)
         AND genome_rep IN ('Full')
+        AND species_id IN ($SPECIES)
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% aff.%'
+        AND species NOT LIKE '% cf.%'
+        AND species NOT LIKE '% x %'
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    >> raw.tsv
+
+echo "
+    SELECT
+        genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
+        genus || ' sp.', genus, ftp_path, biosample, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND genome_rep IN ('Full')
+        AND species_id IN ($SPECIES)
+        AND (
+            species LIKE '% sp.%'
+            OR species LIKE '% aff.%'
+            OR species LIKE '% cf.%'
+        )
+        AND species NOT LIKE '% x %'
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
     tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
@@ -401,7 +308,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#13376 lines, 7 fields
+#16110 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -425,7 +332,7 @@ cat raw.tsv |
     > Fungi.assembly.tsv
 
 datamash check < Fungi.assembly.tsv
-#13109 lines, 5 fields
+#15813 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Fungi.assembly.tsv |
@@ -476,27 +383,39 @@ cat Count/genus.before.tsv |
 
 ```
 
-| genus                     | #species | #strains |
-|---------------------------|---------:|---------:|
-| Alternaria                |       31 |      157 |
-| Aspergillus               |      133 |     1072 |
-| Aureobasidium             |       11 |      154 |
-| Botryosphaeria            |        3 |      141 |
-| Candida                   |       18 |      186 |
-| Candida/Metschnikowiaceae |        9 |      158 |
-| Colletotrichum            |       60 |      225 |
-| Cryphonectria             |        7 |      110 |
-| Cryptococcus              |       11 |      149 |
-| Fusarium                  |      188 |     1216 |
-| Komagataella              |        7 |      181 |
-| Parastagonospora          |        2 |      189 |
-| Penicillium               |      103 |      459 |
-| Pyricularia               |        3 |      381 |
-| Rhodotorula               |       10 |      158 |
-| Saccharomyces             |       11 |     1765 |
-| Torulaspora               |        8 |      101 |
-| Trichoderma               |       31 |      105 |
-| Zygosaccharomyces         |        9 |      136 |
+| item    | count |
+|---------|------:|
+| strain  | 15808 |
+| species |  4391 |
+| genus   |  1251 |
+| family  |   451 |
+| order   |   158 |
+| class   |    55 |
+
+| genus             | #species | #strains |
+|-------------------|---------:|---------:|
+| Alternaria        |       34 |      168 |
+| Aspergillus       |      140 |     1159 |
+| Aureobasidium     |       11 |      161 |
+| Beauveria         |       11 |      327 |
+| Botryosphaeria    |        3 |      141 |
+| Candida           |       34 |      263 |
+| Colletotrichum    |       81 |      267 |
+| Cryphonectria     |        7 |      110 |
+| Cryptococcus      |       12 |      213 |
+| Fusarium          |      185 |     1270 |
+| Komagataella      |        7 |      186 |
+| Metschnikowia     |       61 |      143 |
+| Ogataea           |       55 |      144 |
+| Parastagonospora  |        2 |      189 |
+| Penicillium       |      107 |      474 |
+| Pichia            |       30 |      134 |
+| Pyricularia       |        4 |      405 |
+| Rhodotorula       |       10 |      172 |
+| Saccharomyces     |       11 |     1783 |
+| Torulaspora       |        8 |      106 |
+| Trichoderma       |       34 |      127 |
+| Zygosaccharomyces |       12 |      145 |
 
 ### Download and check
 
@@ -545,7 +464,7 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#11671954.4      32505046        26704.8 368791.5        349.5   4717.6
+#11602116.3      32228284.5      21666.1 315609  375     5088.5
 
 # After the above steps are completed, run the following commands.
 
@@ -565,15 +484,16 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields |  lines |
 |------------------|-------:|-------:|
-| url.tsv          |      3 | 13,108 |
-| check.lst        |      1 | 13,108 |
-| collect.tsv      |     20 | 13,109 |
-| n50.tsv          |      4 | 13,109 |
-| n50.pass.tsv     |      4 |  9,345 |
-| collect.pass.tsv |     23 |  9,345 |
-| pass.lst         |      1 |  9,344 |
-| omit.lst         |      1 |  8,926 |
-| rep.lst          |      1 |  2,543 |
+| url.tsv          |      3 | 15,812 |
+| check.lst        |      1 | 15,811 |
+| collect.tsv      |     20 | 15,812 |
+| n50.tsv          |      4 | 15,813 |
+| n50.pass.tsv     |      4 | 10,884 |
+| collect.pass.tsv |     23 | 10,884 |
+| pass.lst         |      1 | 10,883 |
+| omit.lst         |      1 | 11,262 |
+| rep.lst          |      1 |  3,294 |
+| sp.lst           |      1 |    156 |
 
 ### Rsync to hpcc
 
@@ -634,7 +554,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 10
 
 datamash check < BioSample/biosample.tsv
-#12865 lines, 169 fields
+#15539 lines, 196 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
