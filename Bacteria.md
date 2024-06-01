@@ -656,7 +656,9 @@ find ASSEMBLY -type d -name "*assembly_structure" | xargs rm -fr
 find ASSEMBLY -type f -name "annotation_hashes.txt" | xargs rm -f
 find ASSEMBLY -type f -name "*_feature_table.txt.gz" | xargs rm -f
 find ASSEMBLY -type f -name "*_genomic_gaps.txt.gz" | xargs rm -f
+find ASSEMBLY -type f -name "*_genomic.gtf.gz" | xargs rm -f
 find ASSEMBLY -type f -name "*_protein.gpff.gz" | xargs rm -f
+find ASSEMBLY -type f -name "*_translated_cds.faa.gz" | xargs rm -f
 find ASSEMBLY -type f -name "*_wgsmaster.gbff.gz" | xargs rm -f
 
 ```
