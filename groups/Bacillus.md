@@ -917,3 +917,50 @@ cat Protein/counts.tsv |
     mlr --itsv --omd cat
 
 ```
+
+| #item      | count      |
+|------------|------------|
+| species    | 1,394      |
+| strain_sum | 15,882     |
+| total_sum  | 74,090,806 |
+| dedup_sum  | 36,090,356 |
+| rep_sum    | 12,688,227 |
+
+## Phylogenetics with bac120
+
+### Find corresponding proteins by `hmmsearch`
+
+```shell
+cd ~/data/Bacillus
+
+# The HMM set
+nwr kb bac120 -o HMM
+cp HMM/bac120.lst HMM/marker.lst
+
+E_VALUE=1e-20
+
+# Find all genes
+for marker in $(cat HMM/marker.lst); do
+    echo >&2 "==> marker [${marker}]"
+
+    mkdir -p Domain/${marker}
+
+    cat Protein/species-f.tsv |
+        tsv-join -e -f summary/redundant.lst -k 1 |
+        tsv-join -e -f MinHash/abnormal.lst -k 1 |
+        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
+            if [[ ! -d ASSEMBLY/{2}/{1} ]]; then
+                exit
+            fi
+
+            gzip -dcf ASSEMBLY/{2}/{1}/*_protein.faa.gz |
+                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/${marker}.HMM - |
+                grep '>>' |
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), \$1, {1}, {2}; '
+        " \
+        > Domain/${marker}/replace.tsv
+
+    echo >&2
+done
+
+```
