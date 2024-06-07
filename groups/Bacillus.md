@@ -892,6 +892,7 @@ cd ~/data/Bacillus/
 
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --pro \
+    --parallel 16 \
     --in ASSEMBLY/pass.lst \
     --not-in ASSEMBLY/omit.lst \
     --clust-id 0.95 \
