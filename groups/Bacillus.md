@@ -898,11 +898,11 @@ nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --clust-id 0.95 \
     --clust-cov 0.95
 
-# collect proteins
+# collect proteins and clustering
 # It may need to be run several times
 bash Protein/collect.sh
 
-# clustering
+# info.tsv
 bash Protein/info.sh
 
 # counts

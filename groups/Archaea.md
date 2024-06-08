@@ -696,16 +696,18 @@ cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --pro \
+    --parallel 16 \
     --in ASSEMBLY/pass.lst \
     --not-in ASSEMBLY/omit.lst \
     --clust-id 0.95 \
     --clust-cov 0.95
 
-# collect proteins
+# collect proteins and clustering
+# It may need to be run several times
 bash Protein/collect.sh
 
-# clustering
-bash Protein/compute.sh
+# info.tsv
+bash Protein/info.sh
 
 # counts
 bash Protein/count.sh
@@ -728,7 +730,7 @@ cat Protein/counts.tsv |
 | strain_sum | 1,230     |
 | total_sum  | 3,481,813 |
 | dedup_sum  | 2,571,530 |
-| rep_sum    | 2,260,903 |
+| rep_sum    | 2,260,932 |
 
 ## Phylogenetics with ar53
 
