@@ -899,10 +899,11 @@ nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --clust-cov 0.95
 
 # collect proteins
+# It may need to be run several times
 bash Protein/collect.sh
 
 # clustering
-bash Protein/compute.sh
+bash Protein/info.sh
 
 # counts
 bash Protein/count.sh
@@ -923,7 +924,7 @@ cat Protein/counts.tsv |
 |------------|------------|
 | species    | 1,394      |
 | strain_sum | 15,882     |
-| total_sum  | 74,090,806 |
+| total_sum  | 76,715,515 |
 | dedup_sum  | 36,090,356 |
 | rep_sum    | 12,688,227 |
 
