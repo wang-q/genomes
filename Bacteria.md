@@ -1261,6 +1261,49 @@ mkdir -p ~/data/Bacteria/STRAINS
 
 ## Top groups
 
+### Bacillota
+
+Bacillota == Firmicutes
+
+Mycoplasmatota == Tenericutes
+
+```shell
+mkdir -p ~/data/Bacteria/Bacillota
+cd ~/data/Bacteria/Bacillota
+
+FAMILY=$(
+    nwr member Bacillota Mycoplasmatota -r family |
+        sed '1d' |
+        cut -f 1 |
+        tr "\n" "," |
+        sed 's/,$//'
+)
+
+echo "
+    SELECT
+        organism_name,
+        assembly_accession
+    FROM ar
+    WHERE 1=1
+        AND family_id IN ($FAMILY)
+        AND species NOT LIKE '% sp.%'
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
+    > tmp.tsv
+
+cat ../ASSEMBLY/collect.csv |
+    grep -F -f <(cut -f 2 tmp.tsv) |
+    grep -F -f <(cat ../summary/NR.lst ../ASSEMBLY/rep.lst | sort | uniq) |
+    tsv-select -d, -f 1,3 |
+    tr "," "\t" |
+    nwr append stdin -c 2 -r species -r genus -r family -r order \
+    > strains.taxon.tsv
+
+wc -l strains.taxon.tsv
+#3106 strains.taxon.tsv
+
+```
+
 ### Terrabacteria group
 
 Bacillota == Firmicutes
