@@ -1047,28 +1047,43 @@ cd ~/data/Bacteria/
 
 nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     --pro \
+    --parallel 16 \
     --in ASSEMBLY/pass.lst \
     --in ASSEMBLY/rep.lst \
     --in summary/NR.lst \
-    --not-in MinHash/abnormal.lst \
-    --not-in ASSEMBLY/omit.lst
+    --not-in ASSEMBLY/omit.lst \
+    --clust-id 0.95 \
+    --clust-cov 0.95
 
-# collect proteins
+# collect proteins and clustering
+# It may need to be run several times
 bash Protein/collect.sh
 
+# info.tsv
+bash Protein/info.sh
+
+# counts
+bash Protein/count.sh
+
 cat Protein/counts.tsv |
+    tsv-summarize -H --count --sum 2-5 |
+    sed 's/^count/species/' |
+    datamash transpose |
+    perl -nla -F"\t" -MNumber::Format -e '
+        printf qq(%s\t%s\n), $F[0], Number::Format::format_number($F[1], 0,);
+        ' |
+    (echo -e "#item\tcount" && cat) |
     mlr --itsv --omd cat
 
 ```
 
-| #item                          | count     |
-|--------------------------------|-----------|
-| Proteins                       | 4,867,166 |
-| Unique headers and annotations | 4,752,989 |
-| Unique proteins                | 4,745,694 |
-| all.replace.fa                 | 4,867,166 |
-| all.annotation.tsv             | 4,867,167 |
-| all.info.tsv                   | 4,867,167 |
+| #item      | count     |
+|------------|-----------|
+| species    | 550       |
+| strain_sum | 552       |
+| total_sum  | 1,935,762 |
+| dedup_sum  | 1,934,823 |
+| rep_sum    | 1,921,437 |
 
 ## Phylogenetics with bac120
 
@@ -1087,14 +1102,10 @@ E_VALUE=1e-20
 for marker in $(cat HMM/marker.lst); do
     echo >&2 "==> marker [${marker}]"
 
-    mkdir -p Protein/${marker}
+    mkdir -p Domain/${marker}
 
-    cat Protein/species.tsv |
-        tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    cat Protein/species-f.tsv |
         tsv-join -f ASSEMBLY/rep.lst -k 1 |
-        tsv-join -f summary/NR.lst -k 1 |
-        tsv-join -e -f MinHash/abnormal.lst -k 1 |
-        tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
         parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
             if [[ ! -d ASSEMBLY/{2}/{1} ]]; then
                 exit
@@ -1103,9 +1114,9 @@ for marker in $(cat HMM/marker.lst); do
             gzip -dcf ASSEMBLY/{2}/{1}/*_protein.faa.gz |
                 hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/${marker}.HMM - |
                 grep '>>' |
-                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), \$1, {1}; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), \$1, {1}, {2}; '
         " \
-        > Protein/${marker}/replace.tsv
+        > Domain/${marker}/replace.tsv
 
     echo >&2
 done
@@ -1119,39 +1130,52 @@ cd ~/data/Bacteria
 
 cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
-        cat Protein/{}/replace.tsv |
+        cat Domain/{}/replace.tsv |
             wc -l
     ' |
     tsv-summarize --quantile 1:0.25,0.5,0.75
-#1370.5  1394.5  2092.5
+#546     553     813.75
 
 cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo {}
-        cat Protein/{}/replace.tsv |
+        cat Domain/{}/replace.tsv |
             wc -l
     ' |
     paste - - |
-    tsv-filter --invert --ge 2:1100 --le 2:1800 |
+    tsv-filter --invert --ge 2:500 --le 2:600 |
     cut -f 1 \
-    > Protein/marker.omit.lst
+    > Domain/marker.omit.lst
 
 # Extract sequences
 # Multiple copies slow down the alignment process
+cat Protein/species-f.tsv |
+    tsv-join -f ASSEMBLY/rep.lst -k 1 |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -f Protein/"${SPECIES}"/pro.fa.gz ]]; then
+        continue
+    fi
+
+    cat Protein/"${SPECIES}"/pro.fa.gz
+done \
+    > Domain/all.uniq.fa.gz
+
 cat HMM/marker.lst |
-    grep -v -Fx -f Protein/marker.omit.lst |
+    grep -v -Fx -f Domain/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo >&2 "==> marker [{}]"
 
-        cat Protein/{}/replace.tsv \
-            > Protein/{}/{}.replace.tsv
+        cat Domain/{}/replace.tsv \
+            > Domain/{}/{}.replace.tsv
 
-        faops some Protein/all.uniq.fa.gz <(
-            cat Protein/{}/{}.replace.tsv |
+        faops some Domain/all.uniq.fa.gz <(
+            cat Domain/{}/{}.replace.tsv |
                 cut -f 1 |
                 tsv-uniq
             ) stdout \
-            > Protein/{}/{}.pro.fa
+            > Domain/{}/{}.pro.fa
     '
 
 # Align each markers with muscle
@@ -1159,73 +1183,74 @@ cat HMM/marker.lst |
 cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
         echo >&2 "==> marker [{}]"
-        if [ ! -s Protein/{}/{}.pro.fa ]; then
+        if [ ! -s Domain/{}/{}.pro.fa ]; then
             exit
         fi
-        if [ -s Protein/{}/{}.aln.fa ]; then
+        if [ -s Domain/{}/{}.aln.fa ]; then
             exit
         fi
 
-#        muscle -quiet -in Protein/{}/{}.pro.fa -out Protein/{}/{}.aln.fa
-        mafft --auto Protein/{}/{}.pro.fa > Protein/{}/{}.aln.fa
+#        muscle -quiet -in Domain/{}/{}.pro.fa -out Domain/{}/{}.aln.fa
+        mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
     '
 
 for marker in $(cat HMM/marker.lst); do
     echo >&2 "==> marker [${marker}]"
-    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
     fi
 
     # sometimes `muscle` can not produce alignments
-    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
         continue
     fi
 
     # 1 name to many names
-    cat Protein/${marker}/${marker}.replace.tsv |
+    cat Domain/${marker}/${marker}.replace.tsv |
+        tsv-select -f 1-2 |
         parallel --no-run-if-empty --linebuffer -k -j 4 "
-            faops replace -s Protein/${marker}/${marker}.aln.fa <(echo {}) stdout
+            faops replace -s Domain/${marker}/${marker}.aln.fa <(echo {}) stdout
         " \
-        > Protein/${marker}/${marker}.replace.fa
+        > Domain/${marker}/${marker}.replace.fa
 done
 
 # Concat marker genes
 for marker in $(cat HMM/marker.lst); do
-    if [ ! -s Protein/${marker}/${marker}.pro.fa ]; then
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
     fi
-    if [ ! -s Protein/${marker}/${marker}.aln.fa ]; then
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
         continue
     fi
 
     # sequences in one line
-    faops filter -l 0 Protein/${marker}/${marker}.replace.fa stdout
+    faops filter -l 0 Domain/${marker}/${marker}.replace.fa stdout
 
     # empty line for .fas
     echo
 done \
-    > Protein/bac120.aln.fas
+    > Domain/bac120.aln.fas
 
-cat Protein/species.tsv |
-    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+cat Protein/species-f.tsv |
     tsv-join -f ASSEMBLY/rep.lst -k 1 |
-    tsv-join -f summary/NR.lst -k 1 |
-    tsv-join -e -f MinHash/abnormal.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
     cut -f 1 |
-    fasops concat Protein/bac120.aln.fas stdin -o Protein/bac120.aln.fa
+    fasops concat Domain/bac120.aln.fas stdin -o Domain/bac120.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
-trimal -in Protein/bac120.aln.fa -out Protein/bac120.trim.fa -automated1
+trimal -in Domain/bac120.aln.fa -out Domain/bac120.trim.fa -automated1
 
-faops size Protein/bac120.*.fa |
+faops size Domain/bac120.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#110297
-#17958
+#66412
+#14827
 
 # To make it faster
-FastTree -fastest -noml Protein/bac120.trim.fa > Protein/bac120.trim.newick
+FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 Domain/bac120.trim.newick |
+    rsvg-convert -o tree/Bacillus.bac120.png
 
 ```
 
@@ -1234,12 +1259,13 @@ FastTree -fastest -noml Protein/bac120.trim.fa > Protein/bac120.trim.newick
 ```shell
 cd ~/data/Bacteria/tree
 
-nwr reroot ../Protein/bac120.trim.newick -n Thermot_petr_RKU_1_GCF_000016785_1 -n Hyd_thermophilus_TK_6_GCF_000164905_1 |
+nw_reroot ../Domain/bac120.trim.newick Thermot_petr_RKU_1_GCF_000016785_1 Hyd_thermophilus_TK_6_GCF_000164905_1 |
     nwr order stdin --nd --an \
     > bac120.reroot.newick
 
-nwr pl-condense -r class -r order -r family -r genus -r species \
-    bac120.reroot.newick ../Count/species.tsv --map \
+nwr pl-condense --map -r order -r family -r genus \
+    bac120.reroot.newick ../Count/species.tsv |
+    nwr order stdin --nd --an \
     -o bac120.condensed.newick
 
 mv condensed.tsv bac120.condense.tsv
