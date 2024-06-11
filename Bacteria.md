@@ -14,6 +14,7 @@ Download all genomes and analyze representative strains.
     * [Create assembly.tsv](#create-assemblytsv)
     * [Count before download](#count-before-download)
     * [Download and check](#download-and-check)
+    * [Remove unnecessary files](#remove-unnecessary-files)
     * [Rsync to hpcc](#rsync-to-hpcc)
 - [BioSample](#biosample)
 - [Early divergence of Bacteria](#early-divergence-of-bacteria)
@@ -29,9 +30,6 @@ Download all genomes and analyze representative strains.
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
     * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
 - [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-- [Top groups](#top-groups)
-    * [Terrabacteria group](#terrabacteria-group)
-    * [Proteobacteria](#proteobacteria)
 
 <!-- tocstop -->
 
@@ -1282,140 +1280,5 @@ To be filled by other projects
 
 ```shell
 mkdir -p ~/data/Bacteria/STRAINS
-
-```
-
-## Top groups
-
-### Bacillota
-
-Bacillota == Firmicutes
-
-Mycoplasmatota == Tenericutes
-
-```shell
-mkdir -p ~/data/Bacteria/Bacillota
-cd ~/data/Bacteria/Bacillota
-
-FAMILY=$(
-    nwr member Bacillota Mycoplasmatota -r family |
-        sed '1d' |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
-
-echo "
-    SELECT
-        organism_name,
-        assembly_accession
-    FROM ar
-    WHERE 1=1
-        AND family_id IN ($FAMILY)
-        AND species NOT LIKE '% sp.%'
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
-    > tmp.tsv
-
-cat ../ASSEMBLY/collect.csv |
-    grep -F -f <(cut -f 2 tmp.tsv) |
-    grep -F -f <(cat ../summary/NR.lst ../ASSEMBLY/rep.lst | sort | uniq) |
-    tsv-select -d, -f 1,3 |
-    tr "," "\t" |
-    nwr append stdin -c 2 -r species -r genus -r family -r order \
-    > strains.taxon.tsv
-
-wc -l strains.taxon.tsv
-#3106 strains.taxon.tsv
-
-```
-
-### Terrabacteria group
-
-Bacillota == Firmicutes
-
-Actinomycetota == Actinobacteria
-
-```shell
-mkdir -p ~/data/Bacteria/Terrabacteria
-cd ~/data/Bacteria/Terrabacteria
-
-FAMILY=$(
-    nwr member "Terrabacteria group" -r family |
-        sed '1d' |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
-
-echo "
-    SELECT
-        organism_name,
-        assembly_accession
-    FROM ar
-    WHERE 1=1
-        AND family_id IN ($FAMILY)
-        AND species NOT LIKE '% sp.%'
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
-    > tmp.tsv
-
-cat ../ASSEMBLY/collect.csv |
-    grep -F -f <(cut -f 2 tmp.tsv) |
-    grep -F -f <(cat ../summary/NR.lst ../ASSEMBLY/rep.lst | sort | uniq) |
-    tsv-select -d, -f 1,3 |
-    tr "," "\t" |
-    nwr append stdin -c 2 -r species -r genus -r family -r order |
-    sed 's/Pseudomonas paraeruginosa/Pseudomonas aeruginosa/g' \
-    > strains.taxon.tsv
-
-wc -l strains.taxon.tsv
-#3106 strains.taxon.tsv
-
-```
-
-### Proteobacteria
-
-Pseudomonadota == Proteobacteria
-
-```shell
-mkdir -p ~/data/Bacteria/Proteobacteria
-cd ~/data/Bacteria/Proteobacteria
-
-FAMILY=$(
-    nwr member Proteobacteria -r family |
-        sed '1d' |
-        cut -f 1 |
-        nwr append stdin -r order |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
-
-echo "
-    SELECT
-        organism_name,
-        assembly_accession
-    FROM ar
-    WHERE 1=1
-        AND family_id IN ($FAMILY)
-        AND species NOT LIKE '% sp.%'
-        AND organism_name NOT LIKE '% sp.%'
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    grep -v -i "symbiont " |
-    tsv-filter --str-not-in-fld 1:"[" \
-    > tmp.tsv
-
-cat ../ASSEMBLY/collect.csv |
-    grep -F -f <(cut -f 2 tmp.tsv) |
-    grep -F -f <(cat ../summary/NR.lst ../summary/representative.lst | sort | uniq) |
-    tsv-select -d, -f 1,3 |
-    tr "," "\t" |
-    nwr append stdin -c 2 -r species -r genus -r family -r order \
-    > strains.taxon.tsv
-
-wc -l strains.taxon.tsv
-#4905 strains.taxon.tsv
 
 ```
