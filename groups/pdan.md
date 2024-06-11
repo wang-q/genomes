@@ -179,3 +179,52 @@ done
 #8053 TheRest/summary/collect.pass.tsv
 
 ```
+
+## Collect proteins
+
+```shell
+cd ~/data/Bacteria/
+
+ulimit -n `ulimit -Hn`
+
+
+for GROUP in \
+    Bacillota \
+    Terrabacteria \
+    Pseudomonadota \
+    FCB \
+    TheRest \
+    ; do
+    cd ~/data/Bacteria/${GROUP}
+
+    nwr template summary/assembly.tsv \
+        --pro \
+        --parallel 8 \
+        --clust-id 0.95 \
+        --clust-cov 0.95
+
+    # collect proteins and clustering
+    # It may need to be run several times
+    bash Protein/collect.sh
+
+done
+
+
+
+# info.tsv
+bash Protein/info.sh
+
+# counts
+bash Protein/count.sh
+
+cat Protein/counts.tsv |
+    tsv-summarize -H --count --sum 2-5 |
+    sed 's/^count/species/' |
+    datamash transpose |
+    perl -nla -F"\t" -MNumber::Format -e '
+        printf qq(%s\t%s\n), $F[0], Number::Format::format_number($F[1], 0,);
+        ' |
+    (echo -e "#item\tcount" && cat) |
+    mlr --itsv --omd cat
+
+```
