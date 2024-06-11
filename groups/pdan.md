@@ -1,0 +1,181 @@
+# PDAN
+
+<!-- toc -->
+
+- [Strain info](#strain-info)
+    * [Bacillota](#bacillota)
+    * [Terrabacteria group](#terrabacteria-group)
+    * [Pseudomonadota](#pseudomonadota)
+    * [FCB group](#fcb-group)
+    * [The rest](#the-rest)
+    * [Extracting](#extracting)
+
+<!-- tocstop -->
+
+## Strain info
+
+### Bacillota
+
+Bacillota == Firmicutes
+
+Mycoplasmatota == Tenericutes
+
+Clostridia belongs to Bacillota
+
+```shell
+mkdir -p ~/data/Bacteria/Bacillota
+cd ~/data/Bacteria/Bacillota
+
+rm -f ASSEMBLY
+ln -s ../ASSEMBLY ASSEMBLY
+
+mkdir -p summary
+
+FAMILY=$(
+    nwr member Bacillota Mycoplasmatota -r family |
+        sed '1d' |
+        cut -f 1
+)
+#FAMILY=$(IFS=, ; echo "${FAMILY[*]}")
+
+```
+
+### Terrabacteria group
+
+Actinomycetota == Actinobacteria
+
+Deinococcota == Deinococcus-Thermus
+
+Cyanobacteriota == Cyanobacteria
+
+Chloroflexi belongs to Chloroflexota
+
+```shell
+mkdir -p ~/data/Bacteria/Terrabacteria
+cd ~/data/Bacteria/Terrabacteria
+
+rm -f ASSEMBLY
+ln -s ../ASSEMBLY ASSEMBLY
+
+mkdir -p summary
+
+FAMILY=$(
+    nwr member "Terrabacteria group" -r family |
+        sed '1d' |
+        nwr restrict Bacillota --exclude -f stdin -c 1 |
+        nwr restrict Mycoplasmatota --exclude -f stdin -c 1 |
+        cut -f 1
+)
+
+```
+
+### Pseudomonadota
+
+Pseudomonadota == Proteobacteria
+
+```shell
+mkdir -p ~/data/Bacteria/Pseudomonadota
+cd ~/data/Bacteria/Pseudomonadota
+
+rm -f ASSEMBLY
+ln -s ../ASSEMBLY ASSEMBLY
+
+mkdir -p summary
+
+FAMILY=$(
+    nwr member Pseudomonadota -r family |
+        sed '1d' |
+        cut -f 1
+)
+
+```
+
+### FCB group
+
+```shell
+mkdir -p ~/data/Bacteria/FCB
+cd ~/data/Bacteria/FCB
+
+rm -f ASSEMBLY
+ln -s ../ASSEMBLY ASSEMBLY
+
+mkdir -p summary
+
+FAMILY=$(
+    nwr member "FCB group" -r family |
+        sed '1d' |
+        cut -f 1
+)
+
+```
+
+### The rest
+
+```shell
+mkdir -p ~/data/Bacteria/TheRest
+cd ~/data/Bacteria/TheRest
+
+rm -f ASSEMBLY
+ln -s ../ASSEMBLY ASSEMBLY
+
+mkdir -p summary
+
+FAMILY=$(
+    nwr member Bacteria -r family |
+        sed '1d' |
+        nwr restrict "Terrabacteria group" --exclude -f stdin -c 1 |
+        nwr restrict Pseudomonadota --exclude -f stdin -c 1 |
+        nwr restrict "FCB group" --exclude -f stdin -c 1 |
+        cut -f 1
+)
+
+```
+
+### Extracting
+
+```shell
+# cd ~/data/Bacteria/Bacillota
+
+cat ../summary/collect.pass.tsv |
+    tsv-filter -H --str-eq "RefSeq_category:Reference Genome" \
+    > summary/collect.pass.tsv
+
+cat ../summary/collect.pass.tsv |
+    sed '1d' | # 157845
+    nwr restrict ${FAMILY[*]} -f stdin -c 3 | # restrict to these families 45828
+    tsv-join -e -f ../ASSEMBLY/omit.lst -k 1 | # 45828
+    sort \
+    >> summary/collect.pass.tsv
+
+cat ~/Scripts/genomes/assembly/Bacteria.assembly.tsv |
+    tsv-join -H -f summary/collect.pass.tsv -k 1 \
+    > summary/assembly.tsv
+
+# biosample.tsv
+cp ../summary/attributes.lst summary/
+
+cat ../summary/biosample.tsv |
+    grep -Fw -f <(cat summary/collect.pass.tsv | tsv-select -H -f BioSample | sort | uniq) \
+    > summary/biosample.tsv
+
+```
+
+```shell
+cd ~/data/Bacteria
+
+for GROUP in \
+    Bacillota \
+    Terrabacteria \
+    Pseudomonadota \
+    FCB \
+    TheRest \
+    ; do
+    find ${GROUP}/summary -type f -name "collect.pass.tsv" | xargs wc -l
+done
+#45844 Bacillota/summary/collect.pass.tsv
+#16260 Terrabacteria/summary/collect.pass.tsv
+#77801 Pseudomonadota/summary/collect.pass.tsv
+#9571 FCB/summary/collect.pass.tsv
+#8053 TheRest/summary/collect.pass.tsv
+
+```
