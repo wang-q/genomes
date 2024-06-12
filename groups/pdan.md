@@ -228,3 +228,22 @@ cat Protein/counts.tsv |
     mlr --itsv --omd cat
 
 ```
+
+## Rsync to hpcc
+
+```bash
+for GROUP in \
+    Bacillota \
+    Terrabacteria \
+    Pseudomonadota \
+    FCB \
+    TheRest \
+    ; do
+
+    rsync -avP \
+        ~/data/Bacteria/${GROUP}/ \
+        wangq@202.119.37.251:data/Bacteria/${GROUP}
+
+done
+
+```
