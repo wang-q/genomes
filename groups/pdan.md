@@ -27,7 +27,9 @@ mkdir -p ~/data/Bacteria/Bacillota
 cd ~/data/Bacteria/Bacillota
 
 rm -f ASSEMBLY
+rm -f Protein
 ln -s ../ASSEMBLY ASSEMBLY
+ln -s ../Protein Protein
 
 mkdir -p summary
 
@@ -55,7 +57,9 @@ mkdir -p ~/data/Bacteria/Terrabacteria
 cd ~/data/Bacteria/Terrabacteria
 
 rm -f ASSEMBLY
+rm -f Protein
 ln -s ../ASSEMBLY ASSEMBLY
+ln -s ../Protein Protein
 
 mkdir -p summary
 
@@ -78,7 +82,9 @@ mkdir -p ~/data/Bacteria/Pseudomonadota
 cd ~/data/Bacteria/Pseudomonadota
 
 rm -f ASSEMBLY
+rm -f Protein
 ln -s ../ASSEMBLY ASSEMBLY
+ln -s ../Protein Protein
 
 mkdir -p summary
 
@@ -97,7 +103,9 @@ mkdir -p ~/data/Bacteria/FCB
 cd ~/data/Bacteria/FCB
 
 rm -f ASSEMBLY
+rm -f Protein
 ln -s ../ASSEMBLY ASSEMBLY
+ln -s ../Protein Protein
 
 mkdir -p summary
 
@@ -116,7 +124,9 @@ mkdir -p ~/data/Bacteria/TheRest
 cd ~/data/Bacteria/TheRest
 
 rm -f ASSEMBLY
+rm -f Protein
 ln -s ../ASSEMBLY ASSEMBLY
+ln -s ../Protein Protein
 
 mkdir -p summary
 
