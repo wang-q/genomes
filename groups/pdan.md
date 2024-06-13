@@ -147,7 +147,7 @@ FAMILY=$(
 # cd ~/data/Bacteria/Bacillota
 
 cat ../summary/collect.pass.tsv |
-    tsv-filter -H --str-eq "RefSeq_category:Reference Genome" \
+    head -n 1 \
     > summary/collect.pass.tsv
 
 cat ../summary/collect.pass.tsv |
@@ -182,11 +182,11 @@ for GROUP in \
     ; do
     find ${GROUP}/summary -type f -name "collect.pass.tsv" | xargs wc -l
 done
-#45844 Bacillota/summary/collect.pass.tsv
-#16260 Terrabacteria/summary/collect.pass.tsv
-#77801 Pseudomonadota/summary/collect.pass.tsv
-#9571 FCB/summary/collect.pass.tsv
-#8053 TheRest/summary/collect.pass.tsv
+#45829 Bacillota/summary/collect.pass.tsv
+#16245 Terrabacteria/summary/collect.pass.tsv
+#77786 Pseudomonadota/summary/collect.pass.tsv
+#9556 FCB/summary/collect.pass.tsv
+#8038 TheRest/summary/collect.pass.tsv
 
 ```
 
@@ -196,7 +196,6 @@ done
 cd ~/data/Bacteria/
 
 ulimit -n `ulimit -Hn`
-
 
 for GROUP in \
     Bacillota \
@@ -219,10 +218,38 @@ for GROUP in \
 
 done
 
+cd ~/data/Bacteria/
+rm -fr Protein/tmp/
 
+for GROUP in \
+    Bacillota \
+    Terrabacteria \
+    Pseudomonadota \
+    FCB \
+    TheRest \
+    ; do
+    cd ~/data/Bacteria/${GROUP}
 
-# info.tsv
-bash Protein/info.sh
+    nwr template summary/assembly.tsv \
+        --pro \
+        --parallel 8 \
+        --clust-id 0.95 \
+        --clust-cov 0.95
+
+    # info.tsv
+    bash Protein/info.sh
+
+done
+
+cd ~/data/Bacteria/
+
+find Protein -type f -name "pro.fa.gz" -size -4096c
+
+nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
+    --pro \
+    --parallel 16 \
+    --in ASSEMBLY/pass.lst \
+    --not-in ASSEMBLY/omit.lst
 
 # counts
 bash Protein/count.sh
@@ -255,5 +282,9 @@ for GROUP in \
         wangq@202.119.37.251:data/Bacteria/${GROUP}
 
 done
+
+rsync -avP \
+    ~/data/Bacteria/Protein/ \
+    wangq@202.119.37.251:data/Bacteria/Protein
 
 ```
