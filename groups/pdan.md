@@ -251,6 +251,9 @@ nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     --in ASSEMBLY/pass.lst \
     --not-in ASSEMBLY/omit.lst
 
+# anything left
+bash Protein/collect.sh
+bash Protein/info.sh
 # counts
 bash Protein/count.sh
 
@@ -265,6 +268,14 @@ cat Protein/counts.tsv |
     mlr --itsv --omd cat
 
 ```
+
+| #item      | count       |
+|------------|-------------|
+| species    | 8,163       |
+| strain_sum | 157,786     |
+| total_sum  | 575,230,650 |
+| dedup_sum  | 127,514,848 |
+| rep_sum    | 59,532,317  |
 
 ## Rsync to hpcc
 
