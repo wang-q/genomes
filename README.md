@@ -42,6 +42,7 @@ nwr ardb --genbank
 brew install hmmer
 brew install brewsci/bio/easel
 brew install mafft
+brew install samtools
 brew install brewsci/bio/muscle
 brew install brewsci/bio/fasttree
 brew install brewsci/bio/iqtree2
@@ -53,6 +54,7 @@ brew install datamash
 brew install miller
 brew install wang-q/tap/tsv-utils
 brew install wang-q/tap/faops
+brew install wang-q/tap/hnsm
 
 brew install librsvg
 brew install jq
