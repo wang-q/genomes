@@ -52,25 +52,25 @@ nwr member Bacteria |
 | rank             |  count |
 |------------------|-------:|
 | superkingdom     |      1 |
-| phylum           |    180 |
-| class            |    170 |
-| order            |    381 |
-| family           |    928 |
-| genus            |   5316 |
-| no rank          |   7584 |
-| species          | 113932 |
-| strain           |  41866 |
+| phylum           |    181 |
+| family           |    961 |
+| no rank          |   7824 |
+| genus            |   5409 |
+| class            |    189 |
+| order            |    407 |
+| species          | 114752 |
+| strain           |  42007 |
 | subclass         |      6 |
-| subspecies       |    709 |
+| subspecies       |    714 |
 | suborder         |      7 |
 | clade            |    135 |
-| isolate          |    455 |
+| isolate          |    456 |
 | varietas         |     24 |
 | forma            |      4 |
-| species group    |    100 |
+| species group    |     98 |
 | species subgroup |     31 |
 | biotype          |      7 |
-| serotype         |    256 |
+| serotype         |    255 |
 | serogroup        |    152 |
 | subgenus         |      1 |
 | tribe            |      2 |
@@ -108,7 +108,7 @@ nwr member Bacteria -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#5316 genus.list
+#5409 genus.list
 
 QUERY="
     SELECT
@@ -214,14 +214,14 @@ done |
     > GB4.tsv
 
 wc -l RS*.tsv GB*.tsv
-#    20 RS1.tsv
-#   161 RS2.tsv
-#  2037 RS3.tsv
-#  8197 RS4.tsv
-#    27 GB1.tsv
-#   236 GB2.tsv
-#  2172 GB3.tsv
-#  9839 GB4.tsv
+#    21 RS1.tsv
+#   171 RS2.tsv
+#  2135 RS3.tsv
+#  8628 RS4.tsv
+#    28 GB1.tsv
+#   250 GB2.tsv
+#  2272 GB3.tsv
+# 10880 GB4.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -232,38 +232,38 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     16010
-#RS2     223231
-#RS3     36561
-#RS4     299245
-#GB1     24358
-#GB2     1577848
-#GB3     46449
-#GB4     1669964
+#RS1     17429
+#RS2     236784
+#RS3     39114
+#RS4     317947
+#GB1     26689
+#GB2     1686322
+#GB3     50411
+#GB4     1789020
 
 cat RS2.tsv |
     tsv-join -f RS1.tsv -k 1 -e |
     tsv-summarize --sum 3
-#71601
+#76451
 
 cat RS3.tsv |
     tsv-join -f RS1.tsv -k 1 -e |
     tsv-join -f RS2.tsv -k 1 -e |
     tsv-summarize --sum 3
-#12059
+#12682
 
 cat RS4.tsv |
     tsv-join -f RS1.tsv -k 1 -e |
     tsv-join -f RS2.tsv -k 1 -e |
     tsv-join -f RS3.tsv -k 1 -e |
     tsv-summarize --sum 3
-#28259
+#30760
 
 cat RS4.tsv |
     tsv-join -f RS1.tsv -k 1 -e |
     tsv-join -f RS2.tsv -k 1 -e |
     tsv-summarize --sum 3
-#76014
+#81163
 
 ```
 
@@ -290,6 +290,7 @@ echo "
     GROUP BY species_id
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
+
 ```
 
 ### Model organisms
@@ -308,11 +309,37 @@ echo "
 .headers ON
 
     SELECT
-        *
+        refseq_category,
+        COUNT(*) AS count
     FROM ar
     WHERE 1=1
-        AND genus_id IN ($GENUS)
-        AND refseq_category IN ('reference genome')
+    GROUP BY refseq_category
+    " |
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
+#refseq_category count
+#na      352870
+#reference genome        22415
+
+echo "
+.headers ON
+
+    SELECT
+        ar.*
+    FROM (
+        SELECT
+            species_id,
+            COUNT(*) AS count
+        FROM ar
+        WHERE 1=1
+            AND species_id != 0
+            AND genus_id != 0
+        GROUP BY species_id
+        HAVING count >= 1000
+        ) AS subquery
+    JOIN ar ON ar.species_id = subquery.species_id
+    WHERE 1=1
+        AND ar.refseq_category IN ('reference genome')
+        AND ar.tax_id != ar.species_id
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     > reference.tsv
@@ -320,12 +347,14 @@ echo "
 cat reference.tsv |
     sed '1s/^/#/' |
     nwr append stdin -r phylum -r class |
-    tsv-select -H -f 1,2,phylum,class |
+    tsv-select -H -f 1-3,phylum,class |
+    keep-header -- sort -t$'\t' -k4,4 -k5,5 -k2,2 |
+    sed 's/strain=//' |
     parallel --col-sep "\t" -j 1 '
-        if [[ "{3}" == "Proteobacteria" || "{3}" == "Pseudomonadota" ]]; then
-            printf "%s\t%s\t%s\n" {1} {2} {4}
+        if [[ "{4}" == "Proteobacteria" || "{4}" == "Pseudomonadota" ]]; then
+            printf "%s\t%s\t%s\t%s\n" {1} {2} {3} {5}
         else
-            printf "%s\t%s\t%s\n" {1} {2} {3}
+            printf "%s\t%s\t%s\t%s\n" {1} {2} {3} {4}
         fi
     ' |
     mlr --itsv --omd cat
@@ -334,34 +363,29 @@ cp reference.tsv ~/Scripts/genomes/assembly/Bacteria.reference.tsv
 
 ```
 
-| #tax_id | organism_name                                                    | phylum              |
-|---------|------------------------------------------------------------------|---------------------|
-| 565050  | Caulobacter vibrioides NA1000                                    | Alphaproteobacteria |
-| 192222  | Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819      | Campylobacterota    |
-| 208964  | Pseudomonas aeruginosa PAO1                                      | Gammaproteobacteria |
-| 871585  | Acinetobacter pittii PHEA-2                                      | Gammaproteobacteria |
-| 511145  | Escherichia coli str. K-12 substr. MG1655                        | Gammaproteobacteria |
-| 386585  | Escherichia coli O157:H7 str. Sakai                              | Gammaproteobacteria |
-| 1125630 | Klebsiella pneumoniae subsp. pneumoniae HS11286                  | Gammaproteobacteria |
-| 99287   | Salmonella enterica subsp. enterica serovar Typhimurium str. LT2 | Gammaproteobacteria |
-| 198214  | Shigella flexneri 2a str. 301                                    | Gammaproteobacteria |
-| 227377  | Coxiella burnetii RSA 493                                        | Gammaproteobacteria |
-| 272561  | Chlamydia trachomatis D/UW-3/CX                                  | Chlamydiota         |
-| 93061   | Staphylococcus aureus subsp. aureus NCTC 8325                    | Bacillota           |
-| 224308  | Bacillus subtilis subsp. subtilis str. 168                       | Bacillota           |
-| 169963  | Listeria monocytogenes EGD-e                                     | Bacillota           |
-| 83332   | Mycobacterium tuberculosis H37Rv                                 | Actinomycetota      |
+| #tax_id | organism_name                                                    | infraspecific_name                | phylum              |
+|---------|------------------------------------------------------------------|-----------------------------------|---------------------|
+| 83332   | Mycobacterium tuberculosis H37Rv                                 | H37Rv                             | Actinomycetota      |
+| 561007  | Mycobacteroides abscessus ATCC 19977                             | ATCC 19977                        | Actinomycetota      |
+| 1169293 | Enterococcus faecalis EnGen0336                                  | T5                                | Bacillota           |
+| 169963  | Listeria monocytogenes EGD-e                                     | EGD-e                             | Bacillota           |
+| 93061   | Staphylococcus aureus subsp. aureus NCTC 8325                    | NCTC 8325                         | Bacillota           |
+| 568814  | Streptococcus suis BM407                                         | BM407                             | Bacillota           |
+| 192222  | Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819      | NCTC 11168                        | Campylobacterota    |
+| 386585  | Escherichia coli O157:H7 str. Sakai                              | Sakai substr. RIMD 0509952        | Gammaproteobacteria |
+| 511145  | Escherichia coli str. K-12 substr. MG1655                        | K-12 substr. MG1655               | Gammaproteobacteria |
+| 1125630 | Klebsiella pneumoniae subsp. pneumoniae HS11286                  | HS11286                           | Gammaproteobacteria |
+| 2590157 | Klebsiella variicola subsp. variicola                            | F2R9T                             | Gammaproteobacteria |
+| 529507  | Proteus mirabilis HI4320                                         | HI4320                            | Gammaproteobacteria |
+| 208964  | Pseudomonas aeruginosa PAO1                                      | PAO1                              | Gammaproteobacteria |
+| 99287   | Salmonella enterica subsp. enterica serovar Typhimurium str. LT2 | LT2                               | Gammaproteobacteria |
+| 223926  | Vibrio parahaemolyticus RIMD 2210633                             | RIMD 2210633 substr. RIMD 2210633 | Gammaproteobacteria |
 
 ## Download all assemblies
 
 ### Create assembly.tsv
 
-Three levels:
-
 * RefSeq
-    * '>= 1000 genomes'
-        * RS1 - assembly_level: 'Complete Genome', 'Chromosome'
-        * RS2 - genome_rep: 'Full'
     * '>= 2 genomes'
         * RS4 - genome_rep: 'Full'
 
@@ -372,54 +396,9 @@ cat reference.tsv |
     tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
-# RS1
-SPECIES=$(
-    cat RS1.tsv |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
-
-echo "
-    SELECT
-        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, biosample, assembly_level,
-        assembly_accession
-    FROM ar
-    WHERE 1=1
-        AND species_id IN ($SPECIES)
-        AND assembly_level IN ('Complete Genome', 'Chromosome') -- complete genomes
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
-    >> raw.tsv
-
-# RS2
-SPECIES=$(
-    cat RS2.tsv |
-        tsv-join -f RS1.tsv -k 1 -e |
-        cut -f 1 |
-        tr "\n" "," |
-        sed 's/,$//'
-)
-
-echo "
-    SELECT
-        species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
-        species, genus, ftp_path, biosample, assembly_level,
-        assembly_accession
-    FROM ar
-    WHERE 1=1
-        AND species_id IN ($SPECIES)
-        AND genome_rep IN ('Full')
-    " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
-    >> raw.tsv
-
 # RS4
 SPECIES=$(
     cat RS4.tsv |
-        tsv-join -f RS1.tsv -k 1 -e |
-        tsv-join -f RS2.tsv -k 1 -e |
         cut -f 1 |
         tr "\n" "," |
         sed 's/,$//'
@@ -439,7 +418,7 @@ echo "
     >> raw.tsv
 
 datamash check < raw.tsv
-#163641 lines, 7 fields
+#317981 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -463,7 +442,7 @@ cat raw.tsv |
     > Bacteria.assembly.tsv
 
 datamash check < Bacteria.assembly.tsv
-#163586 lines, 5 fields
+#317862 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacteria.assembly.tsv |
@@ -516,51 +495,56 @@ cat Count/genus.before.tsv |
 
 | item    |  count |
 |---------|-------:|
-| strain  | 163583 |
-| species |   8195 |
-| genus   |   1963 |
-| family  |    476 |
-| order   |    198 |
-| class   |     86 |
+| strain  | 317859 |
+| species |   8626 |
+| genus   |   2022 |
+| family  |    483 |
+| order   |    203 |
+| class   |     88 |
 
-| genus           | #species | #strains |
-|-----------------|---------:|---------:|
-| Acinetobacter   |       70 |     2861 |
-| Aeromonas       |       25 |     1528 |
-| Bacillus        |       77 |     6660 |
-| Bacteroides     |       45 |     2741 |
-| Bifidobacterium |       55 |     2297 |
-| Bordetella      |       18 |     1022 |
-| Brucella        |       25 |     1146 |
-| Burkholderia    |       37 |     4909 |
-| Campylobacter   |       39 |     2974 |
-| Citrobacter     |       16 |     1891 |
-| Clostridium     |       66 |     2325 |
-| Corynebacterium |      125 |     1742 |
-| Enterobacter    |       25 |     2588 |
-| Enterococcus    |       47 |     2120 |
-| Escherichia     |        6 |     4276 |
-| Francisella     |       11 |     1074 |
-| Haemophilus     |       11 |     1069 |
-| Helicobacter    |       35 |     1112 |
-| Klebsiella      |       14 |     6007 |
-| Lactobacillus   |       39 |     1871 |
-| Legionella      |       50 |     1227 |
-| Listeria        |       19 |     1144 |
-| Mycobacterium   |       76 |     1434 |
-| Mycobacteroides |        6 |     2099 |
-| Neisseria       |       34 |     3770 |
-| Proteus         |        9 |     1152 |
-| Pseudomonas     |      250 |     6315 |
-| Salmonella      |        2 |     1823 |
-| Serratia        |       20 |     1973 |
-| Shigella        |        4 |     2541 |
-| Staphylococcus  |       56 |     7025 |
-| Streptococcus   |       81 |     8319 |
-| Streptomyces    |      300 |     1442 |
-| Vibrio          |      107 |     6994 |
-| Xanthomonas     |       37 |     2557 |
-| Yersinia        |       26 |     1480 |
+| genus               | #species | #strains |
+|---------------------|---------:|---------:|
+| Acinetobacter       |       71 |    12036 |
+| Aeromonas           |       25 |     1584 |
+| Bacillus            |       79 |     7990 |
+| Bacteroides         |       47 |     3468 |
+| Bifidobacterium     |       56 |     2669 |
+| Bordetella          |       18 |     1353 |
+| Brucella            |       28 |     1290 |
+| Burkholderia        |       38 |     5033 |
+| Campylobacter       |       41 |     5678 |
+| Citrobacter         |       18 |     2014 |
+| Clostridioides      |        1 |     2978 |
+| Clostridium         |       66 |     2492 |
+| Corynebacterium     |      126 |     1820 |
+| Enterobacter        |       27 |     6117 |
+| Enterococcus        |       49 |     9454 |
+| Escherichia         |        6 |    40072 |
+| Francisella         |       11 |     1076 |
+| Haemophilus         |       11 |     1095 |
+| Helicobacter        |       35 |     3154 |
+| Klebsiella          |       14 |    25445 |
+| Lactiplantibacillus |        8 |     1217 |
+| Lactobacillus       |       39 |     1972 |
+| Lactococcus         |       16 |     1000 |
+| Legionella          |       50 |     1222 |
+| Listeria            |       19 |     5921 |
+| Mycobacterium       |       77 |     8042 |
+| Mycobacteroides     |        6 |     2115 |
+| Neisseria           |       35 |     3455 |
+| Phocaeicola         |       12 |     1007 |
+| Proteus             |       10 |     1461 |
+| Pseudomonas         |      260 |    15476 |
+| Salmonella          |        2 |    14276 |
+| Serratia            |       22 |     2060 |
+| Shigella            |        4 |     2609 |
+| Staphylococcus      |       56 |    22998 |
+| Stenotrophomonas    |       20 |     1003 |
+| Streptococcus       |       84 |    19487 |
+| Streptomyces        |      377 |     2578 |
+| Vibrio              |      110 |     7349 |
+| Xanthomonas         |       38 |     2920 |
+| Yersinia            |       26 |     1629 |
 
 ### Download and check
 
