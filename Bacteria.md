@@ -561,6 +561,12 @@ ulimit -n `ulimit -Hn`
 nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     --ass
 
+## Pulling certain taxa to the front
+#cat url.tsv |
+#    tsv-filter --or --str-in-fld 3:Escherichia --str-in-fld 3:Shigella \
+#    > urles.tsv
+#mv urles.tsv url.tsv
+
 # Run
 bash ASSEMBLY/rsync.sh
 
@@ -579,13 +585,16 @@ bash ASSEMBLY/check.sh
 #            rm -fr "ASSEMBLY/{}"
 #        fi
 #    '
+#
+# Windows
+# fd assembly_stats.txt D:\data\Bacteria\ASSEMBLY -tf | rm -force
 
-find ASSEMBLY/ -name "*_genomic.fna.gz" |
-    grep -v "_from_" |
+find ASSEMBLY/ -name "*_genomic.gbff.gz" |
     wc -l
 #163583
 find ASSEMBLY -type f -name "*_protein.faa.gz" -size -4096c
 
+#fd _genomic.gbff.gz D:\data\Bacteria\ASSEMBLY -tf | Measure-Object -Line
 
 # N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 20000 500 100000
