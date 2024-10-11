@@ -562,10 +562,10 @@ nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     --ass
 
 ## Pulling certain taxa to the front
-#cat url.tsv |
+#cat ASSEMBLY/url.tsv |
 #    tsv-filter --or --str-in-fld 3:Escherichia --str-in-fld 3:Shigella \
-#    > urles.tsv
-#mv urles.tsv url.tsv
+#    > ASSEMBLY/tmp.tsv
+#mv ASSEMBLY/tmp.tsv ASSEMBLY/url.tsv
 
 # Run
 bash ASSEMBLY/rsync.sh
