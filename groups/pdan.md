@@ -151,9 +151,9 @@ cat ../summary/collect.pass.tsv |
     > summary/collect.pass.tsv
 
 cat ../summary/collect.pass.tsv |
-    sed '1d' | # 157845
-    nwr restrict ${FAMILY[*]} -f stdin -c 3 | # restrict to these families 45828
-    tsv-join -e -f ../ASSEMBLY/omit.lst -k 1 | # 45828
+    sed '1d' | # 307775
+    nwr restrict ${FAMILY[*]} -f stdin -c 3 | # restrict to these families 167899
+    tsv-join -e -f ../ASSEMBLY/omit.lst -k 1 | # 167899
     sort \
     >> summary/collect.pass.tsv
 
@@ -182,11 +182,11 @@ for GROUP in \
     ; do
     find ${GROUP}/summary -type f -name "collect.pass.tsv" | xargs wc -l
 done
-#45829 Bacillota/summary/collect.pass.tsv
-#16245 Terrabacteria/summary/collect.pass.tsv
-#77786 Pseudomonadota/summary/collect.pass.tsv
-#9556 FCB/summary/collect.pass.tsv
-#8038 TheRest/summary/collect.pass.tsv
+#90541 Bacillota/summary/collect.pass.tsv
+#25210 Terrabacteria/summary/collect.pass.tsv
+#167900 Pseudomonadota/summary/collect.pass.tsv
+#10880 FCB/summary/collect.pass.tsv
+#12845 TheRest/summary/collect.pass.tsv
 
 ```
 
@@ -214,9 +214,11 @@ for GROUP in \
 
     # collect proteins and clustering
     # It may need to be run several times
-    bash Protein/collect.sh
+    bash Protein/collect.sh Escherichia_albertii
 
 done
+
+fd -g strains.tsv ~/data/Bacteria/Protein --size +100k -l
 
 cd ~/data/Bacteria/
 rm -fr Protein/tmp/
