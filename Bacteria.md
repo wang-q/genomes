@@ -561,12 +561,6 @@ ulimit -n `ulimit -Hn`
 nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     --ass
 
-## Pulling certain taxa to the front
-#cat ASSEMBLY/url.tsv |
-#    tsv-filter --or --str-in-fld 3:Escherichia --str-in-fld 3:Shigella \
-#    > ASSEMBLY/tmp.tsv
-#mv ASSEMBLY/tmp.tsv ASSEMBLY/url.tsv
-
 # Run
 bash ASSEMBLY/rsync.sh
 
@@ -574,7 +568,26 @@ bash ASSEMBLY/rsync.sh
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-# Put the misplaced directory into the right place
+#cat ASSEMBLY/url.tsv |
+#    tsv-join -f ASSEMBLY/check.lst -k 1 -e |
+#    tsv-select -f 3 |
+#    sed 's/_/\t/' |
+#    tsv-select -f 1 |
+#    tsv-summarize --group-by 1 --count |
+#    sort |
+#    tsv-filter --ge 2:100
+#
+#scp ~/data/Bacteria/ASSEMBLY/check.lst wangq@192.168.31.163:data/Bacteria/ASSEMBLY/
+
+# from another machine
+#bash ASSEMBLY/rsync.sh Klebsiella
+#rsync -avP \
+#    -e "ssh -T -c aes128-gcm@openssh.com -o Compression=no -x" \
+#    wangq@192.168.31.163:data/Bacteria/ASSEMBLY/ ~/data/Bacteria/ASSEMBLY \
+#    --exclude="check.lst" \
+#    --exclude="url.tsv"
+
+# Put the misplaced directories into the right ones
 #bash ASSEMBLY/reorder.sh
 #
 # This operation will delete some files in the directory, so please be careful
@@ -585,16 +598,15 @@ bash ASSEMBLY/check.sh
 #            rm -fr "ASSEMBLY/{}"
 #        fi
 #    '
-#
-# Windows
-# fd assembly_stats.txt D:\data\Bacteria\ASSEMBLY -tf | rm -force
 
-find ASSEMBLY/ -name "*_genomic.gbff.gz" |
-    wc -l
-#163583
+find ASSEMBLY/ -name "*_genomic.gff.gz" | wc -l
 find ASSEMBLY -type f -name "*_protein.faa.gz" -size -4096c
 
-#fd _genomic.gbff.gz D:\data\Bacteria\ASSEMBLY -tf | Measure-Object -Line
+#fd _genomic.gff.gz D:\data\Bacteria\ASSEMBLY -tf | Measure-Object -Line
+#fd _genomic.gff.gz ~/data/Bacteria/ASSEMBLY -tf | wc -l
+#317860
+
+fd _protein.faa.gz D:\data\Bacteria\ASSEMBLY -tf --size +10k | Measure-Object -Line
 
 # N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 20000 500 100000
@@ -604,12 +616,12 @@ cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50,S" --max "C"
 #N50_min S_min   C_max
-#0       0       1973
+#0       0       1996
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#1986616 4098739 40286.6 250927  47      210
+#2068514 4443972 49168   198077  66      230
 
 # After the above steps are completed, run the following commands.
 
@@ -629,16 +641,16 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields |   lines |
 |------------------|-------:|--------:|
-| url.tsv          |      3 | 163,585 |
-| check.lst        |      1 | 163,585 |
-| collect.tsv      |     20 | 163,586 |
-| n50.tsv          |      4 | 163,586 |
-| n50.pass.tsv     |      4 | 157,846 |
-| collect.pass.tsv |     23 | 157,846 |
-| pass.lst         |      1 | 157,845 |
-| omit.lst         |      1 |       2 |
-| rep.lst          |      1 |   7,943 |
-| sp.lst           |      1 |      44 |
+| url.tsv          |      3 | 317,861 |
+| check.lst        |      1 | 317,861 |
+| collect.tsv      |     20 | 317,862 |
+| n50.tsv          |      4 | 317,862 |
+| n50.pass.tsv     |      4 | 307,776 |
+| collect.pass.tsv |     23 | 307,776 |
+| pass.lst         |      1 | 307,775 |
+| omit.lst         |      1 |       1 |
+| rep.lst          |      1 |   8,465 |
+| sp.lst           |      1 |      33 |
 
 ### Remove unnecessary files
 
@@ -653,6 +665,9 @@ find ASSEMBLY -type f -name "*_genomic.gtf.gz" | xargs rm -f
 find ASSEMBLY -type f -name "*_protein.gpff.gz" | xargs rm -f
 find ASSEMBLY -type f -name "*_translated_cds.faa.gz" | xargs rm -f
 find ASSEMBLY -type f -name "*_wgsmaster.gbff.gz" | xargs rm -f
+
+# Windows
+# fd assembly_stats.txt D:\data\Bacteria\ASSEMBLY -tf | rm -force
 
 ```
 
@@ -734,11 +749,14 @@ nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
 # Run this script twice and it will re-download the failed files
 bash BioSample/download.sh
 
+# fd 'SAM.*\.txt' D:\data\Bacteria\BioSample -tf | Measure-Object -Line
+# fd 'SAM.*\.txt' ~/data/Bacteria/BioSample -tf | wc -l
+
 # Ignore rare attributes
 bash BioSample/collect.sh 500
 
 datamash check < BioSample/biosample.tsv
-# 71588 lines, 64 fields
+# 317193 lines, 132 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -759,6 +777,25 @@ cat BioSample/sample.tsv |
         fi
     '
 
+# Restore dir
+cd ~/data/Bacteria
+cat BioSample/sample.tsv |
+    tsv-select -f 3 |
+    tsv-uniq |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        cd BioSample
+        if [[ -d {} ]]; then
+            exit
+        fi
+        if [[ ! -f {}.tar ]]; then
+            exit
+        fi
+
+        echo -e "==> {}"
+        tar -xvf {}.tar
+        rm {}.tar
+    '
+
 ```
 
 ## Early divergence of Bacteria
@@ -770,8 +807,8 @@ cat BioSample/sample.tsv |
 Thermotogota and Aquificota are basal taxa of bacteria.
 
 * For the latter steps, use the following two as the outgroups
-    * Thermot_petr_RKU_1_GCF_000016785_1
-    * Hyd_thermophilus_TK_6_GCF_000164905_1
+    * Thermot_petrop_RKU_1_GCF_000016785_1
+    * Hydrogenob_thermophilus_TK_6_GCF_000164905_1
 
 ```shell
 cd ~/data/Bacteria
@@ -787,23 +824,38 @@ cat summary/collect.pass.tsv |
     tsv-select -f 1,3,4 |
     tsv-sort -k3,3 -k1,1 |
     tsv-summarize -g 3,2 --count
-#Aquificota      Hydrogenobacter thermophilus    2
+#Aquificota      Desulfurobacterium thermolithotrophum   2
+#Aquificota      Hydrogenobacter thermophilus    5
+#Aquificota      Sulfurihydrogenibium azorense   2
+#Thermotogota    Fervidobacterium changbaicum    2
 #Thermotogota    Fervidobacterium pennivorans    3
-#Thermotogota    Pseudothermotoga hypogea        2
-#Thermotogota    Thermosipho melanesiensis       2
+#Thermotogota    Geotoga petraea 3
+#Thermotogota    Kosmotoga pacifica      3
+#Thermotogota    Mesotoga prima  16
+#Thermotogota    Oceanotoga teriensis    2
+#Thermotogota    Petrotoga olearia       2
+#Thermotogota    Petrotoga sibirica      2
+#Thermotogota    Pseudothermotoga elfii  2
+#Thermotogota    Pseudothermotoga hypogea        3
+#Thermotogota    Pseudothermotoga lettingae      2
+#Thermotogota    Thermosipho africanus   3
+#Thermotogota    Thermosipho melanesiensis       7
 #Thermotogota    Thermotoga maritima     6
-#Thermotogota    Thermotoga petrophila   2
+#Thermotogota    Thermotoga neapolitana  2
+#Thermotogota    Thermotoga petrophila   3
 
 cat summary/collect.pass.tsv |
     tsv-filter -H --not-blank RefSeq_category |
     tsv-filter -H --or \
+        --str-in-fld "2:Desulfurobacterium" \
         --str-in-fld "2:Hydrogenobacter" \
+        --str-in-fld "2:Sulfurihydrogenibium" \
         --str-in-fld "2:Fervidobacterium" \
         --str-in-fld "2:Pseudothermotoga" \
         --str-in-fld "2:Thermosipho" \
         --str-in-fld "2:Thermotoga" |
     grep -v -Fw -f ASSEMBLY/omit.lst |
-    tsv-select -H -f "name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
+    tsv-select -H -f "#name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
 
 ```
 
