@@ -52,6 +52,7 @@ brew install mmseqs2
 
 brew install datamash
 brew install miller
+#cargo install fd-find
 brew install wang-q/tap/tsv-utils
 brew install wang-q/tap/faops
 brew install wang-q/tap/hnsm
