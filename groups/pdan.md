@@ -208,13 +208,13 @@ for GROUP in \
 
     nwr template summary/assembly.tsv \
         --pro \
-        --parallel 8 \
+        --parallel 16 \
         --clust-id 0.95 \
         --clust-cov 0.95
 
     # collect proteins and clustering
     # It may need to be run several times
-    bash Protein/collect.sh Escherichia_albertii
+    bash Protein/collect.sh
 
 done
 
@@ -243,9 +243,17 @@ for GROUP in \
 
 done
 
-cd ~/data/Bacteria/
+# failed
+fd -g "pro.fa.gz" ~/data/Bacteria/Protein --size -10k
 
-find Protein -type f -name "pro.fa.gz" -size -4096c
+fd -g "pro.fa.gz" ~/data/Bacteria/Protein --size +10k | wc -l
+fd -g "rep_seq.fa.gz" ~/data/Bacteria/Protein --size +10k | wc -l
+fd -g "seq.sqlite" ~/data/Bacteria/Protein --size +10k | wc -l
+
+fd -g "seq.sqlite" ~/data/Bacteria/Protein --size +100m -l
+
+# anything left
+cd ~/data/Bacteria/
 
 nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     --pro \
@@ -253,7 +261,6 @@ nwr template ~/Scripts/genomes/assembly/Bacteria.assembly.tsv \
     --in ASSEMBLY/pass.lst \
     --not-in ASSEMBLY/omit.lst
 
-# anything left
 bash Protein/collect.sh
 bash Protein/info.sh
 # counts
@@ -299,5 +306,10 @@ done
 rsync -avP \
     ~/data/Bacteria/Protein/ \
     wangq@202.119.37.251:data/Bacteria/Protein
+
+# back
+rsync -avP \
+    wangq@202.119.37.251:data/Bacteria/Protein/ \
+    ~/data/Bacteria/Protein
 
 ```
