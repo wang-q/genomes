@@ -7,9 +7,11 @@ Acidia_hos_W1_GCF_000213215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/2
 Acidia_infer_DSM_3191_GCF_009729545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/729/545/GCF_009729545.1_ASM972954v1	SAMN09933090	Acidianus infernus	Contig
 Acidia_infer_GCA_026626945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/626/945/GCA_026626945.1_ASM2662694v1	SAMN31719895	Acidianus infernus	Contig
 Acidia_infer_GCA_026626965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/626/965/GCA_026626965.1_ASM2662696v1	SAMN31719900	Acidianus infernus	Contig
+Acidia_infer_GCF_041748595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/748/595/GCF_041748595.1_ASM4174859v1	SAMN41306070	Acidianus infernus	Contig
 Acidia_manz_YN_25_GCF_002116695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/116/695/GCF_002116695.1_ASM211669v1	SAMN06640543	Acidianus manzaensis	Complete Genome
 Acidia_sulfidiv_JP7_GCF_003201765_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/201/765/GCF_003201765.2_ASM320176v2	SAMN09071530	Acidianus sulfidivorans	Complete Genome
 Acidil_saccharovora_345_15_GCF_000144915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/144/915/GCF_000144915.1_ASM14491v1	SAMN02603091	Acidilobus saccharovorans	Complete Genome
+Acidip_aeolicum_GCF_043195295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/043/195/295/GCF_043195295.1_ASM4319529v1	SAMN40547755	Acidiplasma aeolicum	Contig
 Acidip_aeolicum_V_GCF_001399695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/399/695/GCF_001399695.1_ASM139969v1	SAMN03274863	Acidiplasma aeolicum	Contig
 Acidip_aeolicum_VT_GCF_001402945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/402/945/GCF_001402945.1_ASM140294v1	SAMN04087216	Acidiplasma aeolicum	Contig
 Acidip_cupric_BH2_GCF_001402935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/402/935/GCF_001402935.1_ASM140293v1	SAMN04087217	Acidiplasma cupricumulans	Contig
@@ -19,11 +21,11 @@ Ae_cam_JCM_12091_GCF_001316065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/00
 Ae_cam_SY1_GCF_000591035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/591/035/GCF_000591035.1_ASM59103v1	SAMD00061006	Aeropyrum camini	Complete Genome
 Ae_pern_K1_GCF_000011125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/011/125/GCF_000011125.1_ASM1112v1	SAMD00061092	Aeropyrum pernix	Complete Genome
 Ae_pern_YK1_12_2013_GCF_004323575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/323/575/GCF_004323575.1_ASM432357v1	SAMD00074121	Aeropyrum pernix	Scaffold
-Ar_ful_DSM_4304_GCF_000008665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/665/GCF_000008665.1_ASM866v1	SAMN02603985	Archaeoglobus fulgidus	Complete Genome
-Ar_ful_DSM_8774_GCF_000734035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/734/035/GCF_000734035.1_ASM73403v1	SAMN03081472	Archaeoglobus fulgidus	Complete Genome
-Ar_ful_GCA_001508815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/508/815/GCA_001508815.1_ASM150881v1	SAMN03445123	Archaeoglobus fulgidus	Contig
-Ar_ful_GCF_001508745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/508/745/GCF_001508745.1_ASM150874v1	SAMN03445115	Archaeoglobus fulgidus	Contig
-Ar_ful_GCF_900069765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/069/765/GCF_900069765.1_ASM90006976v1	SAMEA3879005	Archaeoglobus fulgidus	Contig
+Ar_fulg_DSM_4304_GCF_000008665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/665/GCF_000008665.1_ASM866v1	SAMN02603985	Archaeoglobus fulgidus	Complete Genome
+Ar_fulg_DSM_8774_GCF_000734035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/734/035/GCF_000734035.1_ASM73403v1	SAMN03081472	Archaeoglobus fulgidus	Complete Genome
+Ar_fulg_GCA_001508815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/508/815/GCA_001508815.1_ASM150881v1	SAMN03445123	Archaeoglobus fulgidus	Contig
+Ar_fulg_GCF_001508745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/508/745/GCF_001508745.1_ASM150874v1	SAMN03445115	Archaeoglobus fulgidus	Contig
+Ar_fulg_GCF_900069765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/069/765/GCF_900069765.1_ASM90006976v1	SAMEA3879005	Archaeoglobus fulgidus	Contig
 Ar_nep_SE56_GCF_016757965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/757/965/GCF_016757965.1_ASM1675796v1	SAMN17126929	Archaeoglobus neptunius	Contig
 Ar_profundus_DSM_5631_GCF_000025285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/025/285/GCF_000025285.1_ASM2528v1	SAMN00017459	Archaeoglobus profundus	Complete Genome
 Ar_profundus_GCA_015662535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/662/535/GCA_015662535.1_ASM1566253v1	SAMN09926490	Archaeoglobus profundus	Contig
@@ -59,7 +61,7 @@ CAlt_hami_GCA_009995255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/995/2
 CAlt_hami_GCA_018260715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/260/715/GCA_018260715.1_ASM1826071v1	SAMN18220766	Candidatus Altarchaeum hamiconexum	Scaffold
 CAn_stag_GCA_902384585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/384/585/GCA_902384585.1_uncultured_DPANN_archaeon_LFW-35	SAMEA4835417	Candidatus Anstonella stagnisolia	Contig
 CAra_sulfura_GCA_000565255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/565/255/GCA_000565255.1_Az1	SAMN03444554	Candidatus Aramenus sulfurataquae	Contig
-CAra_sulfura_GCA_000961135_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/961/135/GCA_000961135.2_ASM96113v2	SAMN03323732	Candidatus Aramenus sulfurataquae	Contig
+CAra_sulfura_GCA_000961135_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/961/135/GCA_000961135.3_ASM96113v3	SAMN03323732	Candidatus Aramenus sulfurataquae	Contig
 CArg_ethani_GCA_004193545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/193/545/GCA_004193545.1_ASM419354v1	SAMN10235260	Candidatus Argoarchaeum ethanivorans	Contig
 CArg_ethani_GCA_905067475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/067/475/GCA_905067475.1_GoM-Arc1-GOM-AG-394-J04	SAMEA7490090	Candidatus Argoarchaeum ethanivorans	Contig
 CArg_ethani_GCA_905067485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/067/485/GCA_905067485.1_GoM-Arc1-GOM-AG-393-N10	SAMEA7490089	Candidatus Argoarchaeum ethanivorans	Contig
@@ -69,9 +71,10 @@ CArg_ethani_GCA_905067555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/067
 CArg_ethani_GCA_905067565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/067/565/GCA_905067565.1_GoM-Arc1-GOM-AG-392-O15	SAMEA7490088	Candidatus Argoarchaeum ethanivorans	Contig
 CArg_ethani_GCA_905067575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/067/575/GCA_905067575.1_GoM-Arc1-GOM-AG-392-E03	SAMEA7490085	Candidatus Argoarchaeum ethanivorans	Contig
 CArg_ethani_GCA_905168295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/168/295/GCA_905168295.1_GoM-Arc1_AMV-AAA_792_C10	SAMEA7726825	Candidatus Argoarchaeum ethanivorans	Contig
-CAsb_dan_GCA_034190465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/034/190/465/GCA_034190465.1_ASM3419046v1	SAMN38347920	Candidatus Asbonarchaeum danakilense	Scaffold
-CAsg_californie_GCA_003662835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/662/835/GCA_003662835.1_ASM366283v1	SAMN09214822	Candidatus Asgardarchaeum californiense	Contig
+CAs_dan_GCA_034190465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/034/190/465/GCA_034190465.1_ASM3419046v1	SAMN38347920	Candidatus Asbonarchaeum danakilense	Scaffold
+Candidatus_Asgardarchaeum_californiense_GCA_003662835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/662/835/GCA_003662835.1_ASM366283v1	SAMN09214822	Candidatus Asgardarchaeum californiense	Contig
 CBal_yap_GCA_016840465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/840/465/GCA_016840465.1_ASM1684046v1	SAMN16492200	Candidatus Baldrarchaeum yapensis	Contig
+CBathya_tardum_GCA_024650005_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/024/650/005/GCA_024650005.2_ASM2465000v2	SAMN30076288	Candidatus Bathyarchaeum tardum	Complete Genome
 CBathya_tardum_GCA_029762755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/762/755/GCA_029762755.1_ASM2976275v1	SAMN33973098	Candidatus Bathyarchaeum tardum	Contig
 CBathyc_acetig_GCA_009781675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/781/675/GCA_009781675.1_ASM978167v1	SAMN12581717	Candidatus Bathycorpusculum acetigenerans	Contig
 CBathyc_acidam_GCA_009786255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/786/255/GCA_009786255.1_ASM978625v1	SAMN12581673	Candidatus Bathycorpusculum acidaminoxidans	Contig
@@ -90,6 +93,7 @@ CCalda_subterraneum_GCA_000270325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA
 CCalda_subterraneum_GCA_015661775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/661/775/GCA_015661775.1_ASM1566177v1	SAMN09926531	Candidatus Caldarchaeum subterraneum	Contig
 CCalda_subterraneum_GCA_937934305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/937/934/305/GCA_937934305.1_H1_Bin_METABAT_153_1_1	SAMEA14073034	Candidatus Caldarchaeum subterraneum	Contig
 CCaldi_fumario_GCA_030059665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/059/665/GCA_030059665.1_ASM3005966v1	SAMN30441137	Candidatus Calditenuis fumarioli	Contig
+CCaly_nav_GCA_035175045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/035/175/045/GCA_035175045.1_ASM3517504v1	SAMN13706328	Candidatus Calypsonella navitae	Contig
 CCe_sym_GCA_000200715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/200/715/GCA_000200715.1_ASM20071v1	SAMN02744041	Candidatus Cenarchaeum symbiosum	Chromosome
 CCh_aet_GCA_034190395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/034/190/395/GCA_034190395.1_ASM3419039v1	SAMN38347917	Candidatus Chewarchaeum aethiopicum	Scaffold
 CCulexa_nev_GCA_025060975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/060/975/GCA_025060975.1_ASM2506097v1	SAMN26898848	Candidatus Culexarchaeum nevadense	Contig
@@ -105,7 +109,7 @@ CE_thermophilum_GCA_012910725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012
 CE_thermophilum_GCA_030611785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/611/785/GCA_030611785.1_ASM3061178v1	SAMN34050660	Candidatus Ethanoperedens thermophilum	Contig
 CFe_limne_GCA_013426015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/426/015/GCA_013426015.1_ASM1342601v1	SAMN15455890	Candidatus Fermentimicrarchaeum limneticum	Complete Genome
 CFo_mul_GCA_009392915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/392/915/GCA_009392915.1_ASM939291v1	SAMN08607066	Candidatus Forterrea multitransposorum	Complete Genome
-CFr_guaymae_GCA_030587405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/587/405/GCA_030587405.1_ASM3058740v1	SAMN32689777	Candidatus Freyrarchaeum guaymaensis	Contig
+CFr_guaymae_GCA_030587405_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/587/405/GCA_030587405.2_ASM3058740v2	SAMN32689777	Candidatus Freyrarchaeum guaymaensis	Contig
 CGeoc_art_GCA_023539395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/539/395/GCA_023539395.1_ASM2353939v1	SAMN24311723	Candidatus Geocrenenecus arthurdayi	Contig
 CGeoc_art_GCA_023539475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/539/475/GCA_023539475.1_ASM2353947v1	SAMN24311720	Candidatus Geocrenenecus arthurdayi	Contig
 CGeoc_art_GCA_023539555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/539/555/GCA_023539555.1_ASM2353955v1	SAMN24311714	Candidatus Geocrenenecus arthurdayi	Contig
@@ -159,6 +163,10 @@ CHec_orc_GCF_002009985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/009/98
 CHei_auk_GCA_021513695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/513/695/GCA_021513695.1_ASM2151369v1	SAMN21379712	Candidatus Heimdallarchaeum aukensis	Complete Genome
 CHei_endol_GCA_021513715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/513/715/GCA_021513715.1_ASM2151371v1	SAMN21379711	Candidatus Heimdallarchaeum endolithica	Complete Genome
 CHer_yap_GCA_016840405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/840/405/GCA_016840405.1_ASM1684040v1	SAMN16492203	Candidatus Hermodarchaeum yapensis	Contig
+CHes_acidich_GCA_015523575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/523/575/GCA_015523575.1_ASM1552357v1	SAMN12837180	Candidatus Hestiella acidicharens	Contig
+CHes_acidich_GCA_035161305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/035/161/305/GCA_035161305.1_ASM3516130v1	SAMN14146171	Candidatus Hestiella acidicharens	Contig
+CHes_acidich_GCA_035594205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/035/594/205/GCA_035594205.1_ASM3559420v1	SAMN14146173	Candidatus Hestiella acidicharens	Contig
+CHes_acidich_GCA_035616075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/035/616/075/GCA_035616075.1_ASM3561607v1	SAMN14146172	Candidatus Hestiella acidicharens	Contig
 CHo_mang_GCA_016839515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/839/515/GCA_016839515.1_ASM1683951v1	SAMN16492249	Candidatus Hodarchaeum mangrovi	Contig
 CHu_crys_GCA_002762665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/762/665/GCA_002762665.1_ASM276266v1	SAMN06659618	Candidatus Huberarchaeum crystalense	Scaffold
 CHu_crys_GCA_002780595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/780/595/GCA_002780595.1_ASM278059v1	SAMN06659194	Candidatus Huberarchaeum crystalense	Scaffold
@@ -180,7 +188,8 @@ CJi_tengchongense_GCA_025920765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/0
 CJo_mad_GCA_019056875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/056/875/GCA_019056875.1_ASM1905687v1	SAMN19461862	Candidatus Jordarchaeum madagascariense	Contig
 CK_cryp_GCF_000019605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/019/605/GCF_000019605.1_ASM1960v1	SAMN02598368	Candidatus Korarchaeum cryptofilum	Complete Genome
 CK_cryp_WS_GCF_003948265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/948/265/GCF_003948265.1_ASM394826v1	SAMN10228449	Candidatus Korarchaeum cryptofilum	Contig
-CL_oss_GCA_025839675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/839/675/GCA_025839675.1_ASM2583967v1	SAMN28933922	Candidatus Lokiarchaeum ossiferum	Complete Genome
+CLo_oss_GCA_025839675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/839/675/GCA_025839675.1_ASM2583967v1	SAMN28933922	Candidatus Lokiarchaeum ossiferum	Complete Genome
+CLu_sil_GCA_022750295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/750/295/GCA_022750295.1_ASM2275029v1	SAMN24802874	Candidatus Lutacidiplasma silvani	Contig
 CMa_acidiphilum_GCA_027353625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/353/625/GCA_027353625.1_ASM2735362v1	SAMN28406041	Candidatus Mancarchaeum acidiphilum	Scaffold
 CMa_acidiphilum_GCA_027364975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/364/975/GCA_027364975.1_ASM2736497v1	SAMN28406447	Candidatus Mancarchaeum acidiphilum	Scaffold
 CMa_acidiphilum_Mia14_GCF_002214165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/214/165/GCF_002214165.1_ASM221416v1	SAMN06014021	Candidatus Mancarchaeum acidiphilum	Complete Genome
@@ -201,8 +210,8 @@ Candidatus_Methanoculleus_thermohydrogenotrophicum_GCA_035349615_1	https://ftp.n
 Candidatus_Methanoculleus_thermohydrogenotrophicum_GCA_035409745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/035/409/745/GCA_035409745.1_ASM3540974v1	SAMN32866321	Candidatus Methanoculleus thermohydrogenotrophicum	Scaffold
 Candidatus_Methanoculleus_thermohydrogenotrophicum_GCA_035413285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/035/413/285/GCA_035413285.1_ASM3541328v1	SAMN32866144	Candidatus Methanoculleus thermohydrogenotrophicum	Scaffold
 Candidatus_Methanoculleus_thermohydrogenotrophicum_GCA_036728595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/728/595/GCA_036728595.1_ASM3672859v1	SAMN28746314	Candidatus Methanoculleus thermohydrogenotrophicum	Scaffold
-CMethanod_was_GCA_004212055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/212/055/GCA_004212055.1_ASM421205v1	SAMN10390736	Candidatus Methanodesulfokores washburnensis	Contig
-CMethanod_was_MDKW_GCF_003947435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/947/435/GCF_003947435.1_ASM394743v1	SAMN10094317	Candidatus Methanodesulfokores washburnensis	Scaffold
+CMethanod_was_GCA_004212055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/212/055/GCA_004212055.1_ASM421205v1	SAMN10390736	Candidatus Methanodesulfokora washburnensis	Contig
+CMethanod_was_MDKW_GCF_003947435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/947/435/GCF_003947435.1_ASM394743v1	SAMN10094317	Candidatus Methanodesulfokora washburnensis	Scaffold
 CMethanofa_methylo_GCA_001587575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/587/575/GCA_001587575.1_ASM158757v1	SAMN04009752	Candidatus Methanofastidiosum methylothiophilum	Contig
 CMethanofa_methylo_GCA_001587595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/587/595/GCA_001587595.1_ASM158759v1	SAMN04009747	Candidatus Methanofastidiosum methylothiophilum	Scaffold
 CMethanofa_methylo_GCA_001587605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/587/605/GCA_001587605.1_ASM158760v1	SAMN04009748	Candidatus Methanofastidiosum methylothiophilum	Scaffold
@@ -275,7 +284,7 @@ CMethanosu_subterraneus_GCA_004028775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all
 CMethanov_aeq_GCA_031282205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/031/282/205/GCA_031282205.1_ASM3128220v1	SAMN21242246	Candidatus Methanovirga aequatorialis	Contig
 CMethanov_australis_GCA_031272765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/031/272/765/GCA_031272765.1_ASM3127276v1	SAMN21241959	Candidatus Methanovirga australis	Contig
 CMethanov_bas_GCA_031284445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/031/284/445/GCA_031284445.1_ASM3128444v1	SAMN21242134	Candidatus Methanovirga basalitermitum	Contig
-CMethanov_mer_GCA_031289325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/031/289/325/GCA_031289325.1_ASM3128932v1	SAMN21242546	Candidatus Methanovirga meridionalis	Contig
+CMethanov_meridio_GCA_031289325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/031/289/325/GCA_031289325.1_ASM3128932v1	SAMN21242546	Candidatus Methanovirga meridionalis	Contig
 CMethanov_proc_GCA_031280375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/031/280/375/GCA_031280375.1_ASM3128037v1	SAMN21242314	Candidatus Methanovirga procula	Contig
 CMethanox_ujae_GCA_025966575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/966/575/GCA_025966575.1_ASM2596657v1	SAMN30679452	Candidatus Methanoxibalbensis ujae	Scaffold
 CMethanox_ujae_GCA_026134085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/134/085/GCA_026134085.1_ASM2613408v1	SAMN30638905	Candidatus Methanoxibalbensis ujae	Scaffold
@@ -291,11 +300,14 @@ CNanob_ste_GCA_003086475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/086/
 CNanob_ste_GCF_003086415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/086/415/GCF_003086415.1_ASM308641v2	SAMN06968103	Candidatus Nanobsidianus stetteri	Contig
 CNanoc_min_GCA_003568775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/568/775/GCA_003568775.1_ASM356877v1	SAMN06250747	Candidatus Nanoclepta minutus	Contig
 CNanohala_halalkaliphilum_GCA_022729315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/729/315/GCA_022729315.1_ASM2272931v1	SAMN26744059	Candidatus Nanohalalkaliarchaeum halalkaliphilum	Contig
-CNanohalo_cons_LC1Nh_GCF_009617975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/617/975/GCF_009617975.1_ASM961797v1	SAMN11370769	Candidatus Nanohalobium constans	Complete Genome
+CNanohalob_cons_LC1Nh_GCF_009617975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/617/975/GCF_009617975.1_ASM961797v1	SAMN11370769	Candidatus Nanohalobium constans	Complete Genome
+CNanohaloc_occultus_SVXNc_GCF_029207735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/207/735/GCF_029207735.1_ASM2920773v1	SAMN30630938	Candidatus Nanohalococcus occultus	Complete Genome
+CNanohalov_halof_BNXNv_GCF_029232205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/232/205/GCF_029232205.1_ASM2923220v1	SAMN30630966	Candidatus Nanohalovita haloferacivicina	Complete Genome
 CNanop_acidil_7A_GCA_001552015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/552/015/GCA_001552015.1_ASM155201v1	SAMN03173949	Candidatus Nanopusillus acidilobi	Complete Genome
 CNanop_mas_Marseille_Q6268_GCF_920984865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/920/984/865/GCF_920984865.1_Q6268	SAMEA10801704	Candidatus Nanopusillus massiliensis	Scaffold
 Candidatus_Nitrosarchaeum_limnium_BG20_GCF_000241145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/241/145/GCF_000241145.1_ASM24114v2	SAMN00016663	Candidatus Nitrosarchaeum limnium	Contig
 Candidatus_Nitrosarchaeum_limnium_SFB1_GCA_000204585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/204/585/GCA_000204585.1_ASM20458v1	SAMN02471010	Candidatus Nitrosarchaeum limnium	Chromosome
+CNitrosoa_spo_GCA_033471095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/033/471/095/GCA_033471095.1_ASM3347109v1	SAMN37319669	Candidatus Nitrosoabyssus spongiisocia	Complete Genome
 CNitrosoca_cav_SCU2_GCF_900248165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/248/165/GCF_900248165.1_Nitrosocaldus_cavascurensis_SCU2_chromosome	SAMEA104466896	Candidatus Nitrosocaldus cavascurensis	Complete Genome
 CNitrosoca_islandicus_GCF_002906215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/906/215/GCF_002906215.1_ASM290621v1	SAMN07759886	Candidatus Nitrosocaldus islandicus	Complete Genome
 CNitrosoca_sch_GCA_013538695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/538/695/GCA_013538695.1_ASM1353869v1	SAMN14754800	Candidatus Nitrosocaldus schleperae	Scaffold
@@ -309,14 +321,30 @@ CNitrosoco_fra_GCA_937896355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/937/
 CNitrosoco_fra_GCF_900696045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/696/045/GCF_900696045.1_Nitrosocosmicus_franklandus_C13	SAMEA5366454	Candidatus Nitrosocosmicus franklandus	Complete Genome
 CNitrosoco_hydroco_G61_GCF_001870125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/870/125/GCF_001870125.1_ASM187012v1	SAMN04606696	Candidatus Nitrosocosmicus hydrocola	Complete Genome
 CNitrosoco_oleo_MY3_GCF_000802205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/802/205/GCF_000802205.1_ASM80220v2	SAMN03074222	Candidatus Nitrosocosmicus oleophilus	Complete Genome
-CNitrosom_cata_GCA_021268345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/268/345/GCA_021268345.1_ASM2126834v1	SAMN22441886	Candidatus Nitrosomarinus catalina	Scaffold
-CNitrosom_cata_GCA_029977265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/977/265/GCA_029977265.1_ASM2997726v1	SAMN31727356	Candidatus Nitrosomarinus catalina	Contig
-CNitrosom_cata_GCA_029977565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/977/565/GCA_029977565.1_ASM2997756v1	SAMN31727342	Candidatus Nitrosomarinus catalina	Contig
-CNitrosom_cata_SPOT01_GCF_002156965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/156/965/GCF_002156965.1_ASM215696v1	SAMN05730076	Candidatus Nitrosomarinus catalina	Complete Genome
+CNitrosomarin_cata_GCA_021268345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/268/345/GCA_021268345.1_ASM2126834v1	SAMN22441886	Candidatus Nitrosomarinus catalina	Scaffold
+CNitrosomarin_cata_GCA_029977265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/977/265/GCA_029977265.1_ASM2997726v1	SAMN31727356	Candidatus Nitrosomarinus catalina	Contig
+CNitrosomarin_cata_GCA_029977565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/977/565/GCA_029977565.1_ASM2997756v1	SAMN31727342	Candidatus Nitrosomarinus catalina	Contig
+CNitrosomarin_cata_GCA_040261365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/040/261/365/GCA_040261365.1_ASM4026136v1	SAMN37158374	Candidatus Nitrosomarinus catalina	Scaffold
+CNitrosomarin_cata_SPOT01_GCF_002156965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/156/965/GCF_002156965.1_ASM215696v1	SAMN05730076	Candidatus Nitrosomarinus catalina	Complete Genome
+CNitrosomarit_aes_GCA_009937485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/937/485/GCA_009937485.1_ASM993748v1	SAMN13826824	Candidatus Nitrosomaritimum aestuariumsis	Contig
+CNitrosomarit_aes_GCA_042138155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/138/155/GCA_042138155.1_ASM4213815v1	SAMN43471736	Candidatus Nitrosomaritimum aestuariumsis	Contig
+CNitrosomarit_aes_GCA_042138215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/138/215/GCA_042138215.1_ASM4213821v1	SAMN43471735	Candidatus Nitrosomaritimum aestuariumsis	Contig
+CNitrosomarit_aes_GCA_042138235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/138/235/GCA_042138235.1_ASM4213823v1	SAMN43471734	Candidatus Nitrosomaritimum aestuariumsis	Scaffold
+CNitrosomarit_aes_GCA_042138285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/138/285/GCA_042138285.1_ASM4213828v1	SAMN43471733	Candidatus Nitrosomaritimum aestuariumsis	Contig
+CNitrosomarit_kha_GCA_011771385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/771/385/GCA_011771385.1_ASM1177138v1	SAMN13684501	Candidatus Nitrosomaritimum khambatensis	Scaffold
+CNitrosomarit_kha_GCA_011772925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/772/925/GCA_011772925.1_ASM1177292v1	SAMN13684423	Candidatus Nitrosomaritimum khambatensis	Scaffold
+CNitrosomarit_kha_GCA_011773125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/773/125/GCA_011773125.1_ASM1177312v1	SAMN13684413	Candidatus Nitrosomaritimum khambatensis	Scaffold
+CNitrosomarit_kha_GCA_011773785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/773/785/GCA_011773785.1_ASM1177378v1	SAMN13684380	Candidatus Nitrosomaritimum khambatensis	Scaffold
+CNitrosomarit_yanc_GCA_042138115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/138/115/GCA_042138115.1_ASM4213811v1	SAMN43471739	Candidatus Nitrosomaritimum yanchengensis	Contig
+CNitrosomarit_yanc_GCA_042138125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/138/125/GCA_042138125.1_ASM4213812v1	SAMN43471740	Candidatus Nitrosomaritimum yanchengensis	Scaffold
+CNitrosomarit_yanc_GCA_042138165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/138/165/GCA_042138165.1_ASM4213816v1	SAMN43471738	Candidatus Nitrosomaritimum yanchengensis	Scaffold
+CNitrosomarit_yanc_GCA_042138175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/138/175/GCA_042138175.1_ASM4213817v1	SAMN43471737	Candidatus Nitrosomaritimum yanchengensis	Contig
 CNitrosope_brevis_CN25_GCF_000812185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/812/185/GCF_000812185.1_ASM81218v1	SAMN03273964	Candidatus Nitrosopelagicus brevis	Complete Genome
 CNitrosope_brevis_GCA_012928565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/928/565/GCA_012928565.1_ASM1292856v1	SAMN10866839	Candidatus Nitrosopelagicus brevis	Contig
+CNitrosope_brevis_GCA_041252515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/041/252/515/GCA_041252515.1_ASM4125251v1	SAMN41429875	Candidatus Nitrosopelagicus brevis	Contig
 CNitrosope_brevis_GCA_937912085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/937/912/085/GCA_937912085.1_ERR599171_bin.43_CONCOCT_v1.1_MAG	SAMEA14075394	Candidatus Nitrosopelagicus brevis	Contig
 CNitrosope_brevis_GCA_949498195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/949/498/195/GCA_949498195.1_GEN_BGC_Atlantic-Pacific_2011_bin.349_MAG	SAMEA112746687	Candidatus Nitrosopelagicus brevis	Contig
+CNitrosope_brevis_GCA_964229875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/229/875/GCA_964229875.1_YZ10D_2.76_sub	SAMEA115926417	Candidatus Nitrosopelagicus brevis	Contig
 CNitrosope_brevis_U25_GCF_003045125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/045/125/GCF_003045125.1_CN25urea_metaspades	SAMN04990266	Candidatus Nitrosopelagicus brevis	Contig
 CNitrosopo_kil_GCA_933226985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/933/226/985/GCA_933226985.1_S1130_Bin_3	SAMEA13348239	Candidatus Nitrosopolaris kilpisjaerviensis	Contig
 CNitrosopo_nun_GCA_002495965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/495/965/GCA_002495965.1_ASM249596v1	SAMN06027441	Candidatus Nitrosopolaris nunavutensis	Scaffold
@@ -347,12 +375,8 @@ Candidatus_Nitrosopumilus_sediminis_AR2_GCF_000299395_1	https://ftp.ncbi.nlm.nih
 Candidatus_Nitrososphaera_evergladensis_GCF_000730285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/730/285/GCF_000730285.1_ASM73028v1	SAMN03081530	Candidatus Nitrososphaera evergladensis	Complete Genome
 Candidatus_Nitrososphaera_gargensis_GCA_036678105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/678/105/GCA_036678105.1_ASM3667810v1	SAMN38082974	Candidatus Nitrososphaera gargensis	Contig
 Candidatus_Nitrososphaera_gargensis_GCF_000303155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/303/155/GCF_000303155.1_ASM30315v1	SAMN02603264	Candidatus Nitrososphaera gargensis	Complete Genome
-CNitrosota_bavarica_GCF_900167955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/167/955/GCF_900167955.1_ASM90016795v1	SAMEA101071168	Candidatus Nitrosotalea bavarica	Scaffold
-CNitrosota_dev_GCA_025450535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/450/535/GCA_025450535.1_ASM2545053v1	SAMN30436130	Candidatus Nitrosotalea devanaterra	Contig
-CNitrosota_dev_GCA_900065925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/065/925/GCA_900065925.1_NDEV.embl.gz	SAMEA3577360	Candidatus Nitrosotalea devanaterra	Complete Genome
-CNitrosota_okc_GCF_900177045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/177/045/GCF_900177045.1_Candidatus_Nitrosotalea_koreensis_CS_whole_genome	SAMEA20449168	Candidatus Nitrosotalea okcheonensis	Chromosome
-CNitrosota_sine_GCA_037916125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/916/125/GCA_037916125.1_ASM3791612v1	SAMN38376970	Candidatus Nitrosotalea sinensis	Contig
-CNitrosota_sine_GCF_900143675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/143/675/GCF_900143675.1_Candidatus_Nitrosotalea_sinensis_Nd2_whole_genome	SAMEA20449918	Candidatus Nitrosotalea sinensis	Contig
+Candidatus_Nitrosotalea_bavarica_GCF_900167955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/167/955/GCF_900167955.1_ASM90016795v1	SAMEA101071168	Candidatus Nitrosotalea bavarica	Scaffold
+Candidatus_Nitrosotalea_okcheonensis_GCF_900177045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/177/045/GCF_900177045.1_Candidatus_Nitrosotalea_koreensis_CS_whole_genome	SAMEA20449168	Candidatus Nitrosotalea okcheonensis	Chromosome
 CNitrosote_aquar_AQ6F_GCF_002787055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/787/055/GCF_002787055.1_ASM278705v1	SAMN07637255	Candidatus Nitrosotenuis aquarius	Complete Genome
 CNitrosote_chungb_MY2_GCF_000685395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/685/395/GCF_000685395.1_NKMY2	SAMN02767256	Candidatus Nitrosotenuis chungbukensis	Contig
 CNitrosote_chungb_MY2_GCF_030518575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/518/575/GCF_030518575.1_ASM3051857v1	SAMN35994745	Candidatus Nitrosotenuis chungbukensis	Complete Genome
@@ -363,9 +387,9 @@ CNitrosote_uzonensis_N4_GCF_000723185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all
 CNitrosoth_koe_GCA_003695185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/695/185/GCA_003695185.1_ASM369518v1	SAMN10119979	Candidatus Nitrosothermus koennekii	Contig
 CNitrosoth_koe_GCA_013538715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/538/715/GCA_013538715.1_ASM1353871v1	SAMN14668019	Candidatus Nitrosothermus koennekii	Contig
 CNitrosoth_koe_GCA_013538795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/538/795/GCA_013538795.1_ASM1353879v1	SAMN14754798	Candidatus Nitrosothermus koennekii	Scaffold
-CNj_guaymae_GCA_030587605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/587/605/GCA_030587605.1_ASM3058760v1	SAMN32689767	Candidatus Njordarchaeum guaymaensis	Contig
+CNj_guaymae_GCA_030587605_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/587/605/GCA_030587605.2_ASM3058760v2	SAMN32689767	Candidatus Njordarchaeum guaymaensis	Contig
 CNj_log_GCA_029856705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/856/705/GCA_029856705.1_ASM2985670v1	SAMN18753884	Candidatus Njordarchaeum logiae	Contig
-CNo_mer_GCA_902384935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/384/935/GCA_902384935.1_uncultured_DPANN_archaeon_LFW-144_1	SAMEA4835423	Candidatus Norongarragalina meridionalis	Contig
+CNo_meridio_GCA_902384935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/384/935/GCA_902384935.1_uncultured_DPANN_archaeon_LFW-144_1	SAMEA4835423	Candidatus Norongarragalina meridionalis	Contig
 CO_yellowstonii_GCA_001940665_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/940/665/GCA_001940665.2_ASM194066v2	SAMN04924820	Candidatus Odinarchaeum yellowstonii	Complete Genome
 CPa_acidiphilum_GCA_002412065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/412/065/GCA_002412065.1_ASM241206v1	SAMN40972715	Candidatus Parvarchaeum acidiphilum	Scaffold
 CPa_acidophilus_GCA_002412085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/412/085/GCA_002412085.1_ASM241208v1	SAMN40972716	Candidatus Parvarchaeum acidophilus	Scaffold
@@ -388,7 +412,6 @@ CPo_alp_GCA_028229035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/028/229/035
 CPo_alp_GCA_028357115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/028/357/115/GCA_028357115.1_ASM2835711v1	SAMN29366134	Candidatus Poseidonia alphae	Contig
 CPo_alp_GCA_905478305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/478/305/GCA_905478305.1_0.2_20180405_Bin_MAXBIN_070_sub_1	SAMEA8498414	Candidatus Poseidonia alphae	Contig
 CPo_alp_GCF_943787815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/943/787/815/GCF_943787815.1_08042020_METABAT_45	SAMEA110055894	Candidatus Poseidonia alphae	Contig
-CPr_syn_MK_D1_GCF_008000775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/008/000/775/GCF_008000775.1_ASM800077v1	SAMN12405820	Candidatus Prometheoarchaeum syntrophicum	Complete Genome
 CPy_jun_GCA_002010065_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/010/065/GCA_002010065.2_ASM201006v2	SAMN06226333	Candidatus Pyrohabitans jungbluthii	Contig
 CR_ferm_GCA_025920315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/920/315/GCA_025920315.1_ASM2592031v1	SAMN31079403	Candidatus Rehaiarchaeum fermentans	Scaffold
 CR_ferm_GCA_025920365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/920/365/GCA_025920365.1_ASM2592036v1	SAMN31079405	Candidatus Rehaiarchaeum fermentans	Contig
@@ -410,15 +433,15 @@ CSa_halalkaliphilum_GCA_019594235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA
 CSc_otl_GCA_002011075_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/011/075/GCA_002011075.2_ASM201107v2	SAMN06226330	Candidatus Scotarchaeum otlingeri	Scaffold
 CSif_marino_GCA_016294985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/294/985/GCA_016294985.1_ASM1629498v1	SAMN16874501	Candidatus Sifarchaeum marinoarchaea	Scaffold
 CSif_subterraneum_GCA_016292335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/292/335/GCA_016292335.1_ASM1629233v1	SAMN16874502	Candidatus Sifarchaeum subterraneum	Contig
-CSig_spr_GCA_030587475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/587/475/GCA_030587475.1_ASM3058747v1	SAMN32689773	Candidatus Sigynarchaeum springense	Contig
+CSig_spr_GCA_030587475_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/587/475/GCA_030587475.2_ASM3058747v2	SAMN32689773	Candidatus Sigynarchaeum springense	Contig
 CSyn_buta_GCA_001766825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/766/825/GCA_001766825.1_ASM176682v1	SAMN04871411	Candidatus Syntrophoarchaeum butanivorans	Scaffold
 CSyn_buta_GCA_011042965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/042/965/GCA_011042965.1_ASM1104296v1	SAMN09638356	Candidatus Syntrophoarchaeum butanivorans	Contig
 CSyn_buta_GCA_011052865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/052/865/GCA_011052865.1_ASM1105286v1	SAMN09638579	Candidatus Syntrophoarchaeum butanivorans	Contig
 CSyn_calda_GCA_001766815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/766/815/GCA_001766815.1_ASM176681v1	SAMN04880560	Candidatus Syntrophoarchaeum caldarius	Scaffold
-CSys_acidic_GCA_019720995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/720/995/GCA_019720995.1_ASM1972099v1	SAMN19136074	Candidatus Sysuiplasma acidicola	Scaffold
-CSys_acidic_GCA_019721035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/721/035/GCA_019721035.1_ASM1972103v1	SAMN19132093	Candidatus Sysuiplasma acidicola	Scaffold
-CSys_acidic_GCA_019721095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/721/095/GCA_019721095.1_ASM1972109v1	SAMN19136072	Candidatus Sysuiplasma acidicola	Scaffold
-CSys_acidic_GCA_027379185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/379/185/GCA_027379185.1_ASM2737918v1	SAMN28407299	Candidatus Sysuiplasma acidicola	Contig
+CSys_acidico_GCA_019720995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/720/995/GCA_019720995.1_ASM1972099v1	SAMN19136074	Candidatus Sysuiplasma acidicola	Scaffold
+CSys_acidico_GCA_019721035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/721/035/GCA_019721035.1_ASM1972103v1	SAMN19132093	Candidatus Sysuiplasma acidicola	Scaffold
+CSys_acidico_GCA_019721095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/721/095/GCA_019721095.1_ASM1972109v1	SAMN19136072	Candidatus Sysuiplasma acidicola	Scaffold
+CSys_acidico_GCA_027379185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/379/185/GCA_027379185.1_ASM2737918v1	SAMN28407299	Candidatus Sysuiplasma acidicola	Contig
 CSys_jiu_GCA_019720955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/720/955/GCA_019720955.1_ASM1972095v1	SAMN19027592	Candidatus Sysuiplasma jiujiangense	Scaffold
 CSys_jiu_GCA_019721015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/721/015/GCA_019721015.1_ASM1972101v1	SAMN19136075	Candidatus Sysuiplasma jiujiangense	Scaffold
 CSys_jiu_GCA_019721075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/721/075/GCA_019721075.1_ASM1972107v1	SAMN19132095	Candidatus Sysuiplasma jiujiangense	Scaffold
@@ -453,7 +476,9 @@ CTh_bet_GCA_003193925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/193/925
 CTh_bet_GCA_022447095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/447/095/GCA_022447095.1_ASM2244709v1	SAMN25999174	Candidatus Thalassarchaeum betae	Contig
 CTh_bet_GCF_022448665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/448/665/GCF_022448665.1_ASM2244866v1	SAMN25999173	Candidatus Thalassarchaeum betae	Scaffold
 CTh_bet_GCF_022448685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/448/685/GCF_022448685.1_ASM2244868v1	SAMN25999172	Candidatus Thalassarchaeum betae	Contig
-CTi_ans_GCA_902385255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/385/255/GCA_902385255.1_uncultured_DPANN_archaeon_LFW-252_1	SAMEA4835432	Candidatus Tiddalikarchaeum anstoanum	Contig
+Candidatus_Thermodiscus_eudorianus_GCA_015521085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/521/085/GCA_015521085.1_ASM1552108v1	SAMN12837307	Candidatus Thermodiscus eudorianus	Contig
+CTia_inc_GCA_015522635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/522/635/GCA_015522635.1_ASM1552263v1	SAMN12837229	Candidatus Tiamatella incendiivivens	Contig
+CTid_ans_GCA_902385255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/902/385/255/GCA_902385255.1_uncultured_DPANN_archaeon_LFW-252_1	SAMEA4835432	Candidatus Tiddalikarchaeum anstoanum	Contig
 CU_marinum_GCA_014189715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/189/715/GCA_014189715.1_ASM1418971v1	SAMN14218523	Candidatus Undinarchaeum marinum	Contig
 CWo_all_GCA_023539485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/539/485/GCA_023539485.1_ASM2353948v1	SAMN24311718	Candidatus Wolframiiraptor allenii	Contig
 CWo_all_GCA_023539495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/539/495/GCA_023539495.1_ASM2353949v1	SAMN24311721	Candidatus Wolframiiraptor allenii	Contig
@@ -480,6 +505,7 @@ Co_calida_NAS_02_GCF_013340765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/01
 Cu_div_GCA_027366925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/366/925/GCA_027366925.1_ASM2736692v1	SAMN28407082	Cuniculiplasma divulgatum	Contig
 Cu_div_GCA_027366975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/366/975/GCA_027366975.1_ASM2736697v1	SAMN28407081	Cuniculiplasma divulgatum	Contig
 Cu_div_GCA_031200235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/031/200/235/GCA_031200235.1_ASM3120023v1	SAMN37179812	Cuniculiplasma divulgatum	Complete Genome
+Cu_div_GCA_043196225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/043/196/225/GCA_043196225.1_ASM4319622v1	SAMN40547758	Cuniculiplasma divulgatum	Contig
 Cu_div_PM4_JCM_30641_VKM_B_2940_GCF_900090055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/090/055/GCF_900090055.1_C.divulgatum_PM4	SAMEA3719624	Cuniculiplasma divulgatum	Complete Genome
 Cu_div_S5_T_JCM_30642_VKM_B_2941_GCF_900083515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/083/515/GCF_900083515.1_ASM90008351v1	SAMEA3719625	Cuniculiplasma divulgatum	Complete Genome
 D_amylolyticus_1221n_GCF_000020905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/020/905/GCF_000020905.1_ASM2090v1	SAMN02603098	Desulfurococcus amylolyticus	Complete Genome
@@ -515,8 +541,8 @@ Ferv_fon_GCA_002871295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/871/29
 Ferv_fon_GCA_011057145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/057/145/GCA_011057145.1_ASM1105714v1	SAMN09639183	Fervidicoccus fontis	Contig
 Ferv_fon_GCF_011057105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/057/105/GCF_011057105.1_ASM1105710v1	SAMN09639186	Fervidicoccus fontis	Contig
 Ferv_fon_Kam940_GCF_000258425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/258/425/GCF_000258425.1_ASM25842v1	SAMN02603095	Fervidicoccus fontis	Complete Genome
-G_acetiv_SBH6_GCA_000789255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/789/255/GCA_000789255.1_ASM78925v1	SAMN03070125	Geoglobus acetivorans	Complete Genome
 G_acetiv_SBH6_GCA_015163485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/163/485/GCA_015163485.1_ASM1516348v1	SAMN16077771	Geoglobus acetivorans	Contig
+G_acetiv_SBH6_GCF_000789255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/789/255/GCF_000789255.1_ASM78925v1	SAMN03070125	Geoglobus acetivorans	Complete Genome
 G_acetiv_SBH6_GCF_039641995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/039/641/995/GCF_039641995.1_ASM3964199v1	SAMN23316877	Geoglobus acetivorans	Complete Genome
 G_aha_234_GCF_001006045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/006/045/GCF_001006045.1_ASM100604v1	SAMN02988852	Geoglobus ahangari	Complete Genome
 Halad_caseinilyticus_ZJ1_GCF_026248685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/248/685/GCF_026248685.1_ASM2624868v1	SAMN31580283	Haladaptatus caseinilyticus	Complete Genome
@@ -524,6 +550,7 @@ Halad_ciba_D43_GCF_000710615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/
 Halad_halobius_PSR5_GCF_020618475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/618/475/GCF_020618475.1_ASM2061847v1	SAMN22361724	Haladaptatus halobius	Complete Genome
 Halad_litoreus_CGMCC_1_7737_GCF_900156425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/156/425/GCF_900156425.1_IMG-taxon_2681812914_annotated_assembly	SAMN05421858	Haladaptatus litoreus	Scaffold
 Halad_pallidi_JCM_17504_GCF_039544045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/039/544/045/GCF_039544045.1_ASM3954404v1	SAMD00645855	Haladaptatus pallidirubidus	Scaffold
+Halad_pallidi_JCM_17504_GCF_042429455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/429/455/GCF_042429455.1_ASM4242945v1	SAMN43281739	Haladaptatus pallidirubidus	Contig
 Halad_pallidi_YIM_93656_GCF_020700235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/700/235/GCF_020700235.1_ASM2070023v1	SAMN22364628	Haladaptatus pallidirubidus	Complete Genome
 Halad_pau_DX253_GCF_000187225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/187/225/GCF_000187225.1_ASM18722v1	SAMN02470763	Haladaptatus paucihalophilus	Contig
 Halad_pau_DX253_GCF_000376445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/376/445/GCF_000376445.1_ASM37644v1	SAMN02441396	Haladaptatus paucihalophilus	Contig
@@ -535,6 +562,7 @@ Halalkalic_jeo_B3_GCF_000337255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/0
 Halalkalic_jeo_B3_GCF_000485535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/485/535/GCF_000485535.1_ASM48553v1	SAMN02440736	Halalkalicoccus jeotgali	Scaffold
 Halalkalic_pau_DSM_24557_GCF_001593955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/593/955/GCF_001593955.1_ASM159395v1	SAMN04516086	Halalkalicoccus paucihalophilus	Contig
 Halalkalic_subterraneus_GSM28_GCF_003697815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/697/815/GCF_003697815.1_ASM369781v1	SAMN10255636	Halalkalicoccus subterraneus	Scaffold
+Halalkalic_tibetensis_CGMCC_1_15793_GCF_042662025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/025/GCF_042662025.1_ASM4266202v1	SAMN43283279	Halalkalicoccus tibetensis	Contig
 Halalkalic_tibetensis_DS12_GCF_037996645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/996/645/GCF_037996645.1_ASM3799664v1	SAMN40704560	Halalkalicoccus tibetensis	Contig
 Halalkalir_salinum_N1521_GCF_005543295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/005/543/295/GCF_005543295.1_ASM554329v1	SAMN11321757	Halalkalirubrum salinum	Scaffold
 Halan_sulfurir_HSR2_GCF_001011115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/011/115/GCF_001011115.1_ASM101111v1	SAMN02899090	Halanaeroarchaeum sulfurireducens	Complete Genome
@@ -545,7 +573,7 @@ Halap_desulfurica_HSR_Bgl_GCF_017094445_1	https://ftp.ncbi.nlm.nih.gov/genomes/a
 Halap_desulfurica_HSR_Est_GCF_017094465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/094/465/GCF_017094465.1_ASM1709446v1	SAMN16484257	Halapricum desulfuricans	Complete Genome
 Halap_hydrolyticum_HArc_curdl5_1_GCF_025517535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/517/535/GCF_025517535.1_ASM2551753v1	SAMN30921870	Halapricum hydrolyticum	Contig
 Halap_hydrolyticum_HArc_curdl7_GCF_025517565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/517/565/GCF_025517565.1_ASM2551756v1	SAMN30921871	Halapricum hydrolyticum	Scaffold
-Halap_salinum_CBA1105_GCF_000755225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/755/225/GCF_000755225.1_ASM75522v1	SAMD00019894	Halapricum salinum	Contig
+Halap_salinum_CBA1105_GCA_000755225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/755/225/GCA_000755225.1_ASM75522v1	SAMD00019894	Halapricum salinum	Contig
 Halap_salinum_CBA1105_GCF_004799665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/799/665/GCF_004799665.1_ASM479966v1	SAMN09711547	Halapricum salinum	Complete Genome
 Halar_acidiphilum_JCM_16109_GCF_000474235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/474/235/GCF_000474235.1_ASM47423v1	SAMD00036764	Halarchaeum acidiphilum	Contig
 Halar_acidiphilum_MH1_52_1_GCF_000400975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/400/975/GCF_000400975.1_ASM40097v1	SAMD00036650	Halarchaeum acidiphilum	Contig
@@ -557,10 +585,15 @@ Halar_salinum_JCM_16330_GCF_039520965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all
 Halar_solik_DSM_26612_GCF_017874695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/874/695/GCF_017874695.1_ASM1787469v1	SAMN18245933	Halarchaeum solikamskense	Contig
 Hale_soli_SYSU_A9_0_GCF_002844195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/844/195/GCF_002844195.1_ASM284419v1	SAMN07633033	Halegenticoccus soli	Scaffold
 Hale_SYSU_A00711_GCF_004116405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/116/405/GCF_004116405.1_ASM411640v1	SAMN08348395	Halegenticoccus tardaugens	Contig
+Haloarch_amylolyticus_CCUG_50883_GCF_042678045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/678/045/GCF_042678045.1_ASM4267804v1	SAMN43282686	Haloarchaeobius amylolyticus	Scaffold
 Haloarch_amylolyticus_XD48_GCF_026616195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/616/195/GCF_026616195.1_ASM2661619v1	SAMN29856471	Haloarchaeobius amylolyticus	Contig
+Haloarch_ira_IBRC_M_10013_GCF_042651705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/651/705/GCF_042651705.1_ASM4265170v1	SAMN43281915	Haloarchaeobius iranensis	Contig
+Haloarch_ira_IBRC_M_10013_GCF_042683225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/683/225/GCF_042683225.1_ASM4268322v1	SAMN43282489	Haloarchaeobius iranensis	Contig
+Haloarch_litoreus_CGMCC_1_7030_GCF_042677925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/677/925/GCF_042677925.1_ASM4267792v1	SAMN43282680	Haloarchaeobius litoreus	Scaffold
 Haloarch_litoreus_GX1_GCF_024495425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/495/425/GCF_024495425.1_ASM2449542v1	SAMN29862086	Haloarchaeobius litoreus	Contig
 Haloarch_salinus_YC82_GCF_024464185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/464/185/GCF_024464185.1_ASM2446418v1	SAMN29881929	Haloarchaeobius salinus	Contig
 Haloarcu_amylolytica_JCM_13557_GCF_000336615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/615/GCF_000336615.1_ASM33661v1	SAMN02471637	Haloarcula amylolytica	Contig
+Haloarcu_amylov_LR21_GCF_004681185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/681/185/GCF_004681185.1_ASM468118v1	SAMN11269098	Haloarcula amylovorans	Scaffold
 Haloarcu_arge_DSM_12282_GCF_000336895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/895/GCF_000336895.1_ASM33689v1	SAMN02471678	Haloarcula argentinensis	Contig
 Haloarcu_arge_H5_DGR_GCA_000815385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/815/385/GCA_000815385.1_ASM81538v1	SAMN03273288	Haloarcula argentinensis	Contig
 Haloarcu_arge_JCM_15759_GCF_014647095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/647/095/GCF_014647095.1_ASM1464709v1	SAMD00245258	Haloarcula argentinensis	Contig
@@ -582,19 +615,33 @@ Haloarcu_hispanica_N601_GCF_000504565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all
 Haloarcu_hispanica_NBRC_102182_GCF_039545215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/039/545/215/GCF_039545215.1_ASM3954521v1	SAMD00540181	Haloarcula hispanica	Contig
 Haloarcu_japonica_DSM_6131_GCF_000336635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/635/GCF_000336635.1_ASM33663v1	SAMN02471638	Haloarcula japonica	Contig
 Haloarcu_japonica_NBRC_101032_GCF_039545195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/039/545/195/GCF_039545195.1_ASM3954519v1	SAMD00539702	Haloarcula japonica	Contig
+Haloarcu_lam_LYG_108_GCF_025457605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/457/605/GCF_025457605.1_ASM2545760v1	SAMN29406503	Haloarcula laminariae	Contig
+Haloarcu_lam_LYG_24_GCF_025457585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/457/585/GCF_025457585.1_ASM2545758v1	SAMN29406474	Haloarcula laminariae	Contig
+Haloarcu_JCM_183640_GCF_019061235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/061/235/GCF_019061235.1_ASM1906123v1	SAMN19844820	Haloarcula limicola	Contig
+Haloarcu_YGHS32_GCF_010119205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/119/205/GCF_010119205.1_ASM1011920v1	SAMN13386517	Haloarcula limicola	Contig
 Haloarcu_litorea_GDY20_GCF_029338195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/338/195/GCF_029338195.1_ASM2933819v1	SAMN33658220	Haloarcula litorea	Complete Genome
 Haloarcu_mannanilytica_MD_130_GCF_005406125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/005/406/125/GCF_005406125.1_ASM540612v1	SAMD00159535	Haloarcula mannanilytica	Contig
+Haloarcu_marina_DT1_GCF_024218775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/218/775/GCF_024218775.1_ASM2421877v1	SAMN29406380	Haloarcula marina	Complete Genome
+Haloarcu_marina_YSSS71_GCF_024218815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/218/815/GCF_024218815.1_ASM2421881v1	SAMN29406388	Haloarcula marina	Complete Genome
 Haloarcu_marism_ATCC_43049_GCF_000011085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/011/085/GCF_000011085.1_ASM1108v1	SAMN02603385	Haloarcula marismortui	Complete Genome
 Haloarcu_marism_ATCC_43049_GCF_005310945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/005/310/945/GCF_005310945.1_ASM531094v1	SAMN11356379	Haloarcula marismortui	Complete Genome
+Haloarcu_nitra_F27_GCF_019599505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/505/GCF_019599505.1_ASM1959950v1	SAMN10397890	Haloarcula nitratireducens	Contig
 Haloarcu_ordinaria_ZS_22_S1_GCF_029338275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/338/275/GCF_029338275.1_ASM2933827v1	SAMN33693502	Haloarcula ordinaria	Complete Genome
 Haloarcu_pelagica_YJ_61_S_GCF_030127105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/127/105/GCF_030127105.1_ASM3012710v1	SAMN33693483	Haloarcula pelagica	Complete Genome
+Haloarcu_pellu_CECT_7537_GCF_019599515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/515/GCF_019599515.1_ASM1959951v1	SAMN10397914	Haloarcula pellucida	Contig
+Haloarcu_pellu_JCM_17820_GCF_014647235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/647/235/GCF_014647235.1_ASM1464723v1	SAMD00245267	Haloarcula pellucida	Contig
 Haloarcu_qua_DSM_11927_GCF_003634715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/634/715/GCF_003634715.1_ASM363471v1	SAMN05445701	Haloarcula quadrata	Contig
-Haloarcu_rara_SHR3_GCA_029338235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/338/235/GCA_029338235.1_ASM2933823v1	SAMN33693471	Haloarcula rara	Complete Genome
+Haloarcu_rara_SHR3_GCF_029338235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/338/235/GCF_029338235.1_ASM2933823v1	SAMN33693471	Haloarcula rara	Complete Genome
+Haloarcu_rubra_F13_GCF_019599465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/465/GCF_019599465.1_ASM1959946v1	SAMN10397844	Haloarcula rubra	Contig
+Haloarcu_rubrip_BS2_GCF_040743285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/040/743/285/GCF_040743285.1_ASM4074328v1	SAMN37855089	Haloarcula rubripromontorii	Contig
 Haloarcu_rubrip_pws8_GCF_012726155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/012/726/155/GCF_012726155.1_ASM1272615v1	SAMN13475834	Haloarcula rubripromontorii	Scaffold
 Haloarcu_rubrip_SL3_GCF_001280425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/280/425/GCF_001280425.1_ASM128042v1	SAMN04007144	Haloarcula rubripromontorii	Contig
 Haloarcu_salina_JCM_18369_GCF_019061225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/061/225/GCF_019061225.1_ASM1906122v1	SAMN19844807	Haloarcula salina	Contig
 Haloarcu_salina_YGHS18_GCF_010119195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/119/195/GCF_010119195.1_ASM1011919v1	SAMN13386515	Haloarcula salina	Scaffold
+Haloarcu_salini_F24A_GCF_019599405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/405/GCF_019599405.1_ASM1959940v1	SAMN10397798	Haloarcula salinisoli	Scaffold
+Haloarcu_salini_F28_GCF_019599485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/485/GCF_019599485.1_ASM1959948v1	SAMN10397876	Haloarcula salinisoli	Scaffold
 Haloarcu_seb_JCM_19018_GCF_014647415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/647/415/GCF_014647415.1_ASM1464741v1	SAMD00245276	Haloarcula sebkhae	Scaffold
+Haloarcu_seb_JCM_19018_GCF_042429525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/429/525/GCF_042429525.1_ASM4242952v1	SAMN43281742	Haloarcula sebkhae	Scaffold
 Haloarcu_sina_ATCC_33800_GCF_000337275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/275/GCF_000337275.1_ASM33727v1	SAMN02471645	Haloarcula sinaiiensis	Contig
 Haloarcu_sina_ATCC_33800_GCF_018200015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/200/015/GCF_018200015.1_ASM1820001v1	SAMN18811338	Haloarcula sinaiiensis	Complete Genome
 Haloarcu_tai_Taiwanensis_GCA_002844335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/844/335/GCA_002844335.1_ASM284433v1	SAMN06200074	Haloarcula taiwanensis	Complete Genome
@@ -611,6 +658,7 @@ Halobact_hub_JI20_6_GCF_900003565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF
 Halobact_hub_JI20_7_GCF_900003525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/003/525/GCF_900003525.1_ASM90000352v1	SAMEA3268810	Halobacterium hubeiense	Scaffold
 Halobact_hub_JI20_8_GCF_900004275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/004/275/GCF_900004275.1_ASM90000427v1	SAMEA3268811	Halobacterium hubeiense	Scaffold
 Halobact_jil_CGMCC_1_5337_GCF_900110535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/110/535/GCF_900110535.1_IMG-taxon_2617270915_annotated_assembly	SAMN04487945	Halobacterium jilantaiense	Contig
+Halobact_litoreum_CGMCC_1_12562_GCF_042647965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/647/965/GCF_042647965.1_ASM4264796v1	SAMN43282153	Halobacterium litoreum	Contig
 Halobact_litoreum_ZS_54_S2_GCF_021233415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/233/415/GCF_021233415.1_ASM2123341v1	SAMN23798363	Halobacterium litoreum	Complete Genome
 Halobact_nor_JCM_15102_GCA_039520945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/039/520/945/GCA_039520945.1_ASM3952094v1	SAMD00245253	Halobacterium noricense	Scaffold
 Halobact_nor_JCM_15102_GCF_021233435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/233/435/GCF_021233435.1_ASM2123343v1	SAMN23798384	Halobacterium noricense	Complete Genome
@@ -647,20 +695,31 @@ Halobact_UC4243_GCF_030250125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030
 Halobact_wan_Gai3_17_GCF_021249345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/249/345/GCF_021249345.1_ASM2124934v1	SAMN23798262	Halobacterium wangiae	Complete Genome
 Halobact_zho_XZYJT26_GCF_021249405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/249/405/GCF_021249405.1_ASM2124940v1	SAMN23798265	Halobacterium zhouii	Complete Genome
 Halobacu_gomo_DSM_9297_GCF_900129775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/129/775/GCF_900129775.1_IMG-taxon_2695420988_annotated_assembly	SAMN05443636	Halobaculum gomorrense	Scaffold
-Halobacu_halophilum_Gai3_2_GCF_013401515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/401/515/GCF_013401515.1_ASM1340151v1	SAMN15183765	Halobaculum halophilum	Complete Genome
+Halobacu_halobium_NBRC_112580_GCF_042662105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/105/GCF_042662105.1_ASM4266210v1	SAMN43283298	Halobaculum halobium	Contig
+Halobacu_halobium_NBRC_112888_GCF_042661885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/661/885/GCF_042661885.1_ASM4266188v1	SAMN43283307	Halobaculum halobium	Contig
+Halobacu_halobium_SYNS20_GCF_030127145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/127/145/GCF_030127145.1_ASM3012714v1	SAMN33610087	Halobaculum halobium	Complete Genome
+Halobacu_limi_YSMS11_GCF_029490015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/490/015/GCF_029490015.1_ASM2949001v1	SAMN33577287	Halobaculum limi	Complete Genome
+Halobacu_lipolyticum_DT31_GCF_030127165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/127/165/GCF_030127165.1_ASM3012716v1	SAMN33591101	Halobaculum lipolyticum	Complete Genome
+Halobacu_lipolyticum_NBRC_112579_GCF_042663365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/365/GCF_042663365.1_ASM4266336v1	SAMN43283191	Halobaculum lipolyticum	Scaffold
+Halobacu_litoreum_DT92_GCF_030127125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/127/125/GCF_030127125.1_ASM3012712v1	SAMN33593200	Halobaculum litoreum	Complete Genome
+Halobacu_litoreum_NBRC_112578_GCA_042662965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/662/965/GCA_042662965.1_ASM4266296v1	SAMN43283221	Halobaculum litoreum	Contig
 Halobacu_magn_NBRC_109044_GCF_019823105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/823/105/GCF_019823105.1_ASM1982310v1	SAMN20958642	Halobaculum magnesiiphilum	Complete Genome
+Halobacu_marinum_DT55_GCF_029338555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/338/555/GCF_029338555.1_ASM2933855v1	SAMN33593123	Halobaculum marinum	Complete Genome
+Halobacu_marinum_NBRC_112440_GCF_042663245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/245/GCF_042663245.1_ASM4266324v1	SAMN43283192	Halobaculum marinum	Scaffold
 Halobacu_roseum_CGMCC_1_15501_GCF_019880245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/880/245/GCF_019880245.1_ASM1988024v1	SAMN20958564	Halobaculum roseum	Complete Genome
+Halobacu_roseum_JCM_31273_GCF_042429545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/429/545/GCF_042429545.1_ASM4242954v1	SAMN43281741	Halobaculum roseum	Contig
 Halobacu_rubrum_C46_GCF_019880225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/880/225/GCF_019880225.1_ASM1988022v1	SAMN20957702	Halobaculum rubrum	Complete Genome
-Halobacu_salinum_NJ_3_1_GCF_013402875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/402/875/GCF_013402875.1_ASM1340287v1	SAMN15183787	Halobaculum salinum	Complete Genome
 Halobacu_salit_WSA2_GCF_009831625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/831/625/GCF_009831625.1_ASM983162v1	SAMN13675851	Halobaculum saliterrae	Contig
 Halobe_cap_ZY21_GCF_007655485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/007/655/485/GCF_007655485.1_ASM765548v1	SAMN12091411	Halobellus captivus	Scaffold
 Halobe_cap_ZY8_GCF_003697845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/697/845/GCF_003697845.1_ASM369784v1	SAMN10255630	Halobellus captivus	Scaffold
 Halobe_cla_CGMCC_1_10118_GCF_900107195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/107/195/GCF_900107195.1_IMG-taxon_2617270777_annotated_assembly	SAMN04487946	Halobellus clavatus	Contig
+Halobe_ino_DSM_26177_GCF_024498335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/498/335/GCF_024498335.1_ASM2449833v1	SAMN29883447	Halobellus inordinatus	Complete Genome
 Halobe_ino_YC20_GCF_024464655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/464/655/GCF_024464655.1_ASM2446465v1	SAMN29881933	Halobellus inordinatus	Contig
 Halobe_limi_CGMCC_1_10331_GCF_004799685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/799/685/GCF_004799685.1_ASM479968v1	SAMN09711302	Halobellus limi	Complete Genome
 Halobe_limi_CGMCC_1_10331_GCF_900108165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/108/165/GCF_900108165.1_IMG-taxon_2619618869_annotated_assembly	SAMN04488133	Halobellus limi	Scaffold
+Halobe_litoreus_CGMCC_4_1410_GCF_042678065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/678/065/GCF_042678065.1_ASM4267806v1	SAMN43282679	Halobellus litoreus	Scaffold
 Halobe_litoreus_GX31_GCF_024464595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/464/595/GCF_024464595.1_ASM2446459v1	SAMN29883267	Halobellus litoreus	Contig
-Halobe_ram_DSM_26177_GCF_024498335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/498/335/GCF_024498335.1_ASM2449833v1	SAMN29883447	Halobellus ramosii	Complete Genome
+Halobe_rarus_JCM_23864_GCF_042677905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/677/905/GCF_042677905.1_ASM4267790v1	SAMN43282684	Halobellus rarus	Scaffold
 Halobe_rarus_YC21_GCF_024494595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/494/595/GCF_024494595.1_ASM2449459v1	SAMN29911640	Halobellus rarus	Contig
 Halobe_ruber_MBLA0160_GCF_014212355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/212/355/GCF_014212355.1_ASM1421235v1	SAMN15745140	Halobellus ruber	Contig
 Halobe_rufus_CBA1103_GCF_000739575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/739/575/GCF_000739575.1_ASM73957v1	SAMD00018744	Halobellus rufus	Contig
@@ -670,10 +729,15 @@ Halobif_halote_DSM_13078_GCF_900112205_1	https://ftp.ncbi.nlm.nih.gov/genomes/al
 Halobif_laci_AJ5_GCF_000226975_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/226/975/GCF_000226975.2_ASM22697v3	SAMN02470038	Halobiforma lacisalsi	Complete Genome
 Halobif_laci_AJ5_GCF_000336655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/655/GCF_000336655.1_ASM33665v1	SAMN02471659	Halobiforma lacisalsi	Contig
 Halobif_nitra_JCM_10879_GCF_000337895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/895/GCF_000337895.1_ASM33789v1	SAMN02471660	Halobiforma nitratireducens	Contig
+Halobium_palm_FCH23_GCA_042661705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/661/705/GCA_042661705.1_ASM4266170v1	SAMN43283312	Halobium palmae	Contig
+Halobium_salinum_CGMCC_4_7146_GCF_042651865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/651/865/GCF_042651865.1_ASM4265186v1	SAMN43283110	Halobium salinum	Scaffold
+Halobium_salinum_CGMCC_4_7148_GCF_042663265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/265/GCF_042663265.1_ASM4266326v1	SAMN43283202	Halobium salinum	Scaffold
 Halobium_salinum_YJ_8_S_GCF_026586625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/586/625/GCF_026586625.1_ASM2658662v1	SAMN30883932	Halobium salinum	Scaffold
 Halocal_acidit_JCM_19596_GCF_014647475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/647/475/GCF_014647475.1_ASM1464747v1	SAMD00245280	Halocalculus aciditolerans	Contig
+Halocat_marina_DFN5_GCA_025913575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/913/575/GCA_025913575.1_ASM2591357v1	SAMN31308997	Halocatena marina	Complete Genome
 Halocat_marina_DFN5_GCF_023276375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/276/375/GCF_023276375.1_ASM2327637v1	SAMN27554123	Halocatena marina	Contig
-Halocat_marina_DFN5_GCF_025913575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/913/575/GCF_025913575.1_ASM2591357v1	SAMN31308997	Halocatena marina	Complete Genome
+Halocat_marina_NBRC_107106_GCF_042663845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/845/GCF_042663845.1_ASM4266384v1	SAMN43283174	Halocatena marina	Contig
+Halocat_marina_NBRC_107139_GCF_042662865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/865/GCF_042662865.1_ASM4266286v1	SAMN43283225	Halocatena marina	Contig
 Halocat_marina_QDMS1_GCF_025947005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/947/005/GCF_025947005.1_ASM2594700v1	SAMN31359323	Halocatena marina	Complete Genome
 Halocat_marina_RDMS1_GCF_026013925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/013/925/GCF_026013925.1_ASM2601392v1	SAMN31329597	Halocatena marina	Complete Genome
 Halocat_ple_SPP_AMP_1_GCF_003862495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/862/495/GCF_003862495.1_ASM386249v1	SAMN10496973	Halocatena pleomorpha	Contig
@@ -693,22 +757,16 @@ Halococcus_sediminic_CBA1101_GCF_000755245_1	https://ftp.ncbi.nlm.nih.gov/genome
 Halococcus_thai_JCM_13552_GCF_000336715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/715/GCF_000336715.1_ASM33671v1	SAMN02471640	Halococcus thailandensis	Contig
 Halod_formicicum_HSR6_GCF_001886955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/886/955/GCF_001886955.1_ASM188695v1	SAMN05363636	Halodesulfurarchaeum formicicum	Complete Genome
 Halod_formicicum_HTSR1_GCF_001767315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/767/315/GCF_001767315.1_ASM176731v1	SAMN05185403	Halodesulfurarchaeum formicicum	Complete Genome
-Halof_ale_BNX82_GCF_029232225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/232/225/GCF_029232225.1_ASM2923222v1	SAMN30631033	Haloferax alexandrinus	Complete Genome
-Halof_ale_DSM_27206_GCF_030535215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/535/215/GCF_030535215.1_ASM3053521v1	SAMN35841318	Haloferax alexandrinus	Contig
-Halof_ale_JCM_10717_GCF_000336735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/735/GCF_000336735.1_ASM33673v1	SAMN02471657	Haloferax alexandrinus	Contig
-Halof_ale_pws11_GCF_012726105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/012/726/105/GCF_012726105.1_ASM1272610v1	SAMN13475836	Haloferax alexandrinus	Scaffold
-Halof_ale_wsp1_GCF_010692905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/692/905/GCF_010692905.1_ASM1069290v1	SAMN14048689	Haloferax alexandrinus	Complete Genome
+Halof_chud_GLPP2_GCF_042663345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/345/GCF_042663345.1_ASM4266334v1	SAMN43283198	Haloferax chudinovii	Scaffold
 Halof_den_ATCC_35960_GCF_000337795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/795/GCF_000337795.1_ASM33779v1	SAMN02471644	Haloferax denitrificans	Contig
 Halof_elo_ATCC_BAA_1513_GCF_000336755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/755/GCF_000336755.1_ASM33675v1	SAMN02471641	Haloferax elongans	Contig
 Halof_gib_ARA6_GCF_001190965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/190/965/GCF_001190965.1_ASM119096v1	SAMN03755233	Haloferax gibbonsii	Complete Genome
 Halof_gib_ATCC_33959_GCF_000336775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/775/GCF_000336775.1_ASM33677v1	SAMN02471685	Haloferax gibbonsii	Contig
 Halof_gib_LR2_5_GCF_014969745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/969/745/GCF_014969745.1_ASM1496974v1	SAMN15808703	Haloferax gibbonsii	Complete Genome
 Halof_lar_CDM_5_GCF_900109695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/109/695/GCF_900109695.1_IMG-taxon_2639762639_annotated_assembly	SAMN04488691	Haloferax larsenii	Scaffold
-Halof_lar_JCM_13917_GCF_000336955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/955/GCF_000336955.1_ASM33695v1	SAMN02471655	Haloferax larsenii	Contig
+Halof_lar_JCM_13917_GCA_000336955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/336/955/GCA_000336955.1_ASM33695v1	SAMN02471655	Haloferax larsenii	Contig
 Halof_lar_NCIM_5678_GCF_024730625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/730/625/GCF_024730625.1_ASM2473062v1	SAMN19967896	Haloferax larsenii	Complete Genome
 Halof_litoreum_MBLA0076_GCF_009674605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/674/605/GCF_009674605.1_ASM967460v1	SAMN13255718	Haloferax litoreum	Contig
-Halof_luce_DSM_14919_GCF_000336795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/795/GCF_000336795.1_ASM33679v1	SAMN02471684	Haloferax lucentense	Contig
-Halof_luce_SVX82_GCF_029225785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/225/785/GCF_029225785.1_ASM2922578v1	SAMN30630946	Haloferax lucentense	Complete Genome
 Halof_marini_MBLA0077_GCF_009674585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/674/585/GCF_009674585.1_ASM967458v1	SAMN13255723	Haloferax marinisediminis	Contig
 Halof_marinum_MBLA0078_GCF_009674625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/674/625/GCF_009674625.1_ASM967462v1	SAMN13255728	Haloferax marinum	Contig
 Halof_marisr_SB3_GCF_001469875_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/469/875/GCF_001469875.2_ASM146987v2	SAMN04318428	Haloferax marisrubri	Scaffold
@@ -720,21 +778,31 @@ Halof_med_ATCC_33500_GCF_005406325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GC
 Halof_med_ATCC_33500_GCF_033843025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/033/843/025/GCF_033843025.1_ASM3384302v1	SAMN38186257	Haloferax mediterranei	Contig
 Halof_med_CGMCC_1_2087_GCF_000306765_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/306/765/GCF_000306765.2_ASM30676v2	SAMN02603397	Haloferax mediterranei	Complete Genome
 Halof_mucosum_ATCC_BAA_1512_GCF_000337815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/815/GCF_000337815.1_ASM33781v1	SAMN02471642	Haloferax mucosum	Contig
+Halof_nam_DT85_GCF_042663225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/225/GCF_042663225.1_ASM4266322v1	SAMN43283199	Haloferax namakaokahaiae	Contig
 Halof_pra_Arc_Hr_GCF_000723845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/723/845/GCF_000723845.1_PRJEB5511_assembly_1	SAMEA3139050	Haloferax prahovense	Scaffold
 Halof_pra_DSM_18310_GCF_000336815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/815/GCF_000336815.1_ASM33681v1	SAMN02471666	Haloferax prahovense	Contig
 Halof_profundi_SB29_GCF_001469865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/469/865/GCF_001469865.1_ASM146986v1	SAMN04318427	Haloferax profundi	Contig
 Halof_sulfurif_ATCC_BAA_897_GCF_000337835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/835/GCF_000337835.1_ASM33783v1	SAMN02471686	Haloferax sulfurifontis	Contig
 Halof_sulfurif_CCM_7217_GCF_014635105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/635/105/GCF_014635105.1_ASM1463510v1	SAMD00244848	Haloferax sulfurifontis	Contig
+Halof_volcanii_BBK2_GCF_040869255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/040/869/255/GCF_040869255.1_ASM4086925v1	SAMN37800915	Haloferax volcanii	Contig
+Halof_volcanii_BNX82_GCF_029232225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/232/225/GCF_029232225.1_ASM2923222v1	SAMN30631033	Haloferax volcanii	Complete Genome
 Halof_volcanii_CSM52_GCF_033550185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/033/550/185/GCF_033550185.1_ASM3355018v1	SAMN37657314	Haloferax volcanii	Contig
 Halof_volcanii_DS2_GCF_000025685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/025/685/GCF_000025685.1_ASM2568v1	SAMN02604027	Haloferax volcanii	Complete Genome
 Halof_volcanii_DS2_GCF_000337315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/315/GCF_000337315.1_ASM33731v1	SAMN02471619	Haloferax volcanii	Contig
+Halof_volcanii_DSM_14919_GCF_000336795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/795/GCF_000336795.1_ASM33679v1	SAMN02471684	Haloferax volcanii	Contig
+Halof_volcanii_DSM_27206_GCF_030535215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/535/215/GCF_030535215.1_ASM3053521v1	SAMN35841318	Haloferax volcanii	Contig
 Halof_volcanii_H98_GCF_018420055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/420/055/GCF_018420055.1_ASM1842005v1	SAMN16974885	Haloferax volcanii	Contig
 Halof_volcanii_ID112_delta_ftsZ1_delta_ftsZ2_GCF_018420065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/420/065/GCF_018420065.1_ASM1842006v1	SAMN16974888	Haloferax volcanii	Contig
 Halof_volcanii_ID76_delta_ftsZ1_GCF_018419995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/419/995/GCF_018419995.1_ASM1841999v1	SAMN16974886	Haloferax volcanii	Contig
 Halof_volcanii_ID77_delta_ftsZ2_GCF_018420015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/420/015/GCF_018420015.1_ASM1842001v1	SAMN16974887	Haloferax volcanii	Contig
+Halof_volcanii_JCM_10717_GCF_000336735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/336/735/GCF_000336735.1_ASM33673v1	SAMN02471657	Haloferax volcanii	Contig
+Halof_volcanii_pws11_GCF_012726105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/012/726/105/GCF_012726105.1_ASM1272610v1	SAMN13475836	Haloferax volcanii	Scaffold
 Halof_volcanii_SS0101_GCF_007714225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/007/714/225/GCF_007714225.1_ASM771422v1	SAMN12359455	Haloferax volcanii	Contig
+Halof_volcanii_SVX82_GCF_029225785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/225/785/GCF_029225785.1_ASM2922578v1	SAMN30630946	Haloferax volcanii	Complete Genome
+Halof_volcanii_wsp1_GCF_010692905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/692/905/GCF_010692905.1_ASM1069290v1	SAMN14048689	Haloferax volcanii	Complete Genome
 Haloge_bor_DSM_11551_GCF_000172995_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/172/995/GCF_000172995.2_ASM17299v2	SAMN00002580	Halogeometricum borinquense	Complete Genome
 Haloge_bor_DSM_11551_GCF_000337855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/855/GCF_000337855.1_ASM33785v1	SAMN02471667	Halogeometricum borinquense	Contig
+Haloge_bor_E3_GCF_040679015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/040/679/015/GCF_040679015.1_ASM4067901v1	SAMN37881090	Halogeometricum borinquense	Contig
 Haloge_bor_N11_GCF_004150395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/150/395/GCF_004150395.1_ASM415039v1	SAMN10643321	Halogeometricum borinquense	Scaffold
 Haloge_bor_wsp3_GCA_011765365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/765/365/GCA_011765365.1_ASM1176536v1	SAMN13341696	Halogeometricum borinquense	Complete Genome
 Haloge_bor_wsp4_GCF_010692885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/692/885/GCF_010692885.1_ASM1069288v1	SAMN14053718	Halogeometricum borinquense	Complete Genome
@@ -747,37 +815,39 @@ Halogl_litoreum_DT116_GCF_029338515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/G
 Halogl_salinum_ZY58_GCF_024298825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/298/825/GCF_024298825.1_ASM2429882v1	SAMN29548546	Haloglomus salinum	Complete Genome
 Halogr_amylolyticum_CGMCC_1_10121_GCF_900110465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/110/465/GCF_900110465.1_IMG-taxon_2617270928_annotated_assembly	SAMN04487948	Halogranum amylolyticum	Scaffold
 Halogr_gelatinilyticum_CGMCC_1_10119_GCF_900103715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/103/715/GCF_900103715.1_IMG-taxon_2617270902_annotated_assembly	SAMN04487949	Halogranum gelatinilyticum	Contig
+Halogr_rubrum_B_1_GCF_000283335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/283/335/GCF_000283335.1_162.HSB1.1	SAMN02470186	Halogranum rubrum	Contig
 Halogr_rubrum_CGMCC_1_7738_GCF_900114455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/114/455/GCF_900114455.1_IMG-taxon_2619618990_annotated_assembly	SAMN04487950	Halogranum rubrum	Scaffold
-Halogr_salarium_B_1_GCF_000283335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/283/335/GCF_000283335.1_162.HSB1.1	SAMN02470186	Halogranum salarium	Contig
 Haloh_litc_DSM_22187_GCF_900109065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/109/065/GCF_900109065.1_IMG-taxon_2693429898_annotated_assembly	SAMN05444271	Halohasta litchfieldiae	Contig
 Haloh_litc_tADL_GCF_002788215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/788/215/GCF_002788215.1_ASM278821v1	SAMN00117514	Halohasta litchfieldiae	Complete Genome
+Haloh_litorea_CGMCC_4_7318_GCF_042677985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/677/985/GCF_042677985.1_ASM4267798v1	SAMN43282682	Halohasta litorea	Contig
 Haloh_litorea_R30_GCF_024494645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/494/645/GCF_024494645.1_ASM2449464v1	SAMN29911641	Halohasta litorea	Contig
 Haloh_salina_GSL13_GCF_024178165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/178/165/GCF_024178165.1_ASM2417816v1	SAMN29428005	Halohasta salina	Contig
+Halol_litorea_CGMCC_1_12560_GCF_042678245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/678/245/GCF_042678245.1_ASM4267824v1	SAMN43282696	Halolamina litorea	Scaffold
 Halol_litorea_YJ_41_GCF_026616205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/616/205/GCF_026616205.1_ASM2661620v1	SAMN29923289	Halolamina litorea	Contig
 Halol_pelagica_CDK2_GCF_001307315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/307/315/GCF_001307315.1_Halpeg_cdk2_1	SAMN03287580	Halolamina pelagica	Contig
 Halol_pelagica_CGMCC_1_10329_GCF_900115675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/115/675/GCF_900115675.1_IMG-taxon_2663762745_annotated_assembly	SAMN05216277	Halolamina pelagica	Contig
 Halol_rubra_CBA1107_GCF_000739555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/739/555/GCF_000739555.1_ASM73955v1	SAMD00018743	Halolamina rubra	Contig
+Halol_salif_CCUG_52342_GCF_042677965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/677/965/GCF_042677965.1_ASM4267796v1	SAMN43282689	Halolamina salifodinae	Scaffold
 Halol_salif_DSM_26232_GCF_017874235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/874/235/GCF_017874235.1_ASM1787423v1	SAMN18247528	Halolamina salifodinae	Contig
+Halol_salina_CCUG_61259_GCF_042678005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/678/005/GCF_042678005.1_ASM4267800v1	SAMN43282687	Halolamina salina	Scaffold
+Halol_salina_CCUG_61260_GCF_042662265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/265/GCF_042662265.1_ASM4266226v1	SAMN43283303	Halolamina salina	Scaffold
+Halol_sediminis_GCA_041639975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/041/639/975/GCA_041639975.1_ASM4163997v1	SAMN39825565	Halolamina sediminis	Scaffold
 Halol_sediminis_halo7_GCF_001282785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/282/785/GCF_001282785.1_halo7	SAMEA3451356	Halolamina sediminis	Contig
+Haloma_halobia_NBRC_114501_GCF_042664745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/664/745/GCF_042664745.1_ASM4266474v1	SAMN43283166	Halomarina halobia	Scaffold
+Haloma_halobia_NBRC_15347_GCF_042663765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/765/GCF_042663765.1_ASM4266376v1	SAMN43283170	Halomarina halobia	Contig
+Haloma_halobia_PSR21_GCF_029338575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/338/575/GCF_029338575.1_ASM2933857v1	SAMN33693470	Halomarina halobia	Complete Genome
+Haloma_litorea_BCD28_GCF_024227715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/227/715/GCF_024227715.1_ASM2422771v1	SAMN29425829	Halomarina litorea	Complete Genome
+Haloma_ordinaria_NBRC_15348_GCF_042662245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/245/GCF_042662245.1_ASM4266224v1	SAMN43283283	Halomarina ordinaria	Contig
+Haloma_ordinaria_PSRA2_GCF_030553305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/553/305/GCF_030553305.1_ASM3055330v1	SAMN33708900	Halomarina ordinaria	Contig
 Haloma_oriens_JCM_16495_GCF_009791395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/791/395/GCF_009791395.1_ASM979139v1	SAMN13563881	Halomarina oriensis	Contig
+Haloma_pelagica_BND7_GCF_024228315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/228/315/GCF_024228315.1_ASM2422831v1	SAMN29426659	Halomarina pelagica	Complete Genome
+Haloma_rubra_CGMCC_1_12229_GCF_042677885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/677/885/GCF_042677885.1_ASM4267788v1	SAMN43282692	Halomarina rubra	Scaffold
 Haloma_rubra_ZS_47_S_GCF_023699475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/699/475/GCF_023699475.1_ASM2369947v1	SAMN27867787	Halomarina rubra	Scaffold
+Haloma_salina_CCUG_73648_GCF_042658425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/658/425/GCF_042658425.1_ASM4265842v1	SAMN43282726	Halomarina salina	Contig
 Haloma_salina_ZS_57_S_GCF_023074835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/074/835/GCF_023074835.1_ASM2307483v1	SAMN27594321	Halomarina salina	Contig
-Halomicroa_amylolytica_LR21_GCF_004681185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/681/185/GCF_004681185.1_ASM468118v1	SAMN11269098	Halomicroarcula amylolytica	Scaffold
-Halomicroa_lam_LYG_108_GCF_025457605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/457/605/GCF_025457605.1_ASM2545760v1	SAMN29406503	Halomicroarcula laminariae	Contig
-Halomicroa_lam_LYG_24_GCF_025457585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/457/585/GCF_025457585.1_ASM2545758v1	SAMN29406474	Halomicroarcula laminariae	Contig
-Halomicroa_JCM_183640_GCF_019061235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/061/235/GCF_019061235.1_ASM1906123v1	SAMN19844820	Halomicroarcula limicola	Contig
-Halomicroa_YGHS32_GCF_010119205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/119/205/GCF_010119205.1_ASM1011920v1	SAMN13386517	Halomicroarcula limicola	Contig
-Halomicroa_marina_DT1_GCF_024218775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/218/775/GCF_024218775.1_ASM2421877v1	SAMN29406380	Halomicroarcula marina	Complete Genome
-Halomicroa_marina_YSSS71_GCF_024218815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/218/815/GCF_024218815.1_ASM2421881v1	SAMN29406388	Halomicroarcula marina	Complete Genome
-Halomicroa_nitra_F27_GCF_019599505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/505/GCF_019599505.1_ASM1959950v1	SAMN10397890	Halomicroarcula nitratireducens	Contig
-Halomicroa_onu_S3CR25_11_GCF_031624605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/031/624/605/GCF_031624605.1_ASM3162460v1	SAMN28864586	Halomicroarcula onubensis	Scaffold
-Halomicroa_pellu_CECT_7537_GCF_019599515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/515/GCF_019599515.1_ASM1959951v1	SAMN10397914	Halomicroarcula pellucida	Contig
-Halomicroa_pellu_JCM_17820_GCF_014647235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/647/235/GCF_014647235.1_ASM1464723v1	SAMD00245267	Halomicroarcula pellucida	Contig
-Halomicroa_rubra_F13_GCF_019599465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/465/GCF_019599465.1_ASM1959946v1	SAMN10397844	Halomicroarcula rubra	Contig
-Halomicroa_salaria_FL173_GCF_029530365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/530/365/GCF_029530365.1_ASM2953036v1	SAMN33428546	Halomicroarcula salaria	Scaffold
-Halomicroa_salini_F24A_GCF_019599405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/405/GCF_019599405.1_ASM1959940v1	SAMN10397798	Halomicroarcula salinisoli	Scaffold
-Halomicroa_salini_F28_GCF_019599485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/599/485/GCF_019599485.1_ASM1959948v1	SAMN10397876	Halomicroarcula salinisoli	Scaffold
-Halomicroa_salit_S1CR25_12_GCF_031624395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/031/624/395/GCF_031624395.1_ASM3162439v1	SAMN28864572	Halomicroarcula saliterrae	Scaffold
+Halomicroarcula_onubensis_S3CR25_11_GCF_031624605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/031/624/605/GCF_031624605.1_ASM3162460v1	SAMN28864586	Halomicroarcula onubensis	Scaffold
+Halomicroarcula_salaria_FL173_GCF_029530365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/530/365/GCF_029530365.1_ASM2953036v1	SAMN33428546	Halomicroarcula salaria	Scaffold
+Halomicroarcula_saliterrae_S1CR25_12_GCF_031624395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/031/624/395/GCF_031624395.1_ASM3162439v1	SAMN28864572	Halomicroarcula saliterrae	Scaffold
 Halomicrob_kat_DSM_19301_GCF_000379085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/379/085/GCF_000379085.1_ASM37908v1	SAMN02261322	Halomicrobium katesii	Scaffold
 Halomicrob_muk_DSM_12286_GCF_000023965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/023/965/GCF_000023965.1_ASM2396v1	SAMN00002610	Halomicrobium mukohataei	Complete Genome
 Halomicrob_muk_JP60_GCF_004803735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/803/735/GCF_004803735.1_ASM480373v1	SAMN11349655	Halomicrobium mukohataei	Complete Genome
@@ -795,20 +865,27 @@ Halon_pte_CECT_7525_GCF_003605635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF
 Halon_roseus_F9_27_GCF_006861655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/006/861/655/GCF_006861655.1_ASM686165v1	SAMN10868424	Halonotius roseus	Scaffold
 Halon_terrestris_F15B_GCF_006861665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/006/861/665/GCF_006861665.1_ASM686166v1	SAMN10397912	Halonotius terrestris	Scaffold
 Halopa_sedime_DYS4_GCF_001462205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/462/205/GCF_001462205.1_HalopeDYS1.0	SAMN04018174	Haloparvum sedimenti	Scaffold
+Halopel_fulv_CCUG_50949_GCF_042662625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/625/GCF_042662625.1_ASM4266262v1	SAMN43283288	Halopelagius fulvigenes	Scaffold
 Halopel_ino_CGMCC_1_7739_GCF_900113245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/113/245/GCF_900113245.1_IMG-taxon_2617270917_annotated_assembly	SAMN04488063	Halopelagius inordinatus	Contig
 Halopel_ino_GCA_028274905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/028/274/905/GCA_028274905.1_ASM2827490v1	SAMN32192785	Halopelagius inordinatus	Contig
 Halopel_longus_BC12_B1_GCF_003351065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/351/065/GCF_003351065.1_ASM335106v1	SAMN09717241	Halopelagius longus	Scaffold
 Halopel_longus_CGMCC_1_12397_GCF_900100875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/100/875/GCF_900100875.1_IMG-taxon_2671180169_annotated_assembly	SAMN05216278	Halopelagius longus	Contig
 Halopen_mal_IBRC_M10418_GCF_900108505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/108/505/GCF_900108505.1_IMG-taxon_2651870118_annotated_assembly	SAMN05192561	Halopenitus malekzadehii	Scaffold
 Halopen_persicus_CBA1233_GCF_002355635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/355/635/GCF_002355635.1_ASM235563v1	SAMD00053810	Halopenitus persicus	Complete Genome
+Halopen_salinus_CCUG_49452_GCF_042662125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/125/GCF_042662125.1_ASM4266212v1	SAMN43283284	Halopenitus salinus	Scaffold
+Halopen_salinus_CCUG_49949_GCF_042661185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/661/185/GCF_042661185.1_ASM4266118v1	SAMN43283356	Halopenitus salinus	Contig
 Halopi_asw_DSM_13151_GCF_003610195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/610/195/GCF_003610195.1_ASM361019v1	SAMN04488555	Halopiger aswanensis	Scaffold
 Halopi_dje_IIH2_GCF_000455365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/455/365/GCF_000455365.1_HdjelfamassiliensisIIH2	SAMEA2272053	Halopiger djelfimassiliensis	Scaffold
 Halopi_gol_IIH3_GCF_000455345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/455/345/GCF_000455345.1_Halgo	SAMEA2272090	Halopiger goleimassiliensis	Scaffold
 Halopi_xan_SH_6_GCF_000217715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/217/715/GCF_000217715.1_ASM21771v1	SAMN02232028	Halopiger xanaduensis	Complete Genome
 Halopl_aerog_CGMCC_1_10124_GCF_003688715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/688/715/GCF_003688715.1_ASM368871v1	SAMN04488064	Haloplanus aerogenes	Scaffold
 Halopl_aerog_JCM_16430_GCF_003856835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/856/835/GCF_003856835.1_ASM385683v1	SAMN09684815	Haloplanus aerogenes	Complete Genome
+Halopl_litoreus_CGMCC_4_1597_GCF_042677945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/677/945/GCF_042677945.1_ASM4267794v1	SAMN43282681	Haloplanus litoreus	Scaffold
+Halopl_litoreus_CGMCC_4_1598_GCF_042663725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/725/GCF_042663725.1_ASM4266372v1	SAMN43283177	Haloplanus litoreus	Contig
+Halopl_litoreus_CGMCC_4_163_GCF_042663605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/605/GCF_042663605.1_ASM4266360v1	SAMN43283178	Haloplanus litoreus	Contig
 Halopl_nata_DSM_17983_GCF_000427685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/427/685/GCF_000427685.1_ASM42768v1	SAMN02440896	Haloplanus natans	Scaffold
 Halopl_ral_MBLA0036_GCF_009762275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/762/275/GCF_009762275.1_ASM976227v1	SAMN10524788	Haloplanus rallus	Complete Genome
+Halopl_ruber_CGMCC_4_7499_GCF_042678025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/678/025/GCF_042678025.1_ASM4267802v1	SAMN43282683	Haloplanus ruber	Scaffold
 Halopl_ruber_R35_GCF_024494725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/494/725/GCF_024494725.1_ASM2449472v1	SAMN29911661	Haloplanus ruber	Contig
 Halopl_rubi_CBA1112_GCF_003342675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/342/675/GCF_003342675.1_ASM334267v1	SAMN09684735	Haloplanus rubicundus	Complete Genome
 Halopl_rubi_CBA1113_GCF_003342695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/342/695/GCF_003342695.1_ASM334269v1	SAMN09684805	Haloplanus rubicundus	Complete Genome
@@ -832,23 +909,28 @@ Haloq_wal_GCF_903989505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/903/989/5
 Haloq_wal_GCF_903989535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/903/989/535/GCF_903989535.1_D2T31	SAMEA7074294	Haloquadratum walsbyi	Scaffold
 Haloq_wal_GCF_903989545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/903/989/545/GCF_903989545.1_D2T0	SAMEA7074294	Haloquadratum walsbyi	Contig
 Haloq_wal_GCF_937121375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/937/121/375/GCF_937121375.1_ERR2683643_bin.15_CONCOCT_v1.1_MAG	SAMEA13959180	Haloquadratum walsbyi	Contig
-Halora_halobius_ZY10_GCF_024298865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/298/865/GCF_024298865.1_ASM2429886v1	SAMN29548489	Halorarius halobius	Complete Genome
-Halora_litoreus_BND22_GCF_024362405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/362/405/GCF_024362405.1_ASM2436240v1	SAMN29552483	Halorarius litoreus	Complete Genome
+Halorari_halobius_ZY10_GCF_024298865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/298/865/GCF_024298865.1_ASM2429886v1	SAMN29548489	Halorarius halobius	Complete Genome
+Halorari_litoreus_BND22_GCF_024362405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/362/405/GCF_024362405.1_ASM2436240v1	SAMN29552483	Halorarius litoreus	Complete Genome
+Halorarum_halophilum_Gai3_2_GCF_013401515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/401/515/GCF_013401515.1_ASM1340151v1	SAMN15183765	Halorarum halophilum	Complete Genome
+Halorarum_salinum_NJ_3_1_GCF_013402875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/402/875/GCF_013402875.1_ASM1340287v1	SAMN15183787	Halorarum salinum	Complete Genome
 Halorh_amylolytica_H27_GCF_004944975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/944/975/GCF_004944975.1_ASM494497v1	SAMN11242248	Halorhabdus amylolytica	Scaffold
 Halorh_rud_GCF_900880625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/880/625/GCF_900880625.1_WSM64	SAMEA5537954	Halorhabdus rudnickae	Contig
 Halorh_salina_FL145_GCF_013839425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/839/425/GCF_013839425.1_ASM1383942v1	SAMN15463067	Halorhabdus salina	Scaffold
 Halorh_tia_SARL4B_GCF_000215915_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/215/915/GCF_000215915.2_HLRTI_V2	SAMN02472187	Halorhabdus tiamatea	Contig
 Halorh_tia_type_SARL4B_GCF_000470655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/470/655/GCF_000470655.1_HATI1	SAMEA2271992	Halorhabdus tiamatea	Complete Genome
 Halorh_uta_DSM_12940_GCF_000023945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/023/945/GCF_000023945.1_ASM2394v1	SAMN00002611	Halorhabdus utahensis	Complete Genome
+Halori_brevis_KCTC_52239_GCF_042678165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/678/165/GCF_042678165.1_ASM4267816v1	SAMN43282685	Halorientalis brevis	Scaffold
 Halori_brevis_YC89_GCF_023077655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/077/655/GCF_023077655.1_ASM2307765v1	SAMN27400809	Halorientalis brevis	Contig
 Halori_litorea_ZY14_GCF_023028225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/028/225/GCF_023028225.1_ASM2302822v1	SAMN27190819	Halorientalis litorea	Complete Genome
 Halori_marina_GDY88_GCF_023028345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/028/345/GCF_023028345.1_ASM2302834v1	SAMN27190925	Halorientalis marina	Complete Genome
 Halori_pallida_F13_25_GCF_004118325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/118/325/GCF_004118325.1_ASM411832v1	SAMN10247356	Halorientalis pallida	Scaffold
+Halori_persicus_GCA_041639875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/041/639/875/GCA_041639875.1_ASM4163987v1	SAMN39825569	Halorientalis persicus	Scaffold
 Halori_persicus_IBRC_M_10043_GCF_900110215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/110/215/GCF_900110215.1_IMG-taxon_2654588107_annotated_assembly	SAMN05216388	Halorientalis persicus	Scaffold
 Halori_reg_IBRC_M_10760_GCF_900102305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/102/305/GCF_900102305.1_IMG-taxon_2651870125_annotated_assembly	SAMN05216218	Halorientalis regularis	Scaffold
 Halori_reg_TNN28_GCF_023698535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/698/535/GCF_023698535.1_ASM2369853v1	SAMN27395177	Halorientalis regularis	Contig
 Halori_salina_NEN8_GCF_005049285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/005/049/285/GCF_005049285.1_ASM504928v1	SAMN11155637	Halorientalis salina	Contig
 Halori_salina_NEN8_GCF_023566035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/566/035/GCF_023566035.1_ASM2356603v1	SAMN27281454	Halorientalis salina	Contig
+Halorube_litoreus_CGMCC_4_1229_GCF_042662365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/365/GCF_042662365.1_ASM4266236v1	SAMN43283282	Halorubellus litoreus	Scaffold
 Halorube_litoreus_GX26_GCF_037081675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/081/675/GCF_037081675.1_ASM3708167v1	SAMN39526644	Halorubellus litoreus	Scaffold
 Halorube_salinus_GX3_GCF_020567525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/567/525/GCF_020567525.1_ASM2056752v1	SAMN22374872	Halorubellus salinus	Contig
 Halorubr_aet_SAH_A6_GCF_001542905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/542/905/GCF_001542905.1_ASM154290v1	SAMN04278861	Halorubrum aethiopicum	Contig
@@ -866,6 +948,8 @@ Halorubr_distributum_E8_GCA_002252935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all
 Halorubr_distributum_ICIS4_GCF_033100775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/033/100/775/GCF_033100775.1_ASM3310077v1	SAMN37925445	Halorubrum distributum	Scaffold
 Halorubr_distributum_JCM_10118_GCF_000337335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/335/GCF_000337335.1_ASM33733v1	SAMN02471649	Halorubrum distributum	Contig
 Halorubr_distributum_JCM_9100_GCF_000337055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/055/GCF_000337055.1_ASM33705v1	SAMN02471665	Halorubrum distributum	Contig
+Halorubr_eji_CCM_7030_GCF_042662405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/405/GCF_042662405.1_ASM4266240v1	SAMN43283280	Halorubrum ejinorense	Scaffold
+Halorubr_eji_DSM_18646_GCF_041379805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/379/805/GCF_041379805.1_ASM4137980v1	SAMN41557449	Halorubrum ejinorense	Contig
 Halorubr_eji_JCM_14265_GCF_039522565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/039/522/565/GCF_039522565.1_ASM3952256v1	SAMD00644964	Halorubrum ejinorense	Scaffold
 Halorubr_ezz_AMM011_GCF_028211335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/211/335/GCF_028211335.1_ASM2821133v1	SAMN32798458	Halorubrum ezzemoulense	Contig
 Halorubr_ezz_AMM013_GCF_028211375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/211/375/GCF_028211375.1_ASM2821137v1	SAMN32798459	Halorubrum ezzemoulense	Contig
@@ -914,6 +998,7 @@ Halorubr_ezz_UG_68_GCF_028329665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/
 Halorubr_ezz_UG_82_GCF_028328625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/328/625/GCF_028328625.1_ASM2832862v1	SAMN32800019	Halorubrum ezzemoulense	Scaffold
 Halorubr_ezz_UG_86_GCF_028329985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/329/985/GCF_028329985.1_ASM2832998v1	SAMN32800020	Halorubrum ezzemoulense	Scaffold
 Halorubr_ezz_UG_96_GCF_028329875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/329/875/GCF_028329875.1_ASM2832987v1	SAMN32800021	Halorubrum ezzemoulense	Scaffold
+Halorubr_glu_NBRC_101312_GCF_042657325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/657/325/GCF_042657325.1_ASM4265732v1	SAMN43282897	Halorubrum glutamatedens	Scaffold
 Halorubr_halod_Cb34_GCF_002252985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/252/985/GCF_002252985.1_ASM225298v1	SAMN02716035	Halorubrum halodurans	Scaffold
 Halorubr_halophilum_B8_GCF_000739595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/739/595/GCF_000739595.1_ASM73959v1	SAMD00018745	Halorubrum halophilum	Contig
 Halorubr_halophilum_CBA1147_GCF_008806895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/008/806/895/GCF_008806895.1_ASM880689v1	SAMN12856018	Halorubrum halophilum	Contig
@@ -925,13 +1010,19 @@ Halorubr_DL18_GCF_002215305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/2
 Halorubr_HL1RP11_GCF_021965275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/965/275/GCF_021965275.1_ASM2196527v1	SAMN23457007	Halorubrum lacusprofundi	Contig
 Halorubr_HLS1_GCF_002215285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/215/285/GCF_002215285.1_ASM221528v1	SAMN05786778	Halorubrum lacusprofundi	Scaffold
 Halorubr_R1S1B_GCF_037414695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/414/695/GCF_037414695.1_ASM3741469v1	SAMN38507334	Halorubrum lacusprofundi	Contig
+Halorubr_lam_CCUG_39541_GCF_042677845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/677/845/GCF_042677845.1_ASM4267784v1	SAMN43282693	Halorubrum laminariae	Scaffold
 Halorubr_lam_R60_GCF_024494655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/494/655/GCF_024494655.1_ASM2449465v1	SAMN29911662	Halorubrum laminariae	Contig
 Halorubr_lipolyticum_DSM_21995_GCF_000337375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/375/GCF_000337375.1_ASM33737v1	SAMN02471632	Halorubrum lipolyticum	Contig
 Halorubr_lipolyticum_GCF_902377425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/377/425/GCF_902377425.1_MGYG-HGUT-01693	SAMEA5851197	Halorubrum lipolyticum	Contig
 Halorubr_litoreum_JCM_13561_GCF_000337395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/395/GCF_000337395.1_ASM33739v1	SAMN02471646	Halorubrum litoreum	Contig
+Halorubr_milt_RMP_11_GCF_041379815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/379/815/GCF_041379815.1_ASM4137981v1	SAMN41557447	Halorubrum miltondacostae	Contig
+Halorubr_milt_RMP_47_GCF_041379825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/379/825/GCF_041379825.1_ASM4137982v1	SAMN41557448	Halorubrum miltondacostae	Contig
+Halorubr_pallidum_CGMCC_1_13508_GCA_042661625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/661/625/GCA_042661625.1_ASM4266162v1	SAMN43283313	Halorubrum pallidum	Scaffold
 Halorubr_persicum_C49_GCF_002727125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/727/125/GCF_002727125.1_ASM272712v1	SAMN02716034	Halorubrum persicum	Scaffold
 Halorubr_ruber_MBLA0099_GCF_018228765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/228/765/GCF_018228765.1_ASM1822876v1	SAMN18559506	Halorubrum ruber	Complete Genome
+Halorubr_rubrum_JCM_10083_GCF_042657525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/657/525/GCF_042657525.1_ASM4265752v1	SAMN43282894	Halorubrum rubrum	Contig
 Halorubr_rubrum_YC87_GCF_024494685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/494/685/GCF_024494685.1_ASM2449468v1	SAMN29911663	Halorubrum rubrum	Contig
+Halorubr_rutilum_CGMCC_4_7145_GCF_042665015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/665/015/GCF_042665015.1_ASM4266501v1	SAMN43283158	Halorubrum rutilum	Scaffold
 Halorubr_rutilum_YJ_18_S1_GCF_024494565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/494/565/GCF_024494565.1_ASM2449456v1	SAMN29911664	Halorubrum rutilum	Contig
 Halorubr_saccharovorum_DSM_1137_GCF_000337915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/915/GCF_000337915.1_ASM33791v1	SAMN02471663	Halorubrum saccharovorum	Contig
 Halorubr_saccharovorum_H3_GCF_000700025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/700/025/GCF_000700025.1_ASM70002v2	SAMN02803665	Halorubrum saccharovorum	Contig
@@ -944,15 +1035,21 @@ Halorubr_teb_DSM_14210_GCF_000337415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/
 Halorubr_terrestre_22502_06_Cabo_GCF_009856455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/856/455/GCF_009856455.1_ASM985645v1	SAMN13191865	Halorubrum terrestre	Contig
 Halorubr_terrestre_22517_05_Cabo_GCF_009856205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/856/205/GCF_009856205.1_ASM985620v1	SAMN13191880	Halorubrum terrestre	Contig
 Halorubr_terrestre_JCM_10247_GCF_000337435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/435/GCF_000337435.1_ASM33743v1	SAMN02471682	Halorubrum terrestre	Contig
+Halorubr_tibetense_CGMCC_1_15349_GCF_042661865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/661/865/GCF_042661865.1_ASM4266186v1	SAMN43283310	Halorubrum tibetense	Contig
 Halorubr_tra_CBA1232_GCF_002355655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/355/655/GCF_002355655.1_ASM235565v1	SAMD00053811	Halorubrum trapanicum	Complete Genome
 Halorubr_tra_DSM_12287_GCF_017873555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/873/555/GCF_017873555.1_ASM1787355v1	SAMN18245806	Halorubrum trapanicum	Contig
 Halorubr_tra_JCM_10477_GCF_039522705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/039/522/705/GCF_039522705.1_ASM3952270v1	SAMD00644971	Halorubrum trapanicum	Scaffold
 Halorubr_tro_5_GCF_001280455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/280/455/GCF_001280455.1_ASM128045v1	SAMN04009067	Halorubrum tropicale	Contig
+Halorubr_tru_FCH27_GCF_042662525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/525/GCF_042662525.1_ASM4266252v1	SAMN43283287	Halorubrum trueperi	Scaffold
 Halorubr_vacuolatum_DSM_8800_GCF_900188065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/188/065/GCF_900188065.1_IMG-taxon_2724679803_annotated_assembly	SAMN06264855	Halorubrum vacuolatum	Contig
 Halorubr_xin_CGMCC_1_3527_GCF_900102375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/102/375/GCF_900102375.1_IMG-taxon_2617270761_annotated_assembly	SAMN04488067	Halorubrum xinjiangense	Scaffold
+Halorubr_yun_CGMCC_1_13630_GCF_042663285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/285/GCF_042663285.1_ASM4266328v1	SAMN43283200	Halorubrum yunnanense	Scaffold
 Halorubr_yun_Q85_GCF_026586675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/586/675/GCF_026586675.1_ASM2658667v1	SAMN30884439	Halorubrum yunnanense	Scaffold
 Halorus_amylolyticus_YC93_GCF_004143485_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/143/485/GCF_004143485.2_ASM414348v2	SAMN10601653	Halorussus amylolyticus	Scaffold
+Halorus_aquaticus_NBRC_109054_GCF_042653245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/653/245/GCF_042653245.1_ASM4265324v1	SAMN43282990	Halorussus aquaticus	Scaffold
+Halorus_aquaticus_NBRC_109677_GCF_042653805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/653/805/GCF_042653805.1_ASM4265380v1	SAMN43283069	Halorussus aquaticus	Contig
 Halorus_aquaticus_XZYJ18_GCF_024218795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/218/795/GCF_024218795.1_ASM2421879v1	SAMN29182851	Halorussus aquaticus	Complete Genome
+Halorus_caseinilyticus_CCM_7472_GCF_042662985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/985/GCF_042662985.1_ASM4266298v1	SAMN43283220	Halorussus caseinilyticus	Contig
 Halorus_caseinilyticus_DT72_GCF_029338395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/338/395/GCF_029338395.1_ASM2933839v1	SAMN33716999	Halorussus caseinilyticus	Complete Genome
 Halorus_gelatinilyticus_XZYJT40_GCF_023238445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/238/445/GCF_023238445.1_ASM2323844v1	SAMN27746577	Halorussus gelatinilyticus	Complete Genome
 Halorus_halobius_HD8_83_GCF_004765805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/765/805/GCF_004765805.1_ASM476580v1	SAMN10721430	Halorussus halobius	Scaffold
@@ -973,10 +1070,14 @@ Halorut_salinus_F3_133_GCF_026242195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/
 Halose_longus_CBA1133_GCF_003722095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/722/095/GCF_003722095.1_ASM372209v1	SAMN10386455	Halosegnis longus	Contig
 Halose_longus_CBA1134_GCF_001950595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/950/595/GCF_001950595.1_ASM195059v1	SAMD00064366	Halosegnis longus	Contig
 Halose_longus_F12_1_GCF_009663395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/663/395/GCF_009663395.1_ASM966339v1	SAMN09370565	Halosegnis longus	Scaffold
+Halose_marinus_CCM_3424_GCF_042663805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/805/GCF_042663805.1_ASM4266380v1	SAMN43283172	Halosegnis marinus	Contig
+Halose_marinus_CCM_7403_GCF_042663465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/465/GCF_042663465.1_ASM4266346v1	SAMN43283182	Halosegnis marinus	Contig
 Halose_marinus_DT85_GCF_029338355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/338/355/GCF_029338355.1_ASM2933835v1	SAMN33716776	Halosegnis marinus	Complete Genome
 Halose_rubeus_F17_44_GCF_009184545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/184/545/GCF_009184545.1_ASM918454v1	SAMN09291540	Halosegnis rubeus	Scaffold
 Halose_rubeus_F18_79_GCF_009184575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/184/575/GCF_009184575.1_ASM918457v1	SAMN09371719	Halosegnis rubeus	Scaffold
 Halose_rubeus_F19_13_GCF_009184555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/184/555/GCF_009184555.1_ASM918455v1	SAMN09473933	Halosegnis rubeus	Contig
+Halosi_aquaticum_NBRC_109915_GCA_042663745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/042/663/745/GCA_042663745.1_ASM4266374v1	SAMN43283176	Halosimplex aquaticum	Contig
+Halosi_aquaticum_NBRC_111756_GCF_042663565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/565/GCF_042663565.1_ASM4266356v1	SAMN43283179	Halosimplex aquaticum	Contig
 Halosi_aquaticum_XZYJT29_GCF_028747785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/747/785/GCF_028747785.1_ASM2874778v1	SAMN33179401	Halosimplex aquaticum	Complete Genome
 Halosi_carl_2_9_2001_GCF_000337455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/455/GCF_000337455.1_ASM33745v1	SAMN02471654	Halosimplex carlsbadense	Contig
 Halosi_halophilum_TH32_GCF_004698125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/698/125/GCF_004698125.1_ASM469812v1	SAMN11242085	Halosimplex halophilum	Scaffold
@@ -984,9 +1085,12 @@ Halosi_litoreum_YGH94_GCF_016065055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/G
 Halosi_pelagicum_R2_GCF_013415905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/415/905/GCF_013415905.1_ASM1341590v1	SAMN15472364	Halosimplex pelagicum	Complete Genome
 Halosi_rubrum_R27_GCF_013415885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/415/885/GCF_013415885.1_ASM1341588v1	SAMN15472373	Halosimplex rubrum	Complete Genome
 Halosi_salinum_YPL4_GCF_003730195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/730/195/GCF_003730195.1_ASM373019v1	SAMN09925649	Halosimplex salinum	Contig
+Haloso_amylolyticus_NBRC_106593_GCF_042654825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/654/825/GCF_042654825.1_ASM4265482v1	SAMN43283071	Halosolutus amylolyticus	Scaffold
 Haloso_amylolyticus_WLHS5_GCF_023566055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/566/055/GCF_023566055.1_ASM2356605v1	SAMN27281600	Halosolutus amylolyticus	Contig
 Haloso_gelatinilyticus_SQT_29_1_GCF_023028105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/028/105/GCF_023028105.1_ASM2302810v1	SAMN27190946	Halosolutus gelatinilyticus	Complete Genome
 Haloso_halophilus_LT55_GCF_022869805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/869/805/GCF_022869805.1_ASM2286980v1	SAMN27190933	Halosolutus halophilus	Complete Genome
+Halosp_flavus_NBRC_113428_GCF_042663865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/865/GCF_042663865.1_ASM4266386v1	SAMN43283175	Halospeciosus flavus	Contig
+Halosp_flavus_NBRC_114356_GCF_042663645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/645/GCF_042663645.1_ASM4266364v1	SAMN43283180	Halospeciosus flavus	Contig
 Halosp_flavus_XZGYJ_43_GCF_029814175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/814/175/GCF_029814175.1_ASM2981417v1	SAMN33607887	Halospeciosus flavus	Chromosome
 Halosta_kam_DSM_22427_GCF_900116205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/116/205/GCF_900116205.1_IMG-taxon_2639762563_annotated_assembly	SAMN04488556	Halostagnicola kamekurae	Contig
 Halosta_lar_XH_48_GCF_000517625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/517/625/GCF_000517625.1_ASM51762v1	SAMN00117518	Halostagnicola larsenii	Complete Genome
@@ -1005,10 +1109,14 @@ Halot_tur_DSM_5511_GCF_000025325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/
 Halot_tur_WANU15_GCA_001483125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/483/125/GCA_001483125.1_ASM148312v1	SAMN04115933	Haloterrigena turkmenica	Contig
 Halove_ara_IBRC_M10015_GCF_900100385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/100/385/GCF_900100385.1_IMG-taxon_2651870124_annotated_assembly	SAMN05216226	Halovenus aranensis	Scaffold
 Halove_carb_WSH3_GCF_009831575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/831/575/GCF_009831575.1_ASM983157v1	SAMN13676160	Halovenus carboxidivorans	Contig
+Halove_rubra_CGMCC_4_7176_GCF_042663305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/305/GCF_042663305.1_ASM4266330v1	SAMN43283201	Halovenus rubra	Contig
+Halove_rubra_CGMCC_4_7215_GCF_042663145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/145/GCF_042663145.1_ASM4266314v1	SAMN43283209	Halovenus rubra	Scaffold
 Halove_rubra_R28_GCF_026586665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/586/665/GCF_026586665.1_ASM2658666v1	SAMN30884598	Halovenus rubra	Contig
+Halove_salina_CGMCC_1_12553_GCF_042662325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/325/GCF_042662325.1_ASM4266232v1	SAMN43283219	Halovenus salina	Contig
 Halove_salina_JCM_30072_GCF_026410925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/410/925/GCF_026410925.1_ASM2641092v1	SAMN31779816	Halovenus salina	Complete Genome
 Halovi_asiaticus_JCM_14624_GCF_000337515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/515/GCF_000337515.1_ASM33751v1	SAMN02471651	Halovivax asiaticus	Contig
 Halovi_ceri_IBRC_M_10256_GCF_024498195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/498/195/GCF_024498195.1_ASM2449819v1	SAMN29883696	Halovivax cerinus	Complete Genome
+Halovi_ceri_IBRC_M_10256_GCF_042650185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/650/185/GCF_042650185.1_ASM4265018v1	SAMN43281996	Halovivax cerinus	Contig
 Halovi_gelatinilyticus_CGA30_GCF_024300625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/300/625/GCF_024300625.1_ASM2430062v1	SAMN29426050	Halovivax gelatinilyticus	Complete Genome
 Halovi_limis_IBRC_M_10022_GCF_023093535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/093/535/GCF_023093535.1_ASM2309353v1	SAMN27554405	Halovivax limisalsi	Complete Genome
 Halovi_ruber_XH_70_GCF_000328525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/328/525/GCF_000328525.1_ASM32852v1	SAMN02232030	Halovivax ruber	Complete Genome
@@ -1018,13 +1126,14 @@ Ignic_islandicus_DSM_13165_GCF_001481685_1	https://ftp.ncbi.nlm.nih.gov/genomes/
 Ignic_pac_DSM_13166_GCA_025340205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/340/205/GCA_025340205.1_ASM2534020v1	SAMN04316367	Ignicoccus pacificus	Complete Genome
 Ignis_agg_DSM_17230_GCA_000145985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/145/985/GCA_000145985.1_ASM14598v1	SAMN00016987	Ignisphaera aggregans	Complete Genome
 Ignis_agg_GCA_015662595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/662/595/GCA_015662595.1_ASM1566259v1	SAMN09926488	Ignisphaera aggregans	Contig
-In_luci_3507LT_GCF_014876775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/876/775/GCF_014876775.1_ASM1487677v1	SAMN16282219	Infirmifilum lucidum	Complete Genome
+Ignis_cupi_4213_co_GCF_030186535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/186/535/GCF_030186535.1_ASM3018653v1	SAMN35529470	Ignisphaera cupida	Contig
+In_luc_3507LT_GCF_014876775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/876/775/GCF_014876775.1_ASM1487677v1	SAMN16282219	Infirmifilum lucidum	Complete Genome
 In_uzonense_1807_2_GCF_000993805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/993/805/GCF_000993805.1_ASM99380v1	SAMN03083278	Infirmifilum uzonense	Complete Genome
 In_uzonense_GCA_023255915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/255/915/GCA_023255915.1_ASM2325591v1	SAMN17914477	Infirmifilum uzonense	Scaffold
 Meta_cuprina_Ar_4_GCF_000204925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/204/925/GCF_000204925.1_ASM20492v1	SAMN02603221	Metallosphaera cuprina	Complete Genome
 Meta_hak_HO1_1_GCF_003201675_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/201/675/GCF_003201675.2_ASM320167v2	SAMN09071531	Metallosphaera hakonensis	Complete Genome
 Meta_hak_JCM_8857_GCF_001315825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/315/825/GCF_001315825.1_ASM131582v1	SAMD00000474	Metallosphaera hakonensis	Contig
-Meta_javensis_ex_H_J1_GCF_022064045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/064/045/GCF_022064045.1_ASM2206404v1	SAMN25174631	Metallosphaera javensis (ex Hofmann et al. 2022)	Contig
+Meta_J1_GCF_022064045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/064/045/GCF_022064045.1_ASM2206404v1	SAMN25174631	Metallosphaera javensis (ex Hofmann et al. 2022)	Contig
 Meta_javensis_ex_S_GCA_021654415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/654/415/GCA_021654415.1_MjAS7_1.0	SAMD00250049	Metallosphaera javensis (ex Sakai et al. 2022)	Complete Genome
 Meta_pru_GCF_026627265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/627/265/GCF_026627265.1_ASM2662726v1	SAMN31719906	Metallosphaera prunae	Contig
 Meta_pru_Ron_12_II_GCF_005222525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/005/222/525/GCF_005222525.1_ASM522252v1	SAMN09071532	Metallosphaera prunae	Complete Genome
@@ -1035,8 +1144,8 @@ Meta_sedu_ARS50_2_GCF_001266675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/0
 Meta_sedu_CuR1_GCF_000747605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/747/605/GCF_000747605.1_ASM74760v1	SAMN02866348	Metallosphaera sedula	Chromosome
 Meta_sedu_Drty10_2_GCF_024239095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/239/095/GCF_024239095.1_ASM2423909v1	SAMN29490029	Metallosphaera sedula	Scaffold
 Meta_sedu_Drty7_1_GCF_022427045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/427/045/GCF_022427045.1_ASM2242704v1	SAMN26144440	Metallosphaera sedula	Contig
-Meta_sedu_DSM_5348_GCA_000016605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/016/605/GCA_000016605.1_ASM1660v1	SAMN02598389	Metallosphaera sedula	Complete Genome
-Meta_sedu_DSM_5348_GCA_035610555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/035/610/555/GCA_035610555.1_ASM3561055v1	SAMN38472205	Metallosphaera sedula	Complete Genome
+Meta_sedu_DSM_5348_GCF_000016605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/016/605/GCF_000016605.1_ASM1660v1	SAMN02598389	Metallosphaera sedula	Complete Genome
+Meta_sedu_DSM_5348_GCF_035610555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/035/610/555/GCF_035610555.1_ASM3561055v1	SAMN38472205	Metallosphaera sedula	Complete Genome
 Meta_sedu_GCA_946481995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/946/481/995/GCA_946481995.1_SRR12180960_bin.10_metawrap_v1.3.0_MAG	SAMEA110701582	Metallosphaera sedula	Contig
 Meta_sedu_MJ1HA_GCF_023169565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/169/565/GCF_023169565.1_ASM2316956v1	SAMD00173596	Metallosphaera sedula	Complete Genome
 Meta_sedu_SARC_M1_GCF_001266735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/266/735/GCF_001266735.1_ASM126673v1	SAMN03890864	Metallosphaera sedula	Complete Genome
@@ -1064,12 +1173,14 @@ Methanoba_formicicum_GCA_034679565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GC
 Methanoba_formicicum_GCA_036720525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/720/525/GCA_036720525.1_ASM3672052v1	SAMN28745976	Methanobacterium formicicum	Scaffold
 Methanoba_formicicum_GCA_036799705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/799/705/GCA_036799705.1_ASM3679970v1	SAMN28749295	Methanobacterium formicicum	Scaffold
 Methanoba_formicicum_GCA_036829235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/829/235/GCA_036829235.1_ASM3682923v1	SAMN28750529	Methanobacterium formicicum	Scaffold
+Methanoba_formicicum_GCA_041447305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/041/447/305/GCA_041447305.1_ASM4144730v1	SAMN42316955	Methanobacterium formicicum	Contig
 Methanoba_formicicum_GCF_001458655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/458/655/GCF_001458655.1_Mb9	SAMEA2779801	Methanobacterium formicicum	Complete Genome
 Methanoba_formicicum_GCF_015351695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/351/695/GCF_015351695.1_ASM1535169v1	SAMN16521386	Methanobacterium formicicum	Contig
 Methanoba_formicicum_GCF_036829215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/829/215/GCF_036829215.1_ASM3682921v1	SAMN28750746	Methanobacterium formicicum	Scaffold
+Methanoba_formicicum_GCF_041447325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/447/325/GCF_041447325.1_ASM4144732v1	SAMN42317188	Methanobacterium formicicum	Contig
 Methanoba_formicicum_GCF_937905965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/937/905/965/GCF_937905965.1_SRR1562007_bin.168_CONCOCT_v1.1_MAG	SAMEA14037491	Methanobacterium formicicum	Contig
 Methanoba_formicicum_JCM_10132_GCA_001316325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/316/325/GCA_001316325.1_ASM131632v1	SAMD00016804	Methanobacterium formicicum	Contig
-Methanoba_formicicum_MCM_B_604_GCF_029601605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/601/605/GCF_029601605.1_ASM2960160v1	SAMN34002612	Methanobacterium formicicum	Contig
+Methanoba_formicicum_MCMA1521_GCF_029601605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/601/605/GCF_029601605.1_ASM2960160v1	SAMN34002612	Methanobacterium formicicum	Contig
 Methanoba_formicicum_MF_GCF_029848115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/848/115/GCF_029848115.1_ASM2984811v1	SAMN34164049	Methanobacterium formicicum	Contig
 Methanoba_lacus_AL_21_GCF_000191585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/191/585/GCF_000191585.1_ASM19158v1	SAMN02232037	Methanobacterium lacus	Complete Genome
 Methanoba_paludis_GCA_020055625_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/055/625/GCA_020055625.2_ASM2005562v2	SAMN21209357	Methanobacterium paludis	Scaffold
@@ -1088,8 +1199,8 @@ Methanobr_arb_A2_GCF_027925065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/02
 Methanobr_arb_ANOR1_GCF_000513315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/513/315/GCF_000513315.1_ANOR1	SAMEA3138839	Methanobrevibacter arboriphilus	Scaffold
 Methanobr_arb_DH1_GCF_002072215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/072/215/GCF_002072215.1_ASM207221v1	SAMN03267482	Methanobrevibacter arboriphilus	Contig
 Methanobr_arb_GCA_020854875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/854/875/GCA_020854875.1_ASM2085487v1	SAMN19322296	Methanobrevibacter arboriphilus	Contig
+Methanobr_arb_GCA_958448615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/448/615/GCA_958448615.1_ERR9578194_bin.14_MetaWRAP_v1.3_MAG	SAMEA114062927	Methanobrevibacter arboriphilus	Contig
 Methanobr_arb_GCF_015351715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/351/715/GCF_015351715.1_ASM1535171v1	SAMN16521388	Methanobrevibacter arboriphilus	Contig
-Methanobr_arb_GCF_958448615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/448/615/GCF_958448615.1_ERR9578194_bin.14_MetaWRAP_v1.3_MAG	SAMEA114062927	Methanobrevibacter arboriphilus	Contig
 Methanobr_arb_JCM_13429_GCF_001316345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/316/345/GCF_001316345.1_ASM131634v1	SAMD00016809	Methanobrevibacter arboriphilus	Contig
 Methanobr_arb_JCM_9315_GCF_001315885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/315/885/GCF_001315885.1_ASM131588v1	SAMD00000480	Methanobrevibacter arboriphilus	Contig
 Methanobr_arb_SA_GCF_019669925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/669/925/GCF_019669925.1_ASM1966992v1	SAMD00171894	Methanobrevibacter arboriphilus	Complete Genome
@@ -1247,6 +1358,7 @@ Methanobr_smi_GCF_959018705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/959/0
 Methanobr_smi_GCF_959026265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/959/026/265/GCF_959026265.1_SRR13494517_bin.23_MetaWRAP_v1.3_MAG	SAMEA114096624	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCF_959603635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/959/603/635/GCF_959603635.1_SRR16280099_bin.15_MetaWRAP_v1.3_MAG	SAMEA114122740	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCF_959605265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/959/605/265/GCF_959605265.1_SRR16244389_bin.33_MetaWRAP_v1.3_MAG	SAMEA114095776	Methanobrevibacter smithii	Contig
+Methanobr_smi_GRAZ_2_GCA_041447165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/041/447/165/GCA_041447165.1_GRAZ-2	SAMN39527019	Methanobrevibacter smithii	Complete Genome
 Methanobr_smi_JC9_GCF_036527415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/527/415/GCF_036527415.1_ASM3652741v1	SAMN32745244	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_KB11_GCF_002813085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/813/085/GCF_002813085.1_ASM281308v1	SAMN05935551	Methanobrevibacter smithii	Complete Genome
 Methanobr_smi_MCC662_GCF_018784305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/784/305/GCF_018784305.1_ASM1878430v1	SAMN12147416	Methanobrevibacter smithii	Scaffold
@@ -1270,6 +1382,7 @@ Methanobr_smi_TS95D_GCF_000190115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF
 Methanobr_smi_TS96A_GCF_000190135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/190/135/GCF_000190135.1_ASM19013v2	SAMN02436671	Methanobrevibacter smithii	Contig
 Methanobr_smi_TS96B_GCF_000190155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/190/155/GCF_000190155.1_ASM19015v2	SAMN02436681	Methanobrevibacter smithii	Contig
 Methanobr_smi_TS96C_GCF_000190175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/190/175/GCF_000190175.1_ASM19017v2	SAMN02436672	Methanobrevibacter smithii	Contig
+Methanobr_smi_U29_GCF_041537865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/537/865/GCF_041537865.1_ASM4153786v1	SAMN43285203	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_WWM1085_GCF_002252585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/252/585/GCF_002252585.1_ASM225258v1	SAMN07492084	Methanobrevibacter smithii	Contig
 Methanobr_thau_DSM_11995_GCF_003111625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/111/625/GCF_003111625.1_ASM311162v1	SAMN06461352	Methanobrevibacter thaueri	Contig
 Methanobr_thau_GCA_015062925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/062/925/GCA_015062925.1_ASM1506292v1	SAMN11294304	Methanobrevibacter thaueri	Scaffold
@@ -1342,6 +1455,7 @@ Methanococcus_marip_GCF_036755165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF
 Methanococcus_marip_GCF_036773865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/773/865/GCF_036773865.1_ASM3677386v1	SAMN28747995	Methanococcus maripaludis	Scaffold
 Methanococcus_marip_GCF_036807485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/807/485/GCF_036807485.1_ASM3680748v1	SAMN28749791	Methanococcus maripaludis	Scaffold
 Methanococcus_marip_KA1_GCF_000828535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/828/535/GCF_000828535.1_ASM82853v1	SAMD00170763	Methanococcus maripaludis	Complete Genome
+Methanococcus_marip_Mic1c10_GCF_040362185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/040/362/185/GCF_040362185.1_ASM4036218v1	SAMD00656837	Methanococcus maripaludis	Scaffold
 Methanococcus_marip_OS7_GCF_000828555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/828/555/GCF_000828555.1_ASM82855v1	SAMD00170764	Methanococcus maripaludis	Complete Genome
 Methanococcus_marip_OS7mut1_GCF_003052125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/052/125/GCF_003052125.1_ASM305212v1	SAMN06562580	Methanococcus maripaludis	Complete Genome
 Methanococcus_marip_RC_GCF_016907005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/907/005/GCF_016907005.1_ASM1690700v1	SAMN17620118	Methanococcus maripaludis	Scaffold
@@ -1354,14 +1468,14 @@ Methanococcus_volt_C2_GCF_024807655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/G
 Methanococcus_volt_C4_GCF_017875565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/875/565/GCF_017875565.1_ASM1787556v1	SAMN18257927	Methanococcus voltae	Contig
 Methanococcus_volt_DSM_14649_GCF_017875395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/875/395/GCF_017875395.1_ASM1787539v1	SAMN18243379	Methanococcus voltae	Contig
 Methanococcus_volt_PS_GCF_024807035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/807/035/GCF_024807035.1_ASM2480703v1	SAMN28058271	Methanococcus voltae	Contig
-Methanocor_bavaricum_DSM_4179_GCF_000430905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/430/905/GCF_000430905.1_ASM43090v1	SAMN02441137	Methanocorpusculum bavaricum	Scaffold
+Methanocor_bav_DSM_4179_GCF_000430905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/430/905/GCF_000430905.1_ASM43090v1	SAMN02441137	Methanocorpusculum bavaricum	Scaffold
 Methanocor_labr_GCA_003250025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/250/025/GCA_003250025.1_ASM325002v1	SAMN09288103	Methanocorpusculum labreanum	Contig
 Methanocor_labr_Z_GCF_000015765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/015/765/GCF_000015765.1_ASM1576v1	SAMN00623052	Methanocorpusculum labreanum	Complete Genome
 Methanocor_parv_GCA_012513095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/513/095/GCA_012513095.1_ASM1251309v1	SAMN13894537	Methanocorpusculum parvum	Contig
 Methanocor_parv_GCA_015063085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/063/085/GCA_015063085.1_ASM1506308v1	SAMN11294296	Methanocorpusculum parvum	Scaffold
 Methanocor_parv_GCA_015063105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/063/105/GCA_015063105.1_ASM1506310v1	SAMN11294295	Methanocorpusculum parvum	Scaffold
 Methanocor_parv_GCA_028705015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/028/705/015/GCA_028705015.1_ASM2870501v1	SAMN32737692	Methanocorpusculum parvum	Scaffold
-Methanocor_parv_XII_GCA_002287215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/287/215/GCA_002287215.1_ASM228721v1	SAMN04229038	Methanocorpusculum parvum	Contig
+Methanocor_parv_XII_GCF_002287215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/287/215/GCF_002287215.1_ASM228721v1	SAMN04229038	Methanocorpusculum parvum	Contig
 Methanocor_peta_MG_GCF_026891975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/891/975/GCF_026891975.1_ASM2689197v1	SAMN32012124	Methanocorpusculum petauri	Contig
 Methanocor_vom_CW153_GCF_026891935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/891/935/GCF_026891935.1_ASM2689193v1	SAMN32012125	Methanocorpusculum vombati	Contig
 Methanocu_bou_BZM_GCF_027925405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/925/405/GCF_027925405.1_ASM2792540v1	SAMD00564996	Methanoculleus bourgensis	Contig
@@ -1375,10 +1489,13 @@ Methanocu_bou_GCA_900079125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/0
 Methanocu_bou_GCF_036720475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/720/475/GCF_036720475.1_ASM3672047v1	SAMN28745982	Methanoculleus bourgensis	Scaffold
 Methanocu_bou_GCF_900036045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/036/045/GCF_900036045.1_Methanoculleus_sp_MAB1	SAMEA3857231	Methanoculleus bourgensis	Complete Genome
 Methanocu_bou_type_MS2_GCF_000304355_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/304/355/GCF_000304355.2_Mb_MS2	SAMEA2272323	Methanoculleus bourgensis	Complete Genome
+Methanocu_caldif_Wushi_C6_GCF_032842345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/032/842/345/GCF_032842345.1_ASM3284234v1	SAMN12878181	Methanoculleus caldifontis	Contig
 Methanocu_chik_GCA_028706055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/028/706/055/GCA_028706055.1_ASM2870605v1	SAMN32737639	Methanoculleus chikugoensis	Scaffold
 Methanocu_chik_GCF_900095385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/095/385/GCF_900095385.1_L21	SAMEA4384483	Methanoculleus chikugoensis	Contig
 Methanocu_chik_JCM_10825_GCF_001315965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/315/965/GCF_001315965.1_ASM131596v1	SAMD00000410	Methanoculleus chikugoensis	Contig
 Methanocu_chik_MG62_GCF_019669965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/669/965/GCF_019669965.1_ASM1966996v1	SAMD00171896	Methanoculleus chikugoensis	Complete Genome
+Methanocu_formose_Afa_1_GCF_025384765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/384/765/GCF_025384765.1_ASM2538476v1	SAMN12106768	Methanoculleus formosensis	Contig
+Methanocu_fri_FWC_SCC1_GCF_030464345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/464/345/GCF_030464345.1_ASM3046434v1	SAMN11877970	Methanoculleus frigidifontis	Contig
 Methanocu_horo_GCA_028690625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/028/690/625/GCA_028690625.1_ASM2869062v1	SAMN32734630	Methanoculleus horonobensis	Scaffold
 Methanocu_horo_GCA_028702935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/028/702/935/GCA_028702935.1_ASM2870293v1	SAMN32737265	Methanoculleus horonobensis	Scaffold
 Methanocu_horo_JCM_15517_GCF_001602375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/602/375/GCF_001602375.1_ASM160237v1	SAMD00044723	Methanoculleus horonobensis	Contig
@@ -1386,9 +1503,12 @@ Methanocu_marisn_GCA_001508665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/00
 Methanocu_marisn_GCA_001509255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/509/255/GCA_001509255.1_ASM150925v1	SAMN03445157	Methanoculleus marisnigri	Contig
 Methanocu_marisn_GCA_002496255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/496/255/GCA_002496255.1_ASM249625v1	SAMN06027610	Methanoculleus marisnigri	Scaffold
 Methanocu_marisn_GCA_002503525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/503/525/GCA_002503525.1_ASM250352v1	SAMN06027052	Methanoculleus marisnigri	Scaffold
+Methanocu_marisn_GCA_002503885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/503/885/GCA_002503885.1_ASM250388v1	SAMN06027135	Methanoculleus marisnigri	Scaffold
 Methanocu_marisn_GCA_020855035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/855/035/GCA_020855035.1_ASM2085503v1	SAMN19322288	Methanoculleus marisnigri	Contig
-Methanocu_marisn_GCF_002503885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/503/885/GCF_002503885.1_ASM250388v1	SAMN06027135	Methanoculleus marisnigri	Scaffold
 Methanocu_marisn_JR1_GCF_000015825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/015/825/GCF_000015825.1_ASM1582v1	SAMN02598365	Methanoculleus marisnigri	Complete Genome
+Methanocu_metha_FWC_SCC3_GCF_030464365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/464/365/GCF_030464365.1_ASM3046436v1	SAMN11878460	Methanoculleus methanifontis	Contig
+Methanocu_ner_YWC_01_GCF_032944295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/032/944/295/GCF_032944295.1_ASM3294429v1	SAMN14851478	Methanoculleus nereidis	Contig
+Methanocu_oce_CWC_02_GCF_023702065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/702/065/GCF_023702065.1_ASM2370206v1	SAMN09096969	Methanoculleus oceani	Contig
 Methanocu_rec_DSM_18860_GCF_033472595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/033/472/595/GCF_033472595.1_ASM3347259v1	SAMN38028080	Methanoculleus receptaculi	Complete Genome
 Methanocu_sediminis_S3Fa_GCF_001017125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/017/125/GCF_001017125.1_ASM101712v1	SAMN03288802	Methanoculleus sediminis	Scaffold
 Methanocu_subm_DSM_15122_GCF_025914035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/914/035/GCF_025914035.1_ASM2591403v1	SAMN31309218	Methanoculleus submarinus	Complete Genome
@@ -1402,7 +1522,7 @@ Methanofe_aby_HHB_GCF_004310395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/0
 Methanofo_aquae_N2F9704_GCF_017357525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/357/525/GCF_017357525.1_ASM1735752v1	SAMN03254450	Methanofollis aquaemaris	Complete Genome
 Methanofo_ethano_JCM_15103_GCF_001571385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/571/385/GCF_001571385.1_ASM157138v1	SAMD00044721	Methanofollis ethanolicus	Contig
 Methanofo_fon_FWC_SCC2_GCF_004297185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/297/185/GCF_004297185.1_ASM429718v1	SAMN07985449	Methanofollis fontis	Contig
-Methanofo_formo_ML15_GCF_019633745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/633/745/GCF_019633745.1_ASM1963374v1	SAMN11125589	Methanofollis formosanus	Chromosome
+Methanofo_formosa_ML15_GCF_019633745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/633/745/GCF_019633745.1_ASM1963374v1	SAMN11125589	Methanofollis formosanus	Chromosome
 Methanofo_limin_DSM_4140_GCF_000275865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/275/865/GCF_000275865.1_ASM27586v1	SAMN02256542	Methanofollis liminatans	Chromosome
 Methanofo_limin_GCA_011049415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/049/415/GCA_011049415.1_ASM1104941v1	SAMN09639099	Methanofollis liminatans	Contig
 Methanofo_limin_GCA_028691265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/028/691/265/GCA_028691265.1_ASM2869126v1	SAMN32734597	Methanofollis liminatans	Scaffold
@@ -1478,6 +1598,7 @@ Methanomethylop_alvi_Mx1201_GCF_000300255_2	https://ftp.ncbi.nlm.nih.gov/genomes
 Methanomethylov_hol_DSM_15978_GCF_000328665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/328/665/GCF_000328665.1_ASM32866v1	SAMN02261367	Methanomethylovorans hollandica	Complete Genome
 Methanomi_ant_DSM_21220_GCF_029633915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/633/915/GCF_029633915.1_ASM2963391v1	SAMN25047802	Methanomicrobium antiquum	Complete Genome
 Methanomi_mob_BP_GCF_000711215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/711/215/GCF_000711215.1_ASM71121v1	SAMN02745537	Methanomicrobium mobile	Contig
+Methanomi_mob_GCA_040307525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/040/307/525/GCA_040307525.1_ASM4030752v1	SAMN37796783	Methanomicrobium mobile	Contig
 Methanomi_mob_GCA_947305015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/947/305/015/GCA_947305015.1_SRR10912534_bin.98_metaWRAP_v1.3_MAG	SAMEA111560390	Methanomicrobium mobile	Contig
 Methanon_thermophilum_AMET1_GCF_002153915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/153/915/GCF_002153915.1_ASM215391v1	SAMN05770049	Methanonatronarchaeum thermophilum	Contig
 Methanoo_ner_CWC_04_GCF_021023085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/023/085/GCF_021023085.1_ASM2102308v1	SAMN07985097	Methanooceanicella nereidis	Contig
@@ -1522,7 +1643,7 @@ Methanosar_maz_1_H_A_2_1_GCF_000979935_1	https://ftp.ncbi.nlm.nih.gov/genomes/al
 Methanosar_maz_1_H_A_2_3_GCF_000979195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/195/GCF_000979195.1_gtlEnvA5udCFS	SAMN02708936	Methanosarcina mazei	Scaffold
 Methanosar_maz_1_H_A_2_6_GCF_000979995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/995/GCF_000979995.1_gtlEnvA5udCFS	SAMN02708979	Methanosarcina mazei	Scaffold
 Methanosar_maz_1_H_A_2_7_GCF_000979205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/205/GCF_000979205.1_gtlEnvA5udCFS	SAMN02708937	Methanosarcina mazei	Scaffold
-Methanosar_maz_1_H_A_2_8_GCF_000980005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/980/005/GCF_000980005.1_gtlEnvA5udCFS	SAMN02708958	Methanosarcina mazei	Scaffold
+Methanosar_maz_1_H_A_2_8_GCA_000980005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/980/005/GCA_000980005.1_gtlEnvA5udCFS	SAMN02708958	Methanosarcina mazei	Scaffold
 Methanosar_maz_1_H_M_0_1_GCF_000980025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/980/025/GCF_000980025.1_gtlEnvA5udCFS	SAMN02708970	Methanosarcina mazei	Scaffold
 Methanosar_maz_1_H_M_1A_1_GCF_000980055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/980/055/GCF_000980055.1_gtlEnvA5udCFS	SAMN02708959	Methanosarcina mazei	Scaffold
 Methanosar_maz_1_H_M_1A_2_GCF_000979255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/255/GCF_000979255.1_gtlEnvA5udCFS	SAMN02708938	Methanosarcina mazei	Scaffold
@@ -1550,7 +1671,7 @@ Methanosar_maz_3_F_T_1A_1_GCF_000978965_1	https://ftp.ncbi.nlm.nih.gov/genomes/a
 Methanosar_maz_3_F_T_1A_2_GCF_000979595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/595/GCF_000979595.1_gtlEnvA5udCFS	SAMN02708948	Methanosarcina mazei	Scaffold
 Methanosar_maz_3_F_T_1A_4_GCF_000979635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/635/GCF_000979635.1_gtlEnvA5udCFS	SAMN02708949	Methanosarcina mazei	Scaffold
 Methanosar_maz_3_F_T_2_1_GCF_000979665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/665/GCF_000979665.1_gtlEnvA5udCFS	SAMN02708986	Methanosarcina mazei	Scaffold
-Methanosar_maz_3_H_A_1A_1_GCF_000979655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/655/GCF_000979655.1_gtlEnvA5udCFS	SAMN02708984	Methanosarcina mazei	Scaffold
+Methanosar_maz_3_H_A_1A_1_GCA_000979655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/979/655/GCA_000979655.1_gtlEnvA5udCFS	SAMN02708984	Methanosarcina mazei	Scaffold
 Methanosar_maz_3_H_A_1A_2_GCF_000979675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/675/GCF_000979675.1_gtlEnvA5udCFS	SAMN02708962	Methanosarcina mazei	Scaffold
 Methanosar_maz_3_H_A_2_1_GCF_000979015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/015/GCF_000979015.1_gtlEnvA5udCFS	SAMN02708987	Methanosarcina mazei	Scaffold
 Methanosar_maz_3_H_A_2_4_GCF_000979685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/979/685/GCF_000979685.1_gtlEnvA5udCFS	SAMN02708963	Methanosarcina mazei	Scaffold
@@ -1639,6 +1760,7 @@ Methanospi_hun_JF_1_GCF_000013445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF
 Methanospi_lacun_Ki8_1_GCF_003173355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/173/355/GCF_003173355.1_ASM317335v1	SAMN09236929	Methanospirillum lacunae	Contig
 Methanospi_stam_Pt1_GCF_003173335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/173/335/GCF_003173335.1_ASM317333v1	SAMN09236931	Methanospirillum stamsii	Contig
 Methanothermob_def_DSM_7466_GCF_003385755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/385/755/GCF_003385755.1_ASM338575v1	SAMN08769621	Methanothermobacter defluvii	Scaffold
+Methanothermob_marb_Clermont_GCF_041928885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/928/885/GCF_041928885.1_ASM4192888v1	SAMN38390029	Methanothermobacter marburgensis	Contig
 Methanothermob_marb_Marburg_GCF_000145295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/145/295/GCF_000145295.1_ASM14529v1	SAMN02603260	Methanothermobacter marburgensis	Complete Genome
 Methanothermob_marb_Marburg_GCF_027555065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/555/065/GCF_027555065.1_ASM2755506v1	SAMN16623210	Methanothermobacter marburgensis	Complete Genome
 Methanothermob_tene_MCM_B_1447_GCF_003264935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/264/935/GCF_003264935.1_ASM326493v1	SAMN09435550	Methanothermobacter tenebrarum	Contig
@@ -1720,6 +1842,7 @@ Methanothr_soe_GCA_036749375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/
 Methanothr_soe_GCA_036807425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/807/425/GCA_036807425.1_ASM3680742v1	SAMN28749856	Methanothrix soehngenii	Scaffold
 Methanothr_soe_GCA_036817285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/817/285/GCA_036817285.1_ASM3681728v1	SAMN28750409	Methanothrix soehngenii	Scaffold
 Methanothr_soe_GCA_036817325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/817/325/GCA_036817325.1_ASM3681732v1	SAMN28750169	Methanothrix soehngenii	Scaffold
+Methanothr_soe_GCA_041675565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/041/675/565/GCA_041675565.1_ASM4167556v1	SAMN39891683	Methanothrix soehngenii	Contig
 Methanothr_soe_GCF_023228095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/228/095/GCF_023228095.1_ASM2322809v1	SAMN27301920	Methanothrix soehngenii	Scaffold
 Methanothr_soe_GCF_028714415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/714/415/GCF_028714415.1_ASM2871441v1	SAMN32731769	Methanothrix soehngenii	Scaffold
 Methanothr_soe_GCF_034007965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/034/007/965/GCF_034007965.1_ASM3400796v1	SAMN36910835	Methanothrix soehngenii	Contig
@@ -1741,7 +1864,7 @@ Methanothr_soe_GP6_GCF_000204415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/
 Methanothr_thermoa_PT_GCF_000014945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/014/945/GCF_000014945.1_ASM1494v1	SAMN02598350	Methanothrix thermoacetophila	Complete Genome
 Methanoto_formicicus_Mc_S_70_GCF_000243455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/243/455/GCF_000243455.1_ASM24345v2	SAMN02261372	Methanotorris formicicus	Contig
 Methanoto_ign_Kol_5_GCF_000214415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/214/415/GCF_000214415.1_ASM21441v1	SAMN00713627	Methanotorris igneus	Complete Genome
-Methanov_yan_CYW5_GCF_018687785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/687/785/GCF_018687785.1_ASM1868778v1	SAMN04515787	Methanovulcanius yangii	Contig
+Methanov_yang_CYW5_GCF_018687785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/687/785/GCF_018687785.1_ASM1868778v1	SAMN04515787	Methanovulcanius yangii	Contig
 Methe_she_DSM_18856_GCF_000711905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/711/905/GCF_000711905.1_ASM71190v1	SAMN02746094	Methermicoccus shengliensis	Scaffold
 Methe_she_GCF_013330515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/330/515/GCF_013330515.1_ASM1333051v1	SAMN13193009	Methermicoccus shengliensis	Scaffold
 Nanoa_equ_Kin4_M_GCA_000008085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/008/085/GCA_000008085.1_ASM808v1	SAMN02603208	Nanoarchaeum equitans	Complete Genome
@@ -1766,6 +1889,7 @@ Natria_tai_DSM_12281_GCF_000337595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GC
 Natrib_breve_TRM20010_GCA_023008585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/008/585/GCA_023008585.1_ASM2300858v1	SAMN27400664	Natribaculum breve	Complete Genome
 Natrib_longum_TRM20345_GCA_023008565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/008/565/GCA_023008565.1_ASM2300856v1	SAMN27400812	Natribaculum longum	Complete Genome
 Natrib_lut_IBRC_M_10912_GCF_023008545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/008/545/GCF_023008545.1_ASM2300854v1	SAMN27400904	Natribaculum luteum	Complete Genome
+Natrib_lut_IBRC_M_10912_GCF_042651585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/651/585/GCF_042651585.1_ASM4265158v1	SAMN43281919	Natribaculum luteum	Contig
 Natrin_alt_1A4_DGR_GCA_000815265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/815/265/GCA_000815265.1_ASM81526v1	SAMN03273287	Natrinema altunense	Contig
 Natrin_alt_4_1R_GCF_004209855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/209/855/GCF_004209855.1_ASM420985v1	SAMN10643274	Natrinema altunense	Scaffold
 Natrin_alt_AJ2_GCF_000731985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/731/985/GCF_000731985.1_ASM73198v1	SAMN02800870	Natrinema altunense	Contig
@@ -1789,11 +1913,12 @@ Natrin_pallidum_DSM_3751_GCF_000337615_1	https://ftp.ncbi.nlm.nih.gov/genomes/al
 Natrin_pelli_DSM_15624_GCF_000230735_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/230/735/GCF_000230735.2_ASM23073v3	SAMN02261373	Natrinema pellirubrum	Complete Genome
 Natrin_pelli_DSM_15624_GCF_000337635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/635/GCF_000337635.1_ASM33763v1	SAMN02471626	Natrinema pellirubrum	Contig
 Natrin_sacchare_AB14_GCF_001953745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/953/745/GCF_001953745.1_ASM195374v1	SAMN04868784	Natrinema saccharevitans	Contig
-Natrin_salac_DSM_25055_GCF_900110865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/110/865/GCF_900110865.1_IMG-taxon_2639762573_annotated_assembly	SAMN04489841	Natrinema salaciae	Scaffold
+Natrin_sala_DSM_25055_GCF_900110865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/110/865/GCF_900110865.1_IMG-taxon_2639762573_annotated_assembly	SAMN04489841	Natrinema salaciae	Scaffold
 Natrin_salif_CGMCC_1_12284_GCF_900110455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/110/455/GCF_900110455.1_IMG-taxon_2671180170_annotated_assembly	SAMN05216285	Natrinema salifodinae	Scaffold
 Natrin_salif_KCY07_B2_GCF_000784335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/784/335/GCF_000784335.1_ASM78433v1	SAMN03077632	Natrinema salifodinae	Scaffold
 Natrin_salini_SLN56_GCF_020405205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/405/205/GCF_020405205.1_ASM2040520v1	SAMN21621845	Natrinema salinisoli	Complete Genome
 Natrin_salsi_S1CR25_10_GCF_029502005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/502/005/GCF_029502005.1_ASM2950200v1	SAMN28864587	Natrinema salsiterrestre	Contig
+Natrin_soli_CCM_7682_GCF_042661765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/661/765/GCF_042661765.1_ASM4266176v1	SAMN43283311	Natrinema soli	Scaffold
 Natrin_soli_LMG_29247_GCF_028618695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/618/695/GCF_028618695.1_ASM2861869v1	SAMN32723775	Natrinema soli	Scaffold
 Natrin_thermot_A29_GCA_004799625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/799/625/GCA_004799625.1_ASM479962v1	SAMN09702595	Natrinema thermotolerans	Complete Genome
 Natrin_thermot_A29_GCF_000710605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/710/605/GCF_000710605.1_HTGA29.1	SAMN02629025	Natrinema thermotolerans	Contig
@@ -1803,6 +1928,7 @@ Natrin_ver_BOL5_4_GCF_005576615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/0
 Natrin_ver_JCM_10478_GCF_000337195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/195/GCF_000337195.1_ASM33719v1	SAMN02471670	Natrinema versiforme	Contig
 Natrin_zho_YPL30_GCF_013456555_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/456/555/GCF_013456555.2_ASM1345655v2	SAMN15423708	Natrinema zhouii	Complete Genome
 Natronoa_mannanilyticum_JCM_16328_GCF_039522665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/039/522/665/GCF_039522665.1_ASM3952266v1	SAMD00644969	Natronoarchaeum mannanilyticum	Scaffold
+Natronoa_mannanilyticum_KCTC_22876_GCF_042661785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/661/785/GCF_042661785.1_ASM4266178v1	SAMN43283314	Natronoarchaeum mannanilyticum	Scaffold
 Natronoa_phi_DSM_27208_GCF_900215575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/215/575/GCF_900215575.1_IMG-taxon_2728369221_annotated_assembly	SAMN06269185	Natronoarchaeum philippinense	Contig
 Natronoa_rubrum_GCA_035312565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/035/312/565/GCA_035312565.1_ASM3531256v1	SAMN37965199	Natronoarchaeum rubrum	Contig
 Natronoa_rubrum_GX48_GCF_024494695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/494/695/GCF_024494695.1_ASM2449469v1	SAMN29911666	Natronoarchaeum rubrum	Contig
@@ -1855,6 +1981,8 @@ Natronos_rutilus_WLHS1_GCF_024204665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/
 Natronos_ves_CGA3_GCF_023973145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/973/145/GCF_023973145.1_ASM2397314v1	SAMN29203671	Natronosalvus vescus	Complete Genome
 Nitrosa_kor_GCA_017113085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/017/113/085/GCA_017113085.1_ASM1711308v1	SAMN17985273	Nitrosarchaeum koreense	Contig
 Nitrosa_kor_MY1_GCF_000220175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/220/175/GCF_000220175.1_ASM22017v1	SAMN02470178	Nitrosarchaeum koreense	Contig
+Nitrosop_adr_CCS1_GCF_041431065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/431/065/GCF_041431065.1_ASM4143106v1	SAMN41381679	Nitrosopumilus adriaticus	Chromosome
+Nitrosop_adr_GCA_041600475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/041/600/475/GCA_041600475.1_ASM4160047v1	SAMN42104098	Nitrosopumilus adriaticus	Contig
 Nitrosop_adr_NF5_GCF_000956175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/956/175/GCF_000956175.1_ASM95617v1	SAMN03253153	Nitrosopumilus adriaticus	Complete Genome
 Nitrosop_cob_HCA1_GCF_013407145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/407/145/GCF_013407145.1_ASM1340714v1	SAMN08535023	Nitrosopumilus cobalaminigenes	Complete Genome
 Nitrosop_marit_SCM1_GCF_000018465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/018/465/GCF_000018465.1_ASM1846v1	SAMN00000032	Nitrosopumilus maritimus	Complete Genome
@@ -1866,10 +1994,16 @@ Nitrosop_zos_NM25_GCF_025998175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/0
 Nitrosos_vie_EN76_GCF_000698785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/698/785/GCF_000698785.1_ASM69878v1	SAMN02721150	Nitrososphaera viennensis	Complete Genome
 Nitrosos_vie_PLX03_GCF_024760425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/760/425/GCF_024760425.1_ASM2476042v1	SAMN30360716	Nitrososphaera viennensis	Complete Genome
 Nitrosos_vie_PLX03_GCF_025244945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/244/945/GCF_025244945.1_ASM2524494v1	SAMN30723098	Nitrososphaera viennensis	Complete Genome
+Nitrosot_dev_GCA_025450535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/450/535/GCA_025450535.1_ASM2545053v1	SAMN30436130	Nitrosotalea devaniterrae	Contig
+Nitrosot_dev_GCA_900065925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/065/925/GCA_900065925.1_NDEV.embl.gz	SAMEA3577360	Nitrosotalea devaniterrae	Complete Genome
+Nitrosot_sine_GCA_037916125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/916/125/GCA_037916125.1_ASM3791612v1	SAMN38376970	Nitrosotalea sinensis	Contig
+Nitrosot_sine_GCF_900143675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/143/675/GCF_900143675.1_Candidatus_Nitrosotalea_sinensis_Nd2_whole_genome	SAMEA20449918	Nitrosotalea sinensis	Contig
+O_meridia_GCF_038024865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/038/024/865/GCF_038024865.1_Omer_M1	SAMN37265970	Oxyplasma meridianum	Complete Genome
 Pa_ferro_DSM_13482_GCF_000966265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/966/265/GCF_000966265.1_ASM96626v1	SAMN02744072	Palaeococcus ferrophilus	Contig
 Pa_pac_DY20341_GCF_000725425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/725/425/GCF_000725425.1_ASM72542v1	SAMN03081469	Palaeococcus pacificus	Complete Genome
 Pi_osh_DSM_9789_GCF_900176435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/176/435/GCF_900176435.1_IMG-taxon_2579779151_annotated_assembly	SAMN02745355	Picrophilus oshimae	Contig
 Pi_osh_DSM_9790_GCF_000008265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/265/GCF_000008265.1_ASM826v1	SAMN02603345	Picrophilus oshimae	Complete Genome
+Pr_syn_MK_D1_GCF_008000775_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/008/000/775/GCF_008000775.2_ASM800077v2	SAMN12405820	Promethearchaeum syntrophicum	Complete Genome
 Pyrob_aerophilum_GCF_013329805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/329/805/GCF_013329805.1_ASM1332980v1	SAMN13193043	Pyrobaculum aerophilum	Scaffold
 Pyrob_aerophilum_GCF_026414425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/414/425/GCF_026414425.1_ASM2641442v1	SAMN30305237	Pyrobaculum aerophilum	Scaffold
 Pyrob_aerophilum_GCF_036754085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/754/085/GCF_036754085.1_ASM3675408v1	SAMN28747493	Pyrobaculum aerophilum	Scaffold
@@ -1881,6 +2015,7 @@ Pyrob_ars_DSM_13514_GCF_000016385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF
 Pyrob_ars_GCF_026627015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/627/015/GCF_026627015.1_ASM2662701v1	SAMN31719899	Pyrobaculum arsenaticum	Contig
 Pyrob_calidi_JCM_11548_GCF_000015805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/015/805/GCF_000015805.1_ASM1580v1	SAMN00623060	Pyrobaculum calidifontis	Complete Genome
 Pyrob_ferri_1860_GCF_000234805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/234/805/GCF_000234805.1_ASM23480v1	SAMN02603094	Pyrobaculum ferrireducens	Complete Genome
+Pyrob_ferri_GCA_039793705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/039/793/705/GCA_039793705.1_ASM3979370v1	SAMN39982128	Pyrobaculum ferrireducens	Scaffold
 Pyrob_islandicum_DSM_4184_GCF_000015205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/015/205/GCF_000015205.1_ASM1520v1	SAMN02598374	Pyrobaculum islandicum	Complete Genome
 Pyrob_neu_V24Sta_GCF_000019805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/019/805/GCF_000019805.1_ASM1980v1	SAMN02598332	Pyrobaculum neutrophilum	Complete Genome
 Pyrob_ogu_TE7_GCA_000247545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/247/545/GCA_000247545.1_ASM24754v1	SAMN02604076	Pyrobaculum oguniense	Complete Genome
@@ -1890,6 +2025,17 @@ Pyroc_furi_DSM_3638_GCF_000007305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF
 Pyroc_furi_DSM_3638_GCF_008245085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/008/245/085/GCF_008245085.1_ASM824508v1	SAMN06711904	Pyrococcus furiosus	Complete Genome
 Pyroc_hori_GCF_013329775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/329/775/GCF_013329775.1_ASM1332977v1	SAMN13193041	Pyrococcus horikoshii	Scaffold
 Pyroc_hori_OT3_GCF_000011105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/011/105/GCF_000011105.1_ASM1110v1	SAMD00061090	Pyrococcus horikoshii	Complete Genome
+Pyroc_kuk_LMOA25_GCF_041648035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/648/035/GCF_041648035.1_ASM4164803v1	SAMN33962730	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA29_GCF_041647995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/995/GCF_041647995.1_ASM4164799v1	SAMN33962731	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA30_GCF_041647975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/975/GCF_041647975.1_ASM4164797v1	SAMN33962732	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA31_GCF_041647945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/945/GCF_041647945.1_ASM4164794v1	SAMN33962733	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA32_GCF_041647895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/895/GCF_041647895.1_ASM4164789v1	SAMN33962734	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA33_GCF_041647875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/875/GCF_041647875.1_ASM4164787v1	SAMN33962735	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA34_GCF_041647915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/915/GCF_041647915.1_ASM4164791v1	SAMN33962736	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA38_GCF_041647925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/925/GCF_041647925.1_ASM4164792v1	SAMN33962737	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA39_GCF_041647815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/815/GCF_041647815.1_ASM4164781v1	SAMN33962738	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA40_GCF_041647855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/855/GCF_041647855.1_ASM4164785v1	SAMN33962739	Pyrococcus kukulkanii	Contig
+Pyroc_kuk_LMOA41_GCF_041647795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/647/795/GCF_041647795.1_ASM4164779v1	SAMN33962740	Pyrococcus kukulkanii	Contig
 Pyroc_kuk_NCB100_GCF_001577775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/577/775/GCF_001577775.1_ASM157777v1	SAMN03323778	Pyrococcus kukulkanii	Complete Genome
 Pyroc_yay_CH1_GCF_000215995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/215/995/GCF_000215995.1_ASM21599v1	SAMN02603867	Pyrococcus yayanosii	Complete Genome
 Pyrod_aby_AV2_GCF_036323395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/323/395/GCF_036323395.1_ASM3632339v1	SAMD00639620	Pyrodictium abyssi	Complete Genome
@@ -1908,6 +2054,7 @@ Saccharol_solf_98_2_GCA_000175555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA
 Saccharol_solf_P1_GCF_900079115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/079/115/GCF_900079115.1_SSOP1	SAMEA3920617	Saccharolobus solfataricus	Complete Genome
 Saccharol_solf_P2_GCF_000007005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/005/GCF_000007005.1_ASM700v1	SAMN02603227	Saccharolobus solfataricus	Complete Genome
 Saccharol_solf_POZ149_GCA_015654385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/654/385/GCA_015654385.1_ASM1565438v1	SAMN14482681	Saccharolobus solfataricus	Complete Genome
+Saccharol_solf_S441_GCA_040893065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/040/893/065/GCA_040893065.1_PacBio_S441_Assembled	SAMN42077069	Saccharolobus solfataricus	Complete Genome
 Saccharol_solf_SARC_B_GCF_000968355_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/968/355/GCF_000968355.2_ASM96835v2	SAMN03452281	Saccharolobus solfataricus	Complete Genome
 Saccharol_solf_SARC_C_GCF_000968395_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/968/395/GCF_000968395.2_ASM96839v2	SAMN03395044	Saccharolobus solfataricus	Complete Genome
 Saccharol_solf_SARC_H_GCF_003852195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/852/195/GCF_003852195.1_ASM385219v1	SAMN05896744	Saccharolobus solfataricus	Complete Genome
@@ -1919,6 +2066,10 @@ Saccharol_solf_SULA_GCF_000968435_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF
 Saccharol_solf_SULG_GCF_003852135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/852/135/GCF_003852135.1_ASM385213v1	SAMN05896255	Saccharolobus solfataricus	Complete Genome
 Saccharol_solf_SULM_GCF_003852155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/852/155/GCF_003852155.1_ASM385215v1	SAMN05896746	Saccharolobus solfataricus	Complete Genome
 Saccharom_cere_S288C	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/146/045/GCF_000146045.2_R64	na	Saccharomyces cerevisiae	Complete Genome
+Saccharom_eub	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/298/625/GCF_001298625.1_SEUB3.0	SAMN02716114	Saccharomyces eubayanus	Chromosome
+Saccharom_kud_IFO_1802	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/947/243/775/GCF_947243775.1_Skud-IFO1802	SAMEA111517677	Saccharomyces kudriavzevii	Complete Genome
+Saccharom_mik_IFO_1815	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/947/241/705/GCF_947241705.1_Smik-IFO1815	SAMEA111517679	Saccharomyces mikatae	Complete Genome
+Saccharom_parad	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/079/055/GCF_002079055.1_ASM207905v1	SAMEA2757769	Saccharomyces paradoxus	Chromosome
 Sala_japonicum_JCM_16327_GCF_020614395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/614/395/GCF_020614395.1_ASM2061439v1	SAMN22374871	Salarchaeum japonicum	Complete Genome
 Sala_japonicum_JCM_16327_GCF_039522645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/039/522/645/GCF_039522645.1_ASM3952264v1	SAMD00644968	Salarchaeum japonicum	Contig
 Salinad_halalkaliphilus_XQ_INN_246_GCF_006543045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/006/543/045/GCF_006543045.1_ASM654304v1	SAMN10181221	Salinadaptatus halalkaliphilus	Scaffold
@@ -1931,11 +2082,15 @@ Salinig_marinum_ZS_10_GCF_024228675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/G
 Salinig_rubrum_GX10_GCF_002906575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/906/575/GCF_002906575.1_ASM290657v1	SAMN08381148	Salinigranum rubrum	Complete Genome
 Salinig_salinum_YJ_50_S2_GCF_009176545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/176/545/GCF_009176545.1_ASM917654v1	SAMN12651047	Salinigranum salinum	Contig
 Salinil_rarus_AD_4_GCF_024296665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/296/665/GCF_024296665.1_ASM2429666v1	SAMN29425916	Salinilacihabitans rarus	Complete Genome
+Salinirube_salinus_CGMCC_4_7153_GCF_042664645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/664/645/GCF_042664645.1_ASM4266464v1	SAMN43283165	Salinirubellus salinus	Contig
+Salinirube_salinus_CGMCC_4_7156_GCF_042663705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/705/GCF_042663705.1_ASM4266370v1	SAMN43283169	Salinirubellus salinus	Contig
 Salinirube_salinus_ZS_35_S2_GCF_025231485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/231/485/GCF_025231485.1_ASM2523148v1	SAMN30618693	Salinirubellus salinus	Complete Genome
+Salinirubr_litoreum_JCM_18011_GCF_042657545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/657/545/GCF_042657545.1_ASM4265754v1	SAMN43282895	Salinirubrum litoreum	Scaffold
 Salinirubr_litoreum_XD46_GCF_020567425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/567/425/GCF_020567425.1_ASM2056742v1	SAMN22374875	Salinirubrum litoreum	Contig
 Salinirus_salinus_YGH44_GCF_009831455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/831/455/GCF_009831455.1_ASM983145v1	SAMN13439345	Salinirussus salinus	Contig
 Salip_infec_YIM_93707_GCF_020177165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/177/165/GCF_020177165.1_ASM2017716v1	SAMN21561969	Saliphagus infecundisoli	Contig
 Salip_infec_YIM_93745_GCF_020177375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/177/375/GCF_020177375.1_ASM2017737v1	SAMN21542746	Saliphagus infecundisoli	Contig
+Salip_infec_YJ_8_S_GCF_042652265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/652/265/GCF_042652265.1_ASM4265226v1	SAMN43282944	Saliphagus infecundisoli	Scaffold
 Sta_hel_DSM_12710_GCF_000092465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/092/465/GCF_000092465.1_ASM9246v1	SAMN00002730	Staphylothermus hellenicus	Complete Genome
 Sta_marinus_F1_GCF_000015945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/015/945/GCF_000015945.1_ASM1594v1	SAMN02598390	Staphylothermus marinus	Complete Genome
 Sty_azo_FC6_GCF_009729035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/729/035/GCF_009729035.1_ASM972903v1	SAMN09933091	Stygiolobus azoricus	Complete Genome
@@ -2034,8 +2189,10 @@ Sulfura_meta_JCM_9184_GCF_001316045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/G
 Sulfura_tep_IC_006_GCF_008326425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/008/326/425/GCF_008326425.1_SulIC006_1.0	SAMD00137265	Sulfuracidifex tepidarius	Complete Genome
 Sulfura_tep_IC_007_GCF_008326385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/008/326/385/GCF_008326385.1_SulIC007_1.0	SAMD00135678	Sulfuracidifex tepidarius	Complete Genome
 Sulfura_tep_JCM_16833_GCF_001316085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/316/085/GCF_001316085.1_ASM131608v1	SAMD00000537	Sulfuracidifex tepidarius	Contig
+Sulfuri_javensis_KD_1_GCF_041154675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/154/675/GCF_041154675.1_ASM4115467v1	SAMD00759181	Sulfurisphaera javensis	Complete Genome
 Sulfuri_ohw_DSM_12421_GCF_014202105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/202/105/GCF_014202105.1_ASM1420210v1	SAMN14908530	Sulfurisphaera ohwakuensis	Contig
 Sulfuri_ohw_TA_1_GCF_009729055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/729/055/GCF_009729055.1_ASM972905v1	SAMN09933092	Sulfurisphaera ohwakuensis	Complete Genome
+Sulfuri_ohw_YN1HA_GCF_042851265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/851/265/GCF_042851265.1_ASM4285126v1	SAMD00296839	Sulfurisphaera ohwakuensis	Complete Genome
 Sulfuri_tok_7_GCF_000011205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/011/205/GCF_000011205.1_ASM1120v1	SAMD00061096	Sulfurisphaera tokodaii	Complete Genome
 Sulfuri_tok_GCF_013329795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/329/795/GCF_013329795.1_ASM1332979v1	SAMN13193042	Sulfurisphaera tokodaii	Scaffold
 Sulfuri_tok_NBRC_100140_GCF_039545175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/039/545/175/GCF_039545175.1_ASM3954517v1	SAMD00539374	Sulfurisphaera tokodaii	Contig
@@ -2073,10 +2230,10 @@ Thermoco_nau_30_1_GCF_000585495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/0
 Thermoco_nau_33_3_GCF_946300405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/946/300/405/GCF_946300405.1_Thermococcus_nautili_33-3	SAMEA110471153	Thermococcus nautili	Complete Genome
 Thermoco_onn_NA1_GCF_000018365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/018/365/GCF_000018365.1_ASM1836v1	SAMN02603476	Thermococcus onnurineus	Complete Genome
 Thermoco_pac_P_4_GCF_002214485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/214/485/GCF_002214485.1_ASM221448v1	SAMN03324161	Thermococcus pacificus	Complete Genome
-Thermoco_para_ES1_GCF_000517445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/517/445/GCF_000517445.1_ASM51744v1	SAMN03081513	Thermococcus paralvinellae	Complete Genome
-Thermoco_para_GCA_015662175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/662/175/GCA_015662175.1_ASM1566217v1	SAMN09926510	Thermococcus paralvinellae	Contig
-Thermoco_para_GCA_015662375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/662/375/GCA_015662375.1_ASM1566237v1	SAMN09926499	Thermococcus paralvinellae	Contig
-Thermoco_pep_JCM_9653_GCA_001315905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/315/905/GCA_001315905.1_ASM131590v1	SAMD00000482	Thermococcus peptonophilus	Contig
+Thermoco_paral_ES1_GCF_000517445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/517/445/GCF_000517445.1_ASM51744v1	SAMN03081513	Thermococcus paralvinellae	Complete Genome
+Thermoco_paral_GCA_015662175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/662/175/GCA_015662175.1_ASM1566217v1	SAMN09926510	Thermococcus paralvinellae	Contig
+Thermoco_paral_GCA_015662375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/662/375/GCA_015662375.1_ASM1566237v1	SAMN09926499	Thermococcus paralvinellae	Contig
+Thermoco_pep_JCM_9653_GCF_001315905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/315/905/GCF_001315905.1_ASM131590v1	SAMD00000482	Thermococcus peptonophilus	Contig
 Thermoco_pep_OG_1_GCF_001592435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/592/435/GCF_001592435.1_ASM159243v1	SAMN03324162	Thermococcus peptonophilus	Complete Genome
 Thermoco_pie_CDGS_GCF_001647085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/647/085/GCF_001647085.1_ASM164708v1	SAMN04915575	Thermococcus piezophilus	Complete Genome
 Thermoco_profundus_DT_5432_GCF_002214585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/214/585/GCF_002214585.1_ASM221458v1	SAMN03324163	Thermococcus profundus	Complete Genome
@@ -2095,13 +2252,14 @@ Thermof_ado_1505_GCF_000813245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/00
 Thermof_ado_1910b_GCF_000446015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/446/015/GCF_000446015.1_ASM44601v1	SAMN02602995	Thermofilum adornatum	Complete Genome
 Thermof_pen_Hrk_5_GCF_000015225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/015/225/GCF_000015225.1_ASM1522v1	SAMN02598366	Thermofilum pendens	Complete Genome
 Thermogl_calde_1633_GCF_000264495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/264/495/GCF_000264495.1_ASM26449v1	SAMN02603096	Thermogladius calderae	Complete Genome
-Thermogy_acidic_JCM_13583_GCF_001316105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/316/105/GCF_001316105.1_ASM131610v1	SAMD00000520	Thermogymnomonas acidicola	Contig
-Thermogy_acidic_JCM_13583_GCF_014646795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/646/795/GCF_014646795.1_ASM1464679v1	SAMD00245240	Thermogymnomonas acidicola	Scaffold
+Thermogy_acidico_JCM_13583_GCF_001316105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/316/105/GCF_001316105.1_ASM131610v1	SAMD00000520	Thermogymnomonas acidicola	Contig
+Thermogy_acidico_JCM_13583_GCF_014646795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/646/795/GCF_014646795.1_ASM1464679v1	SAMD00245240	Thermogymnomonas acidicola	Scaffold
 Thermopl_acidophilum_DSM_1728_GCF_000195915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/195/915/GCF_000195915.1_ASM19591v1	SAMEA3138325	Thermoplasma acidophilum	Complete Genome
 Thermopl_acidophilum_GCA_026627405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/627/405/GCA_026627405.1_ASM2662740v1	SAMN31719904	Thermoplasma acidophilum	Contig
 Thermopl_volcanium_GSS1_GCF_000011185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/011/185/GCF_000011185.1_ASM1118v1	SAMD00061089	Thermoplasma volcanium	Complete Genome
 Thermopr_tenax_Kra_1_GCF_000253055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/253/055/GCF_000253055.1_ASM25305v1	SAMEA2272453	Thermoproteus tenax	Complete Genome
 Thermopr_uzoni_768_20_GCF_000193375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/193/375/GCF_000193375.1_ASM19337v1	SAMN02603093	Thermoproteus uzoniensis	Complete Genome
+Thermopr_uzoni_GCA_039793725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/039/793/725/GCA_039793725.1_ASM3979372v1	SAMN39982130	Thermoproteus uzoniensis	Scaffold
 Thermos_agg_3507_GCF_014962245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/962/245/GCF_014962245.1_ASM1496224v1	SAMN16428067	Thermosphaera aggregans	Complete Genome
 Thermos_agg_DSM_11486_GCF_000092185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/092/185/GCF_000092185.1_ASM9218v1	SAMN02598509	Thermosphaera aggregans	Complete Genome
 V_distributa_DSM_14429_GCF_000148385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/148/385/GCF_000148385.1_ASM14838v1	SAMN00017002	Vulcanisaeta distributa	Complete Genome

@@ -34,6 +34,13 @@ nwr txdb
 nwr ardb
 nwr ardb --genbank
 
+cd $HOME/.nwr
+tar cvfz ncbi.$(date +"%Y%m%d").tar.gz \
+    taxdump.tar.gz \
+    taxdump.tar.gz.md5 \
+    assembly_summary_genbank.txt \
+    assembly_summary_refseq.txt
+
 ```
 
 ### Packages managed by Homebrew
@@ -48,6 +55,7 @@ brew install brewsci/bio/fasttree
 brew install brewsci/bio/iqtree2
 brew install brewsci/bio/newick-utils
 brew install brewsci/bio/trimal
+brew install brewsci/bio/mash
 brew install mmseqs2
 
 brew install datamash
