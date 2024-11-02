@@ -705,15 +705,18 @@ cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --pro \
-    --parallel 16 \
+    --parallel 8 \
     --in ASSEMBLY/pass.lst \
-    --not-in ASSEMBLY/omit.lst \
-    --clust-id 0.95 \
-    --clust-cov 0.95
+    --not-in ASSEMBLY/omit.lst
 
-# collect proteins and clustering
-# It may need to be run several times
+# collect proteins and
 bash Protein/collect.sh
+
+# clustering
+# It may need to be run several times
+bash Protein/cluster.sh
+
+rm -fr Protein/tmp/
 
 # info.tsv
 bash Protein/info.sh
@@ -722,7 +725,7 @@ bash Protein/info.sh
 bash Protein/count.sh
 
 cat Protein/counts.tsv |
-    tsv-summarize -H --count --sum 2-5 |
+    tsv-summarize -H --count --sum 2-7 |
     sed 's/^count/species/' |
     datamash transpose |
     perl -nla -F"\t" -MNumber::Format -e '
@@ -737,9 +740,11 @@ cat Protein/counts.tsv |
 |------------|-----------|
 | species    | 735       |
 | strain_sum | 1,342     |
-| total_sum  | 3,858,415 |
-| dedup_sum  | 2,734,105 |
-| rep_sum    | 2,392,396 |
+| total_sum  | 3,857,410 |
+| dedup_sum  | 2,733,465 |
+| rep_sum    | 2,391,856 |
+| fam88_sum  | 2,297,232 |
+| fam38_sum  | 1,934,238 |
 
 ## Phylogenetics with ar53
 
@@ -754,7 +759,6 @@ cp HMM/ar53.lst HMM/marker.lst
 
 #E_VALUE=1e-20
 #-E ${E_VALUE} --domE ${E_VALUE}
-
 # Use --cut_nc here
 
 # Find all genes

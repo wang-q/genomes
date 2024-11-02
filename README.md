@@ -68,6 +68,7 @@ brew install wang-q/tap/hnsm
 brew install librsvg
 brew install jq
 brew install pup
+brew install pigz
 
 # dN/dS
 brew install brewsci/bio/clustal-w
