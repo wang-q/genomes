@@ -757,32 +757,89 @@ cd ~/data/Archaea
 nwr kb ar53 -o HMM
 cp HMM/ar53.lst HMM/marker.lst
 
-#E_VALUE=1e-20
-#-E ${E_VALUE} --domE ${E_VALUE}
-# Use --cut_nc here
+# hmmsearch on rep
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ -s Protein/"${SPECIES}"/ar53.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/rep_seq.fa.gz ]]; then
+        continue
+    fi
 
-# Find all genes
-for marker in $(cat HMM/marker.lst); do
-    echo >&2 "==> marker [${marker}]"
+    echo >&2 "${SPECIES}"
 
-    mkdir -p Domain/${marker}
-
-    cat Protein/species-f.tsv |
-        tsv-join -e -f summary/redundant.lst -k 1 |
-        tsv-join -e -f MinHash/abnormal.lst -k 1 |
+    cat HMM/marker.lst |
         parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
-            if [[ ! -d ASSEMBLY/{2}/{1} ]]; then
-                exit
-            fi
-
-            gzip -dcf ASSEMBLY/{2}/{1}/*_protein.faa.gz |
-                hmmsearch --cut_nc --noali --notextw HMM/hmm/${marker}.HMM - |
+            gzip -dcf Protein/${SPECIES}/rep_seq.fa.gz |
+                hmmsearch --cut_nc --noali --notextw HMM/hmm/{}.HMM - |
                 grep '>>' |
-                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), \$1, {1}, {2}; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), q({}), \$1; '
         " \
-        > Domain/${marker}/replace.tsv
+        > Protein/${SPECIES}/ar53.tsv
+done
 
-    echo >&2
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -s Protein/"${SPECIES}"/ar53.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/ar53.tsv
+
+done
+
+# each assembly
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    echo "
+        SELECT
+            seq.name,
+            asm.name,
+            rep.f3
+        FROM asm_seq
+        JOIN rep_seq ON asm_seq.seq_id = rep_seq.seq_id
+        JOIN seq ON asm_seq.seq_id = seq.id
+        JOIN rep ON rep_seq.rep_id = rep.id
+        JOIN asm ON asm_seq.asm_id = asm.id
+        WHERE 1=1
+            AND rep.f3 IS NOT NULL
+        ORDER BY
+            asm.name,
+            rep.f3
+        " |
+        sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
+        > Protein/${SPECIES}/seq_asm_f3.tsv
+
+    hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
+            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+                tsv-uniq
+        ) \
+        > Protein/${SPECIES}/ar53.fa
+
 done
 
 ```
