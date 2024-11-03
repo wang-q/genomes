@@ -748,7 +748,7 @@ cat Protein/counts.tsv |
 
 ## Phylogenetics with ar53
 
-### Find corresponding proteins by `hmmsearch`
+### Find corresponding representative proteins by `hmmsearch`
 
 ```shell
 cd ~/data/Archaea
@@ -757,10 +757,14 @@ cd ~/data/Archaea
 nwr kb ar53 -o HMM
 cp HMM/ar53.lst HMM/marker.lst
 
-# hmmsearch on rep
+mkdir -p Domain
+
 cat Protein/species.tsv |
     tsv-join -f ASSEMBLY/pass.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    > Protein/species-f.tsv
+
+cat Protein/species-f.tsv |
     tsv-select -f 2 |
     tsv-uniq |
 while read SPECIES; do
@@ -783,9 +787,7 @@ while read SPECIES; do
         > Protein/${SPECIES}/ar53.tsv
 done
 
-cat Protein/species.tsv |
-    tsv-join -f ASSEMBLY/pass.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+cat Protein/species-f.tsv |
     tsv-select -f 2 |
     tsv-uniq |
 while read SPECIES; do
@@ -803,9 +805,7 @@ while read SPECIES; do
 done
 
 # each assembly
-cat Protein/species.tsv |
-    tsv-join -f ASSEMBLY/pass.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/omit.lst -k 1 |
+cat Protein/species-f.tsv |
     tsv-select -f 2 |
     tsv-uniq |
 while read SPECIES; do
@@ -837,10 +837,17 @@ while read SPECIES; do
     hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
             tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
                 tsv-uniq
-        ) \
-        > Protein/${SPECIES}/ar53.fa
+        )
+done |
+    hnsm dedup stdin |
+    hnsm gz stdin -o Domain/ar53.fa
 
-done
+fd --full-path "Protein/.*/seq_asm_f3.tsv" -X cat \
+    > Domain/seq_asm_f3.tsv
+
+cat Domain/seq_asm_f3.tsv |
+    tsv-join -e -d 2 -f summary/NR.lst -k 1 \
+    > Domain/seq_asm_f3.NR.tsv
 
 ```
 
@@ -849,59 +856,23 @@ done
 ```shell
 cd ~/data/Archaea
 
+# Extract proteins
 cat HMM/marker.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        cat Domain/{}/replace.tsv |
-            wc -l
-    ' |
-    tsv-summarize --quantile 1:0.25,0.5,0.75
-#924     934     941
-
-cat HMM/marker.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        echo {}
-        cat Domain/{}/replace.tsv |
-            wc -l
-    ' |
-    paste - - |
-    tsv-filter --invert --ge 2:600 --le 2:1200 |
-    cut -f 1 \
-    > Domain/marker.omit.lst
-
-# TODO: use hnsm
-# Extract sequences
-# Multiple copies slow down the alignment process
-cat Protein/species-f.tsv |
-    tsv-join -e -f summary/redundant.lst -k 1 |
-    tsv-join -e -f MinHash/abnormal.lst -k 1 |
-    tsv-select -f 2 |
-    tsv-uniq |
-while read SPECIES; do
-    if [[ ! -f Protein/"${SPECIES}"/pro.fa.gz ]]; then
-        continue
-    fi
-
-    cat Protein/"${SPECIES}"/pro.fa.gz
-done \
-    > Domain/all.uniq.fa.gz
-
-cat HMM/marker.lst |
-    grep -v -Fx -f Domain/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo >&2 "==> marker [{}]"
 
-        cat Domain/{}/replace.tsv \
-            > Domain/{}/{}.replace.tsv
+        mkdir -p Domain/{}
 
-        faops some Domain/all.uniq.fa.gz <(
-            cat Domain/{}/{}.replace.tsv |
-                cut -f 1 |
+        hnsm some Domain/ar53.fa.gz <(
+            cat Domain/seq_asm_f3.tsv |
+                tsv-filter --str-eq "3:{}" |
+                tsv-select -f 1 |
                 tsv-uniq
-            ) stdout \
+            ) \
             > Domain/{}/{}.pro.fa
     '
 
-# Align each markers with muscle
+# Align each marker
 cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
         echo >&2 "==> marker [{}]"
@@ -916,7 +887,8 @@ cat HMM/marker.lst |
         mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
     '
 
-for marker in $(cat HMM/marker.lst); do
+cat HMM/marker.lst |
+while read marker; do
     echo >&2 "==> marker [${marker}]"
     if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
@@ -927,17 +899,18 @@ for marker in $(cat HMM/marker.lst); do
         continue
     fi
 
+    # Only NR strains
     # 1 name to many names
-    cat Domain/${marker}/${marker}.replace.tsv |
+    cat Domain/seq_asm_f3.NR.tsv |
+        tsv-filter --str-eq "3:${marker}" |
         tsv-select -f 1-2 |
-        parallel --no-run-if-empty --linebuffer -k -j 4 "
-            faops replace -s Domain/${marker}/${marker}.aln.fa <(echo {}) stdout
-        " \
+        hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
         > Domain/${marker}/${marker}.replace.fa
 done
 
 # Concat marker genes
-for marker in $(cat HMM/marker.lst); do
+cat HMM/marker.lst |
+while read marker; do
     if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
     fi
@@ -945,35 +918,30 @@ for marker in $(cat HMM/marker.lst); do
         continue
     fi
 
-    # sequences in one line
-    faops filter -l 0 Domain/${marker}/${marker}.replace.fa stdout
+    cat Domain/${marker}/${marker}.replace.fa
 
     # empty line for .fas
     echo
 done \
     > Domain/ar53.aln.fas
 
-cat Protein/species-f.tsv |
-    tsv-join -e -f summary/redundant.lst -k 1 |
-    tsv-join -e -f MinHash/abnormal.lst -k 1 |
-    cut -f 1 |
+cat Domain/seq_asm_f3.NR.tsv |
+    cut -f 2 |
+    tsv-uniq |
+    sort |
     fasops concat Domain/ar53.aln.fas stdin -o Domain/ar53.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in Domain/ar53.aln.fa -out Domain/ar53.trim.fa -automated1
 
-faops size Domain/ar53.*.fa |
+hnsm size Domain/ar53.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-38224
-9071
+#45929
+#12258
 
 # To make it faster
 FastTree -fastest -noml Domain/ar53.trim.fa > Domain/ar53.trim.newick
-
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 Domain/ar53.trim.newick |
-    rsvg-convert -o tree/Archaea.ar53.png
 
 ```
 
