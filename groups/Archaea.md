@@ -2,29 +2,28 @@
 
 All genomes of *Archaea*
 
-<!-- toc -->
+[TOC levels=1-3]: # ""
 
-- [Strain info](#strain-info)
-    * [List all ranks](#list-all-ranks)
-    * [Species with assemblies](#species-with-assemblies)
-- [Download all assemblies](#download-all-assemblies)
-    * [Create assembly.tsv](#create-assemblytsv)
-    * [Count before download](#count-before-download)
-    * [Download and check](#download-and-check)
-    * [Rsync to hpcc](#rsync-to-hpcc)
-- [BioSample](#biosample)
-- [MinHash](#minhash)
-    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-- [Count valid species and strains](#count-valid-species-and-strains)
-    * [For *genomic alignments*](#for-genomic-alignments)
-    * [For *protein families*](#for-protein-families)
-- [Collect proteins](#collect-proteins)
-- [Phylogenetics with ar53](#phylogenetics-with-ar53)
-    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
-    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
-
-<!-- tocstop -->
+- [Archaea](#archaea)
+  - [Strain info](#strain-info)
+    - [List all ranks](#list-all-ranks)
+    - [Species with assemblies](#species-with-assemblies)
+  - [Download all assemblies](#download-all-assemblies)
+    - [Create assembly.tsv](#create-assemblytsv)
+    - [Count before download](#count-before-download)
+    - [Download and check](#download-and-check)
+    - [Rsync to hpcc](#rsync-to-hpcc)
+  - [BioSample](#biosample)
+  - [MinHash](#minhash)
+    - [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+  - [Count valid species and strains](#count-valid-species-and-strains)
+    - [For *genomic alignments*](#for-genomic-alignments)
+    - [For *protein families*](#for-protein-families)
+  - [Collect proteins](#collect-proteins)
+  - [Phylogenetics with ar53](#phylogenetics-with-ar53)
+    - [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
+    - [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    - [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
 
 ## Strain info
 
@@ -32,7 +31,7 @@ All genomes of *Archaea*
 
 ### List all ranks
 
-```shell
+```shell script
 nwr member Archaea |
     grep -v " sp." |
     grep -v " x " |
@@ -43,7 +42,7 @@ nwr member Archaea |
 ```
 
 | rank          | count |
-|---------------|------:|
+|:--------------|------:|
 | superkingdom  |     1 |
 | kingdom       |     4 |
 | phylum        |    46 |
@@ -61,11 +60,11 @@ nwr member Archaea |
 ### Species with assemblies
 
 * 'RefSeq'
-    * RS1 - genome_rep: 'Full'
+  * RS1 - genome_rep: 'Full'
 * 'Genbank'
-    * GB1 - genome_rep: 'Full'
+  * GB1 - genome_rep: 'Full'
 
-```shell
+```shell script
 mkdir -p ~/data/Archaea/summary
 cd ~/data/Archaea/summary
 
@@ -144,7 +143,7 @@ done
 
 If a refseq assembly is available, the corresponding genbank one is not downloaded
 
-```shell
+```shell script
 cd ~/data/Archaea/summary
 
 echo "
@@ -264,7 +263,7 @@ rm raw*.*sv
 
 * `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
 
-```shell
+```shell script
 cd ~/data/Archaea
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -292,7 +291,7 @@ cat Count/genus.before.tsv |
 ```
 
 | item    | count |
-|---------|------:|
+|:--------|------:|
 | strain  |  2276 |
 | species |   894 |
 | genus   |   293 |
@@ -301,7 +300,7 @@ cat Count/genus.before.tsv |
 | class   |    43 |
 
 | genus                | #species | #strains |
-|----------------------|---------:|---------:|
+|:---------------------|---------:|---------:|
 | Ferroplasma          |        2 |       20 |
 | Haloarcula           |       32 |       59 |
 | Halobacterium        |        9 |       46 |
@@ -325,7 +324,7 @@ cat Count/genus.before.tsv |
 
 ### Download and check
 
-```shell
+```shell script
 cd ~/data/Archaea
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -382,7 +381,7 @@ cat ASSEMBLY/counts.tsv |
 ```
 
 | #item            | fields | lines |
-|------------------|-------:|------:|
+|:-----------------|-------:|------:|
 | url.tsv          |      3 | 2,276 |
 | check.lst        |      1 | 2,276 |
 | collect.tsv      |     20 | 2,277 |
@@ -414,7 +413,7 @@ rsync -avP \
 
 ## BioSample
 
-```shell
+```shell script
 cd ~/data/Archaea
 
 ulimit -n `ulimit -Hn`
@@ -438,7 +437,7 @@ cp BioSample/biosample.tsv summary/
 
 ## MinHash
 
-```shell
+```shell script
 cd ~/data/Archaea
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -494,7 +493,7 @@ bash MinHash/dist.sh
 
 ### Condense branches in the minhash tree
 
-```shell
+```shell script
 mkdir -p ~/data/Archaea/tree
 cd ~/data/Archaea/tree
 
@@ -519,7 +518,7 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.condensed.newick |
 
 ### For *genomic alignments*
 
-```shell
+```shell script
 cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -562,7 +561,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 ```
 
 | item    | count |
-|---------|------:|
+|:--------|------:|
 | strain  |  1338 |
 | species |   739 |
 | genus   |   235 |
@@ -571,7 +570,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | class   |    28 |
 
 | order              | #species | #strains |
-|--------------------|---------:|---------:|
+|:-------------------|---------:|---------:|
 | Desulfurococcales  |       20 |       23 |
 | Halobacteriales    |      363 |      594 |
 | Methanobacteriales |       30 |      117 |
@@ -582,7 +581,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Thermococcales     |       41 |       61 |
 
 | genus              | #species | #strains |
-|--------------------|---------:|---------:|
+|:-------------------|---------:|---------:|
 | Haloarcula         |       32 |       56 |
 | Halobacterium      |        8 |       28 |
 | Haloferax          |       16 |       41 |
@@ -598,7 +597,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Thermococcus       |       34 |       41 |
 
 | #family                         | genus                         | species                                       | count |
-|---------------------------------|-------------------------------|-----------------------------------------------|------:|
+|:--------------------------------|:------------------------------|:----------------------------------------------|------:|
 | Candidatus Haiyanarchaeaceae    | Candidatus Haiyanarchaeum     | Candidatus Haiyanarchaeum thermophilum        |     5 |
 | Candidatus Methanomethylicaceae | Candidatus Methanosuratincola | Candidatus Methanosuratincola petrocarbonis   |    10 |
 | Candidatus Wolframiiraptoraceae | Candidatus Terraquivivens     | Candidatus Terraquivivens tengchongensis      |     7 |
@@ -630,7 +629,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ### For *protein families*
 
-```shell
+```shell script
 cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -661,7 +660,7 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 ```
 
 | item    | count |
-|---------|------:|
+|:--------|------:|
 | strain  |  1279 |
 | species |   720 |
 | genus   |   223 |
@@ -670,7 +669,7 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | class   |    26 |
 
 | genus               | #species | #strains |
-|---------------------|---------:|---------:|
+|:--------------------|---------:|---------:|
 | Haladaptatus        |        7 |       11 |
 | Haloarcula          |       32 |       55 |
 | Halobacterium       |        8 |       28 |
@@ -700,7 +699,7 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 ## Collect proteins
 
-```shell
+```shell script
 cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -737,7 +736,7 @@ cat Protein/counts.tsv |
 ```
 
 | #item      | count     |
-|------------|-----------|
+|:-----------|:----------|
 | species    | 735       |
 | strain_sum | 1,342     |
 | total_sum  | 3,857,410 |
@@ -750,7 +749,7 @@ cat Protein/counts.tsv |
 
 ### Find corresponding representative proteins by `hmmsearch`
 
-```shell
+```shell script
 cd ~/data/Archaea
 
 # The Archaea61 HMM set
@@ -853,7 +852,7 @@ cat Domain/seq_asm_f3.tsv |
 
 ### Align and concat marker genes to create species tree
 
-```shell
+```shell script
 cd ~/data/Archaea
 
 # Extract proteins
@@ -947,10 +946,10 @@ FastTree -fastest -noml Domain/ar53.trim.fa > Domain/ar53.trim.newick
 
 ### Condense branches in the protein tree
 
-```shell
+```shell script
 cd ~/data/Archaea/tree
 
-nw_reroot  ../Domain/ar53.trim.newick Saccharom_cere_S288C |
+nw_reroot  ../Domain/ar53.trim.newick Saccharom_cere_S288C Saccharom_eub |
     nwr order stdin --nd --an \
     > ar53.reroot.newick
 
@@ -966,3 +965,4 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 ar53.condensed.newick |
     rsvg-convert -o Archaea.ar53.png
 
 ```
+
