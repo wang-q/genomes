@@ -2,28 +2,28 @@
 
 All genomes of *Archaea*
 
-[TOC levels=1-3]: # ""
-
-- [Archaea](#archaea)
-  - [Strain info](#strain-info)
-    - [List all ranks](#list-all-ranks)
-    - [Species with assemblies](#species-with-assemblies)
-  - [Download all assemblies](#download-all-assemblies)
-    - [Create assembly.tsv](#create-assemblytsv)
-    - [Count before download](#count-before-download)
-    - [Download and check](#download-and-check)
-    - [Rsync to hpcc](#rsync-to-hpcc)
-  - [BioSample](#biosample)
-  - [MinHash](#minhash)
-    - [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-  - [Count valid species and strains](#count-valid-species-and-strains)
-    - [For *genomic alignments*](#for-genomic-alignments)
-    - [For *protein families*](#for-protein-families)
-  - [Collect proteins](#collect-proteins)
-  - [Phylogenetics with ar53](#phylogenetics-with-ar53)
-    - [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
-    - [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-    - [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
+<!-- TOC -->
+* [Archaea](#archaea)
+  * [Strain info](#strain-info)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+  * [Download all assemblies](#download-all-assemblies)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [Count before download](#count-before-download)
+    * [Download and check](#download-and-check)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+  * [BioSample](#biosample)
+  * [MinHash](#minhash)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+  * [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments*](#for-genomic-alignments)
+    * [For *protein families*](#for-protein-families)
+  * [Collect proteins](#collect-proteins)
+  * [Phylogenetics with ar53](#phylogenetics-with-ar53)
+    * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
+<!-- TOC -->
 
 ## Strain info
 
@@ -31,18 +31,17 @@ All genomes of *Archaea*
 
 ### List all ranks
 
-```shell script
+```shell
 nwr member Archaea |
     grep -v " sp." |
     grep -v " x " |
     tsv-summarize -H -g rank --count |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 ```
 
 | rank          | count |
-|:--------------|------:|
+|---------------|------:|
 | superkingdom  |     1 |
 | kingdom       |     4 |
 | phylum        |    46 |
@@ -60,11 +59,11 @@ nwr member Archaea |
 ### Species with assemblies
 
 * 'RefSeq'
-  * RS1 - genome_rep: 'Full'
+    * RS1 - genome_rep: 'Full'
 * 'Genbank'
-  * GB1 - genome_rep: 'Full'
+    * GB1 - genome_rep: 'Full'
 
-```shell script
+```shell
 mkdir -p ~/data/Archaea/summary
 cd ~/data/Archaea/summary
 
@@ -143,7 +142,7 @@ done
 
 If a refseq assembly is available, the corresponding genbank one is not downloaded
 
-```shell script
+```shell
 cd ~/data/Archaea/summary
 
 echo "
@@ -263,7 +262,7 @@ rm raw*.*sv
 
 * `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
 
-```shell script
+```shell
 cd ~/data/Archaea
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -274,8 +273,7 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # genus.lst and genus.count.tsv
 bash Count/rank.sh
@@ -285,13 +283,12 @@ mv Count/genus.count.tsv Count/genus.before.tsv
 cat Count/genus.before.tsv |
     keep-header -- tsv-sort -k1,1 |
     tsv-filter -H --ge 3:20 |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 ```
 
 | item    | count |
-|:--------|------:|
+|---------|------:|
 | strain  |  2276 |
 | species |   894 |
 | genus   |   293 |
@@ -300,7 +297,7 @@ cat Count/genus.before.tsv |
 | class   |    43 |
 
 | genus                | #species | #strains |
-|:---------------------|---------:|---------:|
+|----------------------|---------:|---------:|
 | Ferroplasma          |        2 |       20 |
 | Haloarcula           |       32 |       59 |
 | Halobacterium        |        9 |       46 |
@@ -324,7 +321,7 @@ cat Count/genus.before.tsv |
 
 ### Download and check
 
-```shell script
+```shell
 cd ~/data/Archaea
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -375,13 +372,12 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --right 2-3
 
 ```
 
 | #item            | fields | lines |
-|:-----------------|-------:|------:|
+|------------------|-------:|------:|
 | url.tsv          |      3 | 2,276 |
 | check.lst        |      1 | 2,276 |
 | collect.tsv      |     20 | 2,277 |
@@ -395,7 +391,7 @@ cat ASSEMBLY/counts.tsv |
 
 ### Rsync to hpcc
 
-```bash
+```shell
 rsync -avP \
     ~/data/Archaea/ \
     wangq@202.119.37.251:data/Archaea
@@ -413,7 +409,7 @@ rsync -avP \
 
 ## BioSample
 
-```shell script
+```shell
 cd ~/data/Archaea
 
 ulimit -n `ulimit -Hn`
@@ -437,7 +433,7 @@ cp BioSample/biosample.tsv summary/
 
 ## MinHash
 
-```shell script
+```shell
 cd ~/data/Archaea
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -493,11 +489,11 @@ bash MinHash/dist.sh
 
 ### Condense branches in the minhash tree
 
-```shell script
+```shell
 mkdir -p ~/data/Archaea/tree
 cd ~/data/Archaea/tree
 
-nw_reroot ../MinHash/tree.nwk Saccharom_cere_S288C |
+nw_reroot ../MinHash/tree.nwk Saccharom_cere_S288C Saccharom_eub |
     nwr order stdin --nd --an \
     > minhash.reroot.newick
 
@@ -518,7 +514,7 @@ nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.condensed.newick |
 
 ### For *genomic alignments*
 
-```shell script
+```shell
 cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -532,28 +528,24 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/order.count.tsv |
     tsv-filter -H --ge "3:20" |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 cat Count/genus.count.tsv |
     tsv-filter -H --ge "3:20" |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 # Can accept N_COUNT
 bash Count/lineage.sh 5
 
 cat Count/lineage.count.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
@@ -629,7 +621,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ### For *protein families*
 
-```shell script
+```shell
 cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -643,16 +635,15 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
+
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
     tsv-filter -H --ge "3:10" |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
@@ -699,7 +690,7 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 ## Collect proteins
 
-```shell script
+```shell
 cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
@@ -731,14 +722,14 @@ cat Protein/counts.tsv |
         printf qq(%s\t%s\n), $F[0], Number::Format::format_number($F[1], 0,);
         ' |
     (echo -e "#item\tcount" && cat) |
-    mlr --itsv --omd cat
+    rgr md stdin -r 2
 
 ```
 
-| #item      | count     |
-|:-----------|:----------|
-| species    | 735       |
-| strain_sum | 1,342     |
+| #item      |     count |
+|------------|----------:|
+| species    |       735 |
+| strain_sum |     1,342 |
 | total_sum  | 3,857,410 |
 | dedup_sum  | 2,733,465 |
 | rep_sum    | 2,391,856 |
@@ -749,7 +740,7 @@ cat Protein/counts.tsv |
 
 ### Find corresponding representative proteins by `hmmsearch`
 
-```shell script
+```shell
 cd ~/data/Archaea
 
 # The Archaea61 HMM set
@@ -852,7 +843,7 @@ cat Domain/seq_asm_f3.tsv |
 
 ### Align and concat marker genes to create species tree
 
-```shell script
+```shell
 cd ~/data/Archaea
 
 # Extract proteins
@@ -946,7 +937,7 @@ FastTree -fastest -noml Domain/ar53.trim.fa > Domain/ar53.trim.newick
 
 ### Condense branches in the protein tree
 
-```shell script
+```shell
 cd ~/data/Archaea/tree
 
 nw_reroot  ../Domain/ar53.trim.newick Saccharom_cere_S288C Saccharom_eub |
