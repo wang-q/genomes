@@ -446,15 +446,6 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
 # Compute assembly sketches
 bash MinHash/compute.sh
 
-# Distances within species
-bash MinHash/species.sh
-
-# Abnormal strains
-bash MinHash/abnormal.sh
-
-cat MinHash/abnormal.lst | wc -l
-#68
-
 # Non-redundant strains within species
 bash MinHash/nr.sh
 
@@ -472,6 +463,12 @@ find MinHash -name "redundant.lst" |
 wc -l summary/NR.lst summary/redundant.lst
 #  519 summary/NR.lst
 #  365 summary/redundant.lst
+
+# Abnormal strains
+bash MinHash/abnormal.sh
+
+cat MinHash/abnormal.lst | wc -l
+#22
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Archaea/
