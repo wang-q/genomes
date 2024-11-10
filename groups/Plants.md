@@ -791,3 +791,55 @@ cat Protein/counts.tsv |
     rgr md stdin -r 2
 
 ```
+
+## Phylogenetics with BUSCO
+
+```shell
+cd ~/data/Plants/
+
+rm -fr BUSCO
+
+curl -L https://busco-data.ezlab.org/v5/data/lineages/viridiplantae_odb10.2024-01-08.tar.gz |
+    tar xvz
+
+mv viridiplantae_odb10/ BUSCO
+
+```
+
+
+### Find corresponding representative proteins by `hmmsearch`
+
+```shell
+cd ~/data/Plants
+
+mkdir -p Domain
+
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    > Protein/species-f.tsv
+
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq | head -n 2 |
+while read SPECIES; do
+    if [[ -s Protein/"${SPECIES}"/busco.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/rep_seq.fa.gz ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    cat BUSCO/scores_cutoff |
+        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 4 "
+            gzip -dcf Protein/${SPECIES}/rep_seq.fa.gz |
+                hmmsearch --globT {2} --domT {2} --noali --notextw BUSCO/hmms/{1}.hmm - |
+                grep '>>' |
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), q({1}), \$1; '
+        " \
+        > Protein/${SPECIES}/busco.tsv
+done
+
+```
