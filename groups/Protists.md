@@ -2,21 +2,23 @@
 
 Eukaryota other than Plants, Metazoa, and Fungi
 
-<!-- toc -->
-
-* [Species with assemblies](#species-with-assemblies)
-
-- [Download all assemblies](#download-all-assemblies)
-    * [Create assembly.tsv](#create-assemblytsv)
-    * [rsync and check](#rsync-and-check)
-- [Count strains](#count-strains)
-- [Raw phylogenetic tree by MinHash](#raw-phylogenetic-tree-by-minhash)
-- [Groups and targets](#groups-and-targets)
-- [Protists: prepare](#protists-prepare)
-- [plasmodium: run](#plasmodium-run)
-- [Protists: run](#protists-run)
-
-<!-- tocstop -->
+<!-- TOC -->
+* [Various genera from Protists](#various-genera-from-protists)
+  * [Taxon info](#taxon-info)
+    * [Species with assemblies](#species-with-assemblies)
+  * [Download all assemblies](#download-all-assemblies)
+    * [Create .assembly.tsv](#create-assemblytsv)
+    * [Count before download](#count-before-download)
+    * [Download and check](#download-and-check)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+  * [BioSample](#biosample)
+  * [MinHash](#minhash)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+  * [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments*](#for-genomic-alignments)
+    * [For *protein families*](#for-protein-families)
+  * [Groups and targets](#groups-and-targets)
+<!-- TOC -->
 
 ## Taxon info
 
