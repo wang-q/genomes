@@ -4,34 +4,27 @@ All genomes of *Bacteria*, species by species.
 
 Download all genomes and analyze representative strains.
 
-<!-- toc -->
-
-- [Taxon info](#taxon-info)
+<!-- TOC -->
+* [Bacteria](#bacteria)
+  * [Taxon info](#taxon-info)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
     * [Model organisms](#model-organisms)
-- [Download all assemblies](#download-all-assemblies)
+  * [Download all assemblies](#download-all-assemblies)
     * [Create assembly.tsv](#create-assemblytsv)
     * [Count before download](#count-before-download)
     * [Download and check](#download-and-check)
     * [Remove unnecessary files](#remove-unnecessary-files)
     * [Rsync to hpcc](#rsync-to-hpcc)
-- [BioSample](#biosample)
-- [Early divergence of Bacteria](#early-divergence-of-bacteria)
+  * [BioSample](#biosample)
+  * [Early divergence of Bacteria](#early-divergence-of-bacteria)
     * [ReRoot](#reroot)
-- [MinHash](#minhash)
+  * [MinHash](#minhash)
     * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-- [Count valid species and strains](#count-valid-species-and-strains)
-    * [For *genomic alignments* and *protein
-      families*](#for-genomic-alignments-and-protein-families)
-- [Collect proteins](#collect-proteins)
-- [Phylogenetics with bac120](#phylogenetics-with-bac120)
-    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
-    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
-- [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-
-<!-- tocstop -->
+  * [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments* and *protein families*](#for-genomic-alignments-and-protein-families)
+  * [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
+<!-- TOC -->
 
 ## Taxon info
 
@@ -50,7 +43,7 @@ nwr member Bacteria |
 ```
 
 | rank             |  count |
-|------------------|-------:|
+|:-----------------|-------:|
 | superkingdom     |      1 |
 | phylum           |    181 |
 | family           |    961 |
@@ -364,7 +357,7 @@ cp reference.tsv ~/Scripts/genomes/assembly/Bacteria.reference.tsv
 ```
 
 | #tax_id | organism_name                                                    | infraspecific_name                | phylum              |
-|---------|------------------------------------------------------------------|-----------------------------------|---------------------|
+|:--------|:-----------------------------------------------------------------|:----------------------------------|:--------------------|
 | 83332   | Mycobacterium tuberculosis H37Rv                                 | H37Rv                             | Actinomycetota      |
 | 561007  | Mycobacteroides abscessus ATCC 19977                             | ATCC 19977                        | Actinomycetota      |
 | 1169293 | Enterococcus faecalis EnGen0336                                  | T5                                | Bacillota           |
@@ -494,7 +487,7 @@ cat Count/genus.before.tsv |
 ```
 
 | item    |  count |
-|---------|-------:|
+|:--------|-------:|
 | strain  | 317859 |
 | species |   8626 |
 | genus   |   2022 |
@@ -503,7 +496,7 @@ cat Count/genus.before.tsv |
 | class   |     88 |
 
 | genus               | #species | #strains |
-|---------------------|---------:|---------:|
+|:--------------------|---------:|---------:|
 | Acinetobacter       |       71 |    12036 |
 | Aeromonas           |       25 |     1584 |
 | Bacillus            |       79 |     7990 |
@@ -548,8 +541,8 @@ cat Count/genus.before.tsv |
 
 ### Download and check
 
-* A standardized archaeal taxonomy for the Genome Taxonomy Database.
-  Nat Microbiol 6, 946–959 (2021).
+* A standardized archaeal taxonomy for the Genome Taxonomy Database. Nat Microbiol 6, 946–959
+  (2021).
     * Only genomes comprising ≤200 contigs with an N50 of ≥20 kb and with CheckM completeness and
       contamination estimates of ≥95% and ≤5%, respectively, were considered.
 
@@ -640,7 +633,7 @@ cat ASSEMBLY/counts.tsv |
 ```
 
 | #item            | fields |   lines |
-|------------------|-------:|--------:|
+|:-----------------|-------:|--------:|
 | url.tsv          |      3 | 317,861 |
 | check.lst        |      1 | 317,861 |
 | collect.tsv      |     20 | 317,862 |
@@ -883,27 +876,34 @@ bash MinHash/species.sh
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#1477
+#42949
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
 
 find MinHash -name "mash.dist.tsv" -size +0 | wc -l
-#1743
+#8391
 
 find MinHash -name "redundant.lst" -size +0 | wc -l
-#990
+#5866
 
 find MinHash -name "redundant.lst" -empty | wc -l
-#753
+#2525
 
 find MinHash -name "NR.lst" |
     xargs cat |
     sort |
     uniq \
     > summary/NR.lst
-wc -l summary/NR.lst
-#22805
+find MinHash -name "redundant.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/redundant.lst
+
+wc -l summary/NR.lst summary/redundant.lst
+#   69713 summary/NR.lst
+#  237856 summary/redundant.lst
 
 # All representative should be in NR
 cat ASSEMBLY/rep.lst |
@@ -990,7 +990,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 ```
 
 | order             | #species | #strains |
-|-------------------|---------:|---------:|
+|:------------------|---------:|---------:|
 | Aeromonadales     |       11 |      688 |
 | Bacillales        |      138 |     7693 |
 | Bacteroidales     |       44 |     2296 |
@@ -1012,7 +1012,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Xanthomonadales   |       32 |     1948 |
 
 | genus              | #species | #strains |
-|--------------------|---------:|---------:|
+|:-------------------|---------:|---------:|
 | Acinetobacter      |       22 |     1265 |
 | Aeromonas          |       11 |      688 |
 | Bacillus           |       32 |     2846 |
@@ -1044,7 +1044,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Xanthomonas        |       18 |     1130 |
 
 | #family              | genus            | species                         | count |
-|----------------------|------------------|---------------------------------|------:|
+|:---------------------|:-----------------|:--------------------------------|------:|
 | Alcaligenaceae       | Bordetella       | Bordetella pertussis            |   593 |
 | Bacillaceae          | Bacillus         | Bacillus subtilis               |   302 |
 |                      |                  | Bacillus velezensis             |   306 |
@@ -1093,3 +1093,4 @@ To be filled by other projects
 mkdir -p ~/data/Bacteria/STRAINS
 
 ```
+
