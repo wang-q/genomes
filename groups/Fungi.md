@@ -2,34 +2,33 @@
 
 Download all genomes and analyze representative strains.
 
-<!-- toc -->
-
-- [Taxon info](#taxon-info)
+<!-- TOC -->
+* [Fungi](#fungi)
+  * [Taxon info](#taxon-info)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
     * [Model organisms](#model-organisms)
-- [Download all assemblies](#download-all-assemblies)
+  * [Download all assemblies](#download-all-assemblies)
     * [Create assembly.tsv](#create-assemblytsv)
     * [Count before download](#count-before-download)
     * [Download and check](#download-and-check)
     * [Rsync to hpcc](#rsync-to-hpcc)
-- [BioSample](#biosample)
-- [Divergence of Fungi](#divergence-of-fungi)
+  * [BioSample](#biosample)
+  * [Divergence of Fungi](#divergence-of-fungi)
     * [ReRoot](#reroot)
-- [MinHash](#minhash)
+  * [MinHash](#minhash)
     * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-- [Count valid species and strains](#count-valid-species-and-strains)
+  * [Count valid species and strains](#count-valid-species-and-strains)
     * [For *genomic alignments*](#for-genomic-alignments)
     * [For *protein families*](#for-protein-families)
-- [Collect proteins](#collect-proteins)
-- [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
+  * [Collect proteins](#collect-proteins)
+  * [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
     * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
     * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
-- [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-- [Groups and targets](#groups-and-targets)
-
-<!-- tocstop -->
+  * [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
+  * [Groups and targets](#groups-and-targets)
+<!-- TOC -->
 
 ## Taxon info
 
@@ -113,7 +112,7 @@ nwr member Fungi -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#7713 genus.list
+#7817 genus.list
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -156,8 +155,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#   587 RS1.tsv
-#  4468 GB1.tsv
+#   627 RS1.tsv
+#  4919 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -168,8 +167,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     592
-#GB1     16178
+#RS1     632
+#GB1     17810
 
 ```
 
@@ -199,7 +198,7 @@ cat RS*.tsv GB*.tsv |
 
 ### Model organisms
 
-There is only one model genome in Fungi, Saccharomyces cerevisiae S288C
+There is one true model organism in Fungi, Saccharomyces cerevisiae S288C
 
 ```shell
 cd ~/data/Fungi/summary
@@ -215,16 +214,17 @@ echo "
 .headers ON
 
     SELECT
-        *
+        refseq_category,
+        COUNT(*) AS count
     FROM ar
     WHERE 1=1
         AND genus_id IN ($GENUS)
-        AND refseq_category IN ('reference genome')
+    GROUP BY refseq_category
     " |
-    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
-    > reference.tsv
-
-cp reference.tsv ~/Scripts/genomes/assembly/Fungi.reference.tsv
+    sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
+#refseq_category count
+#na      5
+#reference genome        627
 
 ```
 
@@ -234,14 +234,10 @@ cp reference.tsv ~/Scripts/genomes/assembly/Fungi.reference.tsv
 
 If a refseq assembly is available, the corresponding genbank one is not listed
 
-Group all questionable strains names under `Genus sp.`.
+Group all questionable strains (sp., cf., aff.) under `Genus sp.`.
 
 ```shell
 cd ~/data/Fungi/summary
-
-cat reference.tsv |
-    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
-    > raw.tsv
 
 # RS
 SPECIES=$(
@@ -252,17 +248,19 @@ SPECIES=$(
 )
 
 echo "
+.header ON
     SELECT
         species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
         species, genus, ftp_path, biosample, assembly_level,
         assembly_accession
     FROM ar
     WHERE 1=1
-        AND genome_rep IN ('Full')
         AND species_id IN ($SPECIES)
+        AND genome_rep IN ('Full')
+        AND species NOT LIKE '% x %'
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
-    >> raw.tsv
+    > raw.tsv
 
 # Preference for refseq
 cat raw.tsv |
@@ -284,8 +282,8 @@ echo "
         gbrs_paired_asm
     FROM ar
     WHERE 1=1
-        AND genome_rep IN ('Full')
         AND species_id IN ($SPECIES)
+        AND genome_rep IN ('Full')
         AND species NOT LIKE '% sp.%'
         AND species NOT LIKE '% aff.%'
         AND species NOT LIKE '% cf.%'
@@ -302,8 +300,8 @@ echo "
         gbrs_paired_asm
     FROM ar
     WHERE 1=1
-        AND genome_rep IN ('Full')
         AND species_id IN ($SPECIES)
+        AND genome_rep IN ('Full')
         AND (
             species LIKE '% sp.%'
             OR species LIKE '% aff.%'
@@ -318,7 +316,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#16110 lines, 7 fields
+#17737 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -342,7 +340,7 @@ cat raw.tsv |
     > Fungi.assembly.tsv
 
 datamash check < Fungi.assembly.tsv
-#15813 lines, 5 fields
+#17425 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Fungi.assembly.tsv |
@@ -377,8 +375,7 @@ nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -388,44 +385,46 @@ mv Count/genus.count.tsv Count/genus.before.tsv
 cat Count/genus.before.tsv |
     keep-header -- tsv-sort -k1,1 |
     tsv-filter -H --ge 3:100 |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 ```
 
 | item    | count |
 |---------|------:|
-| strain  | 15808 |
-| species |  4391 |
-| genus   |  1251 |
-| family  |   451 |
-| order   |   158 |
-| class   |    55 |
+| strain  | 17419 |
+| species |  4838 |
+| genus   |  1389 |
+| family  |   485 |
+| order   |   176 |
+| class   |    61 |
 
 | genus             | #species | #strains |
 |-------------------|---------:|---------:|
-| Alternaria        |       34 |      168 |
-| Aspergillus       |      140 |     1159 |
-| Aureobasidium     |       11 |      161 |
-| Beauveria         |       11 |      327 |
+| Alternaria        |       35 |      180 |
+| Aspergillus       |      143 |     1280 |
+| Aureobasidium     |       12 |      167 |
+| Beauveria         |       11 |      330 |
 | Botryosphaeria    |        3 |      141 |
-| Candida           |       34 |      263 |
-| Colletotrichum    |       81 |      267 |
+| Candida           |       34 |      270 |
+| Candidozyma       |        9 |      221 |
+| Colletotrichum    |       81 |      277 |
 | Cryphonectria     |        7 |      110 |
-| Cryptococcus      |       12 |      213 |
-| Fusarium          |      185 |     1270 |
-| Komagataella      |        7 |      186 |
-| Metschnikowia     |       61 |      143 |
-| Ogataea           |       55 |      144 |
+| Cryptococcus      |       12 |      215 |
+| Exophiala         |       13 |      102 |
+| Fusarium          |      189 |     1587 |
+| Komagataella      |        7 |      189 |
+| Metschnikowia     |       63 |      145 |
+| Ogataea           |       55 |      146 |
 | Parastagonospora  |        2 |      189 |
-| Penicillium       |      107 |      474 |
+| Penicillium       |      110 |      482 |
 | Pichia            |       30 |      134 |
-| Pyricularia       |        4 |      405 |
-| Rhodotorula       |       10 |      172 |
-| Saccharomyces     |       11 |     1783 |
-| Torulaspora       |        8 |      106 |
-| Trichoderma       |       34 |      127 |
-| Zygosaccharomyces |       12 |      145 |
+| Psilocybe         |       12 |      141 |
+| Pyricularia       |        5 |      410 |
+| Rhodotorula       |       10 |      178 |
+| Saccharomyces     |       11 |     1829 |
+| Torulaspora       |        8 |      108 |
+| Trichoderma       |       34 |      138 |
+| Zygosaccharomyces |       12 |      146 |
 
 ### Download and check
 
@@ -1174,45 +1173,3 @@ mkdir -p ~/data/Fungi/STRAINS
 ## Groups and targets
 
 Review `summary/collect.pass.tsv` and `tree/groups.tsv`
-
-
-| Group          | Genus            | Genus ID | Species | Strains | Comments      |
-|:---------------|:-----------------|---------:|--------:|--------:|:--------------|
-| Ascomycetes    |                  |          |         |         |               |
-|                | Saccharomyces    |     4930 |       8 |      50 | 酵母菌属          |
-|                | Aspergillus      |     5052 |      47 |      62 | 曲霉菌属          |
-|                | Blastomyces      |   229219 |       2 |       4 | 芽生菌属 (lung)   |
-|                | Candida          |  1535326 |       4 |      37 | 念珠菌属          |
-|                | Coccidioides     |     5500 |       2 |      14 | 球孢子菌属 (lung)  |
-|                | Colletotrichum   |     5455 |       6 |       6 | 炭疽菌属          |
-|                | Epichloe         |     5112 |       2 |       3 |               |
-|                | Fusarium         |     5506 |       6 |      40 | 镰刀菌           |
-|                | Hanseniaspora    |    29832 |       3 |       4 | 有孢汉逊酵母        |
-|                | Histoplasma      |     5036 |       1 |       5 | 组织胞浆菌属 (lung) |
-|                | Kazachstania     |    71245 |       2 |       2 |               |
-|                | Metschnikowia    |    27320 |       3 |       3 | 梅奇酵母属         |
-|                | Ogataea          |   461281 |       1 |       1 |               |
-|                | Paracoccidioides |    38946 |       2 |       3 | 副球孢子菌属 (lung) |
-|                | Penicillium      |     5073 |      12 |      18 | 青霉菌属          |
-|                | Pichia           |     4919 |       2 |       2 | 毕赤酵母属         |
-|                | Pneumocystis     |     4753 |       3 |       3 | 肺孢子菌属 (lung)  |
-|                | Pyricularia      |    48558 |       2 |       7 | 梨孢属           |
-|                | Sporothrix       |    29907 |       3 |       4 | 孢子丝菌属 (skin)  |
-|                | Talaromyces      |     5094 |       2 |       3 | 踝节菌属 (lung)   |
-|                | Trichoderma      |     5543 |       7 |      10 | 木霉属           |
-|                | Trichophyton     |     5550 |       7 |      16 | 毛癣菌属          |
-|                | Verticillium     |  1036719 |       3 |       6 | 轮枝菌属          |
-|                | Yarrowia         |     4951 |       1 |       3 | 耶氏酵母          |
-|                | Zymoseptoria     |  1047167 |       4 |      16 |               |
-| Basidiomycetes |                  |          |         |         |               |
-|                | Cryptococcus     |     5206 |       5 |      53 | 隐球菌属, 脑膜炎     |
-|                | Malassezia       |    55193 |       3 |       3 | 马拉色菌属         |
-|                | Puccinia         |     5296 |       4 |       6 | 柄锈菌属          |
-|                | Rhodotorula      |     5533 |       2 |       4 | 红酵母属          |
-|                | Ustilago         |     5269 |       1 |       1 | 黑粉菌属          |
-| Other          |                  |          |         |         |               |
-|                | Mucor            |     4830 |       2 |       4 | 毛霉菌属          |
-
-* https://patient.info/doctor/fungal-lung-infections
-
-* https://www.cdc.gov/fungal/diseases/index.html
