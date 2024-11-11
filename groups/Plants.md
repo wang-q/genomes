@@ -1,5 +1,37 @@
 # Plants
 
+<!-- TOC -->
+* [Plants](#plants)
+  * [Strain info](#strain-info)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+  * [Download all assemblies](#download-all-assemblies)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [Count before download](#count-before-download)
+    * [Download and check](#download-and-check)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+  * [BioSample](#biosample)
+  * [Green plants, glaucophytes and red algae](#green-plants-glaucophytes-and-red-algae)
+    * [ReRoot](#reroot)
+  * [MinHash](#minhash)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+  * [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments*](#for-genomic-alignments)
+    * [For *protein families*](#for-protein-families)
+  * [Collect proteins](#collect-proteins)
+  * [Phylogenetics with BUSCO](#phylogenetics-with-busco)
+    * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
+    * [Domain related protein sequences](#domain-related-protein-sequences)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
+<!-- TOC -->
+
+## Strain info
+
+* [Viridiplantae](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=33090)
+* [Rhodophyta](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2763)
+* [Glaucophyta](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=38254)
+
 ### List all ranks
 
 ```shell
@@ -73,6 +105,11 @@ done
 | family  |     3 |
 
 ### Species with assemblies
+
+* 'RefSeq'
+    * RS1 - genome_rep: 'Full'
+* 'Genbank'
+    * GB1 - genome_rep: 'Full'
 
 ```shell
 mkdir -p ~/data/Plants/summary
@@ -410,6 +447,17 @@ cat ASSEMBLY/counts.tsv |
 | omit.lst         |      1 | 3,827 |
 | rep.lst          |      1 | 1,632 |
 | sp.lst           |      0 |     0 |
+
+### Rsync to hpcc
+
+```shell
+rsync -avP \
+    ~/data/Plants/ \
+    wangq@202.119.37.251:data/Plants
+
+# rsync -avP wangq@202.119.37.251:data/Plants/ ~/data/Plants
+
+```
 
 ## BioSample
 
@@ -792,6 +840,16 @@ cat Protein/counts.tsv |
 
 ```
 
+| #item      |      count |
+|------------|-----------:|
+| species    |        461 |
+| strain_sum |        616 |
+| total_sum  | 25,753,399 |
+| dedup_sum  | 25,733,160 |
+| rep_sum    | 17,995,862 |
+| fam88_sum  | 14,391,956 |
+| fam38_sum  |  9,774,398 |
+
 ## Phylogenetics with BUSCO
 
 ```shell
@@ -806,13 +864,10 @@ mv viridiplantae_odb10/ BUSCO
 
 ```
 
-
 ### Find corresponding representative proteins by `hmmsearch`
 
 ```shell
 cd ~/data/Plants
-
-mkdir -p Domain
 
 cat Protein/species.tsv |
     tsv-join -f ASSEMBLY/pass.lst -k 1 |
@@ -821,7 +876,7 @@ cat Protein/species.tsv |
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq | head -n 2 |
+    tsv-uniq |
 while read SPECIES; do
     if [[ -s Protein/"${SPECIES}"/busco.tsv ]]; then
         continue
@@ -833,13 +888,231 @@ while read SPECIES; do
     echo >&2 "${SPECIES}"
 
     cat BUSCO/scores_cutoff |
-        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 4 "
+        parallel --colsep '\s+' --no-run-if-empty --linebuffer -k -j 4 "
             gzip -dcf Protein/${SPECIES}/rep_seq.fa.gz |
-                hmmsearch --globT {2} --domT {2} --noali --notextw BUSCO/hmms/{1}.hmm - |
+                hmmsearch -T {2} --domT {2} --noali --notextw BUSCO/hmms/{1}.hmm - |
                 grep '>>' |
-                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), q({1}), \$1; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), q({1}), \$1; '
         " \
         > Protein/${SPECIES}/busco.tsv
 done
 
+fd --full-path "Protein/.+/busco.tsv" -X cat |
+    tsv-summarize --group-by 1 --count |
+    tsv-summarize --quantile 2:0.25,0.5,0.75
+#594     651     738
+
+# There are 461 species and 616 strains
+fd --full-path "Protein/.+/busco.tsv" -X cat |
+    tsv-summarize --group-by 1 --count |
+    tsv-filter --invert --ge 2:450 --le 2:650 |
+    cut -f 1 \
+    > Protein/marker.omit.lst
+
+cat BUSCO/scores_cutoff |
+    parallel --colsep '\s+' --no-run-if-empty --linebuffer -k -j 1 "
+        echo {1}
+    " \
+    > Protein/marker.lst
+
+wc -l Protein/marker.lst Protein/marker.omit.lst
+# 425 Protein/marker.lst
+# 216 Protein/marker.omit.lst
+
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -s Protein/"${SPECIES}"/busco.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    # single copy
+    cat Protein/"${SPECIES}"/busco.tsv |
+        grep -v -Fw -f Protein/marker.omit.lst \
+        > Protein/"${SPECIES}"/busco.sc.tsv
+
+    nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/busco.sc.tsv
+
+done
+
 ```
+
+### Domain related protein sequences
+
+```shell
+cd ~/data/Plants
+
+mkdir -p Domain
+
+# each assembly
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    echo "
+        SELECT
+            seq.name,
+            asm.name,
+            rep.f3
+        FROM asm_seq
+        JOIN rep_seq ON asm_seq.seq_id = rep_seq.seq_id
+        JOIN seq ON asm_seq.seq_id = seq.id
+        JOIN rep ON rep_seq.rep_id = rep.id
+        JOIN asm ON asm_seq.asm_id = asm.id
+        WHERE 1=1
+            AND rep.f3 IS NOT NULL
+        ORDER BY
+            asm.name,
+            rep.f3
+        " |
+        sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
+        > Protein/${SPECIES}/seq_asm_f3.tsv
+
+    hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
+            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+                tsv-uniq
+        )
+done |
+    hnsm dedup stdin |
+    hnsm gz stdin -o Domain/busco.fa
+
+fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
+    > Domain/seq_asm_f3.tsv
+
+cat Domain/seq_asm_f3.tsv |
+    tsv-join -e -d 2 -f summary/NR.lst -k 1 \
+    > Domain/seq_asm_f3.NR.tsv
+
+```
+
+### Align and concat marker genes to create species tree
+
+```shell
+cd ~/data/Plants
+
+# Extract proteins
+cat Protein/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo >&2 "==> marker [{}]"
+
+        mkdir -p Domain/{}
+
+        hnsm some Domain/busco.fa.gz <(
+            cat Domain/seq_asm_f3.tsv |
+                tsv-filter --str-eq "3:{}" |
+                tsv-select -f 1 |
+                tsv-uniq
+            ) \
+            > Domain/{}/{}.pro.fa
+    '
+
+# Align each marker
+cat Protein/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo >&2 "==> marker [{}]"
+        if [ ! -s Domain/{}/{}.pro.fa ]; then
+            exit
+        fi
+        if [ -s Domain/{}/{}.aln.fa ]; then
+            exit
+        fi
+
+#        muscle -quiet -in Domain/{}/{}.pro.fa -out Domain/{}/{}.aln.fa
+        mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
+    '
+
+cat Protein/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+while read marker; do
+    echo >&2 "==> marker [${marker}]"
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+
+    # sometimes `muscle` can not produce alignments
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    # Only NR strains
+    # 1 name to many names
+    cat Domain/seq_asm_f3.NR.tsv |
+        tsv-filter --str-eq "3:${marker}" |
+        tsv-select -f 1-2 |
+        hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
+        > Domain/${marker}/${marker}.replace.fa
+done
+
+# Concat marker genes
+cat Protein/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+while read marker; do
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    cat Domain/${marker}/${marker}.replace.fa
+
+    # empty line for .fas
+    echo
+done \
+    > Domain/busco.aln.fas
+
+cat Domain/seq_asm_f3.NR.tsv |
+    cut -f 2 |
+    tsv-uniq |
+    sort |
+    fasops concat Domain/busco.aln.fas stdin -o Domain/busco.aln.fa
+
+trimal -in Domain/busco.aln.fa -out Domain/busco.trim.fa -automated1
+
+hnsm size Domain/busco.*.fa |
+    tsv-uniq -f 2 |
+    cut -f 2
+#1343280
+#54548
+
+# To make it faster
+FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick
+
+```
+
+### Condense branches in the protein tree
+
+```shell
+cd ~/data/Plants/tree
+
+nw_reroot  ../Domain/busco.trim.newick Gald_parti_NBRC_102759_GCA_025991245_1 Gracilario_chorda_GCA_003194525_1 |
+    nwr order stdin --nd --an \
+    > busco.reroot.newick
+
+nwr pl-condense --map -r order -r family -r genus \
+    busco.reroot.newick ../Count/species.tsv |
+    nwr order stdin --nd --an \
+    -o busco.condensed.newick
+
+mv condensed.tsv busco.condense.tsv
+
+# png
+nw_display -s -b 'visibility:hidden' -w 1200 -v 20 busco.condensed.newick |
+    rsvg-convert -o Plants.busco.png
+
+```
+

@@ -21,6 +21,7 @@ All genomes of *Archaea*
   * [Collect proteins](#collect-proteins)
   * [Phylogenetics with ar53](#phylogenetics-with-ar53)
     * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
+    * [Domain related protein sequences](#domain-related-protein-sequences)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
     * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
 <!-- TOC -->
@@ -634,7 +635,6 @@ bash Count/strains.sh
 cat Count/taxa.tsv |
     rgr md stdin --num
 
-
 # .lst and .count.tsv
 bash Count/rank.sh
 
@@ -735,16 +735,19 @@ cat Protein/counts.tsv |
 
 ## Phylogenetics with ar53
 
+```shell
+cd ~/data/Archaea/
+
+# The Archaea HMM set
+nwr kb ar53 -o HMM
+cp HMM/ar53.lst HMM/marker.lst
+
+```
+
 ### Find corresponding representative proteins by `hmmsearch`
 
 ```shell
 cd ~/data/Archaea
-
-# The Archaea61 HMM set
-nwr kb ar53 -o HMM
-cp HMM/ar53.lst HMM/marker.lst
-
-mkdir -p Domain
 
 cat Protein/species.tsv |
     tsv-join -f ASSEMBLY/pass.lst -k 1 |
@@ -791,6 +794,15 @@ while read SPECIES; do
 
 done
 
+```
+
+### Domain related protein sequences
+
+```shell
+cd ~/data/Archaea
+
+mkdir -p Domain
+
 # each assembly
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
@@ -829,7 +841,7 @@ done |
     hnsm dedup stdin |
     hnsm gz stdin -o Domain/ar53.fa
 
-fd --full-path "Protein/.*/seq_asm_f3.tsv" -X cat \
+fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
 
 cat Domain/seq_asm_f3.tsv |
