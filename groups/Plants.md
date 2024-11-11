@@ -215,7 +215,7 @@ echo "
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
-    >> raw.tsv
+    > raw.tsv
 
 # Preference for refseq
 cat raw.tsv |

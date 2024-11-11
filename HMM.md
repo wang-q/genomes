@@ -1,14 +1,15 @@
 # HMM related resources
 
-<!-- toc -->
-
-- [PFAM-A](#pfam-a)
-- [TIGRFAM](#tigrfam)
-- [40 single-copy genes](#40-single-copy-genes)
-- [120 bacterial proteins `bac120`](#120-bacterial-proteins-bac120)
-- [61 fungal marker genes](#61-fungal-marker-genes)
-
-<!-- tocstop -->
+<!-- TOC -->
+* [HMM related resources](#hmm-related-resources)
+  * [PFAM-A](#pfam-a)
+  * [TIGRFAM](#tigrfam)
+  * [40 single-copy genes](#40-single-copy-genes)
+  * [120 bacterial proteins `bac120`](#120-bacterial-proteins-bac120)
+  * [53 archaeal proteins `ar53`](#53-archaeal-proteins-ar53)
+  * [61 fungal marker genes](#61-fungal-marker-genes)
+  * [BUCSO](#bucso)
+<!-- TOC -->
 
 ## PFAM-A
 
@@ -199,5 +200,20 @@ GZIP=-9 tar cvfz fungi61.tar.gz \
     fungi61.lst \
     genes.html \
     hmm/
+
+```
+
+## BUCSO
+
+```shell
+mkdir -p ~/data/HMM/BUCSO
+
+curl -L https://busco-data.ezlab.org/v5/data/lineages/ > lineages.html
+
+cat lineages.html |
+    pup 'pre a text{}' |
+    perl -nl -e 's/_odb10.+//; print ucfirst' |
+    nwr append stdin -r superkingdom -r kingdom -r phylum |
+    sort -k2,2 -k3,3 -k4,4
 
 ```

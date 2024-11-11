@@ -2,31 +2,32 @@
 
 Genus *Trichoderma* as an example.
 
-<!-- toc -->
-
-- [Taxon info](#taxon-info)
+<!-- TOC -->
+* [Build alignments across a eukaryotic taxonomy rank](#build-alignments-across-a-eukaryotic-taxonomy-rank)
+  * [Taxon info](#taxon-info)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
-- [Download all assemblies](#download-all-assemblies)
-    * [Create assembly.tsv](#create-assemblytsv)
+  * [Download all assemblies](#download-all-assemblies)
+    * [Create .assembly.tsv](#create-assemblytsv)
     * [Count before download](#count-before-download)
     * [Download and check](#download-and-check)
     * [Rsync to hpcc](#rsync-to-hpcc)
-- [BioSample](#biosample)
-- [MinHash](#minhash)
+  * [BioSample](#biosample)
+  * [MinHash](#minhash)
     * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-- [Count valid species and strains](#count-valid-species-and-strains)
+  * [Count valid species and strains](#count-valid-species-and-strains)
     * [For *genomic alignments*](#for-genomic-alignments)
     * [For *protein families*](#for-protein-families)
-- [Collect proteins](#collect-proteins)
-- [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
-    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+  * [Collect proteins](#collect-proteins)
+  * [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
+    * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
+    * [Domain related protein sequences](#domain-related-protein-sequences)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-- [Groups and targets](#groups-and-targets)
-- [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
-- [Generate alignments](#generate-alignments)
-
-<!-- tocstop -->
+    * [The protein tree](#the-protein-tree)
+  * [Groups and targets](#groups-and-targets)
+  * [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
+  * [Generate alignments](#generate-alignments)
+<!-- TOC -->
 
 ## Taxon info
 
@@ -50,8 +51,7 @@ There are no noteworthy classification ranks other than species.
 nwr member Trichoderma |
     grep -v " sp." |
     tsv-summarize -H -g rank --count |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 nwr lineage Trichoderma |
     tsv-filter --str-ne 1:clade |
@@ -59,14 +59,14 @@ nwr lineage Trichoderma |
     sed -n '/kingdom\tFungi/,$p' |
     sed -E "s/\b(genus)\b/*\1*/"| # Highlight genus
     (echo -e '#rank\tsci_name\ttax_id' && cat) |
-    mlr --itsv --omd cat
+    rgr md stdin
 
 ```
 
 | rank     | count |
 |----------|------:|
 | genus    |     1 |
-| species  |   467 |
+| species  |   468 |
 | no rank  |     1 |
 | varietas |     2 |
 | strain   |    14 |
@@ -86,7 +86,7 @@ nwr lineage Trichoderma |
 
 ### Species with assemblies
 
-Check also the family Hypocreaceae for outgroups.
+The family Hypocreaceae as outgroups.
 
 ```shell
 mkdir -p ~/data/Trichoderma/summary
@@ -144,7 +144,7 @@ done |
 
 wc -l RS*.tsv GB*.tsv
 #   9 RS1.tsv
-#  55 GB1.tsv
+#  57 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -156,7 +156,7 @@ for C in RS GB; do
     done
 done
 #RS1     9
-#GB1     151
+#GB1     164
 
 ```
 
@@ -166,7 +166,7 @@ done
 
 This step is pretty important
 
-* `nwr kb formats` will give the formatting requirements for `.assembly.tsv`.
+* `nwr kb formats` will give the requirements for `.assembly.tsv`.
 
 * The naming of assemblies has two aspects:
     * for program operation they are unique identifiers;
@@ -185,7 +185,7 @@ echo "
         *
     FROM ar
     WHERE 1=1
-        AND genus IN ('Saccharomyces')
+        AND species IN ('Saccharomyces cerevisiae')
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
@@ -278,7 +278,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#130 lines, 7 fields
+#166 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -302,7 +302,7 @@ cat raw.tsv |
     > Trichoderma.assembly.tsv
 
 datamash check < Trichoderma.assembly.tsv
-#129 lines, 5 fields
+#165 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Trichoderma.assembly.tsv |
@@ -337,8 +337,7 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # genus.lst and genus.count.tsv
 bash Count/rank.sh
@@ -346,15 +345,14 @@ bash Count/rank.sh
 mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 ```
 
 | item    | count |
 |---------|------:|
-| strain  |   128 |
-| species |    37 |
+| strain  |   164 |
+| species |    44 |
 | genus   |     7 |
 | family  |     2 |
 | order   |     2 |
@@ -362,13 +360,13 @@ cat Count/genus.before.tsv |
 
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
-| Cladobotryum     |        1 |        1 |
-| Escovopsis       |        1 |        2 |
+| Cladobotryum     |        2 |        3 |
+| Escovopsis       |        2 |        7 |
 | Hypomyces        |        2 |        2 |
 | Mycogone         |        1 |        1 |
 | Saccharomyces    |        1 |        1 |
 | Sphaerostilbella |        1 |        1 |
-| Trichoderma      |       30 |      120 |
+| Trichoderma      |       35 |      149 |
 
 ### Download and check
 
@@ -423,12 +421,12 @@ cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50,S" --max "C"
 #N50_min S_min   C_max
-#697391  33215161        533
+#579860  33215161        533
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#32227802.2      37147726.5      99079.2 1218742 167     1057
+#32183678.4      37015055.5      106031.1        1504146.5       136.5   908.8
 
 # After the above steps are completed, run the following commands.
 
@@ -441,23 +439,22 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --right 2-3
 
 ```
 
 | #item            | fields | lines |
 |------------------|-------:|------:|
-| url.tsv          |      3 |   128 |
-| check.lst        |      1 |   128 |
-| collect.tsv      |     20 |   129 |
-| n50.tsv          |      4 |   129 |
-| n50.pass.tsv     |      4 |   111 |
-| collect.pass.tsv |     23 |   111 |
-| pass.lst         |      1 |   110 |
-| omit.lst         |      1 |    94 |
-| rep.lst          |      1 |    32 |
-| sp.lst           |      0 |     0 |
+| url.tsv          |      3 |   164 |
+| check.lst        |      1 |   164 |
+| collect.tsv      |     20 |   165 |
+| n50.tsv          |      4 |   165 |
+| n50.pass.tsv     |      4 |   146 |
+| collect.pass.tsv |     23 |   146 |
+| pass.lst         |      1 |   145 |
+| omit.lst         |      1 |   120 |
+| rep.lst          |      1 |    48 |
+| sp.lst           |      1 |    15 |
 
 ### Rsync to hpcc
 
@@ -495,7 +492,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 10
 
 datamash check < BioSample/biosample.tsv
-#126 lines, 39 fields
+#162 lines, 39 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -535,24 +532,10 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --parallel 8 \
     --in ASSEMBLY/pass.lst \
     --ani-ab 0.05 \
-    --ani-nr 0.005 \
-    --height 0.4
+    --ani-nr 0.005
 
 # Compute assembly sketches
 bash MinHash/compute.sh
-
-# Distances within species
-bash MinHash/species.sh
-
-# Abnormal strains
-bash MinHash/abnormal.sh
-
-cat MinHash/abnormal.lst
-#T_har_CBS_354_33_GCA_033847385_1
-#T_har_CGMCC_20739_GCA_019097725_1
-#T_har_Tr1_GCA_002894145_1
-#T_har_ZL_811_GCA_021186515_1
-#T_viri_Th4_GCA_037893215_1
 
 # Non-redundant strains within species
 bash MinHash/nr.sh
@@ -569,10 +552,24 @@ find MinHash -name "redundant.lst" |
     > summary/redundant.lst
 
 wc -l summary/NR.lst summary/redundant.lst
-#  55 summary/NR.lst
-#  40 summary/redundant.lst
+#  75 summary/NR.lst
+#  51 summary/redundant.lst
+
+# Abnormal strains
+bash MinHash/abnormal.sh
+
+cat MinHash/abnormal.lst | wc -l
+#10
 
 # Distances between all selected sketches, then hierarchical clustering
+cd ~/data/Trichoderma/
+
+nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+    --mh \
+    --parallel 8 \
+    --not-in summary/redundant.lst \
+    --height 0.4
+
 bash MinHash/dist.sh
 
 ```
@@ -622,22 +619,19 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 # Can accept N_COUNT
 bash Count/lineage.sh 1
 
 cat Count/lineage.count.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
@@ -646,8 +640,8 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  |   105 |
-| species |    30 |
+| strain  |   135 |
+| species |    38 |
 | genus   |     5 |
 | family  |     2 |
 | order   |     2 |
@@ -655,43 +649,51 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | genus         | #species | #strains |
 |---------------|---------:|---------:|
-| Cladobotryum  |        1 |        1 |
-| Escovopsis    |        1 |        2 |
+| Cladobotryum  |        2 |        3 |
+| Escovopsis    |        2 |        7 |
 | Hypomyces     |        2 |        2 |
 | Saccharomyces |        1 |        1 |
-| Trichoderma   |       25 |       99 |
+| Trichoderma   |       31 |      122 |
 
 | #family            | genus         | species                     | count |
 |--------------------|---------------|-----------------------------|------:|
-| Hypocreaceae       | Cladobotryum  | Cladobotryum protrusum      |     1 |
-|                    | Escovopsis    | Escovopsis weberi           |     2 |
+| Hypocreaceae       | Cladobotryum  | Cladobotryum mycophilum     |     2 |
+|                    |               | Cladobotryum protrusum      |     1 |
+|                    | Escovopsis    | Escovopsis sp.              |     5 |
+|                    |               | Escovopsis weberi           |     2 |
 |                    | Hypomyces     | Hypomyces perniciosus       |     1 |
 |                    |               | Hypomyces rosellus          |     1 |
 |                    | Trichoderma   | Trichoderma afroharzianum   |     5 |
+|                    |               | Trichoderma aggressivum     |     1 |
 |                    |               | Trichoderma arundinaceum    |     4 |
 |                    |               | Trichoderma asperelloides   |     3 |
-|                    |               | Trichoderma asperellum      |    17 |
+|                    |               | Trichoderma asperellum      |    18 |
 |                    |               | Trichoderma atrobrunneum    |     1 |
-|                    |               | Trichoderma atroviride      |     7 |
+|                    |               | Trichoderma atroviride      |    10 |
 |                    |               | Trichoderma breve           |     1 |
 |                    |               | Trichoderma brevicrassum    |     1 |
 |                    |               | Trichoderma citrinoviride   |     4 |
 |                    |               | Trichoderma cornu-damae     |     1 |
+|                    |               | Trichoderma endophyticum    |     4 |
 |                    |               | Trichoderma erinaceum       |     2 |
 |                    |               | Trichoderma gamsii          |     2 |
 |                    |               | Trichoderma gracile         |     1 |
 |                    |               | Trichoderma guizhouense     |     1 |
 |                    |               | Trichoderma hamatum         |     1 |
-|                    |               | Trichoderma harzianum       |     7 |
+|                    |               | Trichoderma harzianum       |     8 |
 |                    |               | Trichoderma koningii        |     1 |
 |                    |               | Trichoderma koningiopsis    |     5 |
 |                    |               | Trichoderma lentiforme      |     1 |
+|                    |               | Trichoderma lixii           |     1 |
 |                    |               | Trichoderma longibrachiatum |     7 |
-|                    |               | Trichoderma reesei          |    14 |
+|                    |               | Trichoderma orchidacearum   |     1 |
+|                    |               | Trichoderma polysporum      |     1 |
+|                    |               | Trichoderma reesei          |    19 |
 |                    |               | Trichoderma semiorbis       |     1 |
 |                    |               | Trichoderma simmonsii       |     1 |
+|                    |               | Trichoderma sp.             |     4 |
 |                    |               | Trichoderma virens          |     9 |
-|                    |               | Trichoderma viride          |     2 |
+|                    |               | Trichoderma viride          |     3 |
 | Saccharomycetaceae | Saccharomyces | Saccharomyces cerevisiae    |     1 |
 
 ### For *protein families*
@@ -710,15 +712,13 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
@@ -727,18 +727,19 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  |    27 |
-| species |    18 |
-| genus   |     3 |
+| strain  |    35 |
+| species |    20 |
+| genus   |     4 |
 | family  |     2 |
 | order   |     2 |
 | class   |     2 |
 
 | genus         | #species | #strains |
 |---------------|---------:|---------:|
+| Cladobotryum  |        1 |        1 |
 | Escovopsis    |        1 |        1 |
 | Saccharomyces |        1 |        1 |
-| Trichoderma   |       16 |       25 |
+| Trichoderma   |       17 |       32 |
 
 ## Collect proteins
 
@@ -748,42 +749,59 @@ cd ~/data/Trichoderma/
 nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
     --pro \
     --in ASSEMBLY/pass.lst \
-    --not-in ASSEMBLY/omit.lst \
-    --clust-id 0.95 \
-    --clust-cov 0.95
+    --not-in ASSEMBLY/omit.lst
 
 # collect proteins
 bash Protein/collect.sh
 
 # clustering
-bash Protein/compute.sh
+# It may need to be run several times
+bash Protein/cluster.sh
+
+rm -fr Protein/tmp/
+
+# info.tsv
+bash Protein/info.sh
 
 # counts
 bash Protein/count.sh
 
 cat Protein/counts.tsv |
-    tsv-summarize -H --count --sum 2-5 |
+    tsv-summarize -H --count --sum 2-7 |
     sed 's/^count/species/' |
     datamash transpose |
     perl -nla -F"\t" -MNumber::Format -e '
         printf qq(%s\t%s\n), $F[0], Number::Format::format_number($F[1], 0,);
         ' |
     (echo -e "#item\tcount" && cat) |
-    mlr --itsv --omd cat
+    rgr md stdin -r 2
 
 ```
 
-| #item      | count   |
-|------------|---------|
-| species    | 18      |
-| strain_sum | 29      |
-| total_sum  | 308,358 |
-| dedup_sum  | 308,358 |
-| rep_sum    | 240,198 |
+| #item      |   count |
+|------------|--------:|
+| species    |      21 |
+| strain_sum |      39 |
+| total_sum  | 363,402 |
+| dedup_sum  | 363,402 |
+| rep_sum    | 284,914 |
+| fam88_sum  | 258,059 |
+| fam38_sum  | 219,999 |
 
 ## Phylogenetics with fungi61
 
-### Find corresponding proteins by `hmmsearch`
+```shell
+cd ~/data/Trichoderma/
+
+mkdir -p HMM
+
+# The Fungi HMM set
+tar xvfz ~/data/HMM/fungi61/fungi61.tar.gz --directory=HMM
+cp HMM/fungi61.lst HMM/marker.lst
+
+```
+
+### Find corresponding representative proteins by `hmmsearch`
 
 * 61 fungal marker genes
     * Ref.: https://doi.org/10.1093/nar/gkac894
@@ -794,35 +812,127 @@ cat Protein/counts.tsv |
 ```shell
 cd ~/data/Trichoderma
 
-# The fungi61 HMM set
-nwr kb fungi61 -o HMM
-cp HMM/fungi61.lst HMM/marker.lst
-
 E_VALUE=1e-20
 
-# Find all genes
-for marker in $(cat HMM/marker.lst); do
-    echo >&2 "==> marker [${marker}]"
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    > Protein/species-f.tsv
 
-    mkdir -p Domain/${marker}
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/rep_seq.fa.gz ]]; then
+        continue
+    fi
 
-    cat Protein/species-f.tsv |
-        tsv-join -e -f summary/redundant.lst -k 1 |
-        tsv-join -e -f MinHash/abnormal.lst -k 1 |
+    echo >&2 "${SPECIES}"
+
+    cat HMM/marker.lst |
         parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
-            if [[ ! -d ASSEMBLY/{2}/{1} ]]; then
-                exit
-            fi
-
-            gzip -dcf ASSEMBLY/{2}/{1}/*_protein.faa.gz |
-                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/${marker}.HMM - |
+            gzip -dcf Protein/${SPECIES}/rep_seq.fa.gz |
+                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/{}.HMM - |
                 grep '>>' |
-                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), \$1, {1}, {2}; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), q({}), \$1; '
         " \
-        > Domain/${marker}/replace.tsv
-
-    echo >&2
+        > Protein/${SPECIES}/fungi61.tsv
 done
+
+fd --full-path "Protein/.+/fungi61.tsv" -X cat |
+    tsv-summarize --group-by 1 --count |
+    tsv-summarize --quantile 2:0.25,0.5,0.75
+#23      25      55
+
+# There are 461 species and 616 strains
+fd --full-path "Protein/.+/fungi61.tsv" -X cat |
+    tsv-summarize --group-by 1 --count |
+    tsv-filter --invert --ge 2:20 --le 2:30 |
+    cut -f 1 \
+    > Protein/marker.omit.lst
+
+wc -l HMM/marker.lst Protein/marker.omit.lst
+# 61 HMM/marker.lst
+# 27 Protein/marker.omit.lst
+
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    # single copy
+    cat Protein/"${SPECIES}"/fungi61.tsv |
+        grep -v -Fw -f Protein/marker.omit.lst \
+        > Protein/"${SPECIES}"/fungi61.sc.tsv
+
+    nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/fungi61.sc.tsv
+
+done
+
+```
+
+### Domain related protein sequences
+
+```shell
+cd ~/data/Trichoderma
+
+mkdir -p Domain
+
+# each assembly
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    echo "
+        SELECT
+            seq.name,
+            asm.name,
+            rep.f3
+        FROM asm_seq
+        JOIN rep_seq ON asm_seq.seq_id = rep_seq.seq_id
+        JOIN seq ON asm_seq.seq_id = seq.id
+        JOIN rep ON rep_seq.rep_id = rep.id
+        JOIN asm ON asm_seq.asm_id = asm.id
+        WHERE 1=1
+            AND rep.f3 IS NOT NULL
+        ORDER BY
+            asm.name,
+            rep.f3
+        " |
+        sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
+        > Protein/${SPECIES}/seq_asm_f3.tsv
+
+    hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
+            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+                tsv-uniq
+        )
+done |
+    hnsm dedup stdin |
+    hnsm gz stdin -o Domain/fungi61.fa
+
+fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
+    > Domain/seq_asm_f3.tsv
+
+cat Domain/seq_asm_f3.tsv |
+    tsv-join -e -d 2 -f summary/NR.lst -k 1 \
+    > Domain/seq_asm_f3.NR.tsv
 
 ```
 
@@ -831,59 +941,26 @@ done
 ```shell
 cd ~/data/Trichoderma
 
+# Extract proteins
 cat HMM/marker.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        cat Domain/{}/replace.tsv |
-            wc -l
-    ' |
-    tsv-summarize --quantile 1:0.25,0.5,0.75
-#20      20      45
-
-cat HMM/marker.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        echo {}
-        cat Domain/{}/replace.tsv |
-            wc -l
-    ' |
-    paste - - |
-    tsv-filter --invert --ge 2:15 --le 2:30 |
-    cut -f 1 \
-    > Domain/marker.omit.lst
-
-# Extract sequences
-# Multiple copies slow down the alignment process
-cat Protein/species-f.tsv |
-    tsv-join -e -f summary/redundant.lst -k 1 |
-    tsv-join -e -f MinHash/abnormal.lst -k 1 |
-    tsv-select -f 2 |
-    tsv-uniq |
-while read SPECIES; do
-    if [[ ! -f Protein/"${SPECIES}"/pro.fa.gz ]]; then
-        continue
-    fi
-
-    cat Protein/"${SPECIES}"/pro.fa.gz
-done \
-    > Domain/all.uniq.fa.gz
-
-cat HMM/marker.lst |
-    grep -v -Fx -f Domain/marker.omit.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo >&2 "==> marker [{}]"
 
-        cat Domain/{}/replace.tsv \
-            > Domain/{}/{}.replace.tsv
+        mkdir -p Domain/{}
 
-        faops some Domain/all.uniq.fa.gz <(
-            cat Domain/{}/{}.replace.tsv |
-                cut -f 1 |
+        hnsm some Domain/fungi61.fa.gz <(
+            cat Domain/seq_asm_f3.tsv |
+                tsv-filter --str-eq "3:{}" |
+                tsv-select -f 1 |
                 tsv-uniq
-            ) stdout \
+            ) \
             > Domain/{}/{}.pro.fa
     '
 
-# Align each markers with muscle
+# Align each marker
 cat HMM/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
         echo >&2 "==> marker [{}]"
         if [ ! -s Domain/{}/{}.pro.fa ]; then
@@ -897,7 +974,9 @@ cat HMM/marker.lst |
         mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
     '
 
-for marker in $(cat HMM/marker.lst); do
+cat HMM/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+while read marker; do
     echo >&2 "==> marker [${marker}]"
     if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
@@ -908,17 +987,19 @@ for marker in $(cat HMM/marker.lst); do
         continue
     fi
 
+    # Only NR strains
     # 1 name to many names
-    cat Domain/${marker}/${marker}.replace.tsv |
+    cat Domain/seq_asm_f3.NR.tsv |
+        tsv-filter --str-eq "3:${marker}" |
         tsv-select -f 1-2 |
-        parallel --no-run-if-empty --linebuffer -k -j 4 "
-            faops replace -s Domain/${marker}/${marker}.aln.fa <(echo {}) stdout
-        " \
+        hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
         > Domain/${marker}/${marker}.replace.fa
 done
 
 # Concat marker genes
-for marker in $(cat HMM/marker.lst); do
+cat HMM/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+while read marker; do
     if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
     fi
@@ -926,28 +1007,27 @@ for marker in $(cat HMM/marker.lst); do
         continue
     fi
 
-    # sequences in one line
-    faops filter -l 0 Domain/${marker}/${marker}.replace.fa stdout
+    cat Domain/${marker}/${marker}.replace.fa
 
     # empty line for .fas
     echo
 done \
     > Domain/fungi61.aln.fas
 
-cat Protein/species-f.tsv |
-    tsv-join -e -f summary/redundant.lst -k 1 |
-    tsv-join -e -f MinHash/abnormal.lst -k 1 |
-    cut -f 1 |
+cat Domain/seq_asm_f3.NR.tsv |
+    cut -f 2 |
+    tsv-uniq |
+    sort |
     fasops concat Domain/fungi61.aln.fas stdin -o Domain/fungi61.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in Domain/fungi61.aln.fa -out Domain/fungi61.trim.fa -automated1
 
-faops size Domain/fungi61.*.fa |
+hnsm size Domain/fungi61.*.fa |
     tsv-uniq -f 2 |
     cut -f 2
-#28484
-#20514
+#31562
+#20575
 
 # To make it faster
 FastTree -fastest -noml Domain/fungi61.trim.fa > Domain/fungi61.trim.newick
@@ -960,6 +1040,20 @@ nw_reroot Domain/fungi61.trim.newick Sa_cer_S288C |
 nwr tex Domain/fungi61.reroot.newick --bl |
     tectonic - --outdir tree/
 mv tree/texput.pdf tree/Trichoderma.marker.pdf
+
+```
+
+### The protein tree
+
+```shell
+cd ~/data/Trichoderma/tree
+
+nw_reroot  ../Domain/fungi61.trim.newick Sa_cer_S288C |
+    nwr order stdin --nd --an \
+    > fungi61.reroot.newick
+
+nwr tex fungi61.reroot.newick --bl -o fungi61.tex
+tectonic fungi61.tex
 
 ```
 

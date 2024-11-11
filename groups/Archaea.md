@@ -696,7 +696,7 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --in ASSEMBLY/pass.lst \
     --not-in ASSEMBLY/omit.lst
 
-# collect proteins and
+# collect proteins
 bash Protein/collect.sh
 
 # clustering
@@ -772,7 +772,7 @@ while read SPECIES; do
             gzip -dcf Protein/${SPECIES}/rep_seq.fa.gz |
                 hmmsearch --cut_nc --noali --notextw HMM/hmm/{}.HMM - |
                 grep '>>' |
-                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), q({}), \$1; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), q({}), \$1; '
         " \
         > Protein/${SPECIES}/ar53.tsv
 done
