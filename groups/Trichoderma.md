@@ -770,11 +770,8 @@ cat Protein/counts.tsv |
     tsv-summarize -H --count --sum 2-7 |
     sed 's/^count/species/' |
     datamash transpose |
-    perl -nla -F"\t" -MNumber::Format -e '
-        printf qq(%s\t%s\n), $F[0], Number::Format::format_number($F[1], 0,);
-        ' |
     (echo -e "#item\tcount" && cat) |
-    rgr md stdin -r 2
+    rgr md stdin --fmt
 
 ```
 
