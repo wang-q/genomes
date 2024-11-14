@@ -17,6 +17,12 @@ Eukaryota other than Plants, Metazoa, and Fungi
   * [Count valid species and strains](#count-valid-species-and-strains)
     * [For *genomic alignments*](#for-genomic-alignments)
     * [For *protein families*](#for-protein-families)
+  * [Collect proteins](#collect-proteins)
+  * [Phylogenetics with BUSCO](#phylogenetics-with-busco)
+    * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
+    * [Domain related protein sequences](#domain-related-protein-sequences)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
   * [Groups and targets](#groups-and-targets)
 <!-- TOC -->
 
@@ -131,7 +137,7 @@ nwr member Eukaryota -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#4058 genus.list
+#4092 genus.list
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -174,8 +180,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#   97 RS1.tsv
-#  831 GB1.tsv
+#  121 RS1.tsv
+#  903 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -186,8 +192,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     98
-#GB1     1930
+#RS1     122
+#GB1     2051
 
 ```
 
@@ -206,7 +212,7 @@ echo "
         *
     FROM ar
     WHERE 1=1
-        AND genus IN ('Caenorhabditis', 'Drosophila', 'Arabidopsis', 'Saccharomyces')
+        AND species IN ('Caenorhabditis elegans', 'Drosophila melanogaster', 'Arabidopsis thaliana', 'Saccharomyces cerevisiae')
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
@@ -299,7 +305,7 @@ echo "
 cat raw.tsv |
     tsv-uniq |
     datamash check
-#1936 lines, 7 fields
+#2057 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -323,7 +329,7 @@ cat raw.tsv |
     > Protists.assembly.tsv
 
 datamash check < Protists.assembly.tsv
-#1927 lines, 5 fields
+#2048 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Protists.assembly.tsv |
@@ -356,8 +362,7 @@ nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # genus.lst and genus.count.tsv
 bash Count/rank.sh
@@ -367,56 +372,57 @@ mv Count/genus.count.tsv Count/genus.before.tsv
 cat Count/genus.before.tsv |
     keep-header -- tsv-sort -k1,1 |
     tsv-filter -H --ge 3:10 |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 ```
 
 | item    | count |
 |---------|------:|
-| strain  |  1912 |
-| species |   781 |
-| genus   |   322 |
-| family  |   165 |
-| order   |   108 |
-| class   |    48 |
+| strain  |  2033 |
+| species |   842 |
+| genus   |   350 |
+| family  |   183 |
+| order   |   115 |
+| class   |    50 |
 
 | genus           | #species | #strains |
 |-----------------|---------:|---------:|
 | Acanthamoeba    |       17 |       28 |
-| Albugo          |        2 |       11 |
+| Albugo          |        2 |       12 |
 | Aphanomyces     |        5 |       27 |
-| Babesia         |       10 |       25 |
+| Babesia         |       10 |       30 |
 | Blastocystis    |        2 |       74 |
 | Crithidia       |        8 |       11 |
-| Cryptosporidium |       16 |       76 |
+| Cryptosporidium |       16 |       77 |
 | Cyclospora      |        1 |       41 |
 | Cyclotella      |        7 |       10 |
 | Dictyostelium   |        9 |       11 |
-| Eimeria         |       11 |       18 |
+| Ectocarpus      |        3 |       12 |
+| Eimeria         |       11 |       19 |
 | Entamoeba       |        5 |       16 |
 | Galdieria       |        4 |       15 |
 | Giardia         |        2 |       38 |
 | Globisporangium |       47 |       81 |
 | Isotricha       |        3 |       13 |
-| Leishmania      |       21 |      105 |
+| Leishmania      |       26 |      123 |
 | Naegleria       |        3 |       14 |
-| Nannochloropsis |        6 |       16 |
+| Nannochloropsis |        6 |       17 |
 | Ochromonas      |        2 |       11 |
 | Ophryoscolex    |        1 |       10 |
 | Paramecium      |        9 |       16 |
 | Peronospora     |        6 |       18 |
-| Phytophthora    |       62 |      225 |
+| Phytophthora    |       77 |      248 |
 | Phytopythium    |       14 |       18 |
 | Plasmodiophora  |        1 |       51 |
-| Plasmodium      |       21 |      158 |
+| Plasmodium      |       21 |      161 |
 | Plasmopara      |        4 |       11 |
-| Pythium         |       44 |       68 |
-| Symbiodinium    |        6 |       11 |
-| Thalassiosira   |       15 |       18 |
+| Pythium         |       45 |       69 |
+| Skeletonema     |        8 |       12 |
+| Symbiodinium    |        6 |       13 |
+| Thalassiosira   |       15 |       20 |
 | Theileria       |        6 |       16 |
 | Toxoplasma      |        1 |       29 |
-| Trypanosoma     |       19 |       69 |
+| Trypanosoma     |       22 |       74 |
 
 ### Download and check
 
@@ -450,7 +456,7 @@ bash ASSEMBLY/check.sh
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
-#1926
+#2047
 
 # N50 C S; create n50.tsv and n50.pass.tsv
 # LEN_N50   N_CONTIG    LEN_SUM
@@ -459,12 +465,12 @@ bash ASSEMBLY/n50.sh 5000 30000 5000000
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
-    tsv-summarize -H --min "N50,S" --max "C"
-#N50_min S_min   C_max
-#7707    6434485 29495
+    tsv-summarize -H --min "N50" --max "C" --min "S"
+#N50_min C_max   S_min
+#7707    29495   6434485
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
+    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5"
 #S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
 #11412690.5      38915944        3313.5  63464.5 1790    29762
 
@@ -479,39 +485,31 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --right 2-3
 
 ```
 
 | #item            | fields | lines |
 |------------------|-------:|------:|
-| url.tsv          |      3 | 1,926 |
-| check.lst        |      1 | 1,926 |
-| collect.tsv      |     20 | 1,927 |
-| n50.tsv          |      4 | 1,927 |
-| n50.pass.tsv     |      4 | 1,611 |
-| collect.pass.tsv |     23 | 1,611 |
-| pass.lst         |      1 | 1,610 |
-| omit.lst         |      1 | 1,424 |
-| rep.lst          |      1 |   686 |
-| sp.lst           |      1 |   140 |
+| url.tsv          |      3 | 2,047 |
+| check.lst        |      1 | 2,047 |
+| collect.tsv      |     20 | 2,048 |
+| n50.tsv          |      4 | 2,048 |
+| n50.pass.tsv     |      4 | 1,695 |
+| collect.pass.tsv |     23 | 1,695 |
+| pass.lst         |      1 | 1,694 |
+| omit.lst         |      1 | 1,508 |
+| rep.lst          |      1 |   688 |
+| sp.lst           |      1 |   155 |
 
 ### Rsync to hpcc
 
-```bash
+```shell
 rsync -avP \
     ~/data/Protists/ \
     wangq@202.119.37.251:data/Protists
 
-rsync -avP \
-    -e 'ssh -p 8804' \
-    ~/data/Protists/ \
-    wangq@58.213.64.36:data/Protists
-
 # rsync -avP wangq@202.119.37.251:data/Protists/ ~/data/Protists
-
-# rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Protists/ ~/data/Protists
 
 ```
 
@@ -527,13 +525,14 @@ ulimit -n `ulimit -Hn`
 nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
     --bs
 
+# Run this script twice and it will re-download the failed files
 bash BioSample/download.sh
 
 # Ignore rare attributes
 bash BioSample/collect.sh 10
 
 datamash check < BioSample/biosample.tsv
-#1897 lines, 92 fields
+#2016 lines, 121 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -555,15 +554,6 @@ nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
 # Compute assembly sketches
 bash MinHash/compute.sh
 
-# Distances within species
-bash MinHash/species.sh
-
-# Abnormal strains
-bash MinHash/abnormal.sh
-
-cat MinHash/abnormal.lst | wc -l
-#112
-
 # Non-redundant strains within species
 bash MinHash/nr.sh
 
@@ -577,10 +567,15 @@ find MinHash -name "redundant.lst" |
     sort |
     uniq \
     > summary/redundant.lst
-
 wc -l summary/NR.lst summary/redundant.lst
-#  592 summary/NR.lst
-#  588 summary/redundant.lst
+#  618 summary/NR.lst
+#  621 summary/redundant.lst
+
+# Abnormal strains
+bash MinHash/abnormal.sh
+
+cat MinHash/abnormal.lst | wc -l
+#33
 
 # Distances between all selected sketches, then hierarchical clustering
 nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
@@ -607,7 +602,7 @@ nwr order ../MinHash/tree.nwk --nd --an \
 nwr pl-condense --map -r order -r family -r genus -r species \
     minhash.order.newick ../MinHash/species.tsv |
     nwr order stdin --nd --an \
-    -o minhash.condensed.newick
+    > minhash.condensed.newick
 
 mv condensed.tsv minhash.condensed.tsv
 
@@ -635,95 +630,80 @@ nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
 # strains.taxon.tsv
 bash Count/strains.sh
 
+cat Count/taxa.tsv |
+    rgr md stdin --num
+
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/order.count.tsv |
-    tsv-filter -H --ge "3:10" |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    tsv-filter -H --ge "3:20" |
+    rgr md stdin --num
 
 cat Count/genus.count.tsv |
-    tsv-filter -H --ge "3:10" |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    tsv-filter -H --ge "3:20" |
+    rgr md stdin --num
 
 # Can accept N_COUNT
 bash Count/lineage.sh 10
 
 cat Count/lineage.count.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ```
 
+| item    | count |
+|---------|------:|
+| strain  |  1652 |
+| species |   670 |
+| genus   |   258 |
+| family  |   140 |
+| order   |    96 |
+| class   |    49 |
+
 | order            | #species | #strains |
 |------------------|---------:|---------:|
-| Albuginales      |        2 |       11 |
-| Bacillariales    |       10 |       11 |
-| Dictyosteliales  |       10 |       11 |
-| Diplomonadida    |        4 |       34 |
-| Eucoccidiorida   |       32 |      166 |
-| Eustigmatales    |        6 |       18 |
-| Galdieriales     |        4 |       11 |
-| Haemosporida     |       23 |      145 |
-| Longamoebia      |        7 |       14 |
-| Mastigamoebida   |        6 |       17 |
-| Opalinata        |        3 |       43 |
-| Peniculida       |        9 |       16 |
-| Peronosporales   |       76 |      255 |
-| Piroplasmida     |       16 |       37 |
+| Diplomonadida    |        4 |       36 |
+| Eucoccidiorida   |       32 |      170 |
+| Haemosporida     |       23 |      149 |
+| Opalinata        |        3 |       53 |
+| Peronosporales   |       85 |      270 |
+| Piroplasmida     |       17 |       46 |
 | Plasmodiophorida |        3 |       53 |
-| Pythiales        |      106 |      148 |
+| Pythiales        |      110 |      155 |
 | Saprolegniales   |        9 |       27 |
-| Stephanodiscales |       10 |       12 |
-| Suessiales       |        8 |       10 |
-| Thalassiosirales |       13 |       15 |
-| Trypanosomatida  |       76 |      200 |
-| Vestibuliferida  |        3 |       10 |
+| Trypanosomatida  |       86 |      238 |
 
 | genus           | #species | #strains |
 |-----------------|---------:|---------:|
-| Acanthamoeba    |        6 |       11 |
-| Albugo          |        2 |       11 |
 | Aphanomyces     |        5 |       23 |
-| Babesia         |       10 |       24 |
-| Blastocystis    |        2 |       42 |
-| Crithidia       |        8 |       11 |
-| Cryptosporidium |       16 |       73 |
+| Babesia         |       10 |       29 |
+| Blastocystis    |        2 |       52 |
+| Cryptosporidium |       16 |       76 |
 | Cyclospora      |        1 |       41 |
-| Eimeria         |        9 |       15 |
-| Entamoeba       |        5 |       16 |
-| Galdieria       |        4 |       11 |
-| Giardia         |        2 |       32 |
-| Globisporangium |       46 |       67 |
-| Isotricha       |        3 |       10 |
-| Leishmania      |       21 |       91 |
-| Naegleria       |        3 |       14 |
-| Nannochloropsis |        5 |       15 |
-| Paramecium      |        9 |       16 |
-| Peronospora     |        6 |       18 |
-| Phytophthora    |       58 |      217 |
-| Phytopythium    |       14 |       17 |
+| Giardia         |        2 |       34 |
+| Globisporangium |       47 |       69 |
+| Leishmania      |       26 |      117 |
+| Phytophthora    |       66 |      231 |
 | Plasmodiophora  |        1 |       51 |
-| Plasmodium      |       21 |      143 |
-| Pythium         |       38 |       54 |
-| Theileria       |        5 |       12 |
+| Plasmodium      |       21 |      147 |
+| Pythium         |       41 |       59 |
 | Toxoplasma      |        1 |       28 |
-| Trypanosoma     |       19 |       58 |
+| Trypanosoma     |       22 |       64 |
 
 | #family           | genus           | species                    | count |
 |-------------------|-----------------|----------------------------|------:|
-| Albuginaceae      | Albugo          | Albugo candida             |    10 |
-| Blastocystidae    | Blastocystis    | Blastocystis sp.           |    40 |
+| Albuginaceae      | Albugo          | Albugo candida             |    11 |
+| Babesiidae        | Babesia         | Babesia microti            |    10 |
+| Blastocystidae    | Blastocystis    | Blastocystis sp.           |    48 |
 | Cryptosporidiidae | Cryptosporidium | Cryptosporidium hominis    |    15 |
-|                   |                 | Cryptosporidium parvum     |    25 |
+|                   |                 | Cryptosporidium parvum     |    26 |
 | Eimeriidae        | Cyclospora      | Cyclospora cayetanensis    |    41 |
 | Entamoebidae      | Entamoeba       | Entamoeba histolytica      |    12 |
-| Hexamitidae       | Giardia         | Giardia intestinalis       |    31 |
+| Hexamitidae       | Giardia         | Giardia intestinalis       |    33 |
 | Peronosporaceae   | Phytophthora    | Phytophthora cactorum      |    28 |
 |                   |                 | Phytophthora capsici       |    16 |
 |                   |                 | Phytophthora fragariae     |    13 |
@@ -731,17 +711,17 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |                   |                 | Phytophthora nicotianae    |    13 |
 |                   |                 | Phytophthora ramorum       |    28 |
 |                   |                 | Phytophthora sojae         |    11 |
-| Plasmodiidae      | Plasmodium      | Plasmodium falciparum      |    57 |
+| Plasmodiidae      | Plasmodium      | Plasmodium falciparum      |    59 |
 |                   |                 | Plasmodium vinckei         |    10 |
-|                   |                 | Plasmodium vivax           |    18 |
-|                   |                 | Plasmodium yoelii          |    11 |
+|                   |                 | Plasmodium vivax           |    19 |
+|                   |                 | Plasmodium yoelii          |    12 |
 | Plasmodiophoridae | Plasmodiophora  | Plasmodiophora brassicae   |    51 |
 | Pythiaceae        | Globisporangium | Globisporangium irregulare |    15 |
 |                   | Pythium         | Pythium insidiosum         |    11 |
 | Saprolegniaceae   | Aphanomyces     | Aphanomyces astaci         |    10 |
 | Sarcocystidae     | Toxoplasma      | Toxoplasma gondii          |    28 |
 | Trypanosomatidae  | Leishmania      | Leishmania donovani        |    10 |
-|                   |                 | Leishmania infantum        |    31 |
+|                   |                 | Leishmania infantum        |    39 |
 |                   | Trypanosoma     | Trypanosoma cruzi          |    34 |
 
 ### For *protein families*
@@ -756,32 +736,355 @@ nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
     --not-in ASSEMBLY/omit.lst \
     --rank genus
 
-# strains.taxon.tsv
+# strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
+
+cat Count/taxa.tsv |
+    rgr md stdin --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
     tsv-filter -H --ge "3:10" |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 ```
 
+| item    | count |
+|---------|------:|
+| strain  |   493 |
+| species |   272 |
+| genus   |   142 |
+| family  |    89 |
+| order   |    69 |
+| class   |    35 |
+
 | genus           | #species | #strains |
 |-----------------|---------:|---------:|
 | Aphanomyces     |        5 |       21 |
-| Cryptosporidium |       13 |       22 |
-| Leishmania      |       11 |       19 |
+| Babesia         |       10 |       10 |
+| Cryptosporidium |       13 |       23 |
+| Leishmania      |       15 |       29 |
 | Peronospora     |        5 |       10 |
 | Phytophthora    |       19 |       72 |
 | Plasmodium      |       20 |       78 |
 | Toxoplasma      |        1 |       14 |
 | Trypanosoma     |       10 |       22 |
+
+## Collect proteins
+
+```shell
+cd ~/data/Protists/
+
+nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
+    --pro \
+    --parallel 8 \
+    --in ASSEMBLY/pass.lst \
+    --not-in ASSEMBLY/omit.lst
+
+# collect proteins and
+bash Protein/collect.sh
+
+# clustering
+# It may need to be run several times
+bash Protein/cluster.sh
+
+rm -fr Protein/tmp/
+
+# info.tsv
+bash Protein/info.sh
+
+# counts
+bash Protein/count.sh
+
+cat Protein/counts.tsv |
+    tsv-summarize -H --count --sum 2-7 |
+    sed 's/^count/species/' |
+    datamash transpose |
+    (echo -e "#item\tcount" && cat) |
+    rgr md stdin --fmt
+
+```
+
+| #item      |     count |
+|------------|----------:|
+| species    |       273 |
+| strain_sum |       503 |
+| total_sum  | 6,904,119 |
+| dedup_sum  | 6,904,119 |
+| rep_sum    | 4,526,190 |
+| fam88_sum  | 3,960,863 |
+| fam38_sum  | 3,333,310 |
+
+## Phylogenetics with BUSCO
+
+```shell
+cd ~/data/Protists/
+
+rm -fr BUSCO
+
+curl -L https://busco-data.ezlab.org/v5/data/lineages/eukaryota_odb10.2024-01-08.tar.gz |
+    tar xvz
+
+mv eukaryota_odb10/ BUSCO
+
+```
+
+### Find corresponding representative proteins by `hmmsearch`
+
+```shell
+cd ~/data/Protists
+
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    > Protein/species-f.tsv
+
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ -s Protein/"${SPECIES}"/busco.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/rep_seq.fa.gz ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    cat BUSCO/scores_cutoff |
+        parallel --colsep '\s+' --no-run-if-empty --linebuffer -k -j 4 "
+            gzip -dcf Protein/${SPECIES}/rep_seq.fa.gz |
+                hmmsearch -T {2} --domT {2} --noali --notextw BUSCO/hmms/{1}.hmm - |
+                grep '>>' |
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), q({1}), \$1; '
+        " \
+        > Protein/${SPECIES}/busco.tsv
+done
+
+fd --full-path "Protein/.+/busco.tsv" -X cat |
+    tsv-summarize --group-by 1 --count |
+    tsv-summarize --quantile 2:0.25,0.5,0.75
+#207     267     335.5
+
+# There are 273 species and 503 strains
+fd --full-path "Protein/.+/busco.tsv" -X cat |
+    tsv-summarize --group-by 1 --count |
+    tsv-filter --invert --ge 2:260 --le 2:520 |
+    cut -f 1 \
+    > Protein/marker.omit.lst
+
+cat BUSCO/scores_cutoff |
+    parallel --colsep '\s+' --no-run-if-empty --linebuffer -k -j 1 "
+        echo {1}
+    " \
+    > Protein/marker.lst
+
+wc -l Protein/marker.lst Protein/marker.omit.lst
+# 255 Protein/marker.lst
+# 146 Protein/marker.omit.lst
+
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -s Protein/"${SPECIES}"/busco.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    # single copy
+    cat Protein/"${SPECIES}"/busco.tsv |
+        grep -v -Fw -f Protein/marker.omit.lst \
+        > Protein/"${SPECIES}"/busco.sc.tsv
+
+    nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/busco.sc.tsv
+
+done
+
+```
+
+### Domain related protein sequences
+
+```shell
+cd ~/data/Protists
+
+mkdir -p Domain
+
+# each assembly
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    tsv-uniq |
+while read SPECIES; do
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    echo "
+        SELECT
+            seq.name,
+            asm.name,
+            rep.f3
+        FROM asm_seq
+        JOIN rep_seq ON asm_seq.seq_id = rep_seq.seq_id
+        JOIN seq ON asm_seq.seq_id = seq.id
+        JOIN rep ON rep_seq.rep_id = rep.id
+        JOIN asm ON asm_seq.asm_id = asm.id
+        WHERE 1=1
+            AND rep.f3 IS NOT NULL
+        ORDER BY
+            asm.name,
+            rep.f3
+        " |
+        sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
+        > Protein/${SPECIES}/seq_asm_f3.tsv
+
+    hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
+            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+                tsv-uniq
+        )
+done |
+    hnsm dedup stdin |
+    hnsm gz stdin -o Domain/busco.fa
+
+fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
+    > Domain/seq_asm_f3.tsv
+
+cat Domain/seq_asm_f3.tsv |
+    tsv-join -e -d 2 -f summary/NR.lst -k 1 \
+    > Domain/seq_asm_f3.NR.tsv
+
+```
+
+### Align and concat marker genes to create species tree
+
+```shell
+cd ~/data/Protists
+
+# Extract proteins
+cat Protein/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo >&2 "==> marker [{}]"
+
+        mkdir -p Domain/{}
+
+        hnsm some Domain/busco.fa.gz <(
+            cat Domain/seq_asm_f3.tsv |
+                tsv-filter --str-eq "3:{}" |
+                tsv-select -f 1 |
+                tsv-uniq
+            ) \
+            > Domain/{}/{}.pro.fa
+    '
+
+# Align each marker
+cat Protein/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo >&2 "==> marker [{}]"
+        if [ ! -s Domain/{}/{}.pro.fa ]; then
+            exit
+        fi
+        if [ -s Domain/{}/{}.aln.fa ]; then
+            exit
+        fi
+
+#        muscle -quiet -in Domain/{}/{}.pro.fa -out Domain/{}/{}.aln.fa
+        mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
+    '
+
+cat Protein/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+while read marker; do
+    echo >&2 "==> marker [${marker}]"
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+
+    # sometimes `muscle` can not produce alignments
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    # Only NR strains
+    # 1 name to many names
+    cat Domain/seq_asm_f3.NR.tsv |
+        tsv-filter --str-eq "3:${marker}" |
+        tsv-select -f 1-2 |
+        hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
+        > Domain/${marker}/${marker}.replace.fa
+done
+
+# Concat marker genes
+cat Protein/marker.lst |
+    grep -v -Fw -f Protein/marker.omit.lst |
+while read marker; do
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    cat Domain/${marker}/${marker}.replace.fa
+
+    # empty line for .fas
+    echo
+done \
+    > Domain/busco.aln.fas
+
+cat Domain/seq_asm_f3.NR.tsv |
+    cut -f 2 |
+    tsv-uniq |
+    sort |
+    fasops concat Domain/busco.aln.fas stdin -o Domain/busco.aln.fa
+
+trimal -in Domain/busco.aln.fa -out Domain/busco.trim.fa -automated1
+
+hnsm size Domain/busco.*.fa |
+    tsv-uniq -f 2 |
+    cut -f 2
+#787011
+#145
+
+# To make it faster
+FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick
+
+```
+
+### Condense branches in the protein tree
+
+```shell
+cd ~/data/Protists/tree
+
+nwr order ../Domain/busco.trim.newick --nd --an \
+    > busco.order.newick
+
+nwr pl-condense --map -r order -r family -r genus \
+    busco.order.newick ../Count/species.tsv |
+    nwr order stdin --nd --an \
+    -o busco.condensed.newick
+
+mv condensed.tsv busco.condense.tsv
+
+# png
+nwr topo --bl busco.condensed.newick | # remove comments
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - |
+    rsvg-convert -o Protists.busco.png
+
+```
 
 ## Groups and targets
 
