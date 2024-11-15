@@ -17,7 +17,7 @@
 
 ## `date`
 
-The date of executing `nwr download` is `Thu Oct 10 18:14:27 CST 2024`
+The date of executing `nwr download` is `Fri Nov 15 15:51:01 CST 2024`
 
 ## Software
 
@@ -36,6 +36,12 @@ nwr ardb --genbank
 
 cd $HOME/.nwr
 tar cvfz ncbi.$(date +"%Y%m%d").tar.gz \
+    taxdump.tar.gz \
+    taxdump.tar.gz.md5 \
+    assembly_summary_genbank.txt \
+    assembly_summary_refseq.txt
+
+rm \
     taxdump.tar.gz \
     taxdump.tar.gz.md5 \
     assembly_summary_genbank.txt \
@@ -99,20 +105,20 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
     grep '\S' |
     paste -d $'\t' - - - - - - |
     head -n 9 |
-    mlr --itsv --omd cat
+    rgr md stdin --right 2-6
 
 ```
 
-| Ranks:        | higher taxa | genus   | species | lower taxa | total   |
-|---------------|-------------|---------|---------|------------|---------|
-| Archaea       | 730         | 308     | 1,032   | 0          | 2,070   |
-| Bacteria      | 7,116       | 5,394   | 26,918  | 968        | 40,396  |
-| Eukaryota     | 70,768      | 101,641 | 548,385 | 38,755     | 759,549 |
-| Fungi         | 6,755       | 7,801   | 61,101  | 1,612      | 77,269  |
-| Metazoa       | 50,879      | 72,702  | 285,716 | 19,303     | 428,600 |
-| Viridiplantae | 8,788       | 17,048  | 186,090 | 17,440     | 229,366 |
-| Viruses       | 2,302       | 2,852   | 5,815   | 963        | 11,932  |
-| All taxa      | 80,947      | 110,196 | 582,136 | 40,686     | 813,965 |
+| Ranks:        | higher taxa |   genus | species | lower taxa |   total |
+|---------------|------------:|--------:|--------:|-----------:|--------:|
+| Archaea       |         742 |     314 |   1,046 |          0 |   2,102 |
+| Bacteria      |       7,192 |   5,435 |  27,084 |        972 |  40,683 |
+| Eukaryota     |      71,173 | 102,113 | 551,181 |     39,017 | 763,484 |
+| Fungi         |       6,810 |   7,842 |  61,751 |      1,619 |  78,022 |
+| Metazoa       |      51,179 |  73,101 | 287,542 |     19,570 | 431,392 |
+| Viridiplantae |       8,825 |  17,071 | 186,365 |     17,424 | 229,685 |
+| Viruses       |       2,328 |   2,853 |   5,815 |        963 |  11,959 |
+| All taxa      |      81,466 | 110,716 | 585,112 |     40,952 | 818,246 |
 
 ## Download all valid Bacteria and Archaea genomes
 
@@ -121,7 +127,7 @@ curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapt
 
 * [Bacteria](./Bacteria.md): All genomes of **Bacteria** and **Archaea**, species by species
 
-* [Fungi](./Fungi.md): All genomes of **Fungi**, species by species
+* [Fungi](./groups/Fungi.md): All genomes of **Fungi**, species by species
 
 ## Prokaryote groups
 
