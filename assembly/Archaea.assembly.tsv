@@ -23,8 +23,8 @@ Ae_pern_K1_GCF_000011125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/011/
 Ae_pern_YK1_12_2013_GCF_004323575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/323/575/GCF_004323575.1_ASM432357v1	SAMD00074121	Aeropyrum pernix	Scaffold
 Ar_fulg_DSM_4304_GCF_000008665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/665/GCF_000008665.1_ASM866v1	SAMN02603985	Archaeoglobus fulgidus	Complete Genome
 Ar_fulg_DSM_8774_GCF_000734035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/734/035/GCF_000734035.1_ASM73403v1	SAMN03081472	Archaeoglobus fulgidus	Complete Genome
+Ar_fulg_GCA_001508745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/508/745/GCA_001508745.1_ASM150874v1	SAMN03445115	Archaeoglobus fulgidus	Contig
 Ar_fulg_GCA_001508815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/508/815/GCA_001508815.1_ASM150881v1	SAMN03445123	Archaeoglobus fulgidus	Contig
-Ar_fulg_GCF_001508745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/508/745/GCF_001508745.1_ASM150874v1	SAMN03445115	Archaeoglobus fulgidus	Contig
 Ar_fulg_GCF_900069765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/069/765/GCF_900069765.1_ASM90006976v1	SAMEA3879005	Archaeoglobus fulgidus	Contig
 Ar_nep_SE56_GCF_016757965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/757/965/GCF_016757965.1_ASM1675796v1	SAMN17126929	Archaeoglobus neptunius	Contig
 Ar_profundus_DSM_5631_GCF_000025285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/025/285/GCF_000025285.1_ASM2528v1	SAMN00017459	Archaeoglobus profundus	Complete Genome
@@ -110,6 +110,7 @@ CE_thermophilum_GCA_030611785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030
 CFe_limne_GCA_013426015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/426/015/GCA_013426015.1_ASM1342601v1	SAMN15455890	Candidatus Fermentimicrarchaeum limneticum	Complete Genome
 CFo_mul_GCA_009392915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/392/915/GCA_009392915.1_ASM939291v1	SAMN08607066	Candidatus Forterrea multitransposorum	Complete Genome
 CFr_guaymae_GCA_030587405_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/587/405/GCA_030587405.2_ASM3058740v2	SAMN32689777	Candidatus Freyrarchaeum guaymaensis	Contig
+CGa_sto_GCA_003164815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/164/815/GCA_003164815.1_20120700_S1D	SAMN08179926	Candidatus Gagatemarchaeum stordalenia	Scaffold
 CGeoc_art_GCA_023539395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/539/395/GCA_023539395.1_ASM2353939v1	SAMN24311723	Candidatus Geocrenenecus arthurdayi	Contig
 CGeoc_art_GCA_023539475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/539/475/GCA_023539475.1_ASM2353947v1	SAMN24311720	Candidatus Geocrenenecus arthurdayi	Contig
 CGeoc_art_GCA_023539555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/539/555/GCA_023539555.1_ASM2353955v1	SAMN24311714	Candidatus Geocrenenecus arthurdayi	Contig
@@ -195,6 +196,21 @@ CMa_acidiphilum_GCA_027364975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027
 CMa_acidiphilum_Mia14_GCF_002214165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/214/165/GCF_002214165.1_ASM221416v1	SAMN06014021	Candidatus Mancarchaeum acidiphilum	Complete Genome
 CMethana_hac_GCA_006954405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/006/954/405/GCA_006954405.1_ASM695440v1	SAMN04576377	Candidatus Methanarcanum hacksteinii	Contig
 CMethana_hac_GCA_034113745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/034/113/745/GCA_034113745.1_ASM3411374v1	SAMN37949177	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCA_964305345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/345/GCA_964305345.1_EST-A-0153_MX-02-sp006954405	SAMEA116302632	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCA_964306085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/085/GCA_964306085.1_EST-A-0154_MX-02-sp006954405	SAMEA116302633	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964304905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/304/905/GCF_964304905.1_EST-A-0155_MX-02-sp006954405	SAMEA116302634	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964305175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/175/GCF_964305175.1_EST-A-0146_MX-02-sp006954405	SAMEA116302625	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964305185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/185/GCF_964305185.1_EST-A-0149_MX-02-sp006954405	SAMEA116302628	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964305265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/265/GCF_964305265.1_EST-A-0151_MX-02-sp006954405	SAMEA116302630	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964305405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/405/GCF_964305405.1_EST-A-0141_MX-02-sp006954405	SAMEA116302620	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964305415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/415/GCF_964305415.1_EST-A-0144_MX-02-sp006954405	SAMEA116302623	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964305435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/435/GCF_964305435.1_EST-A-0143_MX-02-sp006954405	SAMEA116302622	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964306235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/235/GCF_964306235.1_EST-A-0152_MX-02-sp006954405	SAMEA116302631	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964306455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/455/GCF_964306455.1_EST-A-0147_MX-02-sp006954405	SAMEA116302626	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964306495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/495/GCF_964306495.1_EST-A-0148_MX-02-sp006954405	SAMEA116302627	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964306535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/535/GCF_964306535.1_EST-A-0150_MX-02-sp006954405	SAMEA116302629	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964306625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/625/GCF_964306625.1_EST-A-0145_MX-02-sp006954405	SAMEA116302624	Candidatus Methanarcanum hacksteinii	Contig
+CMethana_hac_GCF_964306665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/665/GCF_964306665.1_EST-A-0142_MX-02-sp006954405	SAMEA116302621	Candidatus Methanarcanum hacksteinii	Contig
 Candidatus_Methanimicrococcus_labiotermitis_GCA_009784005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/784/005/GCA_009784005.1_ASM978400v1	SAMN12581897	Candidatus Methanimicrococcus labiotermitis	Contig
 Candidatus_Methanimicrococcus_odontotermitis_GCA_031286065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/031/286/065/GCA_031286065.1_ASM3128606v1	SAMN21242683	Candidatus Methanimicrococcus odontotermitis	Contig
 CMethanob_endosymbiot_GCA_003315655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/315/655/GCA_003315655.1_ASM331565v1	SAMN06660698	Candidatus Methanobinarius endosymbioticus	Contig
@@ -235,7 +251,19 @@ Candidatus_Methanomassiliicoccus_intestinalis_GCA_937973875_1	https://ftp.ncbi.n
 Candidatus_Methanomassiliicoccus_intestinalis_GCA_938021865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/938/021/865/GCA_938021865.1_ERR414292_bin.41_CONCOCT_v1.1_MAG	SAMEA14084325	Candidatus Methanomassiliicoccus intestinalis	Contig
 Candidatus_Methanomassiliicoccus_intestinalis_GCA_958367105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/367/105/GCA_958367105.1_ERR9762708_bin.42_MetaWRAP_v1.3_MAG	SAMEA114064531	Candidatus Methanomassiliicoccus intestinalis	Contig
 Candidatus_Methanomassiliicoccus_intestinalis_GCA_958409965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/409/965/GCA_958409965.1_ERR9578231_bin.8_MetaWRAP_v1.3_MAG	SAMEA114063120	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCA_964307625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/307/625/GCA_964307625.1_EST-A-0095_Methanomassiliicoccus_A-intestinalis	SAMEA116300936	Candidatus Methanomassiliicoccus intestinalis	Contig
 Candidatus_Methanomassiliicoccus_intestinalis_GCF_902383905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/383/905/GCF_902383905.1_UHGG_MGYG-HGUT-02160	SAMEA5851664	Candidatus Methanomassiliicoccus intestinalis	Complete Genome
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964305975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/975/GCF_964305975.1_EST-A-0098_Methanomassiliicoccus_A-sp905203995	SAMEA116302637	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964306585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/585/GCF_964306585.1_EST-A-0093_Methanomassiliicoccus_A-intestinalis	SAMEA116300934	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964306595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/595/GCF_964306595.1_EST-A-0087_Methanomassiliicoccus_A-intestinalis	SAMEA116300928	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964306615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/615/GCF_964306615.1_EST-A-0090_Methanomassiliicoccus_A-intestinalis	SAMEA116300931	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964306645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/645/GCF_964306645.1_EST-A-0092_Methanomassiliicoccus_A-intestinalis	SAMEA116300933	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964306655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/655/GCF_964306655.1_EST-A-0097_Methanomassiliicoccus_A-sp905203995	SAMEA116302636	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964306695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/695/GCF_964306695.1_EST-A-0088_Methanomassiliicoccus_A-intestinalis	SAMEA116300929	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964307595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/595/GCF_964307595.1_EST-A-0094_Methanomassiliicoccus_A-intestinalis	SAMEA116300935	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964307605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/605/GCF_964307605.1_EST-A-0089_Methanomassiliicoccus_A-intestinalis	SAMEA116300930	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964307615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/615/GCF_964307615.1_EST-A-0091_Methanomassiliicoccus_A-intestinalis	SAMEA116300932	Candidatus Methanomassiliicoccus intestinalis	Contig
+Candidatus_Methanomassiliicoccus_intestinalis_GCF_964307635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/635/GCF_964307635.1_EST-A-0096_Methanomassiliicoccus_A-sp905203995	SAMEA116302635	Candidatus Methanomassiliicoccus intestinalis	Contig
 Candidatus_Methanomassiliicoccus_intestinalis_Issoire_Mx1_GCF_000404225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/404/225/GCF_000404225.1_ASM40422v1	SAMN03081468	Candidatus Methanomassiliicoccus intestinalis	Complete Genome
 CMethanome_mesod_GCA_001717005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/717/005/GCA_001717005.1_ASM171700v1	SAMN04994458	Candidatus Methanomethylicus mesodigestus	Scaffold
 CMethanome_mesod_GCA_001717035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/717/035/GCA_001717035.1_ASM171703v1	SAMN04994459	Candidatus Methanomethylicus mesodigestus	Scaffold
@@ -500,6 +528,7 @@ CWo_sine_GCA_023267995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/267/99
 CWo_sine_GCA_023268255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/268/255/GCA_023268255.1_ASM2326825v1	SAMN26029284	Candidatus Wolframiiraptor sinensis	Contig
 CWo_sine_GCA_023268265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/268/265/GCA_023268265.1_ASM2326826v1	SAMN26029296	Candidatus Wolframiiraptor sinensis	Scaffold
 CWu_yap_GCA_016840425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/840/425/GCA_016840425.1_ASM1684042v1	SAMN16492201	Candidatus Wukongarchaeum yapensis	Contig
+CZ_tam_GCA_039889305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/039/889/305/GCA_039889305.1_ASM3988930v1	SAMN35304563	Candidatus Zestomicrobium tamdykulense	Contig
 Cenarchaeum_symbiont_of_Oopsacas_minuta_GCA_029948415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/948/415/GCA_029948415.1_ASM2994841v1	SAMN21250603	Cenarchaeum symbiont of Oopsacas minuta	Scaffold
 Co_calida_NAS_02_GCF_013340765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/340/765/GCF_013340765.1_NAS2_1.0	SAMD00056253	Conexivisphaera calida	Complete Genome
 Cu_div_GCA_027366925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/027/366/925/GCA_027366925.1_ASM2736692v1	SAMN28407082	Cuniculiplasma divulgatum	Contig
@@ -693,6 +722,7 @@ Halobact_UC4241_GCF_030250165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030
 Halobact_UC4242_GCF_030250195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/250/195/GCF_030250195.1_ASM3025019v1	SAMN32788921	Halobacterium salinarum	Contig
 Halobact_UC4243_GCF_030250125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/250/125/GCF_030250125.1_ASM3025012v1	SAMN32788922	Halobacterium salinarum	Contig
 Halobact_wan_Gai3_17_GCF_021249345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/249/345/GCF_021249345.1_ASM2124934v1	SAMN23798262	Halobacterium wangiae	Complete Genome
+Halobact_yunc_YCN1_GCF_037031165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/031/165/GCF_037031165.1_ASM3703116v1	SAMN38877003	Halobacterium yunchengense	Contig
 Halobact_zho_XZYJT26_GCF_021249405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/249/405/GCF_021249405.1_ASM2124940v1	SAMN23798265	Halobacterium zhouii	Complete Genome
 Halobacu_gomo_DSM_9297_GCF_900129775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/129/775/GCF_900129775.1_IMG-taxon_2695420988_annotated_assembly	SAMN05443636	Halobaculum gomorrense	Scaffold
 Halobacu_halobium_NBRC_112580_GCF_042662105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/105/GCF_042662105.1_ASM4266210v1	SAMN43283298	Halobaculum halobium	Contig
@@ -722,7 +752,9 @@ Halobe_litoreus_GX31_GCF_024464595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GC
 Halobe_rarus_JCM_23864_GCF_042677905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/677/905/GCF_042677905.1_ASM4267790v1	SAMN43282684	Halobellus rarus	Scaffold
 Halobe_rarus_YC21_GCF_024494595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/494/595/GCF_024494595.1_ASM2449459v1	SAMN29911640	Halobellus rarus	Contig
 Halobe_ruber_MBLA0160_GCF_014212355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/212/355/GCF_014212355.1_ASM1421235v1	SAMN15745140	Halobellus ruber	Contig
+Halobe_rubi_MBLA0158_GCF_041477585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/041/477/585/GCF_041477585.1_ASM4147758v1	SAMN31823812	Halobellus rubicundus	Contig
 Halobe_rufus_CBA1103_GCF_000739575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/739/575/GCF_000739575.1_ASM73957v1	SAMD00018744	Halobellus rufus	Contig
+Halobe_salini_LT62_GCF_037031285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/031/285/GCF_037031285.1_ASM3703128v1	SAMN38878163	Halobellus salinisoli	Contig
 Halobe_salinus_DSM_18730_GCF_900182765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/182/765/GCF_900182765.1_IMG-taxon_2724679816_annotated_assembly	SAMN06265347	Halobellus salinus	Contig
 Halobe_salinus_JCM_14359_GCF_014646875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/646/875/GCF_014646875.1_ASM1464687v1	SAMD00245245	Halobellus salinus	Scaffold
 Halobif_halote_DSM_13078_GCF_900112205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/112/205/GCF_900112205.1_IMG-taxon_2693429869_annotated_assembly	SAMN05444422	Halobiforma haloterrestris	Scaffold
@@ -807,8 +839,10 @@ Haloge_bor_N11_GCF_004150395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/
 Haloge_bor_wsp3_GCA_011765365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/011/765/365/GCA_011765365.1_ASM1176536v1	SAMN13341696	Halogeometricum borinquense	Complete Genome
 Haloge_bor_wsp4_GCF_010692885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/692/885/GCF_010692885.1_ASM1069288v1	SAMN14053718	Halogeometricum borinquense	Complete Genome
 Haloge_limi_CGMCC_1_8711_GCF_900115785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/115/785/GCF_900115785.1_IMG-taxon_2617270895_annotated_assembly	SAMN04488124	Halogeometricum limi	Scaffold
+Haloge_lut_S3BR25_2_GCF_031624635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/031/624/635/GCF_031624635.1_ASM3162463v1	SAMN28864577	Halogeometricum luteum	Scaffold
 Haloge_pallidum_JCM_14848_GCF_000337095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/095/GCF_000337095.1_ASM33709v1	SAMN02471630	Halogeometricum pallidum	Contig
 Haloge_rufum_CGMCC_1_7736_GCF_900112175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/112/175/GCF_900112175.1_IMG-taxon_2617270920_annotated_assembly	SAMN04487947	Halogeometricum rufum	Contig
+Haloge_salsis_S1BR25_6_GCF_031624495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/031/624/495/GCF_031624495.1_ASM3162449v1	SAMN28864576	Halogeometricum salsisoli	Contig
 Halogl_halophilum_ZY41_GCF_024298885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/298/885/GCF_024298885.1_ASM2429888v1	SAMN29548545	Haloglomus halophilum	Complete Genome
 Halogl_irr_F16_60_GCF_007421925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/007/421/925/GCF_007421925.1_ASM742192v1	SAMN09473901	Haloglomus irregulare	Scaffold
 Halogl_litoreum_DT116_GCF_029338515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/338/515/GCF_029338515.1_ASM2933851v1	SAMN33717057	Haloglomus litoreum	Complete Genome
@@ -921,6 +955,7 @@ Halorh_tia_type_SARL4B_GCF_000470655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/
 Halorh_uta_DSM_12940_GCF_000023945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/023/945/GCF_000023945.1_ASM2394v1	SAMN00002611	Halorhabdus utahensis	Complete Genome
 Halori_brevis_KCTC_52239_GCF_042678165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/678/165/GCF_042678165.1_ASM4267816v1	SAMN43282685	Halorientalis brevis	Scaffold
 Halori_brevis_YC89_GCF_023077655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/077/655/GCF_023077655.1_ASM2307765v1	SAMN27400809	Halorientalis brevis	Contig
+Halori_halophila_LT38_GCF_037031225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/031/225/GCF_037031225.1_ASM3703122v1	SAMN38878123	Halorientalis halophila	Contig
 Halori_litorea_ZY14_GCF_023028225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/028/225/GCF_023028225.1_ASM2302822v1	SAMN27190819	Halorientalis litorea	Complete Genome
 Halori_marina_GDY88_GCF_023028345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/023/028/345/GCF_023028345.1_ASM2302834v1	SAMN27190925	Halorientalis marina	Complete Genome
 Halori_pallida_F13_25_GCF_004118325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/118/325/GCF_004118325.1_ASM411832v1	SAMN10247356	Halorientalis pallida	Scaffold
@@ -1043,8 +1078,8 @@ Halorubr_tro_5_GCF_001280455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/
 Halorubr_tru_FCH27_GCF_042662525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/662/525/GCF_042662525.1_ASM4266252v1	SAMN43283287	Halorubrum trueperi	Scaffold
 Halorubr_vacuolatum_DSM_8800_GCF_900188065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/188/065/GCF_900188065.1_IMG-taxon_2724679803_annotated_assembly	SAMN06264855	Halorubrum vacuolatum	Contig
 Halorubr_xin_CGMCC_1_3527_GCF_900102375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/102/375/GCF_900102375.1_IMG-taxon_2617270761_annotated_assembly	SAMN04488067	Halorubrum xinjiangense	Scaffold
-Halorubr_yun_CGMCC_1_13630_GCF_042663285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/285/GCF_042663285.1_ASM4266328v1	SAMN43283200	Halorubrum yunnanense	Scaffold
-Halorubr_yun_Q85_GCF_026586675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/586/675/GCF_026586675.1_ASM2658667v1	SAMN30884439	Halorubrum yunnanense	Scaffold
+Halorubr_yunn_CGMCC_1_13630_GCF_042663285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/663/285/GCF_042663285.1_ASM4266328v1	SAMN43283200	Halorubrum yunnanense	Scaffold
+Halorubr_yunn_Q85_GCF_026586675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/586/675/GCF_026586675.1_ASM2658667v1	SAMN30884439	Halorubrum yunnanense	Scaffold
 Halorus_amylolyticus_YC93_GCF_004143485_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/004/143/485/GCF_004143485.2_ASM414348v2	SAMN10601653	Halorussus amylolyticus	Scaffold
 Halorus_aquaticus_NBRC_109054_GCF_042653245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/653/245/GCF_042653245.1_ASM4265324v1	SAMN43282990	Halorussus aquaticus	Scaffold
 Halorus_aquaticus_NBRC_109677_GCF_042653805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/653/805/GCF_042653805.1_ASM4265380v1	SAMN43283069	Halorussus aquaticus	Contig
@@ -1259,37 +1294,90 @@ Methanobr_smi_CE91_St68_GCF_022846175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all
 Methanobr_smi_DSM_2374_GCF_000151225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/151/225/GCF_000151225.1_ASM15122v1	SAMN00008834	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_DSM_2375_GCF_000151245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/151/245/GCF_000151245.1_ASM15124v1	SAMN00008835	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_DSM_861_GCF_028743435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/743/435/GCF_028743435.1_ASM2874343v1	SAMN33244397	Methanobrevibacter smithii	Complete Genome
+Methanobr_smi_GCA_000437055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/437/055/GCA_000437055.1_MGS186	SAMEA3138737	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_014871915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/871/915/GCA_014871915.1_ASM1487191v1	SAMN12905384	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_016294185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/294/185/GCA_016294185.1_ASM1629418v1	SAMN16927151	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_018379875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/379/875/GCA_018379875.1_ASM1837987v1	SAMN17801184	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_021641085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/021/641/085/GCA_021641085.1_ASM2164108v1	SAMN23483318	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_022784485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/784/485/GCA_022784485.1_ASM2278448v1	SAMN26927345	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_025992335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/992/335/GCA_025992335.1_ASM2599233v1	SAMN31100423	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_025992465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/025/992/465/GCA_025992465.1_ASM2599246v1	SAMN31100418	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_028722865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/028/722/865/GCA_028722865.1_ASM2872286v1	SAMN32899616	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_030539535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/539/535/GCA_030539535.1_ASM3053953v1	SAMN36400757	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_030539805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/539/805/GCA_030539805.1_ASM3053980v1	SAMN36400310	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_030841835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/841/835/GCA_030841835.1_ASM3084183v1	SAMN36703808	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_034167555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/034/167/555/GCA_034167555.1_ASM3416755v1	SAMN37949554	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_036305585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/305/585/GCA_036305585.1_ASM3630558v1	SAMN38021798	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_036549595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/549/595/GCA_036549595.1_ASM3654959v1	SAMN38021976	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037066175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/066/175/GCA_037066175.1_ASM3706617v1	SAMN38172434	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_037236875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/236/875/GCA_037236875.1_ASM3723687v1	SAMN37824132	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037238405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/238/405/GCA_037238405.1_ASM3723840v1	SAMN37825002	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037248725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/248/725/GCA_037248725.1_ASM3724872v1	SAMN37825456	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037250035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/250/035/GCA_037250035.1_ASM3725003v1	SAMN37825384	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_037255715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/255/715/GCA_037255715.1_ASM3725571v1	SAMN37825722	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037260015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/260/015/GCA_037260015.1_ASM3726001v1	SAMN37825852	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_037273345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/273/345/GCA_037273345.1_ASM3727334v1	SAMN37826485	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037294445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/294/445/GCA_037294445.1_ASM3729444v1	SAMN37826809	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037301155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/301/155/GCA_037301155.1_ASM3730115v1	SAMN37826995	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_037307465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/307/465/GCA_037307465.1_ASM3730746v1	SAMN37827883	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037318835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/318/835/GCA_037318835.1_ASM3731883v1	SAMN37827169	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_037325185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/325/185/GCA_037325185.1_ASM3732518v1	SAMN37827646	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_037328525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/328/525/GCA_037328525.1_ASM3732852v1	SAMN37827960	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037336345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/336/345/GCA_037336345.1_ASM3733634v1	SAMN37828455	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_037338915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/338/915/GCA_037338915.1_ASM3733891v1	SAMN37828386	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037342685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/342/685/GCA_037342685.1_ASM3734268v1	SAMN37828277	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037357275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/357/275/GCA_037357275.1_ASM3735727v1	SAMN37829251	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_037361655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/361/655/GCA_037361655.1_ASM3736165v1	SAMN37829101	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_037423445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/037/423/445/GCA_037423445.1_ASM3742344v1	SAMN37830459	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_905206215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/206/215/GCA_905206215.1_ERR1297821-mag-bin.15	SAMEA7846519	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_905207865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/207/865/GCA_905207865.1_SRR413754-mag-bin.38	SAMEA7848105	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_905209735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/905/209/735/GCA_905209735.1_ERR260234-mag-bin.14	SAMEA7847229	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_928722215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/928/722/215/GCA_928722215.1_min17_bin38	SAMEA12751957	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_934834405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/834/405/GCA_934834405.1_MTG232_bin.10.fa	SAMEA13566647	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCA_934836805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/836/805/GCA_934836805.1_MTG234_bin.2.fa	SAMEA13566744	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_934841515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/841/515/GCA_934841515.1_MTG233_bin.9.fa	SAMEA13566700	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_934854605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/854/605/GCA_934854605.1_MTG237_bin.37.fa	SAMEA13566985	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_934864325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/864/325/GCA_934864325.1_MTG235_bin.19.fa	SAMEA13566829	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCA_934864615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/864/615/GCA_934864615.1_MTG236_bin.38.fa	SAMEA13566920	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCA_934876175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/876/175/GCA_934876175.1_MTG246_bin.5.fa	SAMEA13567430	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_934879315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/879/315/GCA_934879315.1_MTG248_bin.32.fa	SAMEA13567580	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_934881615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/881/615/GCA_934881615.1_MTG247_bin.44.fa	SAMEA13567528	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_934882215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/882/215/GCA_934882215.1_MTG240_bin.3.fa	SAMEA13567106	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_934882635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/882/635/GCA_934882635.1_MTG239_bin.1.fa	SAMEA13567053	Methanobrevibacter smithii	Scaffold
+Methanobr_smi_GCA_934882835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/934/882/835/GCA_934882835.1_MTG238_bin.31.fa	SAMEA13567024	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCA_938021325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/938/021/325/GCA_938021325.1_SRR7721896_bin.58_CONCOCT_v1.1_MAG	SAMEA14086073	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_938044845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/938/044/845/GCA_938044845.1_ERR688525_bin.5_CONCOCT_v1.1_MAG	SAMEA14085039	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_945607175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/945/607/175/GCA_945607175.1_SRR14474043_bin.15_metaWRAP_v1.3_MAG	SAMEA110321948	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_945830685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/945/830/685/GCA_945830685.1_SRR5240748_bin.9_metaWRAP_v1.3_MAG	SAMEA110360391	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_945864075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/945/864/075/GCA_945864075.1_ERR1855546_bin.25_metaWRAP_v1.3_MAG	SAMEA110402134	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_945868565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/945/868/565/GCA_945868565.1_SRR15732360_bin.19_metaWRAP_v1.3_MAG	SAMEA110402561	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_945873965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/945/873/965/GCA_945873965.1_SRR17382103_bin.13_metaWRAP_v1.3_MAG	SAMEA110403184	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_945928295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/945/928/295/GCA_945928295.1_SRR15057922_bin.11_metaWRAP_v1.3_MAG	SAMEA110414419	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_946407825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/946/407/825/GCA_946407825.1_SRR14812344_bin.14_metaWRAP_v1.3_MAG	SAMEA110653556	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_947002465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/947/002/465/GCA_947002465.1_SRR19721633_bin.21_metawrap_v1.3_MAG	SAMEA111396816	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_948471195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/948/471/195/GCA_948471195.1_SRR17622767_bin.81_metawrap_v1.3_MAG	SAMEA112353499	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958346845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/346/845/GCA_958346845.1_ERR8263739_bin.32_MetaWRAP_v1.3_MAG	SAMEA114060472	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958349965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/349/965/GCA_958349965.1_ERR9354249_bin.30_MetaWRAP_v1.3_MAG	SAMEA114061266	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_958367155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/367/155/GCA_958367155.1_ERR9762677_bin.15_MetaWRAP_v1.3_MAG	SAMEA114064111	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958404925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/404/925/GCA_958404925.1_ERR9322428_bin.27_MetaWRAP_v1.3_MAG	SAMEA114060944	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958406505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/406/505/GCA_958406505.1_ERR8263824_bin.44_MetaWRAP_v1.3_MAG	SAMEA114060655	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958408285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/408/285/GCA_958408285.1_ERR9492520_bin.14_MetaWRAP_v1.3_MAG	SAMEA114064014	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958408655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/408/655/GCA_958408655.1_ERR9492527_bin.37_MetaWRAP_v1.3_MAG	SAMEA114064078	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958427485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/427/485/GCA_958427485.1_ERR9762707_bin.13_MetaWRAP_v1.3_MAG	SAMEA114064492	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_958428305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/428/305/GCA_958428305.1_ERR9578260_bin.2_MetaWRAP_v1.3_MAG	SAMEA114063285	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958428575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/428/575/GCA_958428575.1_ERR9578286_bin.9_MetaWRAP_v1.3_MAG	SAMEA114063453	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958434505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/434/505/GCA_958434505.1_SRR22541668_bin.8_MetaWRAP_v1.3_MAG	SAMEA114065241	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_958441245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/441/245/GCA_958441245.1_ERR9610937_bin.21_MetaWRAP_v1.3_MAG	SAMEA114061965	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_958450395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/450/395/GCA_958450395.1_SRR17382081_bin.21_MetaWRAP_v1.3_MAG	SAMEA114066220	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958452655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/452/655/GCA_958452655.1_SRR18940298_bin.13_MetaWRAP_v1.3_MAG	SAMEA114064807	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_958454305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/454/305/GCA_958454305.1_SRR18940299_bin.15_MetaWRAP_v1.3_MAG	SAMEA114064839	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_959018705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/959/018/705/GCA_959018705.1_SRR20881978_bin.12_MetaWRAP_v1.3_MAG	SAMEA114095628	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_959022255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/959/022/255/GCA_959022255.1_SRR13494530_bin.17_MetaWRAP_v1.3_MAG	SAMEA114096801	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_959026265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/959/026/265/GCA_959026265.1_SRR13494517_bin.23_MetaWRAP_v1.3_MAG	SAMEA114096624	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_959026905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/959/026/905/GCA_959026905.1_SRR20881984_bin.37_MetaWRAP_v1.3_MAG	SAMEA114095823	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_959596935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/959/596/935/GCA_959596935.1_SRR16244405_bin.3_MetaWRAP_v1.3_MAG	SAMEA114096006	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_959603635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/959/603/635/GCA_959603635.1_SRR16280099_bin.15_MetaWRAP_v1.3_MAG	SAMEA114122740	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_959605265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/959/605/265/GCA_959605265.1_SRR16244389_bin.33_MetaWRAP_v1.3_MAG	SAMEA114095776	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCA_963586265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/963/586/265/GCA_963586265.1_E07139-L1_cleanbin_000014_GreatApes	SAMEA114581338	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCA_963590125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/963/590/125/GCA_963590125.1_E07150-L1_cleanbin_000061_GreatApes	SAMEA114581566	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCA_963596285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/963/596/285/GCA_963596285.1_E07146-L1_cleanbin_000015_GreatApes	SAMEA114581396	Methanobrevibacter smithii	Scaffold
@@ -1301,63 +1389,91 @@ Methanobr_smi_GCA_963624845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/963/6
 Methanobr_smi_GCA_963634045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/963/634/045/GCA_963634045.1_E07187-L1_cleanbin_000021_GreatApes	SAMEA114581987	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCA_963636535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/963/636/535/GCA_963636535.1_E07192-L1_cleanbin_000011_GreatApes	SAMEA114582124	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCA_963648565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/963/648/565/GCA_963648565.1_H07655-L1_cleanbin_000043_GreatApes	SAMEA114587777	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_000437055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/437/055/GCF_000437055.1_MGS186	SAMEA3138737	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_014871915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/871/915/GCF_014871915.1_ASM1487191v1	SAMN12905384	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_016294185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/294/185/GCF_016294185.1_ASM1629418v1	SAMN16927151	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_018379875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/379/875/GCF_018379875.1_ASM1837987v1	SAMN17801184	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_021641085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/021/641/085/GCF_021641085.1_ASM2164108v1	SAMN23483318	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_022784485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/784/485/GCF_022784485.1_ASM2278448v1	SAMN26927345	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_025992335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/992/335/GCF_025992335.1_ASM2599233v1	SAMN31100423	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_025992465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/992/465/GCF_025992465.1_ASM2599246v1	SAMN31100418	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_028722865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/722/865/GCF_028722865.1_ASM2872286v1	SAMN32899616	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_030539805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/539/805/GCF_030539805.1_ASM3053980v1	SAMN36400310	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_030841835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/030/841/835/GCF_030841835.1_ASM3084183v1	SAMN36703808	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_034167555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/034/167/555/GCF_034167555.1_ASM3416755v1	SAMN37949554	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_036305585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/305/585/GCF_036305585.1_ASM3630558v1	SAMN38021798	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_036549595_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/549/595/GCF_036549595.1_ASM3654959v1	SAMN38021976	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_037236875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/236/875/GCF_037236875.1_ASM3723687v1	SAMN37824132	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_037255715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/255/715/GCF_037255715.1_ASM3725571v1	SAMN37825722	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_037273345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/273/345/GCF_037273345.1_ASM3727334v1	SAMN37826485	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_037307465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/307/465/GCF_037307465.1_ASM3730746v1	SAMN37827883	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_037325185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/325/185/GCF_037325185.1_ASM3732518v1	SAMN37827646	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_037328525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/328/525/GCF_037328525.1_ASM3732852v1	SAMN37827960	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_037338915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/338/915/GCF_037338915.1_ASM3733891v1	SAMN37828386	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_037423445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/423/445/GCF_037423445.1_ASM3742344v1	SAMN37830459	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964304805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/304/805/GCA_964304805.1_EST-A-0056_Methanobrevibacter_A-smithii	SAMEA116300873	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/095/GCA_964305095.1_EST-A-0065_Methanobrevibacter_A-smithii	SAMEA116300882	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/105/GCA_964305105.1_EST-A-0067_Methanobrevibacter_A-smithii	SAMEA116300884	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/195/GCA_964305195.1_EST-A-0074_Methanobrevibacter_A-smithii_A	SAMEA116302551	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/215/GCA_964305215.1_EST-A-0078_Methanobrevibacter_A-smithii_A	SAMEA116302555	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/235/GCA_964305235.1_EST-A-0052_Methanobrevibacter_A-smithii	SAMEA116300869	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/285/GCA_964305285.1_EST-A-0050_Methanobrevibacter_A-smithii	SAMEA116300867	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/395/GCA_964305395.1_EST-A-0076_Methanobrevibacter_A-smithii_A	SAMEA116302553	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/455/GCA_964305455.1_EST-A-0055_Methanobrevibacter_A-smithii	SAMEA116300872	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/485/GCA_964305485.1_EST-A-0057_Methanobrevibacter_A-smithii	SAMEA116300874	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/495/GCA_964305495.1_EST-A-0063_Methanobrevibacter_A-smithii	SAMEA116300880	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/685/GCA_964305685.1_EST-A-0042_Methanobrevibacter_A-smithii	SAMEA116300859	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/735/GCA_964305735.1_EST-A-0049_Methanobrevibacter_A-smithii	SAMEA116300866	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/775/GCA_964305775.1_EST-A-0051_Methanobrevibacter_A-smithii	SAMEA116300868	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/785/GCA_964305785.1_EST-A-0047_Methanobrevibacter_A-smithii	SAMEA116300864	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964305825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/825/GCA_964305825.1_EST-A-0040_Methanobrevibacter_A-smithii	SAMEA116300857	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/065/GCA_964306065.1_EST-A-0045_Methanobrevibacter_A-smithii	SAMEA116300862	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/275/GCA_964306275.1_EST-A-0080_Methanobrevibacter_A-smithii_A	SAMEA116302557	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/295/GCA_964306295.1_EST-A-0059_Methanobrevibacter_A-smithii	SAMEA116300876	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/305/GCA_964306305.1_EST-A-0068_Methanobrevibacter_A-smithii_A	SAMEA116302545	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/335/GCA_964306335.1_EST-A-0064_Methanobrevibacter_A-smithii	SAMEA116300881	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/365/GCA_964306365.1_EST-A-0066_Methanobrevibacter_A-smithii	SAMEA116300883	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/375/GCA_964306375.1_EST-A-0060_Methanobrevibacter_A-smithii	SAMEA116300877	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/405/GCA_964306405.1_EST-A-0082_Methanobrevibacter_A-smithii_A	SAMEA116302559	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/415/GCA_964306415.1_EST-A-0058_Methanobrevibacter_A-smithii	SAMEA116300875	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/425/GCA_964306425.1_EST-A-0062_Methanobrevibacter_A-smithii	SAMEA116300879	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/825/GCA_964306825.1_EST-A-0046_Methanobrevibacter_A-smithii	SAMEA116300863	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/845/GCA_964306845.1_EST-A-0044_Methanobrevibacter_A-smithii	SAMEA116300861	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/875/GCA_964306875.1_EST-A-0043_Methanobrevibacter_A-smithii	SAMEA116300860	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964306935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/935/GCA_964306935.1_EST-A-0041_Methanobrevibacter_A-smithii	SAMEA116300858	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964307205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/307/205/GCA_964307205.1_EST-A-0083_Methanobrevibacter_A-smithii_A	SAMEA116302560	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964307245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/307/245/GCA_964307245.1_EST-A-0084_Methanobrevibacter_A-smithii_A	SAMEA116302561	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964307265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/307/265/GCA_964307265.1_EST-A-0079_Methanobrevibacter_A-smithii_A	SAMEA116302556	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964307315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/307/315/GCA_964307315.1_EST-A-0081_Methanobrevibacter_A-smithii_A	SAMEA116302558	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964307335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/307/335/GCA_964307335.1_EST-A-0075_Methanobrevibacter_A-smithii_A	SAMEA116302552	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCA_964307355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/307/355/GCA_964307355.1_EST-A-0077_Methanobrevibacter_A-smithii_A	SAMEA116302554	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCF_900654205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/654/205/GCF_900654205.1_PRJEB30652	SAMEA5208282	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCF_901111125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/901/111/125/GCF_901111125.1_PRJEB32190	SAMEA5568008	Methanobrevibacter smithii	Contig
 Methanobr_smi_GCF_902384055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/384/055/GCF_902384055.1_UHGG_MGYG-HGUT-02163	SAMEA5851667	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_GCF_902387325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/387/325/GCF_902387325.1_UHGG_MGYG-HGUT-02446	SAMEA5851951	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_905207865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/207/865/GCF_905207865.1_SRR413754-mag-bin.38	SAMEA7848105	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_905209735_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/209/735/GCF_905209735.1_ERR260234-mag-bin.14	SAMEA7847229	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_934834405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/934/834/405/GCF_934834405.1_MTG232_bin.10.fa	SAMEA13566647	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_934841515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/934/841/515/GCF_934841515.1_MTG233_bin.9.fa	SAMEA13566700	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_934854605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/934/854/605/GCF_934854605.1_MTG237_bin.37.fa	SAMEA13566985	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_934864325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/934/864/325/GCF_934864325.1_MTG235_bin.19.fa	SAMEA13566829	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_934879315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/934/879/315/GCF_934879315.1_MTG248_bin.32.fa	SAMEA13567580	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_934881615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/934/881/615/GCF_934881615.1_MTG247_bin.44.fa	SAMEA13567528	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_934882215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/934/882/215/GCF_934882215.1_MTG240_bin.3.fa	SAMEA13567106	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_934882635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/934/882/635/GCF_934882635.1_MTG239_bin.1.fa	SAMEA13567053	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_934882835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/934/882/835/GCF_934882835.1_MTG238_bin.31.fa	SAMEA13567024	Methanobrevibacter smithii	Scaffold
-Methanobr_smi_GCF_938044845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/938/044/845/GCF_938044845.1_ERR688525_bin.5_CONCOCT_v1.1_MAG	SAMEA14085039	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_945868565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/945/868/565/GCF_945868565.1_SRR15732360_bin.19_metaWRAP_v1.3_MAG	SAMEA110402561	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_945873965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/945/873/965/GCF_945873965.1_SRR17382103_bin.13_metaWRAP_v1.3_MAG	SAMEA110403184	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_945928295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/945/928/295/GCF_945928295.1_SRR15057922_bin.11_metaWRAP_v1.3_MAG	SAMEA110414419	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_946407825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/946/407/825/GCF_946407825.1_SRR14812344_bin.14_metaWRAP_v1.3_MAG	SAMEA110653556	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958346845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/346/845/GCF_958346845.1_ERR8263739_bin.32_MetaWRAP_v1.3_MAG	SAMEA114060472	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958349965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/349/965/GCF_958349965.1_ERR9354249_bin.30_MetaWRAP_v1.3_MAG	SAMEA114061266	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958404925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/404/925/GCF_958404925.1_ERR9322428_bin.27_MetaWRAP_v1.3_MAG	SAMEA114060944	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958406505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/406/505/GCF_958406505.1_ERR8263824_bin.44_MetaWRAP_v1.3_MAG	SAMEA114060655	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958408285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/408/285/GCF_958408285.1_ERR9492520_bin.14_MetaWRAP_v1.3_MAG	SAMEA114064014	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958408655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/408/655/GCF_958408655.1_ERR9492527_bin.37_MetaWRAP_v1.3_MAG	SAMEA114064078	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958427485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/427/485/GCF_958427485.1_ERR9762707_bin.13_MetaWRAP_v1.3_MAG	SAMEA114064492	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958428575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/428/575/GCF_958428575.1_ERR9578286_bin.9_MetaWRAP_v1.3_MAG	SAMEA114063453	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958434505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/434/505/GCF_958434505.1_SRR22541668_bin.8_MetaWRAP_v1.3_MAG	SAMEA114065241	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958452655_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/452/655/GCF_958452655.1_SRR18940298_bin.13_MetaWRAP_v1.3_MAG	SAMEA114064807	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_958454305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/958/454/305/GCF_958454305.1_SRR18940299_bin.15_MetaWRAP_v1.3_MAG	SAMEA114064839	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_959018705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/959/018/705/GCF_959018705.1_SRR20881978_bin.12_MetaWRAP_v1.3_MAG	SAMEA114095628	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_959026265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/959/026/265/GCF_959026265.1_SRR13494517_bin.23_MetaWRAP_v1.3_MAG	SAMEA114096624	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_959603635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/959/603/635/GCF_959603635.1_SRR16280099_bin.15_MetaWRAP_v1.3_MAG	SAMEA114122740	Methanobrevibacter smithii	Contig
-Methanobr_smi_GCF_959605265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/959/605/265/GCF_959605265.1_SRR16244389_bin.33_MetaWRAP_v1.3_MAG	SAMEA114095776	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964304945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/304/945/GCF_964304945.1_EST-A-0061_Methanobrevibacter_A-smithii	SAMEA116300878	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/085/GCF_964305085.1_EST-A-0008_Methanobrevibacter_A-smithii	SAMEA116300825	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/125/GCF_964305125.1_EST-A-0007_Methanobrevibacter_A-smithii	SAMEA116300824	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/135/GCF_964305135.1_EST-A-0009_Methanobrevibacter_A-smithii	SAMEA116300826	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/165/GCF_964305165.1_EST-A-0072_Methanobrevibacter_A-smithii_A	SAMEA116302549	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/225/GCF_964305225.1_EST-A-0016_Methanobrevibacter_A-smithii	SAMEA116300833	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305275_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/275/GCF_964305275.1_EST-A-0071_Methanobrevibacter_A-smithii_A	SAMEA116302548	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305315_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/315/GCF_964305315.1_EST-A-0053_Methanobrevibacter_A-smithii	SAMEA116300870	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305355_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/355/GCF_964305355.1_EST-A-0069_Methanobrevibacter_A-smithii_A	SAMEA116302546	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/365/GCF_964305365.1_EST-A-0070_Methanobrevibacter_A-smithii_A	SAMEA116302547	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/385/GCF_964305385.1_EST-A-0054_Methanobrevibacter_A-smithii	SAMEA116300871	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/585/GCF_964305585.1_EST-A-0012_Methanobrevibacter_A-smithii	SAMEA116300829	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/765/GCF_964305765.1_EST-A-0010_Methanobrevibacter_A-smithii	SAMEA116300827	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/795/GCF_964305795.1_EST-A-0039_Methanobrevibacter_A-smithii	SAMEA116300856	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305845_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/845/GCF_964305845.1_EST-A-0015_Methanobrevibacter_A-smithii	SAMEA116300832	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/855/GCF_964305855.1_EST-A-0017_Methanobrevibacter_A-smithii	SAMEA116300834	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/885/GCF_964305885.1_EST-A-0011_Methanobrevibacter_A-smithii	SAMEA116300828	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964305995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/995/GCF_964305995.1_EST-A-0013_Methanobrevibacter_A-smithii	SAMEA116300830	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/005/GCF_964306005.1_EST-A-0014_Methanobrevibacter_A-smithii	SAMEA116300831	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/035/GCF_964306035.1_EST-A-0021_Methanobrevibacter_A-smithii	SAMEA116300838	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/145/GCF_964306145.1_EST-A-0018_Methanobrevibacter_A-smithii	SAMEA116300835	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/185/GCF_964306185.1_EST-A-0023_Methanobrevibacter_A-smithii	SAMEA116300840	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/195/GCF_964306195.1_EST-A-0019_Methanobrevibacter_A-smithii	SAMEA116300836	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/715/GCF_964306715.1_EST-A-0004_Methanobrevibacter_A-smithii	SAMEA116300821	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306725_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/725/GCF_964306725.1_EST-A-0048_Methanobrevibacter_A-smithii	SAMEA116300865	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/765/GCF_964306765.1_EST-A-0032_Methanobrevibacter_A-smithii	SAMEA116300849	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306835_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/835/GCF_964306835.1_EST-A-0033_Methanobrevibacter_A-smithii	SAMEA116300850	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306855_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/855/GCF_964306855.1_EST-A-0034_Methanobrevibacter_A-smithii	SAMEA116300851	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/865/GCF_964306865.1_EST-A-0031_Methanobrevibacter_A-smithii	SAMEA116300848	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/885/GCF_964306885.1_EST-A-0030_Methanobrevibacter_A-smithii	SAMEA116300847	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/895/GCF_964306895.1_EST-A-0027_Methanobrevibacter_A-smithii	SAMEA116300844	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964306905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/905/GCF_964306905.1_EST-A-0036_Methanobrevibacter_A-smithii	SAMEA116300853	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/025/GCF_964307025.1_EST-A-0038_Methanobrevibacter_A-smithii	SAMEA116300855	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/345/GCF_964307345.1_EST-A-0005_Methanobrevibacter_A-smithii	SAMEA116300822	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/365/GCF_964307365.1_EST-A-0073_Methanobrevibacter_A-smithii_A	SAMEA116302550	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/395/GCF_964307395.1_EST-A-0035_Methanobrevibacter_A-smithii	SAMEA116300852	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/405/GCF_964307405.1_EST-A-0006_Methanobrevibacter_A-smithii	SAMEA116300823	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/425/GCF_964307425.1_EST-A-0037_Methanobrevibacter_A-smithii	SAMEA116300854	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307435_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/435/GCF_964307435.1_EST-A-0025_Methanobrevibacter_A-smithii	SAMEA116300842	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/455/GCF_964307455.1_EST-A-0022_Methanobrevibacter_A-smithii	SAMEA116300839	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/465/GCF_964307465.1_EST-A-0024_Methanobrevibacter_A-smithii	SAMEA116300841	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/475/GCF_964307475.1_EST-A-0029_Methanobrevibacter_A-smithii	SAMEA116300846	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/495/GCF_964307495.1_EST-A-0026_Methanobrevibacter_A-smithii	SAMEA116300843	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/555/GCF_964307555.1_EST-A-0028_Methanobrevibacter_A-smithii	SAMEA116300845	Methanobrevibacter smithii	Contig
+Methanobr_smi_GCF_964307585_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/585/GCF_964307585.1_EST-A-0020_Methanobrevibacter_A-smithii	SAMEA116300837	Methanobrevibacter smithii	Contig
 Methanobr_smi_GRAZ_2_GCA_041447165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/041/447/165/GCA_041447165.1_GRAZ-2	SAMN39527019	Methanobrevibacter smithii	Complete Genome
 Methanobr_smi_JC9_GCF_036527415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/036/527/415/GCF_036527415.1_ASM3652741v1	SAMN32745244	Methanobrevibacter smithii	Scaffold
 Methanobr_smi_KB11_GCF_002813085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/813/085/GCF_002813085.1_ASM281308v1	SAMN05935551	Methanobrevibacter smithii	Complete Genome
@@ -1392,6 +1508,8 @@ Methanobr_thau_GCF_015062905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/
 Methanobr_thau_GCF_015062915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/015/062/915/GCF_015062915.1_ASM1506291v1	SAMN11294302	Methanobrevibacter thaueri	Scaffold
 Methanobr_woe_DSM_11979_GCF_003111605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/111/605/GCF_003111605.1_ASM311160v1	SAMN06461353	Methanobrevibacter woesei	Contig
 Methanobr_woe_GCA_020907805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/020/907/805/GCA_020907805.1_ASM2090780v1	SAMN21194424	Methanobrevibacter woesei	Contig
+Methanobr_woe_GCA_964306745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/745/GCA_964306745.1_EST-A-0085_Methanobrevibacter_A-woesei	SAMEA116300885	Methanobrevibacter woesei	Contig
+Methanobr_woe_GCA_964306815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/306/815/GCA_964306815.1_EST-A-0086_Methanobrevibacter_A-woesei	SAMEA116300886	Methanobrevibacter woesei	Contig
 Methanobr_woe_GCF_022780185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/022/780/185/GCF_022780185.1_ASM2278018v1	SAMN26525635	Methanobrevibacter woesei	Contig
 Methanobr_woe_GCF_938048705_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/938/048/705/GCF_938048705.1_ERR1018268_bin.70_CONCOCT_v1.1_MAG	SAMEA14083312	Methanobrevibacter woesei	Contig
 Methanobr_woe_GCF_944322235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/944/322/235/GCF_944322235.1_BRZ_ML_bin14	SAMEA110133892	Methanobrevibacter woesei	Contig
@@ -1592,7 +1710,48 @@ Methanomethylop_alvi_GCA_945948045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GC
 Methanomethylop_alvi_GCA_945949535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/945/949/535/GCA_945949535.1_SRR11489785_bin.34_metaWRAP_v1.3_MAG	SAMEA110412031	Methanomethylophilus alvi	Contig
 Methanomethylop_alvi_GCA_946061245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/946/061/245/GCA_946061245.1_SRR11551379_bin.16_metaWRAP_v1.3_MAG	SAMEA110446579	Methanomethylophilus alvi	Contig
 Methanomethylop_alvi_GCA_958428775_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/958/428/775/GCA_958428775.1_ERR9578292_bin.46_MetaWRAP_v1.3_MAG	SAMEA114063491	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCA_964305965_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/964/305/965/GCA_964305965.1_EST-A-0102_Methanomethylophilus-alvus	SAMEA116300889	Methanomethylophilus alvi	Contig
 Methanomethylop_alvi_GCF_902387285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/387/285/GCF_902387285.1_UHGG_MGYG-HGUT-02456	SAMEA5851961	Methanomethylophilus alvi	Complete Genome
+Methanomethylop_alvi_GCF_964304815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/304/815/GCF_964304815.1_EST-A-0105_Methanomethylophilus-alvus	SAMEA116300892	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964304865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/304/865/GCF_964304865.1_EST-A-0107_Methanomethylophilus-alvus	SAMEA116300894	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964304925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/304/925/GCF_964304925.1_EST-A-0109_Methanomethylophilus-alvus	SAMEA116300896	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964304935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/304/935/GCF_964304935.1_EST-A-0111_Methanomethylophilus-alvus	SAMEA116300898	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964304975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/304/975/GCF_964304975.1_EST-A-0136_Methanomethylophilus-alvus	SAMEA116300923	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305115_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/115/GCF_964305115.1_EST-A-0133_Methanomethylophilus-alvus	SAMEA116300920	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/305/GCF_964305305.1_EST-A-0116_Methanomethylophilus-alvus	SAMEA116300903	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/465/GCF_964305465.1_EST-A-0108_Methanomethylophilus-alvus	SAMEA116300895	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/675/GCF_964305675.1_EST-A-0137_Methanomethylophilus-alvus	SAMEA116300924	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/745/GCF_964305745.1_EST-A-0139_Methanomethylophilus-alvus	SAMEA116300926	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/875/GCF_964305875.1_EST-A-0134_Methanomethylophilus-alvus	SAMEA116300921	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/895/GCF_964305895.1_EST-A-0100_Methanomethylophilus-alvus	SAMEA116300887	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305905_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/905/GCF_964305905.1_EST-A-0131_Methanomethylophilus-alvus	SAMEA116300918	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/935/GCF_964305935.1_EST-A-0110_Methanomethylophilus-alvus	SAMEA116300897	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/945/GCF_964305945.1_EST-A-0135_Methanomethylophilus-alvus	SAMEA116300922	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964305955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/305/955/GCF_964305955.1_EST-A-0112_Methanomethylophilus-alvus	SAMEA116300899	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306555_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/555/GCF_964306555.1_EST-A-0140_Methanomethylophilus-alvus	SAMEA116300927	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306565_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/565/GCF_964306565.1_EST-A-0101_Methanomethylophilus-alvus	SAMEA116300888	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/575/GCF_964306575.1_EST-A-0106_Methanomethylophilus-alvus	SAMEA116300893	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/605/GCF_964306605.1_EST-A-0103_Methanomethylophilus-alvus	SAMEA116300890	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/635/GCF_964306635.1_EST-A-0104_Methanomethylophilus-alvus	SAMEA116300891	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/675/GCF_964306675.1_EST-A-0138_Methanomethylophilus-alvus	SAMEA116300925	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306755_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/755/GCF_964306755.1_EST-A-0114_Methanomethylophilus-alvus	SAMEA116300901	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/955/GCF_964306955.1_EST-A-0124_Methanomethylophilus-alvus	SAMEA116300911	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/975/GCF_964306975.1_EST-A-0120_Methanomethylophilus-alvus	SAMEA116300907	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964306995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/306/995/GCF_964306995.1_EST-A-0118_Methanomethylophilus-alvus	SAMEA116300905	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/005/GCF_964307005.1_EST-A-0126_Methanomethylophilus-alvus	SAMEA116300913	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/015/GCF_964307015.1_EST-A-0123_Methanomethylophilus-alvus	SAMEA116300910	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/055/GCF_964307055.1_EST-A-0113_Methanomethylophilus-alvus	SAMEA116300900	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/065/GCF_964307065.1_EST-A-0115_Methanomethylophilus-alvus	SAMEA116300902	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307075_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/075/GCF_964307075.1_EST-A-0117_Methanomethylophilus-alvus	SAMEA116300904	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/165/GCF_964307165.1_EST-A-0129_Methanomethylophilus-alvus	SAMEA116300916	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/215/GCF_964307215.1_EST-A-0119_Methanomethylophilus-alvus	SAMEA116300906	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/235/GCF_964307235.1_EST-A-0127_Methanomethylophilus-alvus	SAMEA116300914	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307285_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/285/GCF_964307285.1_EST-A-0125_Methanomethylophilus-alvus	SAMEA116300912	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307305_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/305/GCF_964307305.1_EST-A-0121_Methanomethylophilus-alvus	SAMEA116300908	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/325/GCF_964307325.1_EST-A-0122_Methanomethylophilus-alvus	SAMEA116300909	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/385/GCF_964307385.1_EST-A-0130_Methanomethylophilus-alvus	SAMEA116300917	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307525_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/525/GCF_964307525.1_EST-A-0128_Methanomethylophilus-alvus	SAMEA116300915	Methanomethylophilus alvi	Contig
+Methanomethylop_alvi_GCF_964307545_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/964/307/545/GCF_964307545.1_EST-A-0132_Methanomethylophilus-alvus	SAMEA116300919	Methanomethylophilus alvi	Contig
 Methanomethylop_alvi_Mx_05_GCF_003711245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/711/245/GCF_003711245.1_ASM371124v1	SAMN05892231	Methanomethylophilus alvi	Complete Genome
 Methanomethylop_alvi_Mx1201_GCF_000300255_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/255/GCF_000300255.2_ASM30025v2	SAMN03081445	Methanomethylophilus alvi	Complete Genome
 Methanomethylov_hol_DSM_15978_GCF_000328665_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/328/665/GCF_000328665.1_ASM32866v1	SAMN02261367	Methanomethylovorans hollandica	Complete Genome
@@ -1708,7 +1867,7 @@ Methanosar_maz_S_6_GCF_000970205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/
 Methanosar_maz_SarPi_GCF_000970185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/970/185/GCF_000970185.1_ASM97018v1	SAMN03074584	Methanosarcina mazei	Complete Genome
 Methanosar_maz_TMA_GCF_019669945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/669/945/GCF_019669945.1_ASM1966994v1	SAMD00171895	Methanosarcina mazei	Complete Genome
 Methanosar_maz_TMA_GCF_025035885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/035/885/GCF_025035885.1_ASM2503588v1	SAMN03074585	Methanosarcina mazei	Chromosome
-Methanosar_maz_Tuc01_GCF_000341715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/341/715/GCF_000341715.1_ASM34171v1	SAMN02603746	Methanosarcina mazei	Complete Genome
+Methanosar_maz_Tuc01_GCA_000341715_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/341/715/GCA_000341715.1_ASM34171v1	SAMN02603746	Methanosarcina mazei	Complete Genome
 Methanosar_maz_WWM610_GCF_000970165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/970/165/GCF_000970165.1_ASM97016v1	SAMN03074586	Methanosarcina mazei	Complete Genome
 Methanosar_maz_zm_15_GCF_010706455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/706/455/GCF_010706455.1_ASM1070645v1	SAMN12565415	Methanosarcina mazei	Complete Genome
 Methanosar_sici_C2J_GCF_000970145_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/970/145/GCF_000970145.1_ASM97014v1	SAMN03074587	Methanosarcina siciliae	Complete Genome
@@ -1726,6 +1885,7 @@ Methanosar_thermophila_GCA_035408805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/
 Methanosar_thermophila_GCA_035413445_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/035/413/445/GCA_035413445.1_ASM3541344v1	SAMN32866135	Methanosarcina thermophila	Scaffold
 Methanosar_thermophila_GCA_036679345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/679/345/GCA_036679345.1_ASM3667934v1	SAMN35099979	Methanosarcina thermophila	Contig
 Methanosar_thermophila_GCA_036749395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/749/395/GCA_036749395.1_ASM3674939v1	SAMN28747200	Methanosarcina thermophila	Scaffold
+Methanosar_thermophila_GCA_044452105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/044/452/105/GCA_044452105.1_ASM4445210v1	SAMN43688241	Methanosarcina thermophila	Contig
 Methanosar_thermophila_MST_A1_GCF_027925105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/027/925/105/GCF_027925105.1_ASM2792510v1	SAMD00564987	Methanosarcina thermophila	Scaffold
 Methanosar_thermophila_MT_1_GCA_003584605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/584/605/GCA_003584605.1_ASM358460v1	SAMD00060421	Methanosarcina thermophila	Complete Genome
 Methanosar_thermophila_TM_1_GCF_000969885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/969/885/GCF_000969885.1_ASM96988v1	SAMN03074597	Methanosarcina thermophila	Complete Genome
@@ -1910,6 +2070,7 @@ Natrin_mah_H13_GCA_000690595_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/
 Natrin_marinum_DT87_GCF_024296685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/296/685/GCF_024296685.1_ASM2429668v1	SAMN29426053	Natrinema marinum	Complete Genome
 Natrin_pallidum_BOL6_1_GCF_005890195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/005/890/195/GCF_005890195.1_ASM589019v1	SAMN11840646	Natrinema pallidum	Complete Genome
 Natrin_pallidum_DSM_3751_GCF_000337615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/615/GCF_000337615.1_ASM33761v1	SAMN02471671	Natrinema pallidum	Contig
+Natrin_pallidum_NMX15_1_GCF_043950165_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/043/950/165/GCF_043950165.1_NEB_NpaNMX15-1_pb4_811	SAMN43289003	Natrinema pallidum	Complete Genome
 Natrin_pelli_DSM_15624_GCF_000230735_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/230/735/GCF_000230735.2_ASM23073v3	SAMN02261373	Natrinema pellirubrum	Complete Genome
 Natrin_pelli_DSM_15624_GCF_000337635_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/635/GCF_000337635.1_ASM33763v1	SAMN02471626	Natrinema pellirubrum	Contig
 Natrin_sacchare_AB14_GCF_001953745_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/001/953/745/GCF_001953745.1_ASM195374v1	SAMN04868784	Natrinema saccharevitans	Contig
@@ -1917,7 +2078,7 @@ Natrin_sala_DSM_25055_GCF_900110865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/G
 Natrin_salif_CGMCC_1_12284_GCF_900110455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/110/455/GCF_900110455.1_IMG-taxon_2671180170_annotated_assembly	SAMN05216285	Natrinema salifodinae	Scaffold
 Natrin_salif_KCY07_B2_GCF_000784335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/784/335/GCF_000784335.1_ASM78433v1	SAMN03077632	Natrinema salifodinae	Scaffold
 Natrin_salini_SLN56_GCF_020405205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/020/405/205/GCF_020405205.1_ASM2040520v1	SAMN21621845	Natrinema salinisoli	Complete Genome
-Natrin_salsi_S1CR25_10_GCF_029502005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/502/005/GCF_029502005.1_ASM2950200v1	SAMN28864587	Natrinema salsiterrestre	Contig
+Natrin_salsit_S1CR25_10_GCF_029502005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/502/005/GCF_029502005.1_ASM2950200v1	SAMN28864587	Natrinema salsiterrestre	Contig
 Natrin_soli_CCM_7682_GCF_042661765_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/042/661/765/GCF_042661765.1_ASM4266176v1	SAMN43283311	Natrinema soli	Scaffold
 Natrin_soli_LMG_29247_GCF_028618695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/028/618/695/GCF_028618695.1_ASM2861869v1	SAMN32723775	Natrinema soli	Scaffold
 Natrin_thermot_A29_GCA_004799625_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/799/625/GCA_004799625.1_ASM479962v1	SAMN09702595	Natrinema thermotolerans	Complete Genome
@@ -1944,11 +2105,13 @@ Natronoco_amylolyticus_DSM_10524_GCF_000337675_1	https://ftp.ncbi.nlm.nih.gov/ge
 Natronoco_jeo_DSM_18795_GCF_000337695_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/695/GCF_000337695.1_ASM33769v1	SAMN02471624	Natronococcus jeotgali	Contig
 Natronoco_occultus_SP4_GCF_000328685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/328/685/GCF_000328685.1_ASM32868v1	SAMN02261263	Natronococcus occultus	Complete Genome
 Natronoco_pan_LS1_42_GCF_008122205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/008/122/205/GCF_008122205.1_ASM812220v1	SAMN08056113	Natronococcus pandeyae	Contig
+Natronoco_roseus_CGMCC_1_38198_GCF_043677095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/043/677/095/GCF_043677095.1_ASM4367709v1	SAMN43869310	Natronococcus roseus	Contig
 Natronog_mannaniv_AArc_m2_3_4_GCF_025517485_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/517/485/GCF_025517485.1_ASM2551748v1	SAMN30921869	Natronoglomus mannanivorans	Contig
 Natronog_mannaniv_AArc_xg1_1_GCF_025517495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/025/517/495/GCF_025517495.1_ASM2551749v1	SAMN30921868	Natronoglomus mannanivorans	Scaffold
 Natronolimnob_bae_CGMCC_1_3597_GCF_002177135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/177/135/GCF_002177135.1_ASM217713v1	SAMN06445343	Natronolimnobius baerhuensis	Contig
 Natronolimnob_bae_JCM_12253_GCA_001316185_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/316/185/GCA_001316185.1_ASM131618v1	SAMD00000517	Natronolimnobius baerhuensis	Contig
 Natronolimnoh_inn_JCM_12255_GCF_000337215_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/337/215/GCF_000337215.1_ASM33721v1	SAMN02471623	Natronolimnohabitans innermongolicus	Contig
+Natronom_amylolytica_YCN58_GCF_037031205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/037/031/205/GCF_037031205.1_ASM3703120v1	SAMN38877309	Natronomonas amylolytica	Contig
 Natronom_aquatica_F2_12_GCF_024449025_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/449/025/GCF_024449025.1_ASM2444902v1	SAMN19487687	Natronomonas aquatica	Scaffold
 Natronom_goms_JCM_17867_GCF_026712385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/712/385/GCF_026712385.1_ASM2671238v1	SAMN20297773	Natronomonas gomsonensis	Scaffold
 Natronom_goms_KCTC_4088_GCF_024300825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/024/300/825/GCF_024300825.1_ASM2430082v1	SAMN29636705	Natronomonas gomsonensis	Complete Genome
