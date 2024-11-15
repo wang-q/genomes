@@ -325,6 +325,8 @@ cat Count/genus.before.tsv |
 ```shell
 cd ~/data/Archaea
 
+ulimit -n `ulimit -Hn`
+
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --ass
 
@@ -503,8 +505,8 @@ mv condensed.tsv minhash.condensed.tsv
 
 # png
 nwr topo --bl minhash.condensed.newick | # remove comments
-    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - |
-    rsvg-convert -o Archaea.minhash.png
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+    > Archaea.minhash.svg
 
 ```
 
@@ -945,7 +947,7 @@ nw_reroot  ../Domain/ar53.trim.newick Saccharom_cere_S288C Saccharom_eub |
     nwr order stdin --nd --an \
     > ar53.reroot.newick
 
-nwr pl-condense --map -r order -r family -r genus \
+nwr pl-condense --map -r order -r family -r genus -r species \
     ar53.reroot.newick ../Count/species.tsv |
     nwr order stdin --nd --an \
     > ar53.condensed.newick
