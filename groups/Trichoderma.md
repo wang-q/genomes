@@ -458,7 +458,7 @@ cat ASSEMBLY/counts.tsv |
 
 ### Rsync to hpcc
 
-```bash
+```shell
 rsync -avP \
     ~/data/Trichoderma/ \
     wangq@202.119.37.251:data/Trichoderma
