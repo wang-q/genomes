@@ -66,7 +66,7 @@ nwr lineage Trichoderma |
 | rank     | count |
 |----------|------:|
 | genus    |     1 |
-| species  |   468 |
+| species  |   476 |
 | no rank  |     1 |
 | varietas |     2 |
 | strain   |    14 |
@@ -156,7 +156,7 @@ for C in RS GB; do
     done
 done
 #RS1     9
-#GB1     164
+#GB1     172
 
 ```
 
@@ -180,7 +180,6 @@ cd ~/data/Trichoderma/summary
 # Reference genome
 echo "
 .headers ON
-
     SELECT
         *
     FROM ar
@@ -276,14 +275,14 @@ echo "
     >> raw.tsv
 
 cat raw.tsv |
-    tsv-uniq |
+    rgr dedup stdin |
     datamash check
-#166 lines, 7 fields
+#174 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
-    tsv-uniq |
+    rgr dedup stdin |
     tsv-select -f 1-6 |
     perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
@@ -302,7 +301,7 @@ cat raw.tsv |
     > Trichoderma.assembly.tsv
 
 datamash check < Trichoderma.assembly.tsv
-#165 lines, 5 fields
+#173 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Trichoderma.assembly.tsv |
@@ -337,9 +336,9 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --num
+    rgr md stdin --fmt
 
-# genus.lst and genus.count.tsv
+# .lst and .count.tsv
 bash Count/rank.sh
 
 mv Count/genus.count.tsv Count/genus.before.tsv
@@ -351,7 +350,7 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  |   164 |
+| strain  |   172 |
 | species |    44 |
 | genus   |     7 |
 | family  |     2 |
@@ -366,7 +365,7 @@ cat Count/genus.before.tsv |
 | Mycogone         |        1 |        1 |
 | Saccharomyces    |        1 |        1 |
 | Sphaerostilbella |        1 |        1 |
-| Trichoderma      |       35 |      149 |
+| Trichoderma      |       35 |      157 |
 
 ### Download and check
 
@@ -400,10 +399,10 @@ bash ASSEMBLY/rsync.sh
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-# Put the misplaced directory into the right place
+## Put the misplaced directory into the right place
 #bash ASSEMBLY/reorder.sh
 #
-# This operation will delete some files in the directory, so please be careful
+## This operation will delete some files in the directory, so please be careful
 #cat ASSEMBLY/remove.lst |
 #    parallel --no-run-if-empty --linebuffer -k -j 1 '
 #        if [[ -e "ASSEMBLY/{}" ]]; then
@@ -419,14 +418,19 @@ bash ASSEMBLY/n50.sh 100000 1000 1000000
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
-    tsv-summarize -H --min "N50,S" --max "C"
-#N50_min S_min   C_max
-#579860  33215161        533
+    tsv-summarize -H --min "N50" --max "C" --min "S"
+#N50_min C_max   S_min
+#579860  533     33215161
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "S:0.1,0.5" --quantile "N50:0.1,0.5"  --quantile "C:0.5,0.9"
-#S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#32183678.4      37015055.5      106031.1        1504146.5       136.5   908.8
+    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
+    datamash transpose
+#N50_pct10       103504.6
+#N50_pct50       1412965.5
+#C_pct50 157
+#C_pct90 1044.8
+#S_pct10 32206756.6
+#S_pct50 37298829.5
 
 # After the above steps are completed, run the following commands.
 
@@ -439,20 +443,20 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
-    rgr md stdin --right 2-3
+    rgr md stdin --fmt
 
 ```
 
 | #item            | fields | lines |
 |------------------|-------:|------:|
-| url.tsv          |      3 |   164 |
-| check.lst        |      1 |   164 |
-| collect.tsv      |     20 |   165 |
-| n50.tsv          |      4 |   165 |
-| n50.pass.tsv     |      4 |   146 |
-| collect.pass.tsv |     23 |   146 |
-| pass.lst         |      1 |   145 |
-| omit.lst         |      1 |   120 |
+| url.tsv          |      3 |   172 |
+| check.lst        |      1 |   172 |
+| collect.tsv      |     20 |   173 |
+| n50.tsv          |      4 |   173 |
+| n50.pass.tsv     |      4 |   151 |
+| collect.pass.tsv |     23 |   151 |
+| pass.lst         |      1 |   150 |
+| omit.lst         |      1 |   128 |
 | rep.lst          |      1 |    48 |
 | sp.lst           |      1 |    15 |
 
@@ -492,7 +496,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 10
 
 datamash check < BioSample/biosample.tsv
-#162 lines, 39 fields
+#170 lines, 39 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -550,16 +554,15 @@ find MinHash -name "redundant.lst" |
     sort |
     uniq \
     > summary/redundant.lst
-
 wc -l summary/NR.lst summary/redundant.lst
-#  75 summary/NR.lst
+#  80 summary/NR.lst
 #  51 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#10
+#13
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Trichoderma/
@@ -591,13 +594,14 @@ nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
 nwr pl-condense --map -r species \
     minhash.reroot.newick ../MinHash/species.tsv |
     nwr order stdin --nd --an \
-    -o minhash.condensed.newick
+    > minhash.condensed.newick
 
 mv condensed.tsv minhash.condensed.tsv
 
-nwr tex minhash.condensed.newick --bl -o minhash.tex
+nwr topo --bl minhash.condensed.newick | # remove comments
+    nwr tex stdin --bl -o Trichoderma.minhash.tex
 
-tectonic minhash.tex
+tectonic Trichoderma.minhash.tex
 
 ```
 
@@ -640,7 +644,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  |   135 |
+| strain  |   137 |
 | species |    38 |
 | genus   |     5 |
 | family  |     2 |
@@ -653,7 +657,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Escovopsis    |        2 |        7 |
 | Hypomyces     |        2 |        2 |
 | Saccharomyces |        1 |        1 |
-| Trichoderma   |       31 |      122 |
+| Trichoderma   |       31 |      124 |
 
 | #family            | genus         | species                     | count |
 |--------------------|---------------|-----------------------------|------:|
@@ -680,7 +684,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |                    |               | Trichoderma gracile         |     1 |
 |                    |               | Trichoderma guizhouense     |     1 |
 |                    |               | Trichoderma hamatum         |     1 |
-|                    |               | Trichoderma harzianum       |     8 |
+|                    |               | Trichoderma harzianum       |    10 |
 |                    |               | Trichoderma koningii        |     1 |
 |                    |               | Trichoderma koningiopsis    |     5 |
 |                    |               | Trichoderma lentiforme      |     1 |
@@ -782,8 +786,8 @@ cat Protein/counts.tsv |
 | total_sum  | 363,402 |
 | dedup_sum  | 363,402 |
 | rep_sum    | 284,914 |
-| fam88_sum  | 258,059 |
-| fam38_sum  | 219,999 |
+| fam88_sum  | 258,055 |
+| fam38_sum  | 220,021 |
 
 ## Phylogenetics with fungi61
 
@@ -1029,15 +1033,6 @@ hnsm size Domain/fungi61.*.fa |
 # To make it faster
 FastTree -fastest -noml Domain/fungi61.trim.fa > Domain/fungi61.trim.newick
 
-nw_reroot Domain/fungi61.trim.newick Sa_cer_S288C |
-    nwr order stdin --nd --an \
-    > Domain/fungi61.reroot.newick
-
-# pdf
-nwr tex Domain/fungi61.reroot.newick --bl |
-    tectonic - --outdir tree/
-mv tree/texput.pdf tree/Trichoderma.marker.pdf
-
 ```
 
 ### The protein tree
@@ -1049,8 +1044,17 @@ nw_reroot  ../Domain/fungi61.trim.newick Sa_cer_S288C |
     nwr order stdin --nd --an \
     > fungi61.reroot.newick
 
-nwr tex fungi61.reroot.newick --bl -o fungi61.tex
-tectonic fungi61.tex
+nwr pl-condense --map -r species \
+    fungi61.reroot.newick ../Count/species.tsv |
+    nwr order stdin --nd --an \
+    > fungi61.condensed.newick
+
+mv condensed.tsv fungi61.condense.tsv
+
+nwr topo --bl fungi61.condensed.newick | # remove comments
+    nwr tex stdin --bl -o Trichoderma.fungi61.tex
+
+tectonic Trichoderma.fungi61.tex
 
 ```
 
