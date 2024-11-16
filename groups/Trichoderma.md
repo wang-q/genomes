@@ -1175,8 +1175,7 @@ for item in "${ARRAY[@]}" ; do
 done
 
 cat group_target.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rar md stdin --right 4
 
 ```
 

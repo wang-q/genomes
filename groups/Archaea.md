@@ -37,7 +37,7 @@ nwr member Archaea |
     grep -v " sp." |
     grep -v " x " |
     tsv-summarize -H -g rank --count |
-    rgr md stdin --num
+    rgr md stdin --fmt
 
 ```
 
@@ -273,9 +273,9 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --num
+    rgr md stdin --fmt
 
-# genus.lst and genus.count.tsv
+# .lst and .count.tsv
 bash Count/rank.sh
 
 mv Count/genus.count.tsv Count/genus.before.tsv
@@ -337,7 +337,7 @@ bash ASSEMBLY/rsync.sh
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-## Put the misplaced directory into the right place
+## Put the misplaced directories into the right ones
 #bash ASSEMBLY/reorder.sh
 ##
 ## This operation will delete some files in the directory, so please be careful
@@ -503,7 +503,7 @@ nwr pl-condense --map -r order -r family -r genus \
 
 mv condensed.tsv minhash.condensed.tsv
 
-# png
+# svg
 nwr topo --bl minhash.condensed.newick | # remove comments
     nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
     > Archaea.minhash.svg

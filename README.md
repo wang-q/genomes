@@ -65,15 +65,19 @@ brew install brewsci/bio/mash
 brew install mmseqs2
 
 brew install datamash
-#cargo install fd-find
 brew install wang-q/tap/tsv-utils
 brew install wang-q/tap/faops
 brew install wang-q/tap/hnsm
 
-brew install librsvg
+cargo install fd-find
+cargo install qsv --locked --features feature_capable,apply,lens,luau,polars
+
 brew install jq
 brew install pup
 brew install pigz
+
+curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh
+mv tectonic ~/bin/
 
 # dN/dS
 brew install brewsci/bio/clustal-w

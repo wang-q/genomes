@@ -488,7 +488,7 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
-    rgr md stdin --right 2-3
+    rgr md stdin --fmt
 
 ```
 
@@ -687,10 +687,10 @@ nwr pl-condense --map -r order -r family -r genus \
 
 mv condensed.tsv minhash.condensed.tsv
 
-# png
+# svg
 nwr topo --bl minhash.condensed.newick | # remove comments
-    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - |
-    rsvg-convert -o Fungi.minhash.png
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+    > Fungi.minhash.svg
 
 ```
 
@@ -945,7 +945,7 @@ cat Protein/species.tsv |
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
         continue
@@ -984,7 +984,7 @@ wc -l HMM/marker.lst Protein/marker.omit.lst
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ ! -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
         continue
@@ -1016,7 +1016,7 @@ mkdir -p Domain
 # each assembly
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
         continue
@@ -1045,7 +1045,7 @@ while read SPECIES; do
 
     hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
             tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
-                tsv-uniq
+            rgr dedup stdin
         )
 done |
     hnsm dedup stdin |
@@ -1077,7 +1077,7 @@ cat HMM/marker.lst |
             cat Domain/seq_asm_f3.tsv |
                 tsv-filter --str-eq "3:{}" |
                 tsv-select -f 1 |
-                tsv-uniq
+                rgr dedup stdin
             ) \
             > Domain/{}/{}.pro.fa
     '
@@ -1140,7 +1140,7 @@ done \
 
 cat Domain/seq_asm_f3.NR.tsv |
     cut -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
     sort |
     fasops concat Domain/fungi61.aln.fas stdin -o Domain/fungi61.aln.fa
 
@@ -1148,7 +1148,7 @@ cat Domain/seq_asm_f3.NR.tsv |
 trimal -in Domain/fungi61.aln.fa -out Domain/fungi61.trim.fa -automated1
 
 hnsm size Domain/fungi61.*.fa |
-    tsv-uniq -f 2 |
+    rgr dedup stdin -f 2 |
     cut -f 2
 #192590
 #24940
@@ -1167,14 +1167,16 @@ nw_reroot ../Domain/fungi61.trim.newick Enc_hellem_ATCC_50604_GCA_024399255_1 Ne
     nwr order stdin --nd --an \
     > fungi61.reroot.newick
 
-nwr pl-condense -r order -r family -r genus -r species \
-    fungi61.reroot.newick ../Count/species.tsv --map \
-    -o fungi61.condensed.newick
+nwr pl-condense --map -r order -r family -r genus -r species \
+    fungi61.reroot.newick ../Count/species.tsv |
+    nwr order stdin --nd --an \
+    > fungi61.condensed.newick
 
 mv condensed.tsv fungi61.condense.tsv
 
 # pdf
-nwr tex fungi61.condensed.newick --bl -o Fungi.fungi61.tex
+nwr topo --bl fungi61.condensed.newick | # remove comments
+    nwr tex stdin --bl -o Fungi.fungi61.tex
 
 tectonic Fungi.fungi61.tex
 
