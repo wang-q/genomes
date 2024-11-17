@@ -822,7 +822,7 @@ cat Protein/species.tsv |
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
         continue
@@ -861,7 +861,7 @@ wc -l HMM/marker.lst Protein/marker.omit.lst
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ ! -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
         continue
@@ -893,7 +893,7 @@ mkdir -p Domain
 # each assembly
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
         continue
@@ -922,7 +922,7 @@ while read SPECIES; do
 
     hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
             tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
-                tsv-uniq
+                rgr dedup stdin
         )
 done |
     hnsm dedup stdin |
@@ -954,7 +954,7 @@ cat HMM/marker.lst |
             cat Domain/seq_asm_f3.tsv |
                 tsv-filter --str-eq "3:{}" |
                 tsv-select -f 1 |
-                tsv-uniq
+                rgr dedup stdin
             ) \
             > Domain/{}/{}.pro.fa
     '
@@ -1017,7 +1017,7 @@ done \
 
 cat Domain/seq_asm_f3.NR.tsv |
     cut -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
     sort |
     fasops concat Domain/fungi61.aln.fas stdin -o Domain/fungi61.aln.fa
 
@@ -1025,7 +1025,7 @@ cat Domain/seq_asm_f3.NR.tsv |
 trimal -in Domain/fungi61.aln.fa -out Domain/fungi61.trim.fa -automated1
 
 hnsm size Domain/fungi61.*.fa |
-    tsv-uniq -f 2 |
+    rgr dedup stdin -f 2 |
     cut -f 2
 #31562
 #20575
@@ -1155,7 +1155,7 @@ for item in "${ARRAY[@]}" ; do
         echo "H_perniciosus_HP10_GCA_008477525_1" >> T.tmp
         echo "H_ros_CCMJ2808_GCA_011799845_1" >> T.tmp
         cat T.tmp |
-            tsv-uniq |
+            rgr dedup stdin |
             tsv-join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
             > ${GROUP_NAME}
 

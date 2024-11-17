@@ -278,14 +278,14 @@ echo "
     >> raw.tsv
 
 cat raw.tsv |
-    tsv-uniq |
+    rgr dedup stdin |
     datamash check
 #17996 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
-    tsv-uniq |
+    rgr dedup stdin |
     tsv-select -f 1-6 |
     perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
@@ -486,7 +486,7 @@ rsync -avP \
 # Transfer species directories in parallel
 cat ~/data/Bacillus/ASSEMBLY/url.tsv |
     tsv-select -f 3 |
-    tsv-uniq |
+    rgr dedup stdin |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
         echo -e "\n==> {}"
         rsync -avP \
@@ -997,7 +997,7 @@ cat Protein/species-f.tsv |
     tsv-join -f ASSEMBLY/rep.lst -k 1 |
     tsv-join -e -f ASSEMBLY/sp.lst -k 1 |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ ! -f Protein/"${SPECIES}"/pro.fa.gz ]]; then
         continue
@@ -1018,7 +1018,7 @@ cat HMM/marker.lst |
         faops some Domain/all.uniq.fa.gz <(
             cat Domain/{}/{}.replace.tsv |
                 cut -f 1 |
-                tsv-uniq
+                rgr dedup stdin
             ) stdout \
             > Domain/{}/{}.pro.fa
     '
@@ -1085,7 +1085,7 @@ cat Protein/species-f.tsv |
 trimal -in Domain/bac120.aln.fa -out Domain/bac120.trim.fa -automated1
 
 faops size Domain/bac120.*.fa |
-    tsv-uniq -f 2 |
+    rgr dedup stdin -f 2 |
     cut -f 2
 #34569
 #19138

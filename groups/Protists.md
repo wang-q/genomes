@@ -137,7 +137,7 @@ nwr member Eukaryota -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#4092 genus.list
+#4099 genus.list
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -180,8 +180,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#  121 RS1.tsv
-#  903 GB1.tsv
+#  122 RS1.tsv
+#  905 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -192,8 +192,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     122
-#GB1     2051
+#RS1     123
+#GB1     2059
 
 ```
 
@@ -207,7 +207,6 @@ cd ~/data/Protists/summary
 # Reference genome
 echo "
 .headers ON
-
     SELECT
         *
     FROM ar
@@ -303,14 +302,14 @@ echo "
     >> raw.tsv
 
 cat raw.tsv |
-    tsv-uniq |
+    rgr dedup stdin |
     datamash check
-#2057 lines, 7 fields
+#2065 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
-    tsv-uniq |
+    rgr dedup stdin |
     tsv-select -f 1-6 |
     perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
@@ -329,7 +328,7 @@ cat raw.tsv |
     > Protists.assembly.tsv
 
 datamash check < Protists.assembly.tsv
-#2048 lines, 5 fields
+#2056 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Protists.assembly.tsv |
@@ -378,8 +377,8 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 |---------|------:|
-| strain  |  2033 |
-| species |   842 |
+| strain  |  2041 |
+| species |   844 |
 | genus   |   350 |
 | family  |   183 |
 | order   |   115 |
@@ -402,19 +401,19 @@ cat Count/genus.before.tsv |
 | Entamoeba       |        5 |       16 |
 | Galdieria       |        4 |       15 |
 | Giardia         |        2 |       38 |
-| Globisporangium |       47 |       81 |
+| Globisporangium |       48 |       82 |
 | Isotricha       |        3 |       13 |
 | Leishmania      |       26 |      123 |
 | Naegleria       |        3 |       14 |
 | Nannochloropsis |        6 |       17 |
 | Ochromonas      |        2 |       11 |
 | Ophryoscolex    |        1 |       10 |
-| Paramecium      |        9 |       16 |
+| Paramecium      |        9 |       18 |
 | Peronospora     |        6 |       18 |
-| Phytophthora    |       77 |      248 |
+| Phytophthora    |       77 |      249 |
 | Phytopythium    |       14 |       18 |
 | Plasmodiophora  |        1 |       51 |
-| Plasmodium      |       21 |      161 |
+| Plasmodium      |       21 |      163 |
 | Plasmopara      |        4 |       11 |
 | Pythium         |       45 |       69 |
 | Skeletonema     |        8 |       12 |
@@ -422,7 +421,7 @@ cat Count/genus.before.tsv |
 | Thalassiosira   |       15 |       20 |
 | Theileria       |        6 |       16 |
 | Toxoplasma      |        1 |       29 |
-| Trypanosoma     |       22 |       74 |
+| Trypanosoma     |       22 |       75 |
 
 ### Download and check
 
@@ -441,10 +440,10 @@ bash ASSEMBLY/rsync.sh
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-# Put the misplaced directory into the right place
+## Put the misplaced directory into the right place
 #bash ASSEMBLY/reorder.sh
 #
-# This operation will delete some files in the directory, so please be careful
+## This operation will delete some files in the directory, so please be careful
 #cat ASSEMBLY/remove.lst |
 #    parallel --no-run-if-empty --linebuffer -k -j 1 '
 #        if [[ -e "ASSEMBLY/{}" ]]; then
@@ -456,7 +455,7 @@ bash ASSEMBLY/check.sh
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
-#2047
+#2054
 
 # N50 C S; create n50.tsv and n50.pass.tsv
 # LEN_N50   N_CONTIG    LEN_SUM
@@ -470,9 +469,14 @@ cat ASSEMBLY/n50.tsv |
 #7707    29495   6434485
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5"
-#S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#11412690.5      38915944        3313.5  63464.5 1790    29762
+    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
+    datamash transpose
+#N50_pct10       3293.6
+#N50_pct50       64426.5
+#C_pct50 1790
+#C_pct90 32978.6
+#S_pct10 11412417.1
+#S_pct50 39091805.5
 
 # After the above steps are completed, run the following commands.
 
@@ -485,21 +489,21 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
-    rgr md stdin --right 2-3
+    rgr md stdin --fmt
 
 ```
 
 | #item            | fields | lines |
 |------------------|-------:|------:|
-| url.tsv          |      3 | 2,047 |
-| check.lst        |      1 | 2,047 |
-| collect.tsv      |     20 | 2,048 |
-| n50.tsv          |      4 | 2,048 |
-| n50.pass.tsv     |      4 | 1,695 |
-| collect.pass.tsv |     23 | 1,695 |
-| pass.lst         |      1 | 1,694 |
-| omit.lst         |      1 | 1,508 |
-| rep.lst          |      1 |   688 |
+| url.tsv          |      3 | 2,055 |
+| check.lst        |      1 | 2,054 |
+| collect.tsv      |     20 | 2,055 |
+| n50.tsv          |      4 | 2,055 |
+| n50.pass.tsv     |      4 | 1,702 |
+| collect.pass.tsv |     23 | 1,702 |
+| pass.lst         |      1 | 1,701 |
+| omit.lst         |      1 | 1,516 |
+| rep.lst          |      1 |   691 |
 | sp.lst           |      1 |   155 |
 
 ### Rsync to hpcc
@@ -532,7 +536,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 10
 
 datamash check < BioSample/biosample.tsv
-#2016 lines, 121 fields
+#2023 lines, 121 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -568,8 +572,8 @@ find MinHash -name "redundant.lst" |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#  618 summary/NR.lst
-#  621 summary/redundant.lst
+#  621 summary/NR.lst
+#  623 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
@@ -606,10 +610,10 @@ nwr pl-condense --map -r order -r family -r genus -r species \
 
 mv condensed.tsv minhash.condensed.tsv
 
-# png
+# svg
 nwr topo --bl minhash.condensed.newick | # remove comments
-    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - |
-    rsvg-convert -o Protists.minhash.png
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+    > Protists.minhash.svg
 
 ```
 
@@ -657,8 +661,8 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  |  1652 |
-| species |   670 |
+| strain  |  1659 |
+| species |   672 |
 | genus   |   258 |
 | family  |   140 |
 | order   |    96 |
@@ -668,12 +672,12 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |------------------|---------:|---------:|
 | Diplomonadida    |        4 |       36 |
 | Eucoccidiorida   |       32 |      170 |
-| Haemosporida     |       23 |      149 |
+| Haemosporida     |       23 |      151 |
 | Opalinata        |        3 |       53 |
-| Peronosporales   |       85 |      270 |
+| Peronosporales   |       85 |      271 |
 | Piroplasmida     |       17 |       46 |
 | Plasmodiophorida |        3 |       53 |
-| Pythiales        |      110 |      155 |
+| Pythiales        |      111 |      156 |
 | Saprolegniales   |        9 |       27 |
 | Trypanosomatida  |       86 |      238 |
 
@@ -685,11 +689,11 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Cryptosporidium |       16 |       76 |
 | Cyclospora      |        1 |       41 |
 | Giardia         |        2 |       34 |
-| Globisporangium |       47 |       69 |
+| Globisporangium |       48 |       70 |
 | Leishmania      |       26 |      117 |
-| Phytophthora    |       66 |      231 |
+| Phytophthora    |       66 |      232 |
 | Plasmodiophora  |        1 |       51 |
-| Plasmodium      |       21 |      147 |
+| Plasmodium      |       21 |      149 |
 | Pythium         |       41 |       59 |
 | Toxoplasma      |        1 |       28 |
 | Trypanosoma     |       22 |       64 |
@@ -704,6 +708,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Eimeriidae        | Cyclospora      | Cyclospora cayetanensis    |    41 |
 | Entamoebidae      | Entamoeba       | Entamoeba histolytica      |    12 |
 | Hexamitidae       | Giardia         | Giardia intestinalis       |    33 |
+| Parameciidae      | Paramecium      | Paramecium bursaria        |    10 |
 | Peronosporaceae   | Phytophthora    | Phytophthora cactorum      |    28 |
 |                   |                 | Phytophthora capsici       |    16 |
 |                   |                 | Phytophthora fragariae     |    13 |
@@ -714,7 +719,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Plasmodiidae      | Plasmodium      | Plasmodium falciparum      |    59 |
 |                   |                 | Plasmodium vinckei         |    10 |
 |                   |                 | Plasmodium vivax           |    19 |
-|                   |                 | Plasmodium yoelii          |    12 |
+|                   |                 | Plasmodium yoelii          |    14 |
 | Plasmodiophoridae | Plasmodiophora  | Plasmodiophora brassicae   |    51 |
 | Pythiaceae        | Globisporangium | Globisporangium irregulare |    15 |
 |                   | Pythium         | Pythium insidiosum         |    11 |
@@ -786,7 +791,7 @@ nwr template ~/Scripts/genomes/assembly/Protists.assembly.tsv \
     --in ASSEMBLY/pass.lst \
     --not-in ASSEMBLY/omit.lst
 
-# collect proteins and
+# collect proteins
 bash Protein/collect.sh
 
 # clustering
@@ -814,11 +819,11 @@ cat Protein/counts.tsv |
 |------------|----------:|
 | species    |       273 |
 | strain_sum |       503 |
-| total_sum  | 6,904,119 |
-| dedup_sum  | 6,904,119 |
-| rep_sum    | 4,526,190 |
-| fam88_sum  | 3,960,863 |
-| fam38_sum  | 3,333,310 |
+| total_sum  | 6,904,114 |
+| dedup_sum  | 6,904,114 |
+| rep_sum    | 4,526,186 |
+| fam88_sum  | 3,960,800 |
+| fam38_sum  | 3,333,428 |
 
 ## Phylogenetics with BUSCO
 
@@ -846,7 +851,7 @@ cat Protein/species.tsv |
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ -s Protein/"${SPECIES}"/busco.tsv ]]; then
         continue
@@ -891,7 +896,7 @@ wc -l Protein/marker.lst Protein/marker.omit.lst
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ ! -s Protein/"${SPECIES}"/busco.tsv ]]; then
         continue
@@ -923,7 +928,7 @@ mkdir -p Domain
 # each assembly
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
         continue
@@ -952,7 +957,7 @@ while read SPECIES; do
 
     hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
             tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
-                tsv-uniq
+                rgr dedup stdin
         )
 done |
     hnsm dedup stdin |
@@ -984,7 +989,7 @@ cat Protein/marker.lst |
             cat Domain/seq_asm_f3.tsv |
                 tsv-filter --str-eq "3:{}" |
                 tsv-select -f 1 |
-                tsv-uniq
+                rgr dedup stdin
             ) \
             > Domain/{}/{}.pro.fa
     '
@@ -1047,14 +1052,14 @@ done \
 
 cat Domain/seq_asm_f3.NR.tsv |
     cut -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
     sort |
     fasops concat Domain/busco.aln.fas stdin -o Domain/busco.aln.fa
 
 trimal -in Domain/busco.aln.fa -out Domain/busco.trim.fa -automated1
 
 hnsm size Domain/busco.*.fa |
-    tsv-uniq -f 2 |
+    rgr dedup stdin -f 2 |
     cut -f 2
 #787011
 #145
@@ -1075,14 +1080,14 @@ nwr order ../Domain/busco.trim.newick --nd --an \
 nwr pl-condense --map -r order -r family -r genus \
     busco.order.newick ../Count/species.tsv |
     nwr order stdin --nd --an \
-    -o busco.condensed.newick
+    > busco.condensed.newick
 
 mv condensed.tsv busco.condense.tsv
 
-# png
+# svg
 nwr topo --bl busco.condensed.newick | # remove comments
-    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - |
-    rsvg-convert -o Protists.busco.png
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+    > Protists.busco.svg
 
 ```
 

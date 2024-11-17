@@ -247,14 +247,14 @@ echo "
     >> raw.tsv
 
 cat raw.tsv |
-    tsv-uniq |
+    rgr dedup stdin |
     datamash check
 #4764 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
-    tsv-uniq |
+    rgr dedup stdin |
     tsv-select -f 1-6 |
     perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
@@ -876,7 +876,7 @@ cat Protein/species.tsv |
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ -s Protein/"${SPECIES}"/busco.tsv ]]; then
         continue
@@ -921,7 +921,7 @@ wc -l Protein/marker.lst Protein/marker.omit.lst
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ ! -s Protein/"${SPECIES}"/busco.tsv ]]; then
         continue
@@ -953,7 +953,7 @@ mkdir -p Domain
 # each assembly
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
 while read SPECIES; do
     if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
         continue
@@ -982,7 +982,7 @@ while read SPECIES; do
 
     hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
             tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
-                tsv-uniq
+                rgr dedup stdin
         )
 done |
     hnsm dedup stdin |
@@ -1014,7 +1014,7 @@ cat Protein/marker.lst |
             cat Domain/seq_asm_f3.tsv |
                 tsv-filter --str-eq "3:{}" |
                 tsv-select -f 1 |
-                tsv-uniq
+                rgr dedup stdin
             ) \
             > Domain/{}/{}.pro.fa
     '
@@ -1077,14 +1077,14 @@ done \
 
 cat Domain/seq_asm_f3.NR.tsv |
     cut -f 2 |
-    tsv-uniq |
+    rgr dedup stdin |
     sort |
     fasops concat Domain/busco.aln.fas stdin -o Domain/busco.aln.fa
 
 trimal -in Domain/busco.aln.fa -out Domain/busco.trim.fa -automated1
 
 hnsm size Domain/busco.*.fa |
-    tsv-uniq -f 2 |
+    rgr dedup stdin -f 2 |
     cut -f 2
 #1343280
 #54548

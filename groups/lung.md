@@ -155,7 +155,7 @@ cat ../Fungi/summary/collect.pass.csv |
             nwr append stdin -r family |
             cut -f 2 |
             grep -v "NA" |
-            tsv-uniq
+            rgr dedup stdin
         ) \
     > summary/strains.taxon.tsv
 
@@ -275,7 +275,7 @@ for N in Aspergillus Candida "Candida/Metschnikowiaceae" Nakaseomyces Pneumocyst
         tsv-filter --str-ne "1:no rank" |
         sed -n '/kingdom\tFungi/,$p'
 done |
-    tsv-uniq |
+    rgr dedup stdin |
     sed -E "s/\b(genus)\b/*\1*/"| # Highlight genus
     (echo -e '#rank\tsci_name\ttax_id' && cat) |
     mlr --itsv --omd cat
@@ -390,7 +390,7 @@ cat ../Fungi/summary/collect.pass.csv |
     tsv-select -d, -f 1,3 |
     tr "," "\t" |
     sort |
-    tsv-uniq |
+    rgr dedup stdin |
     nwr append stdin -c 2 -r species -r genus -r family -r order \
     > summary/all.taxon.tsv
 
@@ -408,7 +408,7 @@ cd ~/data/lung
 ANI_VALUE_THRESHOLD=0.05
 
 # Abnormal strains
-cat summary/all.taxon.tsv | tsv-select -f 3 | tsv-uniq | #head -n 1 |
+cat summary/all.taxon.tsv | tsv-select -f 3 | rgr dedup stdin | #head -n 1 |
 while read SPECIES; do
     SPECIES_=$(
         echo "${SPECIES}" |
@@ -582,7 +582,7 @@ cat summary/genus.lst |
                 nwr append stdin -r genus -r species |
                 grep -w {} |
                 tsv-select -f 1,3 |
-                tsv-uniq |
+                rgr dedup stdin |
                 wc -l
         )
 

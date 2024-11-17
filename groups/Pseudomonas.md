@@ -479,7 +479,7 @@ cat summary/genus.lst |
                 nwr append stdin -r genus -r species |
                 grep -w {} |
                 tsv-select -f 1,3 |
-                tsv-uniq |
+                rgr dedup stdin |
                 wc -l
         )
 
@@ -682,7 +682,7 @@ cat ~/data/HMM/bac120/bac120.tsv | sed '1d' | cut -f 1 |
         faops some PROTEINS/all.uniq.fa.gz <(
             cat PROTEINS/{}/{}.replace.tsv |
                 cut -f 1 |
-                tsv-uniq
+                rgr dedup stdin
             ) stdout \
             > PROTEINS/{}/{}.pro.fa
     '
@@ -743,7 +743,7 @@ fasops concat PROTEINS/bac120.aln.fas summary/NR.lst -o PROTEINS/bac120.aln.fa
 trimal -in PROTEINS/bac120.aln.fa -out PROTEINS/bac120.trim.fa -automated1
 
 faops size PROTEINS/bac120.*.fa |
-    tsv-uniq -f 2 |
+    rgr dedup stdin -f 2 |
     cut -f 2
 #30002
 #24150
@@ -854,7 +854,7 @@ for S in $(cat summary/ips.lst); do
                 [$name[0].name, .accession, .description] |
                 @tsv
             ' |
-            tsv-uniq
+            rgr dedup stdin
     done \
         > STRAINS/${S}/family.tsv
 done
@@ -920,7 +920,7 @@ cat summary/strains.taxon.tsv |
 N_SPECIES=$(
     cat count/Pseudomonas.taxon.tsv |
         tsv-select -f 3 |
-        tsv-uniq |
+        rgr dedup stdin |
         wc -l
 )
 echo ${N_SPECIES}
@@ -928,7 +928,7 @@ echo ${N_SPECIES}
 
 cat count/Pseudomonas.taxon.tsv |
     tsv-select -f 3 |
-    tsv-uniq |
+    rgr dedup stdin |
     sort | # head |
 while read SPECIES; do
     N_STRAINS=$(
@@ -1114,7 +1114,7 @@ cat summary/strains.taxon.tsv |
 N_SPECIES=$(
     cat count/Acinetobacter.taxon.tsv |
         tsv-select -f 3 |
-        tsv-uniq |
+        rgr dedup stdin |
         wc -l
 )
 echo ${N_SPECIES}
@@ -1122,7 +1122,7 @@ echo ${N_SPECIES}
 
 cat count/Acinetobacter.taxon.tsv |
     tsv-select -f 3 |
-    tsv-uniq |
+    rgr dedup stdin |
     sort | # head |
 while read SPECIES; do
     N_STRAINS=$(

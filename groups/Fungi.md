@@ -181,7 +181,7 @@ cd ~/data/Fungi/summary
 
 cat RS*.tsv GB*.tsv |
     cut -f 1,2 |
-    tsv-uniq |
+    rgr dedup stdin |
     grep "\[" |
     nwr append stdin -r genus |
     head
@@ -316,14 +316,14 @@ echo "
     >> raw.tsv
 
 cat raw.tsv |
-    tsv-uniq |
+    rgr dedup stdin |
     datamash check
 #17737 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
-    tsv-uniq |
+    rgr dedup stdin |
     tsv-select -f 1-6 |
     perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
