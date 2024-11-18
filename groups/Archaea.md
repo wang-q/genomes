@@ -360,7 +360,8 @@ cat ASSEMBLY/n50.tsv |
 #5302    848     449376
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5"
+    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
+    datamash transpose
 #N50_pct10       N50_pct50       C_pct50 C_pct90 S_pct10 S_pct50
 #10367   197197  29      231     1227726.4       2191533
 

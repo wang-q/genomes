@@ -543,9 +543,9 @@ Eno_tril_GCA_023783335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/783/33
 Eno_tril_GCA_023807245_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/807/245/GCA_023807245.1_ASM2380724v1	SAMN22862968	Enoploplastron triloricatum	Contig
 Enta_disp_SAW760_GCF_000209125_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/209/125/GCF_000209125.1_JCVI_EDISG_1.0	SAMN02953643	Entamoeba dispar	Scaffold
 Enta_histo_DS4_868_GCA_018466815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/466/815/GCA_018466815.1_ASM1846681v1	SAMN00119852	Entamoeba histolytica	Contig
-Enta_histo_GCA_015099795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/099/795/GCA_015099795.1_ASM1509979v1	SAMD00185325	Entamoeba histolytica	Chromosome
 Enta_histo_HM_1_IMSS_A_GCA_000365475_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/365/475/GCA_000365475.1_EHA_CA_v1	SAMN02953836	Entamoeba histolytica	Scaffold
 Enta_histo_HM_1_IMSS_B_GCA_000344925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/344/925/GCA_000344925.1_EHA_CB_v1	SAMN02953843	Entamoeba histolytica	Scaffold
+Enta_histo_HM_1_IMSS_Clone_6_2001_GCA_015099795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/099/795/GCA_015099795.1_ASM1509979v1	SAMD00185325	Entamoeba histolytica	Chromosome
 Enta_histo_HM1_IMSS_clone_6_GCA_001662325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/662/325/GCA_001662325.1_Ehistolytica_2016	SAMD00049186	Entamoeba histolytica	Contig
 Enta_histo_HM_1_IMSS_GCF_000208925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/208/925/GCF_000208925.1_JCVI_ESG2_1.0	SAMN02953605	Entamoeba histolytica	Scaffold
 Enta_histo_HM_3_IMSS_GCA_000346345_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/346/345/GCA_000346345.1_EHA.strHM3_v1	SAMN02953844	Entamoeba histolytica	Scaffold
@@ -689,6 +689,7 @@ Globi_ech_CBS_281_64_GCA_023336405_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GC
 Globi_emi_CBS_124057_GCA_023334195_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/195/GCA_023334195.1_ASM2333419v1	SAMN13878565	Globisporangium emineosum	Contig
 Globi_eri_CBS_505_80_GCA_023334135_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/135/GCA_023334135.1_ASM2333413v1	SAMN13878566	Globisporangium erinaceum	Contig
 Globi_heterot_CBS_450_67_GCA_023334155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/334/155/GCA_023334155.1_ASM2333415v1	SAMN13878572	Globisporangium heterothallicum	Contig
+Globi_hua_Chen521_GCA_044231605_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/044/231/605/GCA_044231605.1_ASM4423160v1	SAMN43183075	Globisporangium huanghuaiense	Contig
 Globi_irr_73028_97_GCA_038050935_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/038/050/935/GCA_038050935.1_ASM3805093v1	SAMN26664722	Globisporangium irregulare	Contig
 Globi_irr_C20_GCA_038050925_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/038/050/925/GCA_038050925.1_ASM3805092v1	SAMN26664724	Globisporangium irregulare	Contig
 Globi_irr_C216_GCA_038050945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/038/050/945/GCA_038050945.1_ASM3805094v1	SAMN26664725	Globisporangium irregulare	Contig
@@ -806,6 +807,7 @@ Isot_sp_GCA_023806865_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/806/865
 Isot_sp_GCA_023807085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/023/807/085/GCA_023807085.1_ASM2380708v1	SAMN22863017	Isotricha sp.	Contig
 J_dro_GCA_030849065_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/849/065/GCA_030849065.1_OSU_Jdroso	SAMN33944769	Jaenimonas drosophilae	Scaffold
 Ka_alv_kp_GCA_002205965_3	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/205/965/GCA_002205965.3_ASM220596v3	SAMN06578764	Kappaphycus alvarezii	Contig
+Ka_striatus_Green_Sacol_GCA_043790055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/043/790/055/GCA_043790055.1_ASM4379005v1	SAMN43296437	Kappaphycus striatus	Chromosome
 Ke_sors_MF_08_GCA_030347455_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/347/455/GCA_030347455.1_ASM3034745v1	SAMN32893447	Kentomonas sorsogonicus	Scaffold
 Ki_bial_GCA_003568945_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/568/945/GCA_003568945.1_KIPB_1.0	SAMD00065481	Kipferlia bialata	Scaffold
 Lab_sp_GCA_015227615_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/015/227/615/GCA_015227615.1_ASM1522761v1	SAMN14131006	Labyrinthula sp.	Contig
@@ -1073,6 +1075,8 @@ Parama_canc_GCA_040357535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/040/357
 Parame_biau_V1_4_GCA_000733385_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/733/385/GCA_000733385.1_ASM73338v1	SAMN02849567	Paramecium biaurelia	Scaffold
 Parame_Dd1_GCA_016759035_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/759/035/GCA_016759035.1_ASM1675903v1	SAMN12325316	Paramecium bursaria	Contig
 Parame_Dd1_GCA_016759055_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/759/055/GCA_016759055.1_ASM1675905v1	SAMN12325316	Paramecium bursaria	Contig
+Parame_DK2_GCA_043974915_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/043/974/915/GCA_043974915.1_ASM4397491v1	SAMN14178679	Paramecium bursaria	Contig
+Parame_DK2_GCA_043974975_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/043/974/975/GCA_043974975.1_Pb_DK2_H2	SAMN14178679	Paramecium bursaria	Contig
 Parame_HK1_GCA_016808005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/808/005/GCA_016808005.1_ASM1680800v1	SAMN12325351	Paramecium bursaria	Contig
 Parame_HK1_GCA_016808045_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/808/045/GCA_016808045.1_ASM1680804v1	SAMN12325351	Paramecium bursaria	Contig
 Parame_Km2_GCA_016807985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/807/985/GCA_016807985.1_ASM1680798v1	SAMN12325350	Paramecium bursaria	Contig
@@ -1249,6 +1253,7 @@ Phytoph_ida_SCRP370_GCA_016865095_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA
 Phytoph_ida_SCRP371_GCA_016880985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/880/985/GCA_016880985.1_ASM1688098v1	SAMN07267867	Phytophthora idaei	Scaffold
 Phytoph_ida_SCRP376_GCA_016880175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/880/175/GCA_016880175.1_ASM1688017v1	SAMN07267869	Phytophthora idaei	Scaffold
 Phytoph_infe_1306_GCA_026225685_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/225/685/GCA_026225685.1_Pinf1306_UCR_1	SAMN30543006	Phytophthora infestans	Chromosome
+Phytoph_infe_GCA_044509515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/044/509/515/GCA_044509515.1_PHIN_VZR-VIR21a	SAMN43845453	Phytophthora infestans	Contig
 Phytoph_infe_HP_10_31_GCA_001661535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/661/535/GCA_001661535.1_ASM166153v1	SAMN05006719	Phytophthora infestans	Contig
 Phytoph_infe_KR_1_A1_GCA_012295175_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/295/175/GCA_012295175.1_ASM1229517v1	SAMN13441166	Phytophthora infestans	Contig
 Phytoph_infe_KR_2_A2_GCA_012552325_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/552/325/GCA_012552325.1_ASM1255232v1	SAMN13441183	Phytophthora infestans	Scaffold
@@ -1587,11 +1592,11 @@ Plasmodium_sp_GCF_900097015_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/0
 Plasmodium_vinc_1_69_GCA_900617815_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/617/815/GCA_900617815.1_Pvb1-69-2	SAMEA1712520	Plasmodium vinckei	Chromosome
 Plasmodium_vinc_CR_GCA_000524515_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/524/515/GCA_000524515.1_Plas_vinc_pett_CR_V1	SAMN00974096	Plasmodium vinckei	Scaffold
 Plasmodium_vinc_CR_GCA_900617785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/617/785/GCA_900617785.1_Pch2CR-2	SAMEA1712524	Plasmodium vinckei	Chromosome
-Plasmodium_vinc_GCA_903994205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/994/205/GCA_903994205.1_PVBDA_v1	SAMEA7128593	Plasmodium vinckei	Chromosome
+Plasmodium_vinc_GCA_903994205_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/994/205/GCA_903994205.1_PVBDA_v1	SAMEA7128593	Plasmodium vinckei	Complete Genome
 Plasmodium_vinc_GCA_903994225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/994/225/GCA_903994225.1_PVLDE_v1	SAMEA7129637	Plasmodium vinckei	Chromosome
-Plasmodium_vinc_GCA_903994235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/994/235/GCA_903994235.1_PVPCR_v1	SAMEA7130171	Plasmodium vinckei	Chromosome
+Plasmodium_vinc_GCA_903994235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/994/235/GCA_903994235.1_PVPCR_v1	SAMEA7130171	Plasmodium vinckei	Complete Genome
 Plasmodium_vinc_GCA_903994265_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/903/994/265/GCA_903994265.1_PVSEL_v1	SAMEA7130172	Plasmodium vinckei	Chromosome
-Plasmodium_vinc_GCF_900681995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/681/995/GCF_900681995.1_PVVCY_v1	SAMEA5241084	Plasmodium vinckei	Chromosome
+Plasmodium_vinc_GCF_900681995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/681/995/GCF_900681995.1_PVVCY_v1	SAMEA5241084	Plasmodium vinckei	Complete Genome
 Plasmodium_vinc_V52_GCA_900617805_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/617/805/GCA_900617805.1_PchV52-2	SAMEA1712523	Plasmodium vinckei	Chromosome
 Plasmodium_vinc_vinckei_GCA_000709005_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/709/005/GCA_000709005.1_Plas_vinc_vinckei_V1	SAMN00974095	Plasmodium vinckei	Scaffold
 Plasmodium_viv_Brazil_I_GCA_000320645_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/320/645/GCA_000320645.2_PV_Brazil_I_V1	SAMN00710434	Plasmodium vivax	Scaffold
@@ -1625,7 +1630,9 @@ Plasmodium_yoe_33X_GCA_900617875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/
 Plasmodium_yoe_3AE_GCA_900617885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/617/885/GCA_900617885.1_Pyy3AE-2	SAMEA1712522	Plasmodium yoelii	Chromosome
 Plasmodium_yoe_GCA_000003085_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/003/085/GCA_000003085.2_ASM308v2	SAMN02952904	Plasmodium yoelii	Contig
 Plasmodium_yoe_GCA_900002395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/900/002/395/GCA_900002395.1_PYYM01	SAMEA655836	Plasmodium yoelii	Chromosome
+Plasmodium_yoe_N67C_GCA_043381365_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/043/381/365/GCA_043381365.1_ASM4338136v1	SAMN41801231	Plasmodium yoelii	Chromosome
 Plasmodium_yoe_N67_GCA_018340825_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/018/340/825/GCA_018340825.1_NIAID_PY_nigeriensis_N67	SAMN17587902	Plasmodium yoelii	Contig
+Plasmodium_yoe_N67_GCA_043381415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/043/381/415/GCA_043381415.1_ASM4338141v1	SAMN41801232	Plasmodium yoelii	Chromosome
 Plasmop_hal_A23_Pilon_GCA_004380875_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/380/875/GCA_004380875.1_ASM438087v1	SAMN07972602	Plasmopara halstedii	Scaffold
 Plasmop_hal_GCA_003640465_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/465/GCA_003640465.1_ASM364046v1	SAMN03788140	Plasmopara halstedii	Scaffold
 Plasmop_hal_GCA_003640505_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/640/505/GCA_003640505.1_ASM364050v1	SAMN03853128	Plasmopara halstedii	Contig
@@ -1656,7 +1663,7 @@ Porc_her_C119_GCF_017918235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/9
 Porol_onk_Encrusting_Coralline_Algae_GCA_029407785_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/407/785/GCA_029407785.1_PU_POon_v1	SAMN22556604	Porolithon onkodes	Scaffold
 Porosi_gla_RCC2039_GCA_036939395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/939/395/GCA_036939395.1_ASM3693939v1	SAMN27511210	Porosira glacialis	Scaffold
 Porosp_cf_gigantea_A_GCF_019968955_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/968/955/GCF_019968955.1_MNHN_PgigA_v1	SAMN19872688	Porospora cf. gigantea A	Scaffold
-Porosp_cf_gigantea_B_GCA_019968985_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/968/985/GCA_019968985.2_MNHN_PgigB_v1.1	SAMN19872687	Porospora cf. gigantea B	Scaffold
+Porosp_cf_gigantea_B_GCF_019968985_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/019/968/985/GCF_019968985.1_MNHN_PgigB_v1.1	SAMN19872687	Porospora cf. gigantea B	Scaffold
 Porphyra_umb_GCA_002049455_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/049/455/GCA_002049455.2_P_umbilicalis_v1	SAMN00118171	Porphyra umbilicalis	Scaffold
 Porphyri_pur_GCA_000397085_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/397/085/GCA_000397085.1_Porphyridium_purpureum	SAMN02981527	Porphyridium purpureum	Contig
 Porphyri_pur_GCA_008690995_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/008/690/995/GCA_008690995.1_P_purpureum_CCMP1328_Hybrid_assembly	SAMN12567248	Porphyridium purpureum	Contig
@@ -1883,7 +1890,7 @@ Thei_equi_WA_GCF_000342415_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/34
 Thei_luw_GCA_029379255_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/029/379/255/GCA_029379255.1_ASM2937925v1	SAMN32596418	Theileria luwenshuni	Scaffold
 Thei_ori_Fish_Creek_GCA_003072545_4	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/072/545/GCA_003072545.4_EMAI_ToriFCr_1	SAMN05219177	Theileria orientalis	Complete Genome
 Thei_ori_Goon_Nure_GCA_003072535_4	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/072/535/GCA_003072535.4_EMAI_ToriGNu_1	SAMN05219178	Theileria orientalis	Complete Genome
-Thei_ori_Shintoku_GCF_000740895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/740/895/GCF_000740895.1_ASM74089v1	SAMD00067076	Theileria orientalis	Chromosome
+Thei_ori_Shintoku_GCF_000740895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/740/895/GCF_000740895.1_ASM74089v1	SAMD00067076	Theileria orientalis	Complete Genome
 Thei_parva_7014_3081_GCA_014884895_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/884/895/GCA_014884895.1_Tp_Lawrencei_7014_3081_v1	SAMN15466804	Theileria parva	Scaffold
 Thei_parva_GCA_026724375_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/724/375/GCA_026724375.1_ASM2672437v1	SAMN20526560	Theileria parva	Contig
 Thei_parva_Kiambu_5_GCA_026724335_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/724/335/GCA_026724335.1_ASM2672433v1	SAMN20526559	Theileria parva	Contig
@@ -1895,7 +1902,7 @@ Thei_sp_GCA_026724395_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/026/724/395
 Thraustoc_aur_ATCC_34304_GCA_012862495_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/012/862/495/GCA_012862495.1_Tau_assembly01	SAMD00220726	Thraustochytrium aureum	Scaffold
 Thraustoc_sp_ATCC_26185_GCA_002154235_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/154/235/GCA_002154235.1_ASM215423v1	SAMN06274943	Thraustochytrium sp.	Scaffold
 Thraustoc_sp_TN22_GCA_013306675_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/013/306/675/GCA_013306675.1_ASM1330667v1	SAMN14929581	Thraustochytrium sp.	Scaffold
-Thraustoc_stria_ATCC_24473_GCA_022244645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/244/645/GCA_022244645.1_CU_Tstria	SAMN15536290	Thraustochytrium striatum	Contig
+Thraustoc_striatum_ATCC_24473_GCA_022244645_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/022/244/645/GCA_022244645.1_CU_Tstria	SAMN15536290	Thraustochytrium striatum	Contig
 Thraustot_cla_ATCC_34112_GCA_002081575_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/081/575/GCA_002081575.1_Thrcla_v1	SAMN02690055	Thraustotheca clavata	Scaffold
 Ti_lacte_TK_GCA_001606155_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/606/155/GCA_001606155.1_ASM160615v1	SAMN04320757	Tieghemostelium lacteum	Contig
 To_gondii_ARI_GCA_000250965_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/250/965/GCA_000250965.2_TGARI_v2	SAMN02953804	Toxoplasma gondii	Scaffold
@@ -1973,6 +1980,7 @@ Try_cru_Dm25_GCA_036485885_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/036/48
 Try_cru_Dm28c_GCA_000496795_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/496/795/GCA_000496795.1_T.cruzi.Dm28c_v01	SAMN02953876	Trypanosoma cruzi	Contig
 Try_cru_Dm28c_GCA_002219105_2	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/219/105/GCA_002219105.2_TcruziDm28cPB1	SAMN05432872	Trypanosoma cruzi	Contig
 Try_cru_Dm28c_GCA_003177105_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/177/105/GCA_003177105.1_ASM317710v1	SAMN08469708	Trypanosoma cruzi	Contig
+Try_cru_Dm28c_GCA_044048535_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/044/048/535/GCA_044048535.1_TcDm28c	SAMN44289469	Trypanosoma cruzi	Complete Genome
 Try_cru_DM28_GCA_019345295_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/345/295/GCA_019345295.1_CSIC_DM28_1	SAMN16051101	Trypanosoma cruzi	Contig
 Try_cru_Esmeraldo_cl_3_GCA_000327425_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/327/425/GCA_000327425.1_Trypanosoma_cruzi-5.1.3	SAMN00016463	Trypanosoma cruzi	Scaffold
 Try_cru_GCA_030265225_1	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/030/265/225/GCA_030265225.1_UV_Tcruzi_1.0	SAMN26418558	Trypanosoma cruzi	Contig

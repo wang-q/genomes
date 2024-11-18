@@ -56,7 +56,7 @@ nwr member Fungi |
     grep -v " cf." |
     grep -v " x " |
     tsv-summarize -H -g rank --count |
-    rgr md stdin --num
+    rgr md stdin --fmt
 
 nwr member Fungi | grep " sp\."
 nwr member Fungi | grep " aff\."
@@ -70,18 +70,18 @@ nwr member Fungi | grep " x "
 | rank          | count |
 |---------------|------:|
 | kingdom       |     1 |
-| no rank       |  5306 |
-| species       | 61884 |
+| no rank       |  5335 |
+| species       | 62460 |
 | subkingdom    |     1 |
 | class         |    71 |
 | order         |   256 |
-| family        |   926 |
-| genus         |  7817 |
+| family        |   927 |
+| genus         |  7855 |
 | phylum        |    10 |
 | subphylum     |    14 |
-| strain        |  2258 |
-| varietas      |  1044 |
-| forma         |   222 |
+| strain        |  2256 |
+| varietas      |  1045 |
+| forma         |   226 |
 | isolate       |     5 |
 | subspecies    |   144 |
 | subclass      |    19 |
@@ -114,7 +114,7 @@ nwr member Fungi -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#7817 genus.list
+#7855 genus.list
 
 cat genus.list.tsv | cut -f 1 |
 while read RANK_ID; do
@@ -157,8 +157,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#   627 RS1.tsv
-#  4919 GB1.tsv
+#   639 RS1.tsv
+#  4953 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -169,8 +169,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     632
-#GB1     17810
+#RS1     644
+#GB1     18029
 
 ```
 
@@ -214,7 +214,6 @@ GENUS=$(
 
 echo "
 .headers ON
-
     SELECT
         refseq_category,
         COUNT(*) AS count
@@ -226,7 +225,7 @@ echo "
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 #refseq_category count
 #na      5
-#reference genome        627
+#reference genome        639
 
 ```
 
@@ -318,7 +317,7 @@ echo "
 cat raw.tsv |
     rgr dedup stdin |
     datamash check
-#17737 lines, 7 fields
+#17956 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -342,7 +341,7 @@ cat raw.tsv |
     > Fungi.assembly.tsv
 
 datamash check < Fungi.assembly.tsv
-#17425 lines, 5 fields
+#17642 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Fungi.assembly.tsv |
@@ -377,7 +376,7 @@ nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --num
+    rgr md stdin --fmt
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -391,41 +390,41 @@ cat Count/genus.before.tsv |
 
 ```
 
-| item    | count |
-|---------|------:|
-| strain  | 17419 |
-| species |  4838 |
-| genus   |  1389 |
-| family  |   485 |
-| order   |   176 |
-| class   |    61 |
+| item    |  count |
+|---------|-------:|
+| strain  | 17,636 |
+| species |  4,871 |
+| genus   |  1,397 |
+| family  |    485 |
+| order   |    176 |
+| class   |     61 |
 
 | genus             | #species | #strains |
 |-------------------|---------:|---------:|
 | Alternaria        |       35 |      180 |
-| Aspergillus       |      143 |     1280 |
+| Aspergillus       |      150 |     1296 |
 | Aureobasidium     |       12 |      167 |
-| Beauveria         |       11 |      330 |
+| Beauveria         |       11 |      331 |
 | Botryosphaeria    |        3 |      141 |
-| Candida           |       34 |      270 |
-| Candidozyma       |        9 |      221 |
-| Colletotrichum    |       81 |      277 |
+| Candida           |       34 |      280 |
+| Candidozyma       |        9 |      223 |
+| Colletotrichum    |       81 |      278 |
 | Cryphonectria     |        7 |      110 |
-| Cryptococcus      |       12 |      215 |
+| Cryptococcus      |       12 |      217 |
 | Exophiala         |       13 |      102 |
-| Fusarium          |      189 |     1587 |
+| Fusarium          |      195 |     1610 |
 | Komagataella      |        7 |      189 |
 | Metschnikowia     |       63 |      145 |
 | Ogataea           |       55 |      146 |
 | Parastagonospora  |        2 |      189 |
-| Penicillium       |      110 |      482 |
-| Pichia            |       30 |      134 |
+| Penicillium       |      110 |      486 |
+| Pichia            |       30 |      135 |
 | Psilocybe         |       12 |      141 |
 | Pyricularia       |        5 |      410 |
 | Rhodotorula       |       10 |      178 |
-| Saccharomyces     |       11 |     1829 |
-| Torulaspora       |        8 |      108 |
-| Trichoderma       |       34 |      138 |
+| Saccharomyces     |       11 |     1836 |
+| Torulaspora       |        8 |      115 |
+| Trichoderma       |       34 |      146 |
 | Zygosaccharomyces |       12 |      146 |
 
 ### Download and check
@@ -445,10 +444,10 @@ bash ASSEMBLY/rsync.sh
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-# Put the misplaced directory into the right place
+## Put the misplaced directory into the right place
 #bash ASSEMBLY/reorder.sh
 #
-# This operation will delete some files in the directory, so please be careful
+## This operation will delete some files in the directory, so please be careful
 #cat ASSEMBLY/remove.lst |
 #    parallel --no-run-if-empty --linebuffer -k -j 1 '
 #        if [[ -e "ASSEMBLY/{}" ]]; then
@@ -460,7 +459,7 @@ bash ASSEMBLY/check.sh
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
-#17423
+#17640
 
 # N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 100000 2000 1000000
@@ -473,9 +472,14 @@ cat ASSEMBLY/n50.tsv |
 #32179   2016    2187595
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5"
-#N50_pct10       N50_pct50       C_pct50 C_pct90 S_pct10 S_pct50
-#20869.6 327499  348     4815.2  11659596        32316518
+    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
+    datamash transpose
+#N50_pct10       20382.7
+#N50_pct50       329305
+#C_pct50 349.5
+#C_pct90 4884
+#S_pct10 11659193.7
+#S_pct50 32321861
 
 # After the above steps are completed, run the following commands.
 
@@ -494,16 +498,16 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields |  lines |
 |------------------|-------:|-------:|
-| url.tsv          |      3 | 17,423 |
-| check.lst        |      1 | 17,423 |
-| collect.tsv      |     20 | 17,424 |
-| n50.tsv          |      4 | 17,424 |
-| n50.pass.tsv     |      4 | 12,035 |
-| collect.pass.tsv |     23 | 12,035 |
-| pass.lst         |      1 | 12,034 |
-| omit.lst         |      1 | 12,704 |
-| rep.lst          |      1 |  3,385 |
-| sp.lst           |      1 |    157 |
+| url.tsv          |      3 | 17,640 |
+| check.lst        |      1 | 17,640 |
+| collect.tsv      |     20 | 17,641 |
+| n50.tsv          |      4 | 17,641 |
+| n50.pass.tsv     |      4 | 12,190 |
+| collect.pass.tsv |     23 | 12,190 |
+| pass.lst         |      1 | 12,189 |
+| omit.lst         |      1 | 12,910 |
+| rep.lst          |      1 |  3,430 |
+| sp.lst           |      1 |    160 |
 
 ### Rsync to hpcc
 
@@ -533,7 +537,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 10
 
 datamash check < BioSample/biosample.tsv
-#17097 lines, 208 fields
+#17313 lines, 209 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -639,20 +643,14 @@ find MinHash -name "redundant.lst" |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#  3222 summary/NR.lst
-#  6573 summary/redundant.lst
+#  3287 summary/NR.lst
+#  6640 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#188
-
-find MinHash -name "redundant.lst" -size +0 | wc -l
-#778
-
-find MinHash -name "redundant.lst" -empty | wc -l
-#394
+#194
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Fungi/
@@ -737,80 +735,81 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  | 12033 |
-| species |  3410 |
-| genus   |  1021 |
+| strain  | 12188 |
+| species |  3445 |
+| genus   |  1030 |
 | family  |   392 |
 | order   |   154 |
 | class   |    54 |
 
 | order             | #species | #strains |
 |-------------------|---------:|---------:|
-| Agaricales        |      178 |      286 |
-| Botryosphaeriales |       27 |      186 |
-| Chaetothyriales   |       48 |      153 |
-| Diaporthales      |       46 |      149 |
-| Dipodascales      |      138 |      245 |
-| Eurotiales        |      276 |     1682 |
-| Glomerellales     |       82 |      240 |
+| Agaricales        |      179 |      291 |
+| Botryosphaeriales |       27 |      188 |
+| Chaetothyriales   |       49 |      154 |
+| Diaporthales      |       48 |      154 |
+| Dipodascales      |      138 |      250 |
+| Eurotiales        |      285 |     1728 |
+| Glomerellales     |       84 |      243 |
 | Helotiales        |       92 |      142 |
-| Hypocreales       |      304 |     1537 |
+| Hypocreales       |      314 |     1571 |
 | Magnaporthales    |       10 |      192 |
-| Mycosphaerellales |       65 |      195 |
+| Mycosphaerellales |       66 |      201 |
 | Onygenales        |       42 |      183 |
-| Phaffomycetales   |       77 |      108 |
-| Pichiales         |      131 |      479 |
-| Pleosporales      |      148 |      592 |
-| Polyporales       |       71 |      106 |
-| Saccharomycetales |      114 |     1925 |
-| Serinales         |      333 |      927 |
+| Phaffomycetales   |       79 |      110 |
+| Pichiales         |      131 |      480 |
+| Pleosporales      |      150 |      594 |
+| Polyporales       |       72 |      109 |
+| Saccharomycetales |      114 |     1946 |
+| Serinales         |      332 |      934 |
 | Sordariales       |       73 |      133 |
 | Sporidiobolales   |       16 |      178 |
-| Tremellales       |       42 |      305 |
-| Xylariales        |      108 |      196 |
+| Tremellales       |       42 |      307 |
+| Xylariales        |      109 |      197 |
 
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
 | Alternaria       |       35 |      176 |
-| Aspergillus      |      127 |     1092 |
-| Candida          |       23 |      168 |
-| Candidozyma      |        9 |      204 |
-| Colletotrichum   |       67 |      176 |
-| Cryptococcus     |       12 |      208 |
-| Fusarium         |      120 |     1050 |
+| Aspergillus      |      133 |     1107 |
+| Candida          |       23 |      173 |
+| Candidozyma      |        9 |      206 |
+| Colletotrichum   |       67 |      177 |
+| Cryptococcus     |       12 |      210 |
+| Fusarium         |      128 |     1073 |
 | Komagataella     |        7 |      186 |
 | Ogataea          |       54 |      133 |
 | Parastagonospora |        2 |      168 |
-| Penicillium      |      106 |      452 |
+| Penicillium      |      106 |      456 |
 | Pyricularia      |        4 |      185 |
 | Rhodotorula      |       10 |      171 |
-| Saccharomyces    |       11 |     1569 |
-| Trichoderma      |       30 |      124 |
+| Saccharomyces    |       11 |     1576 |
+| Torulaspora      |        8 |      103 |
+| Trichoderma      |       30 |      130 |
 
 | #family                  | genus               | species                   | count |
 |--------------------------|---------------------|---------------------------|------:|
-| Aspergillaceae           | Aspergillus         | Aspergillus flavus        |   265 |
-|                          |                     | Aspergillus fumigatus     |   260 |
+| Aspergillaceae           | Aspergillus         | Aspergillus flavus        |   266 |
+|                          |                     | Aspergillus fumigatus     |   262 |
 |                          |                     | Aspergillus niger         |   112 |
-|                          |                     | Aspergillus oryzae        |   116 |
-|                          | Penicillium         | Penicillium chrysogenum   |    83 |
+|                          |                     | Aspergillus oryzae        |   118 |
+|                          | Penicillium         | Penicillium chrysogenum   |    85 |
 | Botryosphaeriaceae       | Botryosphaeria      | Botryosphaeria dothidea   |    76 |
 | Cryphonectriaceae        | Cryphonectria       | Cryphonectria parasitica  |    68 |
-| Cryptococcaceae          | Cryptococcus        | Cryptococcus neoformans   |   175 |
-| Debaryomycetaceae        | Candida             | Candida albicans          |    68 |
-| Metschnikowiaceae        | Candidozyma         | Candidozyma auris         |   188 |
-|                          | Clavispora          | Clavispora lusitaniae     |    73 |
+| Cryptococcaceae          | Cryptococcus        | Cryptococcus neoformans   |   177 |
+| Debaryomycetaceae        | Candida             | Candida albicans          |    69 |
+| Metschnikowiaceae        | Candidozyma         | Candidozyma auris         |   189 |
+|                          | Clavispora          | Clavispora lusitaniae     |    74 |
 | Nectriaceae              | Fusarium            | Fusarium asiaticum        |   250 |
 |                          |                     | Fusarium graminearum      |   125 |
-|                          |                     | Fusarium oxysporum        |   281 |
-|                          |                     | Fusarium verticillioides  |    57 |
+|                          |                     | Fusarium oxysporum        |   282 |
+|                          |                     | Fusarium verticillioides  |    58 |
 | Onygenaceae              | Ophidiomyces        | Ophidiomyces ophidiicola  |    73 |
 | Phaeosphaeriaceae        | Parastagonospora    | Parastagonospora nodorum  |   166 |
 | Pichiaceae               | Komagataella        | Komagataella phaffii      |   134 |
 | Pleosporaceae            | Alternaria          | Alternaria alternata      |    87 |
 | Pyriculariaceae          | Pyricularia         | Pyricularia oryzae        |   177 |
-| Saccharomycetaceae       | Nakaseomyces        | Nakaseomyces glabratus    |    56 |
-|                          | Saccharomyces       | Saccharomyces cerevisiae  |  1453 |
+| Saccharomycetaceae       | Nakaseomyces        | Nakaseomyces glabratus    |    62 |
+|                          | Saccharomyces       | Saccharomyces cerevisiae  |  1460 |
 |                          | Torulaspora         | Torulaspora delbrueckii   |    72 |
 | Schizosaccharomycetaceae | Schizosaccharomyces | Schizosaccharomyces pombe |    84 |
 | Sporidiobolaceae         | Rhodotorula         | Rhodotorula mucilaginosa  |   117 |
@@ -848,25 +847,25 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  |  3545 |
-| species |  1563 |
-| genus   |   692 |
+| strain  |  3558 |
+| species |  1573 |
+| genus   |   693 |
 | family  |   317 |
 | order   |   135 |
 | class   |    48 |
 
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
-| Aspergillus      |       80 |      371 |
+| Aspergillus      |       86 |      377 |
 | Candida          |       14 |       50 |
-| Colletotrichum   |       44 |       73 |
+| Colletotrichum   |       44 |       74 |
 | Cryptococcus     |       11 |       62 |
 | Exophiala        |        9 |       57 |
 | Fusarium         |       46 |      154 |
 | Ogataea          |        7 |       55 |
 | Ophidiomyces     |        1 |       69 |
 | Parastagonospora |        1 |      153 |
-| Penicillium      |       78 |      209 |
+| Penicillium      |       78 |      210 |
 | Saccharomyces    |        9 |      411 |
 
 ## Collect proteins
@@ -874,8 +873,11 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 ```shell
 cd ~/data/Fungi/
 
+ulimit -n `ulimit -Hn`
+
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --pro \
+    --parallel 8 \
     --in ASSEMBLY/pass.lst \
     --not-in ASSEMBLY/omit.lst
 
@@ -905,13 +907,13 @@ cat Protein/counts.tsv |
 
 | #item      |      count |
 |------------|-----------:|
-| species    |      1,568 |
-| strain_sum |      3,602 |
-| total_sum  | 38,555,598 |
-| dedup_sum  | 38,555,598 |
-| rep_sum    | 21,106,780 |
-| fam88_sum  | 19,379,724 |
-| fam38_sum  | 16,301,299 |
+| species    |      1,578 |
+| strain_sum |      3,614 |
+| total_sum  | 38,691,405 |
+| dedup_sum  | 38,691,405 |
+| rep_sum    | 21,227,983 |
+| fam88_sum  | 19,499,297 |
+| fam38_sum  | 16,399,308 |
 
 ## Phylogenetics with fungi61
 
