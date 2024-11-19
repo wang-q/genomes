@@ -5,28 +5,27 @@ All genomes of *Bacteria*, species by species.
 Download all genomes and analyze representative strains.
 
 <!-- TOC -->
-
 * [Bacteria](#bacteria)
-    * [Taxon info](#taxon-info)
-        * [List all ranks](#list-all-ranks)
-        * [Species with assemblies](#species-with-assemblies)
-        * [Model organisms](#model-organisms)
-    * [Download all assemblies](#download-all-assemblies)
-        * [Create assembly.tsv](#create-assemblytsv)
-        * [Count before download](#count-before-download)
-        * [Download and check](#download-and-check)
-        * [Remove unnecessary files](#remove-unnecessary-files)
-        * [Rsync to hpcc](#rsync-to-hpcc)
-    * [BioSample](#biosample)
-    * [Early divergence of Bacteria](#early-divergence-of-bacteria)
-        * [ReRoot](#reroot)
-    * [MinHash](#minhash)
-        * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-    * [Count valid species and strains](#count-valid-species-and-strains)
-        * [For *genomic alignments* and *protein
-          families*](#for-genomic-alignments-and-protein-families)
-    * [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-
+  * [Taxon info](#taxon-info)
+    * [List all ranks](#list-all-ranks)
+    * [Species with assemblies](#species-with-assemblies)
+    * [Model organisms](#model-organisms)
+  * [Download all assemblies](#download-all-assemblies)
+    * [Create assembly.tsv](#create-assemblytsv)
+    * [Count before download](#count-before-download)
+    * [Download and check](#download-and-check)
+    * [Remove unnecessary files](#remove-unnecessary-files)
+    * [Rsync to hpcc](#rsync-to-hpcc)
+  * [BioSample](#biosample)
+  * [Early divergence of Bacteria](#early-divergence-of-bacteria)
+    * [ReRoot](#reroot)
+    * [Groups](#groups)
+  * [MinHash](#minhash)
+    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+  * [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments* and *protein families*](#for-genomic-alignments-and-protein-families)
+  * [Collect proteins](#collect-proteins)
+  * [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
 <!-- TOC -->
 
 ## Taxon info
