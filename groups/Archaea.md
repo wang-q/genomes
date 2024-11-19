@@ -339,7 +339,7 @@ bash ASSEMBLY/check.sh
 
 ## Put the misplaced directories into the right ones
 #bash ASSEMBLY/reorder.sh
-##
+#
 ## This operation will delete some files in the directory, so please be careful
 #cat ASSEMBLY/remove.lst |
 #    parallel --no-run-if-empty --linebuffer -k -j 1 '
