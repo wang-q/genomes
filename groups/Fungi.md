@@ -1057,7 +1057,7 @@ fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
 
 cat Domain/seq_asm_f3.tsv |
-    tsv-join -e -d 2 -f summary/NR.lst -k 1 \
+    tsv-join -e -d 2 -f summary/redundant.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
 
 ```

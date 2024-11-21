@@ -967,7 +967,7 @@ fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
 
 cat Domain/seq_asm_f3.tsv |
-    tsv-join -e -d 2 -f summary/NR.lst -k 1 \
+    tsv-join -e -d 2 -f summary/redundant.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
 
 ```
@@ -1062,7 +1062,7 @@ hnsm size Domain/busco.*.fa |
     rgr dedup stdin -f 2 |
     cut -f 2
 #787011
-#145
+#170
 
 # To make it faster
 FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick

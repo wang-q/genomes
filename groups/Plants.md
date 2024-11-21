@@ -625,9 +625,10 @@ nwr pl-condense --map -r order -r family -r genus \
 
 mv condensed.tsv minhash.condensed.tsv
 
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 minhash.condensed.newick |
-    rsvg-convert -o Plants.minhash.png
+# svg
+nwr topo --bl minhash.condensed.newick | # remove comments
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+    > Plants.minhash.svg
 
 ```
 
@@ -992,7 +993,7 @@ fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
 
 cat Domain/seq_asm_f3.tsv |
-    tsv-join -e -d 2 -f summary/NR.lst -k 1 \
+    tsv-join -e -d 2 -f summary/redundant.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
 
 ```
@@ -1087,7 +1088,7 @@ hnsm size Domain/busco.*.fa |
     rgr dedup stdin -f 2 |
     cut -f 2
 #1343280
-#54548
+#56355
 
 # To make it faster
 FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick
@@ -1099,7 +1100,7 @@ FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick
 ```shell
 cd ~/data/Plants/tree
 
-nw_reroot  ../Domain/busco.trim.newick Gald_parti_NBRC_102759_GCA_025991245_1 Gracilario_chorda_GCA_003194525_1 |
+nw_reroot  ../Domain/busco.trim.newick Cyanidios_mero_10D_GCF_000091205_1 Gald_parti_NBRC_102759_GCA_025991245_1 |
     nwr order stdin --nd --an \
     > busco.reroot.newick
 
@@ -1110,9 +1111,10 @@ nwr pl-condense --map -r order -r family -r genus \
 
 mv condensed.tsv busco.condense.tsv
 
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 busco.condensed.newick |
-    rsvg-convert -o Plants.busco.png
+# svg
+nwr topo --bl busco.condensed.newick | # remove comments
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+    > Plants.busco.svg
 
 ```
 
