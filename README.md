@@ -76,6 +76,10 @@ brew install jq
 brew install pup
 brew install pigz
 
+curl -LO https://github.com/soedinglab/hh-suite/releases/download/v3.3.0/hhsuite-3.3.0-AVX2-Linux.tar.gz
+
+curl -LO https://github.com/soedinglab/spacedust/releases/download/1-babc6f8/spacedust-linux-avx2.tar.gz
+
 curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh
 mv tectonic ~/bin/
 
