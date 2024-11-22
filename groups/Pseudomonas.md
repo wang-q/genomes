@@ -218,11 +218,12 @@ mkdir -p summary
 
 # Target genus
 GENUS=(
-    # Pseudomonadales
-    Pseudomonas
-    Halopseudomonas
-    Stutzerimonas
-    Azotobacter
+    # Pseudomonadales - All of Pseudomonadaceae
+    $(
+        nwr member Pseudomonadaceae -r genus |
+            sed '1d' |
+            cut -f 2
+    )
 
     # Alteromonadales
     Shewanella
@@ -237,12 +238,12 @@ cat ../Bacteria/summary/collect.pass.tsv |
     tsv-join -H -d RefSeq_assembly_accession -f ~/Scripts/genomes/assembly/Bacteria.reference.tsv -k assembly_accession \
     > summary/collect.pass.tsv
 
-cat ../Bacteria/summary/collect.pass.tsv | # 65357
-    nwr restrict ${GENUS[*]} -f stdin -c 3 | # restrict to these genera 8877
-    tsv-filter -H --le "C:20" --ge "N50:500000" | # more stringent parameters 4047
+cat ../Bacteria/summary/collect.pass.tsv | # 316617
+    nwr restrict ${GENUS[*]} -f stdin -c 3 | # restrict to these genera 28409
+    tsv-filter -H --le "C:20" --ge "N50:500000" | # more stringent parameters 4486
     sed '1d' |
-    tsv-join -e -f ../Bacteria/ASSEMBLY/omit.lst -k 1 | # 4047
-    tsv-join -e -f ../Bacteria/MinHash/abnormal.lst -k 1 | # 3892
+    tsv-join -e -f ../Bacteria/ASSEMBLY/omit.lst -k 1 | # 4485
+    tsv-join -e -f ../Bacteria/MinHash/abnormal.lst -k 1 | # 4411
     sort \
     >> summary/collect.pass.tsv
 
@@ -274,8 +275,7 @@ nwr template summary/assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -284,81 +284,95 @@ mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
     keep-header -- tsv-sort -k1,1 |
-    tsv-filter -H --ge 3:2 |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --num
 
 ```
 
 | item    | count |
 |---------|------:|
-| strain  |  3904 |
-| species |   172 |
-| genus   |    20 |
-| family  |    15 |
-| order   |    11 |
-| class   |     7 |
+| strain  |  4437 |
+| species |   341 |
+| genus   |    36 |
+| family  |    19 |
+| order   |    14 |
+| class   |     6 |
 
 | genus            | #species | #strains |
 |------------------|---------:|---------:|
-| Acinetobacter    |       22 |      830 |
-| Azotobacter      |        2 |        6 |
-| Bordetella       |        9 |      807 |
-| Burkholderia     |       26 |      605 |
+| Acinetobacter    |       51 |     1506 |
+| Aquipseudomonas  |        1 |        8 |
+| Azorhizophilus   |        1 |        2 |
+| Azotobacter      |        3 |       12 |
+| Bacillus         |        3 |        3 |
+| Bacteroides      |        1 |        1 |
+| Bifidobacterium  |        1 |        1 |
+| Brucella         |        1 |        1 |
+| Campylobacter    |        1 |        1 |
+| Denitrificimonas |        1 |        1 |
+| Ectopseudomonas  |        7 |       28 |
+| Enterococcus     |        1 |        1 |
+| Entomomonas      |        1 |        1 |
 | Escherichia      |        1 |        2 |
-| Pseudomonas      |       81 |     1280 |
-| Serratia         |       11 |      191 |
-| Stenotrophomonas |        5 |      126 |
-| Stutzerimonas    |        4 |       46 |
+| Francisella      |        1 |        1 |
+| Halopseudomonas  |        6 |        8 |
+| Klebsiella       |        2 |        2 |
+| Listeria         |        1 |        1 |
+| Metapseudomonas  |        4 |       13 |
+| Moraxella        |       14 |       97 |
+| Mycobacterium    |        1 |        1 |
+| Mycobacteroides  |        1 |        1 |
+| Permianibacter   |        1 |        1 |
+| Phocaeicola      |        1 |        1 |
+| Proteus          |        1 |        1 |
+| Pseudomonas      |      187 |     2546 |
+| Salmonella       |        1 |        1 |
+| Shewanella       |       29 |      105 |
+| Shigella         |        1 |        1 |
+| Staphylococcus   |        1 |        1 |
+| Streptococcus    |        2 |        2 |
+| Stutzerimonas    |        9 |       75 |
+| Thiopseudomonas  |        1 |        8 |
+| Vibrio           |        1 |        1 |
+| Xanthomonas      |        1 |        1 |
+| Yersinia         |        1 |        1 |
 
 ## MinHash
 
 ```shell
 cd ~/data/Pseudomonas/
 
+# relaxed thresholds
 nwr template summary/assembly.tsv \
     --mh \
-    --parallel 16 \
+    --parallel 8 \
     --ani-ab 0.12 \
     --ani-nr 0.01
 
 # Compute assembly sketches
 bash MinHash/compute.sh
 
-# Distances within species
-bash MinHash/species.sh
-
-# Abnormal strains
-bash MinHash/abnormal.sh
-
-cat MinHash/abnormal.lst | wc -l
-#8
-
 # Non-redundant strains within species
 bash MinHash/nr.sh
-
-find MinHash -name "mash.dist.tsv" -size +0 | wc -l
-#162
-
-find MinHash -name "redundant.lst" -size +0 | wc -l
-#97
-
-find MinHash -name "redundant.lst" -empty | wc -l
-#64
 
 find MinHash -name "NR.lst" |
     xargs cat |
     sort |
     uniq \
     > summary/NR.lst
-wc -l summary/NR.lst
-#874
+find MinHash -name "redundant.lst" |
+    xargs cat |
+    sort |
+    uniq \
+    > summary/redundant.lst
+wc -l summary/NR.lst summary/redundant.lst
+#  1161 summary/NR.lst
+#  3153 summary/redundant.lst
 
-# All representative should be in NR
-cat summary/assembly.tsv |
-    tsv-join -f ASSEMBLY/rep.lst -k 1 |
-    cut -f 1 |
-    grep -v -F -f summary/NR.lst
+# Abnormal strains
+bash MinHash/abnormal.sh
+
+cat MinHash/abnormal.lst | wc -l
+#16
 
 ```
 
@@ -383,20 +397,17 @@ bash Count/rank.sh
 
 cat Count/order.count.tsv |
     tsv-filter -H --ge "3:2" |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --fmt
 
 cat Count/genus.count.tsv |
     tsv-filter -H --ge "3:2" |
-    mlr --itsv --omd cat |
-    perl -nl -e 'm/^\|\s*---/ and print qq(|---|--:|--:|) and next; print'
+    rgr md stdin --fmt
 
 # Can accept N_COUNT
 bash Count/lineage.sh 10
 
 cat Count/lineage.count.tsv |
-    mlr --itsv --omd cat |
-    perl -nl -e 's/-\s*\|$/-:|/; print'
+    rgr md stdin --fmt
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
@@ -405,77 +416,93 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | order            | #species | #strains |
 |------------------|---------:|---------:|
-| Bacillales       |        3 |        3 |
-| Burkholderiales  |       35 |     1412 |
-| Enterobacterales |       15 |      196 |
-| Moraxellales     |       22 |      830 |
-| Pseudomonadales  |       87 |     1324 |
-| Xanthomonadales  |        5 |      126 |
+| Alteromonadales  |       29 |      105 |
+| Bacillales       |        5 |        5 |
+| Bacteroidales    |        2 |        2 |
+| Enterobacterales |        7 |        8 |
+| Lactobacillales  |        3 |        3 |
+| Moraxellales     |       65 |    1,603 |
+| Mycobacteriales  |        2 |        2 |
+| Pseudomonadales  |      222 |    2,687 |
 
-| genus            | #species | #strains |
-|------------------|---------:|---------:|
-| Acinetobacter    |       22 |      830 |
-| Azotobacter      |        2 |        6 |
-| Bordetella       |        9 |      807 |
-| Burkholderia     |       26 |      605 |
-| Escherichia      |        1 |        2 |
-| Pseudomonas      |       81 |     1276 |
-| Serratia         |       11 |      191 |
-| Stenotrophomonas |        5 |      126 |
-| Stutzerimonas    |        4 |       42 |
+| genus           | #species | #strains |
+|-----------------|---------:|---------:|
+| Acinetobacter   |       51 |    1,506 |
+| Aquipseudomonas |        1 |        8 |
+| Azorhizophilus  |        1 |        2 |
+| Azotobacter     |        3 |       12 |
+| Bacillus        |        3 |        3 |
+| Ectopseudomonas |        7 |       28 |
+| Escherichia     |        1 |        2 |
+| Halopseudomonas |        6 |        8 |
+| Klebsiella      |        2 |        2 |
+| Metapseudomonas |        4 |       13 |
+| Moraxella       |       14 |       97 |
+| Pseudomonas     |      187 |    2,536 |
+| Shewanella      |       29 |      105 |
+| Streptococcus   |        2 |        2 |
+| Stutzerimonas   |        9 |       69 |
+| Thiopseudomonas |        1 |        8 |
 
-| #family          | genus            | species                      | count |
-|------------------|------------------|------------------------------|------:|
-| Alcaligenaceae   | Bordetella       | Bordetella bronchiseptica    |    25 |
-|                  |                  | Bordetella hinzii            |    18 |
-|                  |                  | Bordetella holmesii          |    66 |
-|                  |                  | Bordetella parapertussis     |    90 |
-|                  |                  | Bordetella pertussis         |   593 |
-| Burkholderiaceae | Burkholderia     | Burkholderia ambifaria       |    15 |
-|                  |                  | Burkholderia cenocepacia     |    87 |
-|                  |                  | Burkholderia cepacia         |    19 |
-|                  |                  | Burkholderia contaminans     |    16 |
-|                  |                  | Burkholderia gladioli        |    22 |
-|                  |                  | Burkholderia glumae          |    51 |
-|                  |                  | Burkholderia mallei          |    53 |
-|                  |                  | Burkholderia multivorans     |   102 |
-|                  |                  | Burkholderia pseudomallei    |   152 |
-|                  |                  | Burkholderia thailandensis   |    25 |
-|                  |                  | Burkholderia vietnamiensis   |    18 |
-| Moraxellaceae    | Acinetobacter    | Acinetobacter baumannii      |   601 |
-|                  |                  | Acinetobacter haemolyticus   |    15 |
-|                  |                  | Acinetobacter indicus        |    21 |
-|                  |                  | Acinetobacter johnsonii      |    18 |
-|                  |                  | Acinetobacter junii          |    11 |
-|                  |                  | Acinetobacter nosocomialis   |    17 |
-|                  |                  | Acinetobacter pittii         |    59 |
-|                  |                  | Acinetobacter seifertii      |    25 |
-| Pseudomonadaceae | Pseudomonas      | Pseudomonas aeruginosa       |   706 |
-|                  |                  | Pseudomonas amygdali         |    14 |
-|                  |                  | Pseudomonas chlororaphis     |   101 |
-|                  |                  | Pseudomonas fluorescens      |    28 |
-|                  |                  | Pseudomonas protegens        |    24 |
-|                  |                  | Pseudomonas putida           |    77 |
-|                  |                  | Pseudomonas synxantha        |    10 |
-|                  |                  | Pseudomonas syringae         |    69 |
-|                  |                  | Pseudomonas viridiflava      |    21 |
-|                  | Stutzerimonas    | Stutzerimonas stutzeri       |    31 |
-| Xanthomonadaceae | Stenotrophomonas | Stenotrophomonas maltophilia |   116 |
-| Yersiniaceae     | Serratia         | Serratia marcescens          |   125 |
-|                  |                  | Serratia plymuthica          |    18 |
-|                  |                  | Serratia ureilytica          |    15 |
+| #family          | genus         | species                                | count |
+|------------------|---------------|----------------------------------------|------:|
+| Moraxellaceae    | Acinetobacter | Acinetobacter baumannii                | 1,038 |
+|                  |               | Acinetobacter bereziniae               |    12 |
+|                  |               | Acinetobacter calcoaceticus            |    13 |
+|                  |               | Acinetobacter haemolyticus             |    20 |
+|                  |               | Acinetobacter indicus                  |    32 |
+|                  |               | Acinetobacter johnsonii                |    51 |
+|                  |               | Acinetobacter junii                    |    21 |
+|                  |               | Acinetobacter lwoffii                  |    21 |
+|                  |               | Acinetobacter nosocomialis             |    25 |
+|                  |               | Acinetobacter pittii                   |    96 |
+|                  |               | Acinetobacter radioresistens           |    11 |
+|                  |               | Acinetobacter schindleri               |    10 |
+|                  |               | Acinetobacter seifertii                |    35 |
+|                  |               | Acinetobacter towneri                  |    13 |
+|                  |               | Acinetobacter ursingii                 |    11 |
+|                  | Moraxella     | Moraxella bovis                        |    38 |
+|                  |               | Moraxella catarrhalis                  |    21 |
+|                  |               | Moraxella osloensis                    |    14 |
+| Pseudomonadaceae | Pseudomonas   | Pseudomonas aeruginosa                 | 1,506 |
+|                  |               | Pseudomonas amygdali                   |    16 |
+|                  |               | Pseudomonas asiatica                   |    21 |
+|                  |               | Pseudomonas atacamensis                |    11 |
+|                  |               | Pseudomonas brassicacearum             |    13 |
+|                  |               | Pseudomonas chlororaphis               |   112 |
+|                  |               | Pseudomonas fluorescens                |    28 |
+|                  |               | Pseudomonas fragi                      |    16 |
+|                  |               | Pseudomonas fulva                      |    11 |
+|                  |               | Pseudomonas monteilii                  |    15 |
+|                  |               | Pseudomonas oryzihabitans              |    14 |
+|                  |               | Pseudomonas poae                       |    22 |
+|                  |               | Pseudomonas protegens                  |    54 |
+|                  |               | Pseudomonas putida                     |   102 |
+|                  |               | Pseudomonas rhodesiae                  |    13 |
+|                  |               | Pseudomonas simiae                     |    11 |
+|                  |               | Pseudomonas synxantha                  |    12 |
+|                  |               | Pseudomonas syringae                   |    82 |
+|                  |               | Pseudomonas syringae group genomosp. 3 |    10 |
+|                  |               | Pseudomonas trivialis                  |    24 |
+|                  |               | Pseudomonas viridiflava                |    21 |
+|                  | Stutzerimonas | Stutzerimonas balearica                |    10 |
+|                  |               | Stutzerimonas frequens                 |    15 |
+|                  |               | Stutzerimonas stutzeri                 |    29 |
+| Shewanellaceae   | Shewanella    | Shewanella algae                       |    30 |
+|                  |               | Shewanella baltica                     |    15 |
+|                  |               | Shewanella xiamenensis                 |    13 |
 
 ### Count strains - Genus
 
 ```shell
 cd ~/data/Pseudomonas
 
-cat summary/genus.lst |
+cat Count/genus.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         n_species=$(
-            cat summary/collect.pass.csv |
+            cat summary/collect.pass.tsv |
                 sed "1d" |
-                tsv-select -d, -f 3 |
+                tsv-select -f 3 |
                 nwr append stdin -r genus -r species |
                 grep -w {} |
                 tsv-select -f 1,3 |
@@ -484,18 +511,18 @@ cat summary/genus.lst |
         )
 
         n_strains=$(
-            cat summary/collect.pass.csv |
+            cat summary/collect.pass.tsv |
                 sed "1d" |
-                tsv-select -d, -f 3 |
+                tsv-select -f 3 |
                 nwr append stdin -r genus |
                 grep -w {} |
                 wc -l
         )
 
         n_nr=$(
-            cat summary/collect.pass.csv |
-                grep -F -w -f summary/NR.lst |
-                tsv-select -d, -f 3 |
+            cat summary/collect.pass.tsv |
+                grep -Fw -f summary/NR.lst |
+                tsv-select -f 3 |
                 nwr append stdin -r genus |
                 grep -w {} |
                 wc -l
@@ -505,22 +532,31 @@ cat summary/genus.lst |
     ' |
     nwr append stdin --id |
     tsv-select -f 6,5,2,3,4 |
-    tsv-sort -k2,2 | #    tsv-filter --ge 4:100 |
+    tsv-sort -k2,2 |
+    tsv-filter --ge 4:2 |
     (echo -e '#tax_id\tgenus\t#species\t#strains\t#NR' && cat) |
-    mlr --itsv --omd cat
+    rgr md stdin
 
 ```
 
-| #tax_id | genus            | #species | #strains | #NR |
-|---------|------------------|----------|----------|-----|
-| 469     | Acinetobacter    | 51       | 791      | 240 |
-| 352     | Azotobacter      | 5        | 6        | 4   |
-| 517     | Bordetella       | 23       | 807      | 12  |
-| 32008   | Burkholderia     | 103      | 692      | 123 |
-| 286     | Pseudomonas      | 233      | 1418     | 495 |
-| 613     | Serratia         | 21       | 191      | 69  |
-| 40323   | Stenotrophomonas | 11       | 246      | 129 |
-| 2901164 | Stutzerimonas    | 8        | 31       | 28  |
+| #tax_id | genus           | #species | #strains | #NR |
+|---------|-----------------|----------|----------|-----|
+| 469     | Acinetobacter   | 153      | 1507     | 411 |
+| 3236652 | Aquipseudomonas | 1        | 8        | 8   |
+| 157913  | Azorhizophilus  | 1        | 2        | 1   |
+| 352     | Azotobacter     | 7        | 12       | 5   |
+| 1386    | Bacillus        | 3        | 3        | 0   |
+| 3236654 | Ectopseudomonas | 11       | 28       | 25  |
+| 561     | Escherichia     | 2        | 2        | 2   |
+| 2901189 | Halopseudomonas | 6        | 8        | 3   |
+| 570     | Klebsiella      | 2        | 2        | 0   |
+| 3236656 | Metapseudomonas | 4        | 13       | 11  |
+| 475     | Moraxella       | 15       | 97       | 31  |
+| 286     | Pseudomonas     | 430      | 2547     | 520 |
+| 22      | Shewanella      | 41       | 105      | 80  |
+| 1301    | Streptococcus   | 2        | 2        | 0   |
+| 2901164 | Stutzerimonas   | 14       | 75       | 61  |
+| 1654787 | Thiopseudomonas | 1        | 8        | 5   |
 
 ### Typical strains
 
@@ -561,24 +597,26 @@ for S in \
     Pseudom_aeruginosa_PAO1 \
     Pseudom_aeruginosa_UCBPP_PA14_GCF_000014625_1 \
     Pseudom_aeruginosa_PA7_GCF_000017205_1 \
-    Pseudom_aeruginosa_PAK_GCF_000568855_2 \
-    Pseudom_aeruginosa_GCF_011466835_1 \
+    Pseudom_aeruginosa_PAK_GCF_000408865_1 \
+    Pseudom_aeruginosa_CF39S_GCF_011466835_1 \
     Pseudom_aeruginosa_LESB58_GCF_000026645_1 \
-    Pseudom_viridif_GCF_900184295_1 \
-    Pseudom_syringae_pv_tomato_DC3000_GCF_000007805_1 \
-    Pseudom_syringae_pv_syringae_B728a_GCF_000012245_1 \
-    Pseudom_fluo_GCF_900215245_1 \
+    Pseudom_viridifl_CFBP_1590_GCF_900184295_1 \
+    Pseudom_DC3000_GCF_000007805_1 \
+    Pseudom_syringae_B728a_GCF_000012245_1 \
+    Pseudom_fluore_ATCC_13525_GCF_900215245_1 \
     Pseudom_putida_KT2440_GCF_000007565_2 \
     Pseudom_putida_NBRC_14164_GCF_000412675_1 \
-    Stu_stut_A1501_GCF_000013785_1 \
-    Pseudom_chl_aureofaciens_30_84_GCF_000281915_1 \
-    Pseudom_amyg_pv_tabaci_ATCC_11528_GCF_000145945_2 \
+    Stu_stutz_A1501_GCF_000013785_1 \
+    Pseudom_chloror_30_84_GCF_000281915_1 \
+    Pseudom_amygdali_ATCC_11528_GCF_000145945_2 \
     Pseudom_proteg_Pf_5_GCF_000012265_1 \
     Pseudom_proteg_CHA0_GCF_900560965_1 \
     Pseudom_entomophila_L48_GCF_000026105_1 \
-    Acin_bau_GCF_008632635_1 \
-    Acin_bau_ATCC_17978_GCF_004794235_2 \
-    Acin_bau_ATCC_19606_CIP_70_34_JCM_6841_GCF_019331655_1 \
+    Acin_baum_K09_14_GCF_008632635_1 \
+    Acin_baum_ATCC_17978_Lab_WT_GCF_004794235_2 \
+    Acin_baum_ATCC_19606_GCF_019331655_1 \
+    Acin_baum_DSM_30011_GCF_001936675_2 \
+    Acin_baum_AB5075_VUB_GCF_016919505_2 \
     ; do
     echo ${S}
 done \
