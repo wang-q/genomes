@@ -445,14 +445,18 @@ bash ASSEMBLY/n50.sh 50000 500 500000
 cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
     tsv-summarize -H --min "N50" --max "C" --min "S"
-#N50_min S_min   C_max
-#5966    2222169 1976
+#N50_min C_max   S_min
+#5966    1976    1073956
 
 cat ASSEMBLY/n50.tsv |
     tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
     datamash transpose
-#S_pct10 S_pct50 N50_pct10       N50_pct50       C_pct50 C_pct90
-#3752678.5       5249709 58246.7 315670.5        55      274
+#N50_pct10       55738
+#N50_pct50       313185
+#C_pct50 55
+#C_pct90 267
+#S_pct10 3699089.6
+#S_pct50 5109679
 
 # After the above steps are completed, run the following commands.
 
@@ -471,16 +475,16 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields |  lines |
 |------------------|-------:|-------:|
-| url.tsv          |      3 | 17,513 |
-| check.lst        |      1 | 17,513 |
-| collect.tsv      |     20 | 17,514 |
-| n50.tsv          |      4 | 17,514 |
-| n50.pass.tsv     |      4 | 15,967 |
-| collect.pass.tsv |     23 | 15,967 |
-| pass.lst         |      1 | 15,966 |
-| omit.lst         |      1 |    661 |
-| rep.lst          |      1 |  1,135 |
-| sp.lst           |      1 |  2,400 |
+| url.tsv          |      3 | 20,465 |
+| check.lst        |      1 | 20,465 |
+| collect.tsv      |     20 | 20,466 |
+| n50.tsv          |      4 | 20,466 |
+| n50.pass.tsv     |      4 | 18,581 |
+| collect.pass.tsv |     23 | 18,581 |
+| pass.lst         |      1 | 18,580 |
+| omit.lst         |      1 |    804 |
+| rep.lst          |      1 |  1,270 |
+| sp.lst           |      1 |  2,830 |
 
 ### Rsync to hpcc
 
@@ -495,28 +499,6 @@ rsync -avP \
     wangq@58.213.64.36:data/Bacillus
 
 # rsync -avP wangq@202.119.37.251:data/Bacillus/ ~/data/Bacillus
-
-```
-
-For such huge collections, we can rsync files inside ASSEMBLY/ in parallel.
-
-```shell
-# Copy Directory Structure
-rsync -avP \
-    -f"+ */" -f"- *" \
-    ~/data/Bacillus/ASSEMBLY/ \
-    wangq@202.119.37.251:data/Bacillus/ASSEMBLY
-
-# Transfer species directories in parallel
-cat ~/data/Bacillus/ASSEMBLY/url.tsv |
-    tsv-select -f 3 |
-    rgr dedup stdin |
-    parallel --no-run-if-empty --linebuffer -k -j 8 '
-        echo -e "\n==> {}"
-        rsync -avP \
-            ~/data/Bacillus/ASSEMBLY/{}/
-            wangq@202.119.37.251:data/Bacillus/ASSEMBLY/{} \
-    '
 
 ```
 
@@ -537,7 +519,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 50
 
 datamash check < BioSample/biosample.tsv
-#17960 lines, 91 fields
+#20439 lines, 102 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -573,14 +555,21 @@ find MinHash -name "redundant.lst" |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#  7016 summary/NR.lst
-#  8202 summary/redundant.lst
+#  8019 summary/NR.lst
+#  9718 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#1266
+#1157
+
+cat MinHash/abnormal.lst |
+    tsv-join -e -f ASSEMBLY/sp.lst \
+    > MinHash/tmp.lst
+mv MinHash/tmp.lst MinHash/abnormal.lst
+cat MinHash/abnormal.lst | wc -l
+#372
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Bacillus/
@@ -666,154 +655,192 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  | 13637 |
-| species |  1209 |
-| genus   |   167 |
-| family  |     8 |
+| strain  | 16827 |
+| species |  1507 |
+| genus   |   196 |
+| family  |    10 |
 | order   |     2 |
 | class   |     2 |
 
 | family                 | #species | #strains |
 |------------------------|---------:|---------:|
-| Alicyclobacillaceae    |       39 |       60 |
-| Bacillaceae            |      732 |    12068 |
-| Paenibacillaceae       |      370 |     1404 |
-| Sporolactobacillaceae  |       23 |       33 |
-| Thermoactinomycetaceae |       41 |       68 |
+| Alicyclobacillaceae    |       49 |       84 |
+| Bacillaceae            |      823 |    14046 |
+| Paenibacillaceae       |      419 |     2163 |
+| Planococcaceae         |      141 |      399 |
+| Sporolactobacillaceae  |       25 |       47 |
+| Thermoactinomycetaceae |       45 |       83 |
 
-| genus              | #species | #strains |
-|--------------------|---------:|---------:|
-| Aeribacillus       |        3 |       23 |
-| Alicyclobacillus   |       22 |       37 |
-| Aneurinibacillus   |        7 |       32 |
-| Anoxybacillus      |       13 |       58 |
-| Bacillus           |      130 |     9791 |
-| Brevibacillus      |       30 |      208 |
-| Cohnella           |       31 |       35 |
-| Cytobacillus       |       19 |       90 |
-| Fictibacillus      |       12 |       24 |
-| Geobacillus        |       17 |      106 |
-| Gracilibacillus    |       20 |       25 |
-| Halobacillus       |       24 |       38 |
-| Heyndrickxia       |       13 |      110 |
-| Lysinibacillus     |       27 |      259 |
-| Mesobacillus       |       10 |       20 |
-| Metabacillus       |       20 |       39 |
-| Neobacillus        |       24 |       47 |
-| Niallia            |        6 |       52 |
-| Oceanobacillus     |       30 |       65 |
-| Paenibacillus      |      278 |     1100 |
-| Parageobacillus    |        7 |       36 |
-| Peribacillus       |       18 |      136 |
-| Priestia           |       10 |      496 |
-| Psychrobacillus    |       10 |       27 |
-| Rossellomorea      |        7 |       29 |
-| Schinkia           |        1 |       24 |
-| Shouchella         |       11 |       68 |
-| Sporolactobacillus |       13 |       22 |
-| Thermoactinomyces  |        5 |       23 |
-| Virgibacillus      |       25 |       75 |
+| genus                 | #species | #strains |
+|-----------------------|---------:|---------:|
+| Aeribacillus          |        3 |       24 |
+| Alicyclobacillus      |       28 |       56 |
+| Alkalihalobacillus    |        8 |       23 |
+| Aneurinibacillus      |        8 |       41 |
+| Anoxybacillus         |       16 |       67 |
+| Bacillus              |      135 |    11014 |
+| Brevibacillus         |       30 |      248 |
+| Caldifermentibacillus |        1 |       22 |
+| Cohnella              |       37 |       60 |
+| Cytobacillus          |       19 |      124 |
+| Fictibacillus         |       16 |       48 |
+| Geobacillus           |       17 |      119 |
+| Gracilibacillus       |       22 |       30 |
+| Halalkalibacter       |       13 |       24 |
+| Halobacillus          |       25 |       56 |
+| Heyndrickxia          |       13 |      132 |
+| Kurthia               |        9 |       32 |
+| Lederbergia           |       10 |       20 |
+| Lentibacillus         |       17 |       23 |
+| Lysinibacillus        |       28 |      352 |
+| Mesobacillus          |       11 |       27 |
+| Metabacillus          |       22 |       54 |
+| Neobacillus           |       26 |       87 |
+| Niallia               |        8 |       67 |
+| Oceanobacillus        |       35 |       97 |
+| Paenibacillus         |      311 |     1768 |
+| Parageobacillus       |        8 |       41 |
+| Peribacillus          |       19 |      223 |
+| Planococcus           |       29 |       57 |
+| Priestia              |       10 |      573 |
+| Psychrobacillus       |       10 |       48 |
+| Rossellomorea         |        7 |       49 |
+| Schinkia              |        1 |       24 |
+| Shouchella            |       12 |       73 |
+| Siminovitchia         |        8 |       20 |
+| Solibacillus          |       10 |       42 |
+| Sporolactobacillus    |       13 |       32 |
+| Sporosarcina          |       27 |      119 |
+| Terribacillus         |        5 |       25 |
+| Thermoactinomyces     |        5 |       28 |
+| Ureibacillus          |       13 |       35 |
+| Virgibacillus         |       34 |      110 |
 
-| #family                | genus                 | species                             | count |
-|------------------------|-----------------------|-------------------------------------|------:|
-| Bacillaceae            | Aeribacillus          | Aeribacillus sp.                    |    11 |
-|                        | Anoxybacillus         | Anoxybacillus sp.                   |    20 |
-|                        | Bacillus              | Bacillus albus                      |    28 |
-|                        |                       | Bacillus altitudinis                |   204 |
-|                        |                       | Bacillus amyloliquefaciens          |   232 |
-|                        |                       | Bacillus anthracis                  |   755 |
-|                        |                       | Bacillus atrophaeus                 |   166 |
-|                        |                       | Bacillus badius                     |    12 |
-|                        |                       | Bacillus bombysepticus              |    11 |
-|                        |                       | Bacillus cereus                     |  2167 |
-|                        |                       | Bacillus cytotoxicus                |    39 |
-|                        |                       | Bacillus glycinifermentans          |    15 |
-|                        |                       | Bacillus halotolerans               |    69 |
-|                        |                       | Bacillus haynesii                   |   125 |
-|                        |                       | Bacillus inaquosorum                |   133 |
-|                        |                       | Bacillus infantis                   |    10 |
-|                        |                       | Bacillus licheniformis              |   347 |
-|                        |                       | Bacillus mobilis                    |    41 |
-|                        |                       | Bacillus mojavensis                 |    41 |
-|                        |                       | Bacillus mycoides                   |   168 |
-|                        |                       | Bacillus nitratireducens            |    14 |
-|                        |                       | Bacillus pacificus                  |    83 |
-|                        |                       | Bacillus paralicheniformis          |   212 |
-|                        |                       | Bacillus paramycoides               |    16 |
-|                        |                       | Bacillus paranthracis               |   265 |
-|                        |                       | Bacillus pseudomycoides             |   111 |
-|                        |                       | Bacillus pumilus                    |   252 |
-|                        |                       | Bacillus safensis                   |   219 |
-|                        |                       | Bacillus siamensis                  |    21 |
-|                        |                       | Bacillus sonorensis                 |    36 |
-|                        |                       | Bacillus spizizenii                 |   181 |
-|                        |                       | Bacillus stercoris                  |    16 |
-|                        |                       | Bacillus stratosphericus            |    11 |
-|                        |                       | Bacillus subtilis                   |  1011 |
-|                        |                       | Bacillus swezeyi                    |    14 |
-|                        |                       | Bacillus thuringiensis              |  1146 |
-|                        |                       | Bacillus toyonensis                 |   313 |
-|                        |                       | Bacillus tropicus                   |    52 |
-|                        |                       | Bacillus vallismortis               |    14 |
-|                        |                       | Bacillus velezensis                 |   851 |
-|                        |                       | Bacillus wiedmannii                 |   216 |
-|                        | Caldibacillus         | Caldibacillus thermoamylovorans     |    11 |
-|                        | Caldifermentibacillus | Caldifermentibacillus hisashii      |    16 |
-|                        | Cytobacillus          | Cytobacillus firmus                 |    35 |
-|                        |                       | Cytobacillus oceanisediminis        |    10 |
-|                        | Geobacillus           | Geobacillus sp.                     |    37 |
-|                        |                       | Geobacillus stearothermophilus      |    16 |
-|                        |                       | Geobacillus thermodenitrificans     |    11 |
-|                        |                       | Geobacillus thermoleovorans         |    11 |
-|                        | Halalkalibacterium    | Halalkalibacterium halodurans       |    17 |
-|                        | Heyndrickxia          | Heyndrickxia coagulans              |    56 |
-|                        |                       | Heyndrickxia oleronia               |    13 |
-|                        |                       | Heyndrickxia sp.                    |    14 |
-|                        | Lysinibacillus        | Lysinibacillus capsici              |    29 |
-|                        |                       | Lysinibacillus fusiformis           |    65 |
-|                        |                       | Lysinibacillus sp.                  |    64 |
-|                        |                       | Lysinibacillus sphaericus           |    44 |
-|                        | Niallia               | Niallia circulans                   |    21 |
-|                        |                       | Niallia sp.                         |    13 |
-|                        |                       | Niallia taxi                        |    14 |
-|                        | Oceanobacillus        | Oceanobacillus sp.                  |    11 |
-|                        | Parageobacillus       | Parageobacillus thermoglucosidasius |    17 |
-|                        | Peribacillus          | Peribacillus frigoritolerans        |    61 |
-|                        |                       | Peribacillus simplex                |    29 |
-|                        |                       | Peribacillus sp.                    |    14 |
-|                        | Priestia              | Priestia aryabhattai                |    89 |
-|                        |                       | Priestia endophytica                |    12 |
-|                        |                       | Priestia filamentosa                |    10 |
-|                        |                       | Priestia flexa                      |    23 |
-|                        |                       | Priestia megaterium                 |   337 |
-|                        |                       | Priestia sp.                        |    16 |
-|                        | Psychrobacillus       | Psychrobacillus sp.                 |    14 |
-|                        | Rossellomorea         | Rossellomorea marisflavi            |    14 |
-|                        | Schinkia              | Schinkia azotoformans               |    24 |
-|                        | Shouchella            | Shouchella clausii                  |    53 |
-|                        | Terribacillus         | Terribacillus saccharophilus        |    10 |
-|                        | Virgibacillus         | Virgibacillus halodenitrificans     |    13 |
-|                        |                       | Virgibacillus pantothenticus        |    22 |
-| Paenibacillaceae       | Aneurinibacillus      | Aneurinibacillus migulanus          |    11 |
-|                        | Brevibacillus         | Brevibacillus agri                  |    24 |
-|                        |                       | Brevibacillus borstelensis          |    24 |
-|                        |                       | Brevibacillus brevis                |    15 |
-|                        |                       | Brevibacillus formosus              |    10 |
-|                        |                       | Brevibacillus laterosporus          |    49 |
-|                        |                       | Brevibacillus parabrevis            |    11 |
-|                        |                       | Brevibacillus sp.                   |    19 |
-|                        | Paenibacillus         | Paenibacillus alvei                 |    17 |
-|                        |                       | Paenibacillus amylolyticus          |    11 |
-|                        |                       | Paenibacillus apiarius              |    11 |
-|                        |                       | Paenibacillus larvae                |    58 |
-|                        |                       | Paenibacillus lautus                |    13 |
-|                        |                       | Paenibacillus odorifer              |    36 |
-|                        |                       | Paenibacillus peoriae               |    12 |
-|                        |                       | Paenibacillus polymyxa              |   110 |
-|                        |                       | Paenibacillus sp.                   |   367 |
-|                        |                       | Paenibacillus thiaminolyticus       |    26 |
-|                        |                       | Paenibacillus xylanexedens          |    10 |
-| Thermoactinomycetaceae | Thermoactinomyces     | Thermoactinomyces sp.               |    10 |
+| #family                | genus                                     | species                             | count |
+|------------------------|-------------------------------------------|-------------------------------------|------:|
+| Bacillaceae            | Aeribacillus                              | Aeribacillus sp.                    |    11 |
+|                        | Alkalihalobacillus                        | Alkalihalobacillus sp.              |    12 |
+|                        | Anoxybacillus                             | Anoxybacillus sp.                   |    23 |
+|                        | Bacillus                                  | Bacillus albus                      |    33 |
+|                        |                                           | Bacillus altitudinis                |   244 |
+|                        |                                           | Bacillus amyloliquefaciens          |   250 |
+|                        |                                           | Bacillus anthracis                  |   870 |
+|                        |                                           | Bacillus atrophaeus                 |   169 |
+|                        |                                           | Bacillus badius                     |    12 |
+|                        |                                           | Bacillus bombysepticus              |    11 |
+|                        |                                           | Bacillus cereus                     |  2361 |
+|                        |                                           | Bacillus cytotoxicus                |    43 |
+|                        |                                           | Bacillus glycinifermentans          |    15 |
+|                        |                                           | Bacillus halotolerans               |    75 |
+|                        |                                           | Bacillus haynesii                   |   133 |
+|                        |                                           | Bacillus inaquosorum                |   136 |
+|                        |                                           | Bacillus infantis                   |    11 |
+|                        |                                           | Bacillus licheniformis              |   383 |
+|                        |                                           | Bacillus mobilis                    |    88 |
+|                        |                                           | Bacillus mojavensis                 |    41 |
+|                        |                                           | Bacillus mycoides                   |   184 |
+|                        |                                           | Bacillus nitratireducens            |    19 |
+|                        |                                           | Bacillus pacificus                  |   102 |
+|                        |                                           | Bacillus paralicheniformis          |   220 |
+|                        |                                           | Bacillus paramycoides               |    18 |
+|                        |                                           | Bacillus paranthracis               |   314 |
+|                        |                                           | Bacillus pseudomycoides             |   112 |
+|                        |                                           | Bacillus pumilus                    |   272 |
+|                        |                                           | Bacillus safensis                   |   252 |
+|                        |                                           | Bacillus siamensis                  |    22 |
+|                        |                                           | Bacillus sonorensis                 |    38 |
+|                        |                                           | Bacillus spizizenii                 |   192 |
+|                        |                                           | Bacillus stercoris                  |    19 |
+|                        |                                           | Bacillus stratosphericus            |    11 |
+|                        |                                           | Bacillus subtilis                   |  1189 |
+|                        |                                           | Bacillus swezeyi                    |    14 |
+|                        |                                           | Bacillus thuringiensis              |  1175 |
+|                        |                                           | Bacillus toyonensis                 |   323 |
+|                        |                                           | Bacillus tropicus                   |    66 |
+|                        |                                           | Bacillus vallismortis               |    15 |
+|                        |                                           | Bacillus velezensis                 |  1143 |
+|                        |                                           | Bacillus wiedmannii                 |   239 |
+|                        | Caldibacillus                             | Caldibacillus thermoamylovorans     |    11 |
+|                        | Caldifermentibacillus                     | Caldifermentibacillus hisashii      |    22 |
+|                        | Cytobacillus                              | Cytobacillus firmus                 |    39 |
+|                        |                                           | Cytobacillus kochii                 |    11 |
+|                        |                                           | Cytobacillus oceanisediminis        |    13 |
+|                        |                                           | Cytobacillus sp.                    |    27 |
+|                        | Fictibacillus                             | Fictibacillus sp.                   |    14 |
+|                        | Geobacillus                               | Geobacillus sp.                     |    44 |
+|                        |                                           | Geobacillus stearothermophilus      |    17 |
+|                        |                                           | Geobacillus thermodenitrificans     |    13 |
+|                        |                                           | Geobacillus thermoleovorans         |    12 |
+|                        | Halalkalibacterium (ex Joshi et al. 2022) | Halalkalibacterium halodurans       |    16 |
+|                        | Halobacillus                              | Halobacillus sp.                    |    13 |
+|                        | Heyndrickxia                              | Heyndrickxia coagulans              |    58 |
+|                        |                                           | Heyndrickxia faecalis               |    10 |
+|                        |                                           | Heyndrickxia oleronia               |    15 |
+|                        |                                           | Heyndrickxia sp.                    |    18 |
+|                        |                                           | Heyndrickxia sporothermodurans      |    16 |
+|                        | Lysinibacillus                            | Lysinibacillus capsici              |    42 |
+|                        |                                           | Lysinibacillus fusiformis           |    82 |
+|                        |                                           | Lysinibacillus sp.                  |   115 |
+|                        |                                           | Lysinibacillus sphaericus           |    42 |
+|                        |                                           | Lysinibacillus xylanilyticus        |    14 |
+|                        | Neobacillus                               | Neobacillus sp.                     |    30 |
+|                        | Niallia                                   | Niallia circulans                   |    25 |
+|                        |                                           | Niallia sp.                         |    19 |
+|                        |                                           | Niallia taxi                        |    14 |
+|                        | Oceanobacillus                            | Oceanobacillus sp.                  |    23 |
+|                        | Parageobacillus                           | Parageobacillus thermoglucosidasius |    18 |
+|                        | Peribacillus                              | Peribacillus butanolivorans         |    21 |
+|                        |                                           | Peribacillus frigoritolerans        |    83 |
+|                        |                                           | Peribacillus simplex                |    40 |
+|                        |                                           | Peribacillus sp.                    |    47 |
+|                        | Priestia                                  | Priestia aryabhattai                |   109 |
+|                        |                                           | Priestia endophytica                |    12 |
+|                        |                                           | Priestia filamentosa                |    11 |
+|                        |                                           | Priestia flexa                      |    25 |
+|                        |                                           | Priestia megaterium                 |   372 |
+|                        |                                           | Priestia sp.                        |    34 |
+|                        | Psychrobacillus                           | Psychrobacillus sp.                 |    34 |
+|                        | Rossellomorea                             | Rossellomorea marisflavi            |    22 |
+|                        |                                           | Rossellomorea sp.                   |    13 |
+|                        | Schinkia                                  | Schinkia azotoformans               |    24 |
+|                        | Shouchella                                | Shouchella clausii                  |    57 |
+|                        | Terribacillus                             | Terribacillus saccharophilus        |    13 |
+|                        | Virgibacillus                             | Virgibacillus halodenitrificans     |    13 |
+|                        |                                           | Virgibacillus pantothenticus        |    22 |
+|                        |                                           | Virgibacillus sp.                   |    20 |
+| Paenibacillaceae       | Aneurinibacillus                          | Aneurinibacillus aneurinilyticus    |    10 |
+|                        |                                           | Aneurinibacillus migulanus          |    11 |
+|                        | Brevibacillus                             | Brevibacillus agri                  |    24 |
+|                        |                                           | Brevibacillus borstelensis          |    24 |
+|                        |                                           | Brevibacillus brevis                |    17 |
+|                        |                                           | Brevibacillus formosus              |    10 |
+|                        |                                           | Brevibacillus laterosporus          |    50 |
+|                        |                                           | Brevibacillus parabrevis            |    11 |
+|                        |                                           | Brevibacillus sp.                   |    49 |
+|                        | Cohnella                                  | Cohnella sp.                        |    17 |
+|                        | Paenibacillus                             | Paenibacillus alvei                 |    18 |
+|                        |                                           | Paenibacillus amylolyticus          |    16 |
+|                        |                                           | Paenibacillus apiarius              |    11 |
+|                        |                                           | Paenibacillus chitinolyticus        |    13 |
+|                        |                                           | Paenibacillus dendritiformis        |    11 |
+|                        |                                           | Paenibacillus glucanolyticus        |    14 |
+|                        |                                           | Paenibacillus ihbetae               |    12 |
+|                        |                                           | Paenibacillus lactis                |    13 |
+|                        |                                           | Paenibacillus larvae                |   389 |
+|                        |                                           | Paenibacillus lautus                |    13 |
+|                        |                                           | Paenibacillus macerans              |    10 |
+|                        |                                           | Paenibacillus odorifer              |    36 |
+|                        |                                           | Paenibacillus peoriae               |    11 |
+|                        |                                           | Paenibacillus polymyxa              |   108 |
+|                        |                                           | Paenibacillus sp.                   |   576 |
+|                        |                                           | Paenibacillus thiaminolyticus       |    27 |
+|                        |                                           | Paenibacillus xylanexedens          |    10 |
+| Planococcaceae         | Kurthia                                   | Kurthia gibsonii                    |    10 |
+|                        | Solibacillus                              | Solibacillus sp.                    |    28 |
+|                        | Sporosarcina                              | Sporosarcina sp.                    |    68 |
+|                        | Ureibacillus                              | Ureibacillus sp.                    |    11 |
+| Sporolactobacillaceae  | Sporolactobacillus                        | Sporolactobacillus sp.              |    10 |
+| Thermoactinomycetaceae | Thermoactinomyces                         | Thermoactinomyces sp.               |    14 |
 
 ### For *protein families*
 
@@ -837,7 +864,7 @@ cat Count/taxa.tsv |
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
-    tsv-filter -H --ge "3:10" |
+    tsv-filter -H --ge "3:20" |
     rgr md stdin --num
 
 # copy to summary/
@@ -847,58 +874,56 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 | item    | count |
 |---------|------:|
-| strain  | 13297 |
-| species |  1200 |
-| genus   |   167 |
-| family  |     8 |
+| strain  | 16423 |
+| species |  1499 |
+| genus   |   196 |
+| family  |    10 |
 | order   |     2 |
 | class   |     2 |
 
 | genus                 | #species | #strains |
 |-----------------------|---------:|---------:|
-| Aeribacillus          |        3 |       23 |
-| Alicyclobacillus      |       22 |       37 |
-| Alkalihalobacillus    |        8 |       12 |
-| Aneurinibacillus      |        7 |       32 |
-| Anoxybacillus         |       13 |       57 |
-| Bacillus              |      128 |     9556 |
-| Brevibacillus         |       30 |      205 |
-| Caldibacillus         |        2 |       17 |
-| Caldifermentibacillus |        1 |       16 |
-| Cohnella              |       31 |       35 |
-| Cytobacillus          |       19 |       89 |
-| Domibacillus          |        9 |       15 |
-| Fictibacillus         |       12 |       24 |
-| Geobacillus           |       17 |      104 |
-| Gracilibacillus       |       19 |       23 |
-| Halalkalibacter       |       10 |       14 |
-| Halobacillus          |       24 |       38 |
-| Heyndrickxia          |       13 |      110 |
-| Lederbergia           |        9 |       17 |
-| Lentibacillus         |       12 |       13 |
-| Lysinibacillus        |       27 |      211 |
-| Mesobacillus          |       10 |       20 |
-| Metabacillus          |       20 |       39 |
-| Neobacillus           |       24 |       47 |
-| Niallia               |        6 |       52 |
-| Oceanobacillus        |       30 |       63 |
-| Ornithinibacillus     |       11 |       12 |
-| Paenibacillus         |      275 |     1077 |
-| Parageobacillus       |        7 |       36 |
-| Peribacillus          |       18 |      134 |
-| Priestia              |       10 |      484 |
-| Psychrobacillus       |       10 |       27 |
-| Rossellomorea         |        7 |       29 |
-| Salimicrobium         |        7 |       10 |
-| Salipaludibacillus    |        5 |       10 |
+| Aeribacillus          |        3 |       24 |
+| Alicyclobacillus      |       28 |       56 |
+| Alkalihalobacillus    |        8 |       22 |
+| Aneurinibacillus      |        8 |       39 |
+| Anoxybacillus         |       16 |       65 |
+| Bacillus              |      133 |    10763 |
+| Brevibacillus         |       30 |      244 |
+| Caldifermentibacillus |        1 |       22 |
+| Cohnella              |       37 |       59 |
+| Cytobacillus          |       19 |      122 |
+| Fictibacillus         |       16 |       46 |
+| Geobacillus           |       17 |      117 |
+| Gracilibacillus       |       22 |       29 |
+| Halalkalibacter       |       13 |       24 |
+| Halobacillus          |       25 |       56 |
+| Heyndrickxia          |       13 |      130 |
+| Kurthia               |        8 |       28 |
+| Lederbergia           |       10 |       20 |
+| Lentibacillus         |       16 |       22 |
+| Lysinibacillus        |       28 |      301 |
+| Mesobacillus          |       11 |       27 |
+| Metabacillus          |       22 |       54 |
+| Neobacillus           |       26 |       87 |
+| Niallia               |        8 |       67 |
+| Oceanobacillus        |       35 |       94 |
+| Paenibacillus         |      310 |     1734 |
+| Parageobacillus       |        8 |       41 |
+| Peribacillus          |       19 |      221 |
+| Planococcus           |       29 |       57 |
+| Priestia              |       10 |      561 |
+| Psychrobacillus       |       10 |       48 |
+| Rossellomorea         |        7 |       49 |
 | Schinkia              |        1 |       24 |
-| Shouchella            |       11 |       67 |
-| Siminovitchia         |        6 |       18 |
-| Sporolactobacillus    |       13 |       22 |
-| Sutcliffiella         |        6 |       10 |
-| Terribacillus         |        4 |       15 |
-| Thermoactinomyces     |        5 |       23 |
-| Virgibacillus         |       25 |       74 |
+| Shouchella            |       12 |       72 |
+| Solibacillus          |        9 |       41 |
+| Sporolactobacillus    |       13 |       32 |
+| Sporosarcina          |       27 |      113 |
+| Terribacillus         |        5 |       24 |
+| Thermoactinomyces     |        5 |       27 |
+| Ureibacillus          |       13 |       34 |
+| Virgibacillus         |       34 |      108 |
 
 ## Collect proteins
 
@@ -935,50 +960,132 @@ cat Protein/counts.tsv |
 
 ```
 
-| #item      | count      |
-|------------|------------|
-| species    | 1,394      |
-| strain_sum | 15,882     |
-| total_sum  | 76,715,515 |
-| dedup_sum  | 36,090,356 |
-| rep_sum    | 12,688,227 |
+| #item      |      count |
+|------------|-----------:|
+| species    |      1,504 |
+| strain_sum |     18,102 |
+| total_sum  | 87,106,072 |
+| dedup_sum  | 42,320,155 |
+| rep_sum    | 13,931,528 |
+| fam88_sum  | 10,662,583 |
+| fam38_sum  |  7,306,809 |
 
 ## Phylogenetics with bac120
 
-### Find corresponding proteins by `hmmsearch`
+```shell
+cd ~/data/Bacillus/
+
+# The Bacteria HMM set
+nwr kb bac120 -o HMM
+cp HMM/bac120.lst HMM/marker.lst
+
+```
+
+### Find corresponding representative proteins by `hmmsearch`
 
 ```shell
 cd ~/data/Bacillus
 
-# The HMM set
-nwr kb bac120 -o HMM
-cp HMM/bac120.lst HMM/marker.lst
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/sp.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    > Protein/species-f.tsv
 
-E_VALUE=1e-20
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    rgr dedup stdin |
+while read SPECIES; do
+    if [[ -s Protein/"${SPECIES}"/bac120.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/rep_seq.fa.gz ]]; then
+        continue
+    fi
 
-# Find all genes
-for marker in $(cat HMM/marker.lst); do
-    echo >&2 "==> marker [${marker}]"
+    echo >&2 "${SPECIES}"
 
-    mkdir -p Domain/${marker}
-
-    cat Protein/species-f.tsv |
-        tsv-join -f ASSEMBLY/rep.lst -k 1 |
-        tsv-join -e -f ASSEMBLY/sp.lst -k 1 |
+    cat HMM/marker.lst |
         parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
-            if [[ ! -d ASSEMBLY/{2}/{1} ]]; then
-                exit
-            fi
-
-            gzip -dcf ASSEMBLY/{2}/{1}/*_protein.faa.gz |
-                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/${marker}.HMM - |
+            gzip -dcf Protein/${SPECIES}/rep_seq.fa.gz |
+                hmmsearch --cut_nc --noali --notextw HMM/hmm/{}.HMM - |
                 grep '>>' |
-                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\t%s\n), \$1, {1}, {2}; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), q({}), \$1; '
         " \
-        > Domain/${marker}/replace.tsv
-
-    echo >&2
+        > Protein/${SPECIES}/bac120.tsv
 done
+
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    rgr dedup stdin |
+while read SPECIES; do
+    if [[ ! -s Protein/"${SPECIES}"/bac120.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/bac120.tsv
+
+done
+
+```
+
+### Domain related protein sequences
+
+```shell
+cd ~/data/Bacillus
+
+mkdir -p Domain
+
+# each assembly
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    rgr dedup stdin |
+while read SPECIES; do
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    echo "
+        SELECT
+            seq.name,
+            asm.name,
+            rep.f3
+        FROM asm_seq
+        JOIN rep_seq ON asm_seq.seq_id = rep_seq.seq_id
+        JOIN seq ON asm_seq.seq_id = seq.id
+        JOIN rep ON rep_seq.rep_id = rep.id
+        JOIN asm ON asm_seq.asm_id = asm.id
+        WHERE 1=1
+            AND rep.f3 IS NOT NULL
+        ORDER BY
+            asm.name,
+            rep.f3
+        " |
+        sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
+        > Protein/${SPECIES}/seq_asm_f3.tsv
+
+    hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
+            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+            rgr dedup stdin
+        )
+done |
+    hnsm dedup stdin |
+    hnsm gz stdin -o Domain/bac120.fa
+
+fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
+    > Domain/seq_asm_f3.tsv
+
+cat Domain/seq_asm_f3.tsv |
+    tsv-join -e -d 2 -f summary/redundant.lst -k 1 |
+    tsv-join -e -d 2 -f ASSEMBLY/sp.lst -k 1 \
+    > Domain/seq_asm_f3.NR.tsv
 
 ```
 
@@ -987,58 +1094,23 @@ done
 ```shell
 cd ~/data/Bacillus
 
+# Extract proteins
 cat HMM/marker.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        cat Domain/{}/replace.tsv |
-            wc -l
-    ' |
-    tsv-summarize --quantile 1:0.25,0.5,0.75
-#1231    1242    1985.25
-
-cat HMM/marker.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        echo {}
-        cat Domain/{}/replace.tsv |
-            wc -l
-    ' |
-    paste - - |
-    tsv-filter --invert --ge 2:1000 --le 2:1400 |
-    cut -f 1 \
-    > Domain/marker.omit.lst
-
-# Extract sequences
-# Multiple copies slow down the alignment process
-cat Protein/species-f.tsv |
-    tsv-join -f ASSEMBLY/rep.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/sp.lst -k 1 |
-    tsv-select -f 2 |
-    rgr dedup stdin |
-while read SPECIES; do
-    if [[ ! -f Protein/"${SPECIES}"/pro.fa.gz ]]; then
-        continue
-    fi
-
-    cat Protein/"${SPECIES}"/pro.fa.gz
-done \
-    > Domain/all.uniq.fa.gz
-
-cat HMM/marker.lst |
-    grep -v -Fx -f Domain/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo >&2 "==> marker [{}]"
 
-        cat Domain/{}/replace.tsv \
-            > Domain/{}/{}.replace.tsv
+        mkdir -p Domain/{}
 
-        faops some Domain/all.uniq.fa.gz <(
-            cat Domain/{}/{}.replace.tsv |
-                cut -f 1 |
+        hnsm some Domain/bac120.fa.gz <(
+            cat Domain/seq_asm_f3.tsv |
+                tsv-filter --str-eq "3:{}" |
+                tsv-select -f 1 |
                 rgr dedup stdin
-            ) stdout \
+            ) \
             > Domain/{}/{}.pro.fa
     '
 
-# Align each markers with muscle
+# Align each marker
 cat HMM/marker.lst |
     parallel --no-run-if-empty --linebuffer -k -j 8 '
         echo >&2 "==> marker [{}]"
@@ -1053,7 +1125,8 @@ cat HMM/marker.lst |
         mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
     '
 
-for marker in $(cat HMM/marker.lst); do
+cat HMM/marker.lst |
+while read marker; do
     echo >&2 "==> marker [${marker}]"
     if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
@@ -1064,17 +1137,18 @@ for marker in $(cat HMM/marker.lst); do
         continue
     fi
 
+    # Only NR strains
     # 1 name to many names
-    cat Domain/${marker}/${marker}.replace.tsv |
+    cat Domain/seq_asm_f3.NR.tsv |
+        tsv-filter --str-eq "3:${marker}" |
         tsv-select -f 1-2 |
-        parallel --no-run-if-empty --linebuffer -k -j 4 "
-            faops replace -s Domain/${marker}/${marker}.aln.fa <(echo {}) stdout
-        " \
+        hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
         > Domain/${marker}/${marker}.replace.fa
 done
 
 # Concat marker genes
-for marker in $(cat HMM/marker.lst); do
+cat HMM/marker.lst |
+while read marker; do
     if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
         continue
     fi
@@ -1082,35 +1156,30 @@ for marker in $(cat HMM/marker.lst); do
         continue
     fi
 
-    # sequences in one line
-    faops filter -l 0 Domain/${marker}/${marker}.replace.fa stdout
+    cat Domain/${marker}/${marker}.replace.fa
 
     # empty line for .fas
     echo
 done \
     > Domain/bac120.aln.fas
 
-cat Protein/species-f.tsv |
-    tsv-join -f ASSEMBLY/rep.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/sp.lst -k 1 |
-    cut -f 1 |
+cat Domain/seq_asm_f3.NR.tsv |
+    cut -f 2 |
+    rgr dedup stdin |
+    sort |
     fasops concat Domain/bac120.aln.fas stdin -o Domain/bac120.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in Domain/bac120.aln.fa -out Domain/bac120.trim.fa -automated1
 
-faops size Domain/bac120.*.fa |
+hnsm size Domain/bac120.*.fa |
     rgr dedup stdin -f 2 |
     cut -f 2
-#34569
-#19138
+#98638
+#43956
 
 # To make it faster
 FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
-
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 Domain/bac120.trim.newick |
-    rsvg-convert -o tree/Bacillus.bac120.png
 
 ```
 
@@ -1130,8 +1199,9 @@ nwr pl-condense --map -r order -r family -r genus \
 
 mv condensed.tsv bac120.condense.tsv
 
-# png
-nw_display -s -b 'visibility:hidden' -w 1200 -v 20 bac120.condensed.newick |
-    rsvg-convert -o Bacillus.bac120.png
+# svg
+nwr topo --bl bac120.condensed.newick | # remove comments
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+    > Bacillus.bac120.svg
 
 ```
