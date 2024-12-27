@@ -593,13 +593,15 @@ nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
 
 nwr pl-condense --map -r species \
     minhash.reroot.newick ../MinHash/species.tsv |
+    nwr comment stdin -r "S=" |
+    nwr comment stdin -r "member=" |
+    nwr comment stdin -r "^\d+$" |
     nwr order stdin --nd --an \
     > minhash.condensed.newick
 
 mv condensed.tsv minhash.condensed.tsv
 
-nwr topo --bl minhash.condensed.newick | # remove comments
-    nwr tex stdin --bl -o Trichoderma.minhash.tex
+nwr tex minhash.condensed.newick --bl -o Trichoderma.minhash.tex
 
 tectonic Trichoderma.minhash.tex
 
