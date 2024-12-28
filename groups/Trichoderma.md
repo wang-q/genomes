@@ -20,6 +20,7 @@ Genus *Trichoderma* as an example.
     * [For *protein families*](#for-protein-families)
   * [Collect proteins](#collect-proteins)
   * [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
+  * [Phylogenetics with BUSCO](#phylogenetics-with-busco)
     * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
     * [Domain related protein sequences](#domain-related-protein-sequences)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
@@ -280,11 +281,12 @@ cat raw.tsv |
 #174 lines, 7 fields
 
 # Create abbr.
+nwr kb abbr > abbr.pl
 cat raw.tsv |
     grep -v '^#' |
     rgr dedup stdin |
     tsv-select -f 1-6 |
-    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    perl abbr.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
     perl -nl -a -F"," -e '
         BEGIN{my %seen};
@@ -593,8 +595,7 @@ nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
 
 nwr pl-condense --map -r species \
     minhash.reroot.newick ../MinHash/species.tsv |
-    nwr comment stdin -r "S=" |
-    nwr comment stdin -r "member=" |
+    nwr comment stdin -r "(S|member)=" |
     nwr comment stdin -r "^\d+$" |
     nwr order stdin --nd --an \
     > minhash.condensed.newick
@@ -789,7 +790,7 @@ cat Protein/counts.tsv |
 | dedup_sum  | 363,402 |
 | rep_sum    | 284,914 |
 | fam88_sum  | 258,055 |
-| fam38_sum  | 220,021 |
+| fam38_sum  | 219,984 |
 
 ## Phylogenetics with fungi61
 
@@ -804,29 +805,40 @@ cp HMM/fungi61.lst HMM/marker.lst
 
 ```
 
+## Phylogenetics with BUSCO
+
+```shell
+cd ~/data/Trichoderma/
+
+rm -fr BUSCO
+
+curl -L https://busco-data.ezlab.org/v5/data/lineages/fungi_odb10.2024-01-08.tar.gz |
+    tar xvz
+mv fungi_odb10/ BUSCO
+
+#curl -L https://busco-data.ezlab.org/v5/data/lineages/ascomycota_odb10.2024-01-08.tar.gz |
+#    tar xvz
+#mv ascomycota_odb10/ BUSCO
+
+```
+
 ### Find corresponding representative proteins by `hmmsearch`
-
-* 61 fungal marker genes
-    * Ref.: https://doi.org/10.1093/nar/gkac894
-
-* The `E_VALUE` was manually adjusted to 1e-20 to reach a balance between sensitivity and
-  speciality.
 
 ```shell
 cd ~/data/Trichoderma
-
-E_VALUE=1e-20
 
 cat Protein/species.tsv |
     tsv-join -f ASSEMBLY/pass.lst -k 1 |
     tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
     > Protein/species-f.tsv
 
+#fd --full-path "Protein/.+/busco.tsv" -X rm
+
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
     rgr dedup stdin |
 while read SPECIES; do
-    if [[ -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
+    if [[ -s Protein/"${SPECIES}"/busco.tsv ]]; then
         continue
     fi
     if [[ ! -f Protein/"${SPECIES}"/rep_seq.fa.gz ]]; then
@@ -835,37 +847,43 @@ while read SPECIES; do
 
     echo >&2 "${SPECIES}"
 
-    cat HMM/marker.lst |
-        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
+    cat BUSCO/scores_cutoff |
+        parallel --colsep '\s+' --no-run-if-empty --linebuffer -k -j 4 "
             gzip -dcf Protein/${SPECIES}/rep_seq.fa.gz |
-                hmmsearch -E ${E_VALUE} --domE ${E_VALUE} --noali --notextw HMM/hmm/{}.HMM - |
+                hmmsearch -T {2} --domT {2} --noali --notextw BUSCO/hmms/{1}.hmm - |
                 grep '>>' |
-                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), q({}), \$1; '
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), q({1}), \$1; '
         " \
-        > Protein/${SPECIES}/fungi61.tsv
+        > Protein/${SPECIES}/busco.tsv
 done
 
-fd --full-path "Protein/.+/fungi61.tsv" -X cat |
+fd --full-path "Protein/.+/busco.tsv" -X cat |
     tsv-summarize --group-by 1 --count |
     tsv-summarize --quantile 2:0.25,0.5,0.75
-#23      25      55
+#23      24      26
 
-# There are 461 species and 616 strains
+# There are 21 species and 39 strains
 fd --full-path "Protein/.+/fungi61.tsv" -X cat |
     tsv-summarize --group-by 1 --count |
     tsv-filter --invert --ge 2:20 --le 2:30 |
     cut -f 1 \
     > Protein/marker.omit.lst
 
-wc -l HMM/marker.lst Protein/marker.omit.lst
-# 61 HMM/marker.lst
-# 27 Protein/marker.omit.lst
+cat BUSCO/scores_cutoff |
+    parallel --colsep '\s+' --no-run-if-empty --linebuffer -k -j 1 "
+        echo {1}
+    " \
+    > Protein/marker.lst
+
+wc -l Protein/marker.lst Protein/marker.omit.lst
+# 758 Protein/marker.lst
+#   0 Protein/marker.omit.lst
 
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
     rgr dedup stdin |
 while read SPECIES; do
-    if [[ ! -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
+    if [[ ! -s Protein/"${SPECIES}"/busco.tsv ]]; then
         continue
     fi
     if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
@@ -875,11 +893,11 @@ while read SPECIES; do
     echo >&2 "${SPECIES}"
 
     # single copy
-    cat Protein/"${SPECIES}"/fungi61.tsv |
+    cat Protein/"${SPECIES}"/busco.tsv |
         grep -v -Fw -f Protein/marker.omit.lst \
-        > Protein/"${SPECIES}"/fungi61.sc.tsv
+        > Protein/"${SPECIES}"/busco.sc.tsv
 
-    nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/fungi61.sc.tsv
+    nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/busco.sc.tsv
 
 done
 
@@ -928,7 +946,7 @@ while read SPECIES; do
         )
 done |
     hnsm dedup stdin |
-    hnsm gz stdin -o Domain/fungi61.fa
+    hnsm gz stdin -o Domain/busco.fa
 
 fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
@@ -945,14 +963,14 @@ cat Domain/seq_asm_f3.tsv |
 cd ~/data/Trichoderma
 
 # Extract proteins
-cat HMM/marker.lst |
+cat Protein/marker.lst |
     grep -v -Fw -f Protein/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo >&2 "==> marker [{}]"
 
         mkdir -p Domain/{}
 
-        hnsm some Domain/fungi61.fa.gz <(
+        hnsm some Domain/busco.fa.gz <(
             cat Domain/seq_asm_f3.tsv |
                 tsv-filter --str-eq "3:{}" |
                 tsv-select -f 1 |
@@ -962,9 +980,9 @@ cat HMM/marker.lst |
     '
 
 # Align each marker
-cat HMM/marker.lst |
+cat Protein/marker.lst |
     grep -v -Fw -f Protein/marker.omit.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 8 '
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
         echo >&2 "==> marker [{}]"
         if [ ! -s Domain/{}/{}.pro.fa ]; then
             exit
@@ -977,7 +995,7 @@ cat HMM/marker.lst |
         mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
     '
 
-cat HMM/marker.lst |
+cat Protein/marker.lst |
     grep -v -Fw -f Protein/marker.omit.lst |
 while read marker; do
     echo >&2 "==> marker [${marker}]"
@@ -1000,7 +1018,7 @@ while read marker; do
 done
 
 # Concat marker genes
-cat HMM/marker.lst |
+cat Protein/marker.lst |
     grep -v -Fw -f Protein/marker.omit.lst |
 while read marker; do
     if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
@@ -1015,25 +1033,25 @@ while read marker; do
     # empty line for .fas
     echo
 done \
-    > Domain/fungi61.aln.fas
+    > Domain/busco.aln.fas
 
 cat Domain/seq_asm_f3.NR.tsv |
     cut -f 2 |
     rgr dedup stdin |
     sort |
-    fasops concat Domain/fungi61.aln.fas stdin -o Domain/fungi61.aln.fa
+    fasops concat Domain/busco.aln.fas stdin -o Domain/busco.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
-trimal -in Domain/fungi61.aln.fa -out Domain/fungi61.trim.fa -automated1
+trimal -in Domain/busco.aln.fa -out Domain/busco.trim.fa -automated1
 
-hnsm size Domain/fungi61.*.fa |
+hnsm size Domain/busco.*.fa |
     rgr dedup stdin -f 2 |
     cut -f 2
-#31562
-#20070
+#762750
+#399438
 
 # To make it faster
-FastTree -fastest -noml Domain/fungi61.trim.fa > Domain/fungi61.trim.newick
+FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick
 
 ```
 
@@ -1042,21 +1060,22 @@ FastTree -fastest -noml Domain/fungi61.trim.fa > Domain/fungi61.trim.newick
 ```shell
 cd ~/data/Trichoderma/tree
 
-nw_reroot  ../Domain/fungi61.trim.newick Sa_cer_S288C |
+nwr reroot  ../Domain/busco.trim.newick -n Sa_cer_S288C |
     nwr order stdin --nd --an \
-    > fungi61.reroot.newick
+    > busco.reroot.newick
 
 nwr pl-condense --map -r species \
-    fungi61.reroot.newick ../Count/species.tsv |
+    busco.reroot.newick ../Count/species.tsv |
+    nwr comment stdin -r "(S|member)=" |
+    nwr comment stdin -r "^\d+$" |
     nwr order stdin --nd --an \
-    > fungi61.condensed.newick
+    > busco.condensed.newick
 
-mv condensed.tsv fungi61.condense.tsv
+mv condensed.tsv busco.condense.tsv
 
-nwr topo --bl fungi61.condensed.newick | # remove comments
-    nwr tex stdin --bl -o Trichoderma.fungi61.tex
+nwr tex minhash.condensed.newick --bl -o Trichoderma.busco.tex
 
-tectonic Trichoderma.fungi61.tex
+tectonic Trichoderma.busco.tex
 
 ```
 
