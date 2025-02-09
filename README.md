@@ -1,19 +1,18 @@
 # Genomes
 
-<!-- toc -->
-
-- [`date`](#date)
-- [Software](#software)
+<!-- TOC -->
+* [Genomes](#genomes)
+  * [`date`](#date)
+  * [Software](#software)
     * [Install `nwr` and initiate local databases](#install-nwr-and-initiate-local-databases)
     * [Packages managed by Homebrew](#packages-managed-by-homebrew)
     * [Other Packages](#other-packages)
-- [Strain info](#strain-info)
+  * [Strain info](#strain-info)
     * [NCBI statistics](#ncbi-statistics)
-- [Download all valid Bacteria and Archaea genomes](#download-all-valid-bacteria-and-archaea-genomes)
-- [Prokaryote groups](#prokaryote-groups)
-- [Eukaryote groups](#eukaryote-groups)
-
-<!-- tocstop -->
+  * [Download all valid Bacteria and Archaea genomes](#download-all-valid-bacteria-and-archaea-genomes)
+  * [Prokaryote groups](#prokaryote-groups)
+  * [Eukaryote groups](#eukaryote-groups)
+<!-- TOC -->
 
 ## `date`
 
