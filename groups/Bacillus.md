@@ -1,23 +1,28 @@
 # *Bacillus*
 
-<!-- toc -->
-
-- [Strain info](#strain-info)
+<!-- TOC -->
+* [*Bacillus*](#bacillus)
+  * [Strain info](#strain-info)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
-- [Download all assemblies](#download-all-assemblies)
+  * [Download all assemblies](#download-all-assemblies)
     * [Create assembly.tsv](#create-assemblytsv)
     * [Count before download](#count-before-download)
     * [Download and check](#download-and-check)
     * [Rsync to hpcc](#rsync-to-hpcc)
-- [BioSample](#biosample)
-- [MinHash](#minhash)
+  * [BioSample](#biosample)
+  * [MinHash](#minhash)
     * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-- [Count valid species and strains](#count-valid-species-and-strains)
+  * [Count valid species and strains](#count-valid-species-and-strains)
     * [For *genomic alignments*](#for-genomic-alignments)
     * [For *protein families*](#for-protein-families)
-
-<!-- tocstop -->
+  * [Collect proteins](#collect-proteins)
+  * [Phylogenetics with bac120](#phylogenetics-with-bac120)
+    * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
+    * [Domain related protein sequences](#domain-related-protein-sequences)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
+<!-- TOC -->
 
 ## Strain info
 
