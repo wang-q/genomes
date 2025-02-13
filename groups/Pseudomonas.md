@@ -1,37 +1,36 @@
 # *Pseudomonas* HGT
 
-<!-- toc -->
-
-- [Strain info](#strain-info)
+<!-- TOC -->
+* [*Pseudomonas* HGT](#pseudomonas-hgt)
+  * [Strain info](#strain-info)
     * [Symlink](#symlink)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
-- [All assemblies](#all-assemblies)
-    * [List strains of the target genus and remove abnormal strains](#list-strains-of-the-target-genus-and-remove-abnormal-strains)
-    * [Extract from `../Bacteria`](#extract-from-bacteria)
+  * [All assemblies](#all-assemblies)
+    * [Extract from `../Bacteria` and create assembly.tsv](#extract-from-bacteria-and-create-assemblytsv)
+    * [Count `assembly.tsv`](#count-assemblytsv)
+  * [MinHash](#minhash)
+  * [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments* and *protein families*](#for-genomic-alignments-and-protein-families)
     * [Count strains - Genus](#count-strains---genus)
     * [Typical strains](#typical-strains)
     * [Rsync to hpcc](#rsync-to-hpcc)
-- [NCBI taxonomy](#ncbi-taxonomy)
-- [Collect proteins](#collect-proteins)
-    * [`all.pro.fa`](#allprofa)
-    * [`all.replace.fa`](#allreplacefa)
-    * [`all.info.tsv`](#allinfotsv)
-- [Phylogenetics with bac120](#phylogenetics-with-bac120)
-    * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
+  * [Collect proteins](#collect-proteins)
+  * [Phylogenetics with bac120](#phylogenetics-with-bac120)
+    * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
+    * [Domain related protein sequences](#domain-related-protein-sequences)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-    * [Tweak the concat tree](#tweak-the-concat-tree)
-- [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-- [Count members of protein families](#count-members-of-protein-families)
+    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
+  * [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
+  * [Count members of protein families](#count-members-of-protein-families)
     * [Pseudomonas](#pseudomonas)
     * [P. aeruginosa](#p-aeruginosa)
     * [P. putida](#p-putida)
     * [Acinetobacter](#acinetobacter)
     * [A. baumannii](#a-baumannii)
-- [Protein families](#protein-families)
+  * [Protein families](#protein-families)
     * [IPR007416 - YggL 50S ribosome-binding protein](#ipr007416---yggl-50s-ribosome-binding-protein)
-
-<!-- tocstop -->
+<!-- TOC -->
 
 ## Strain info
 
