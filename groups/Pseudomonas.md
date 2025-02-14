@@ -59,7 +59,7 @@ Pseudomonas into several genera, a change that has been accepted by NCBI.
 
 ### Symlink
 
-```shell
+```bash
 mkdir -p ~/data/Pseudomonas
 cd ~/data/Pseudomonas
 
@@ -73,7 +73,7 @@ ln -s ../Bacteria/STRAINS STRAINS
 
 ### List all ranks
 
-```shell
+```bash
 mkdir -p ~/data/Pseudomonas
 cd ~/data/Pseudomonas
 
@@ -127,7 +127,7 @@ nwr member Pseudomonas Acinetobacter -r "species group" -r "species subgroup" |
     * Pseudomonas aeruginosa
     * Acinetobacter baumannii
 
-```shell
+```bash
 mkdir -p ~/data/Pseudomonas/summary
 cd ~/data/Pseudomonas/summary
 
@@ -210,7 +210,7 @@ cat species.count.tsv |
 
 ### Extract from `../Bacteria` and create assembly.tsv
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 mkdir -p summary
@@ -263,7 +263,7 @@ cat ../Bacteria/summary/biosample.tsv |
 
 * `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 nwr template summary/assembly.tsv \
@@ -337,7 +337,7 @@ cat Count/genus.before.tsv |
 
 ## MinHash
 
-```shell
+```bash
 cd ~/data/Pseudomonas/
 
 # relaxed thresholds
@@ -379,7 +379,7 @@ cat MinHash/abnormal.lst | wc -l
 
 ### For *genomic alignments* and *protein families*
 
-```shell
+```bash
 cd ~/data/Pseudomonas/
 
 nwr template summary/assembly.tsv \
@@ -493,7 +493,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 ### Count strains - Genus
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 cat Count/genus.lst |
@@ -588,7 +588,7 @@ cat Count/genus.lst |
         * Assembly level: Scaffold
     * AB5075-VUB https://www.ncbi.nlm.nih.gov/assembly/GCF_016919505.2
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 # Typical strains
@@ -640,7 +640,7 @@ rsync -avP \
 
 ## Collect proteins
 
-```shell
+```bash
 cd ~/data/Pseudomonas/
 
 ulimit -n `ulimit -Hn`
@@ -685,7 +685,7 @@ cat Protein/counts.tsv |
 
 ## Phylogenetics with bac120
 
-```shell
+```bash
 cd ~/data/Pseudomonas/
 
 # The Bacteria HMM set
@@ -696,7 +696,7 @@ cp HMM/bac120.lst HMM/marker.lst
 
 ### Find corresponding representative proteins by `hmmsearch`
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 cat Protein/species.tsv |
@@ -749,7 +749,7 @@ done
 
 ### Domain related protein sequences
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 mkdir -p Domain
@@ -804,7 +804,7 @@ cat Domain/seq_asm_f3.tsv |
 
 ### Align and concat marker genes to create species tree
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 # Extract proteins
@@ -898,7 +898,7 @@ FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
 
 ### Condense branches in the protein tree
 
-```shell
+```bash
 mkdir -p ~/data/Pseudomonas/tree
 cd ~/data/Pseudomonas/tree
 
@@ -922,7 +922,7 @@ nwr topo --bl bac120.condensed.newick | # remove comments
 
 ## InterProScan on all proteins of representative and typical strains
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 cat summary/NR.lst summary/reference.lst summary/typical.manual.lst |
@@ -1054,7 +1054,7 @@ done
 
 ### Pseudomonas
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 mkdir -p count
@@ -1121,7 +1121,7 @@ cat count/Pseudomonas.family.tsv |
 
 ### P. aeruginosa
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 cat count/Pseudomonas.taxon.tsv |
@@ -1194,7 +1194,7 @@ cat count/Paer.n.tsv |
 
 ### P. putida
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 cat count/Pseudomonas.taxon.tsv |
@@ -1248,7 +1248,7 @@ cat count/Pput.n.tsv |
 
 ### Acinetobacter
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 mkdir -p count
@@ -1315,7 +1315,7 @@ cat count/Acinetobacter.family.tsv |
 
 ### A. baumannii
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 cat count/Acinetobacter.taxon.tsv |
@@ -1374,7 +1374,7 @@ cat count/Abau.n.tsv |
 * Pfam:     PF04320 - YggL_50S_bp
 * PANTHER:  PTHR38778 - CYTOPLASMIC PROTEIN-RELATED (PTHR38778)
 
-```shell
+```bash
 cd ~/data/Pseudomonas
 
 cat STRAINS/Pseudom_aeruginosa_PAO1/*.tsv |
