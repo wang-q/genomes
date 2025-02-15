@@ -14,6 +14,11 @@
     * [For *genomic alignments* and *protein families*](#for-genomic-alignments-and-protein-families)
     * [Count strains - Genus](#count-strains---genus)
   * [Collect proteins](#collect-proteins)
+  * [Phylogenetics with bac120](#phylogenetics-with-bac120)
+    * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
+    * [Domain related protein sequences](#domain-related-protein-sequences)
+    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+    * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
 <!-- TOC -->
 
 ## Strain info
@@ -643,7 +648,6 @@ cat Count/genus.lst |
 | 158851  | Trabulsiella              | 1        | 8        | 4   |
 | 158876  | Yokenella                 | 3        | 14       | 4   |
 
-
 ## Collect proteins
 
 ```bash
@@ -676,5 +680,251 @@ cat Protein/counts.tsv |
     datamash transpose |
     (echo -e "#item\tcount" && cat) |
     rgr md stdin --fmt
+
+```
+
+| #item      |       count |
+|------------|------------:|
+| species    |         170 |
+| strain_sum |      91,356 |
+| total_sum  | 440,702,715 |
+| dedup_sum  |  15,979,554 |
+| rep_sum    |   4,086,492 |
+| fam88_sum  |   2,453,485 |
+| fam38_sum  |   1,752,300 |
+
+## Phylogenetics with bac120
+
+```bash
+cd ~/data/Escherichia/
+
+# The Bacteria HMM set
+nwr kb bac120 -o HMM
+cp HMM/bac120.lst HMM/marker.lst
+
+```
+
+### Find corresponding representative proteins by `hmmsearch`
+
+```bash
+cd ~/data/Escherichia
+
+cat Protein/species.tsv |
+    tsv-join -f ASSEMBLY/pass.lst -k 1 |
+    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    > Protein/species-f.tsv
+
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    rgr dedup stdin |
+while read SPECIES; do
+    if [[ -s Protein/"${SPECIES}"/bac120.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/rep_seq.fa.gz ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    cat HMM/marker.lst |
+        parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 8 "
+            gzip -dcf Protein/${SPECIES}/rep_seq.fa.gz |
+                hmmsearch --cut_nc --noali --notextw HMM/hmm/{}.HMM - |
+                grep '>>' |
+                perl -nl -e ' m(>>\s+(\S+)) and printf qq(%s\t%s\n), q({}), \$1; '
+        " \
+        > Protein/${SPECIES}/bac120.tsv
+done
+
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    rgr dedup stdin |
+while read SPECIES; do
+    if [[ ! -s Protein/"${SPECIES}"/bac120.tsv ]]; then
+        continue
+    fi
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/bac120.tsv
+
+done
+
+```
+
+### Domain related protein sequences
+
+```bash
+cd ~/data/Escherichia
+
+mkdir -p Domain
+
+# each assembly
+cat Protein/species-f.tsv |
+    tsv-select -f 2 |
+    rgr dedup stdin |
+while read SPECIES; do
+    if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
+        continue
+    fi
+
+    echo >&2 "${SPECIES}"
+
+    echo "
+        SELECT
+            seq.name,
+            asm.name,
+            rep.f3
+        FROM asm_seq
+        JOIN rep_seq ON asm_seq.seq_id = rep_seq.seq_id
+        JOIN seq ON asm_seq.seq_id = seq.id
+        JOIN rep ON rep_seq.rep_id = rep.id
+        JOIN asm ON asm_seq.asm_id = asm.id
+        WHERE 1=1
+            AND rep.f3 IS NOT NULL
+        ORDER BY
+            asm.name,
+            rep.f3
+        " |
+        sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
+        > Protein/${SPECIES}/seq_asm_f3.tsv
+
+    hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
+            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+            rgr dedup stdin
+        )
+done |
+    hnsm dedup stdin |
+    hnsm gz stdin -o Domain/bac120.fa
+
+fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
+    > Domain/seq_asm_f3.tsv
+
+cat Domain/seq_asm_f3.tsv |
+    tsv-join -e -d 2 -f summary/redundant.lst -k 1 |
+    tsv-join -e -d 2 -f ASSEMBLY/sp.lst -k 1 \
+    > Domain/seq_asm_f3.NR.tsv
+
+```
+
+### Align and concat marker genes to create species tree
+
+```bash
+cd ~/data/Escherichia
+
+# Extract proteins
+cat HMM/marker.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        echo >&2 "==> marker [{}]"
+
+        mkdir -p Domain/{}
+
+        hnsm some Domain/bac120.fa.gz <(
+            cat Domain/seq_asm_f3.tsv |
+                tsv-filter --str-eq "3:{}" |
+                tsv-select -f 1 |
+                rgr dedup stdin
+            ) \
+            > Domain/{}/{}.pro.fa
+    '
+
+# Align each marker
+cat HMM/marker.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 8 '
+        echo >&2 "==> marker [{}]"
+        if [ ! -s Domain/{}/{}.pro.fa ]; then
+            exit
+        fi
+        if [ -s Domain/{}/{}.aln.fa ]; then
+            exit
+        fi
+
+#        muscle -quiet -in Domain/{}/{}.pro.fa -out Domain/{}/{}.aln.fa
+        mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
+    '
+
+cat HMM/marker.lst |
+while read marker; do
+    echo >&2 "==> marker [${marker}]"
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+
+    # sometimes `muscle` can not produce alignments
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    # Only NR strains
+    # 1 name to many names
+    cat Domain/seq_asm_f3.NR.tsv |
+        tsv-filter --str-eq "3:${marker}" |
+        tsv-select -f 1-2 |
+        hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
+        > Domain/${marker}/${marker}.replace.fa
+done
+
+# Concat marker genes
+cat HMM/marker.lst |
+while read marker; do
+    if [ ! -s Domain/${marker}/${marker}.pro.fa ]; then
+        continue
+    fi
+    if [ ! -s Domain/${marker}/${marker}.aln.fa ]; then
+        continue
+    fi
+
+    cat Domain/${marker}/${marker}.replace.fa
+
+    # empty line for .fas
+    echo
+done \
+    > Domain/bac120.aln.fas
+
+cat Domain/seq_asm_f3.NR.tsv |
+    cut -f 2 |
+    rgr dedup stdin |
+    sort |
+    fasops concat Domain/bac120.aln.fas stdin -o Domain/bac120.aln.fa
+
+# Trim poorly aligned regions with `TrimAl`
+trimal -in Domain/bac120.aln.fa -out Domain/bac120.trim.fa -automated1
+
+hnsm size Domain/bac120.*.fa |
+    rgr dedup stdin -f 2 |
+    cut -f 2
+#71124
+#46096
+
+# To make it faster
+FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
+
+```
+
+### Condense branches in the protein tree
+
+```bash
+mkdir -p ~/data/Escherichia/tree
+cd ~/data/Escherichia/tree
+
+cat ../Domain/bac120.trim.newick |
+    nwr order stdin --nd --an \
+    > bac120.order.newick
+
+nwr pl-condense --map -r species \
+    bac120.order.newick ../Count/species.tsv |
+    nwr order stdin --nd --an \
+    > bac120.condensed.newick
+
+mv condensed.tsv bac120.condense.tsv
+
+# svg
+nwr topo --bl bac120.condensed.newick | # remove comments
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+    > Escherichia.bac120.svg
 
 ```
