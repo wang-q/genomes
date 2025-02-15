@@ -10,6 +10,10 @@
     * [Extract from `../Bacteria` and create assembly.tsv](#extract-from-bacteria-and-create-assemblytsv)
     * [Count `assembly.tsv`](#count-assemblytsv)
   * [MinHash](#minhash)
+  * [Count valid species and strains](#count-valid-species-and-strains)
+    * [For *genomic alignments* and *protein families*](#for-genomic-alignments-and-protein-families)
+    * [Count strains - Genus](#count-strains---genus)
+  * [Collect proteins](#collect-proteins)
 <!-- TOC -->
 
 ## Strain info
@@ -415,13 +419,262 @@ find MinHash -name "redundant.lst" |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#  1161 summary/NR.lst
-#  3153 summary/redundant.lst
+#   2217 summary/NR.lst
+#  89115 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#16
+#2
+
+```
+
+## Count valid species and strains
+
+### For *genomic alignments* and *protein families*
+
+```bash
+cd ~/data/Escherichia/
+
+nwr template summary/assembly.tsv \
+    --count \
+    --not-in MinHash/abnormal.lst \
+    --rank order --rank genus \
+    --lineage genus
+
+# strains.taxon.tsv
+bash Count/strains.sh
+
+# .lst and .count.tsv
+bash Count/rank.sh
+
+cat Count/order.count.tsv |
+    tsv-filter -H --ge "3:2" |
+    rgr md stdin --fmt
+
+cat Count/genus.count.tsv |
+    tsv-filter -H --ge "3:2" |
+    rgr md stdin --fmt
+
+# Can accept N_COUNT
+bash Count/lineage.sh 50
+
+cat Count/lineage.count.tsv |
+    rgr md stdin --fmt
+
+# copy to summary/
+cp Count/strains.taxon.tsv summary/genome.taxon.tsv
+
+```
+
+| order            | #species | #strains |
+|------------------|---------:|---------:|
+| Bacillales       |        5 |        5 |
+| Bacteroidales    |        2 |        2 |
+| Enterobacterales |      150 |   91,334 |
+| Lactobacillales  |        3 |        3 |
+| Mycobacteriales  |        2 |        2 |
+
+| genus             | #species | #strains |
+|-------------------|---------:|---------:|
+| Atlantibacter     |        2 |      116 |
+| Bacillus          |        3 |        3 |
+| Buttiauxella      |        5 |       16 |
+| Cedecea           |        3 |       18 |
+| Citrobacter       |       18 |    2,031 |
+| Cronobacter       |        7 |      744 |
+| Cronobacter       |        7 |      744 |
+| Dryocola          |        1 |        3 |
+| Enterobacter      |       27 |    6,167 |
+| Escherichia       |        6 |   39,441 |
+| Franconibacter    |        3 |       14 |
+| Klebsiella        |       14 |   25,695 |
+| Kluyvera          |        6 |       53 |
+| Kosakonia         |        7 |       73 |
+| Leclercia         |        3 |       88 |
+| Lelliottia        |        4 |       41 |
+| Mangrovibacter    |        1 |        3 |
+| Phytobacter       |        3 |       23 |
+| Plesiomonas       |        1 |       48 |
+| Pluralibacter     |        2 |       30 |
+| Pseudenterobacter |        1 |        4 |
+| Pseudescherichia  |        1 |       11 |
+| Pseudocitrobacter |        1 |        2 |
+| Raoultella        |        4 |      311 |
+| Salmonella        |        2 |   14,009 |
+| Scandinavium      |        4 |        9 |
+| Shigella          |        4 |    2,291 |
+| Shimwellia        |        1 |        4 |
+| Siccibacter       |        2 |       10 |
+| Streptococcus     |        2 |        2 |
+| Superficieibacter |        1 |        2 |
+| Tenebrionicola    |        1 |        2 |
+| Trabulsiella      |        1 |        8 |
+| Yokenella         |        1 |       14 |
+
+| #genus        | species                    |  count |
+|---------------|----------------------------|-------:|
+| Atlantibacter | Atlantibacter hermannii    |    104 |
+| Citrobacter   | Citrobacter amalonaticus   |     77 |
+|               | Citrobacter braakii        |    189 |
+|               | Citrobacter freundii       |  1,083 |
+|               | Citrobacter koseri         |    186 |
+|               | Citrobacter portucalensis  |    268 |
+|               | Citrobacter werkmanii      |     64 |
+| Cronobacter   | Cronobacter dublinensis    |     66 |
+|               | Cronobacter malonaticus    |     87 |
+|               | Cronobacter sakazakii      |    538 |
+| Enterobacter  | Enterobacter asburiae      |    468 |
+|               | Enterobacter bugandensis   |    220 |
+|               | Enterobacter cloacae       |    479 |
+|               | Enterobacter hormaechei    |  3,697 |
+|               | Enterobacter kobei         |    369 |
+|               | Enterobacter ludwigii      |    180 |
+|               | Enterobacter roggenkampii  |    506 |
+| Escherichia   | Escherichia albertii       |    275 |
+|               | Escherichia coli           | 38,841 |
+|               | Escherichia fergusonii     |    186 |
+|               | Escherichia marmotae       |    114 |
+| Klebsiella    | Klebsiella aerogenes       |    604 |
+|               | Klebsiella grimontii       |    210 |
+|               | Klebsiella michiganensis   |    622 |
+|               | Klebsiella oxytoca         |    447 |
+|               | Klebsiella pasteurii       |     53 |
+|               | Klebsiella pneumoniae      | 21,442 |
+|               | Klebsiella quasipneumoniae |  1,262 |
+|               | Klebsiella variicola       |    998 |
+| Leclercia     | Leclercia adecarboxylata   |     80 |
+| Raoultella    | Raoultella ornithinolytica |    179 |
+|               | Raoultella planticola      |     79 |
+|               | Raoultella terrigena       |     50 |
+| Salmonella    | Salmonella enterica        | 13,978 |
+| Shigella      | Shigella boydii            |     76 |
+|               | Shigella flexneri          |    722 |
+|               | Shigella sonnei            |  1,449 |
+
+### Count strains - Genus
+
+```bash
+cd ~/data/Escherichia
+
+cat Count/genus.lst |
+    parallel --no-run-if-empty --linebuffer -k -j 4 '
+        n_species=$(
+            cat summary/collect.pass.tsv |
+                sed "1d" |
+                tsv-select -f 3 |
+                nwr append stdin -r genus -r species |
+                grep -w {} |
+                tsv-select -f 1,3 |
+                rgr dedup stdin |
+                wc -l
+        )
+
+        n_strains=$(
+            cat summary/collect.pass.tsv |
+                sed "1d" |
+                tsv-select -f 3 |
+                nwr append stdin -r genus |
+                grep -w {} |
+                wc -l
+        )
+
+        n_nr=$(
+            cat summary/collect.pass.tsv |
+                grep -Fw -f summary/NR.lst |
+                tsv-select -f 3 |
+                nwr append stdin -r genus |
+                grep -w {} |
+                wc -l
+        )
+
+        printf "%s\t%d\t%d\t%d\n" {} ${n_species} ${n_strains} ${n_nr}
+    ' |
+    nwr append stdin --id |
+    tsv-select -f 6,5,2,3,4 |
+    tsv-sort -k2,2 |
+    tsv-filter --ge 4:2 |
+    (echo -e '#tax_id\tgenus\t#species\t#strains\t#NR' && cat) |
+    rgr md stdin
+
+```
+
+| #tax_id | genus                     | #species | #strains | #NR |
+|---------|---------------------------|----------|----------|-----|
+| 1903434 | Atlantibacter             | 3        | 116      | 28  |
+| 1386    | Bacillus                  | 3        | 3        | 0   |
+| 82976   | Buttiauxella              | 10       | 16       | 12  |
+| 203804  | Candidatus Blochmanniella | 5        | 11       | 7   |
+| 568987  | Candidatus Hamiltonella   | 4        | 20       | 7   |
+| 1048757 | Candidatus Moranella      | 2        | 2        | 1   |
+| 472825  | Candidatus Purcelliella   | 1        | 5        | 2   |
+| 568988  | Candidatus Regiella       | 2        | 4        | 2   |
+| 401618  | Candidatus Riesia         | 4        | 6        | 3   |
+| 1081630 | Candidatus Schneideria    | 1        | 3        | 1   |
+| 158483  | Cedecea                   | 5        | 18       | 14  |
+| 544     | Citrobacter               | 30       | 2032     | 313 |
+| 413496  | Cronobacter               | 25       | 744      | 141 |
+| 3021684 | Dryocola                  | 1        | 3        | 1   |
+| 547     | Enterobacter              | 60       | 6168     | 643 |
+| 561     | Escherichia               | 2216     | 39443    | 392 |
+| 1649295 | Franconibacter            | 9        | 14       | 6   |
+| 570     | Klebsiella                | 397      | 25697    | 181 |
+| 579     | Kluyvera                  | 10       | 53       | 30  |
+| 1330547 | Kosakonia                 | 12       | 73       | 45  |
+| 83654   | Leclercia                 | 4        | 88       | 39  |
+| 1330545 | Lelliottia                | 5        | 41       | 26  |
+| 451512  | Mangrovibacter            | 1        | 3        | 1   |
+| 447792  | Phytobacter               | 4        | 23       | 14  |
+| 702     | Plesiomonas               | 2        | 48       | 38  |
+| 1330546 | Pluralibacter             | 4        | 30       | 16  |
+| 2994443 | Pseudenterobacter         | 1        | 4        | 3   |
+| 2055880 | Pseudescherichia          | 2        | 11       | 9   |
+| 1504576 | Pseudocitrobacter         | 1        | 2        | 2   |
+| 160674  | Raoultella                | 11       | 311      | 15  |
+| 590     | Salmonella                | 1389     | 14010    | 146 |
+| 2726810 | Scandinavium              | 4        | 9        | 7   |
+| 620     | Shigella                  | 123      | 2292     | 59  |
+| 1335483 | Shimwellia                | 2        | 4        | 1   |
+| 1649298 | Siccibacter               | 3        | 10       | 8   |
+| 1301    | Streptococcus             | 2        | 2        | 0   |
+| 2303321 | Superficieibacter         | 1        | 2        | 1   |
+| 2943312 | Tenebrionicola            | 1        | 2        | 1   |
+| 158851  | Trabulsiella              | 1        | 8        | 4   |
+| 158876  | Yokenella                 | 3        | 14       | 4   |
+
+
+## Collect proteins
+
+```bash
+cd ~/data/Escherichia/
+
+ulimit -n `ulimit -Hn`
+
+nwr template summary/assembly.tsv \
+    --pro \
+    --parallel 8
+
+# collect proteins
+bash Protein/collect.sh
+
+# clustering
+# It may need to be run several times
+bash Protein/cluster.sh
+
+rm -fr Protein/tmp/
+
+# info.tsv
+bash Protein/info.sh
+
+# counts
+bash Protein/count.sh
+
+cat Protein/counts.tsv |
+    tsv-summarize -H --count --sum 2-7 |
+    sed 's/^count/species/' |
+    datamash transpose |
+    (echo -e "#item\tcount" && cat) |
+    rgr md stdin --fmt
 
 ```
