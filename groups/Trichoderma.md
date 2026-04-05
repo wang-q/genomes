@@ -51,30 +51,30 @@ There are no noteworthy classification ranks other than species.
 ```shell
 nwr member Trichoderma |
     grep -v " sp." |
-    tsv-summarize -H -g rank --count |
-    rgr md stdin --num
+    tva stats -H -g rank --count |
+    tva to md --num
 
 nwr lineage Trichoderma |
-    tsv-filter --str-ne 1:clade |
-    tsv-filter --str-ne "1:no rank" |
+    tva filter --str-ne 1:clade |
+    tva filter --str-ne "1:no rank" |
     sed -n '/kingdom\tFungi/,$p' |
     sed -E "s/\b(genus)\b/*\1*/"| # Highlight genus
     (echo -e '#rank\tsci_name\ttax_id' && cat) |
-    rgr md stdin
+    tva to md
 
 ```
 
 | rank     | count |
-|----------|------:|
-| genus    |     1 |
-| species  |   476 |
-| no rank  |     1 |
-| varietas |     2 |
-| strain   |    14 |
+| -------- | ----: |
 | forma    |     2 |
+| genus    |     1 |
+| no rank  |     1 |
+| species  |   548 |
+| strain   |    14 |
+| varietas |     2 |
 
 | #rank      | sci_name          | tax_id |
-|------------|-------------------|--------|
+| ---------- | ----------------- | ------ |
 | kingdom    | Fungi             | 4751   |
 | subkingdom | Dikarya           | 451864 |
 | phylum     | Ascomycota        | 4890   |
@@ -152,7 +152,7 @@ for C in RS GB; do
         if [ -e "${C}${N}.tsv" ]; then
             printf "${C}${N}\t"
             cat ${C}${N}.tsv |
-                tsv-summarize --sum 3
+                tva stats --sum 3
         fi
     done
 done
@@ -338,7 +338,7 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --fmt
+    tva to md --fmt
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -346,7 +346,7 @@ bash Count/rank.sh
 mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 ```
 
@@ -420,12 +420,12 @@ bash ASSEMBLY/n50.sh 100000 1000 1000000
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
     tsv-filter -H --str-in-fld "name:_GCF_" |
-    tsv-summarize -H --min "N50" --max "C" --min "S"
+    tva stats -H --min "N50" --max "C" --min "S"
 #N50_min C_max   S_min
 #579860  533     33215161
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
+    tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
     datamash transpose
 #N50_pct10       103504.6
 #N50_pct50       1412965.5
@@ -445,7 +445,7 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
-    rgr md stdin --fmt
+    tva to md --fmt
 
 ```
 
@@ -626,19 +626,19 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # Can accept N_COUNT
 bash Count/lineage.sh 1
 
 cat Count/lineage.count.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
@@ -719,13 +719,13 @@ nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
@@ -774,11 +774,11 @@ bash Protein/info.sh
 bash Protein/count.sh
 
 cat Protein/counts.tsv |
-    tsv-summarize -H --count --sum 2-7 |
+    tva stats -H --count --sum 2-7 |
     sed 's/^count/species/' |
     datamash transpose |
     (echo -e "#item\tcount" && cat) |
-    rgr md stdin --fmt
+    tva to md --fmt
 
 ```
 
@@ -858,13 +858,13 @@ while read SPECIES; do
 done
 
 fd --full-path "Protein/.+/busco.tsv" -X cat |
-    tsv-summarize --group-by 1 --count |
-    tsv-summarize --quantile 2:0.25,0.5,0.75
+    tva stats --group-by 1 --count |
+    tva stats --quantile 2:0.25,0.5,0.75
 #23      24      26
 
 # There are 21 species and 39 strains
 fd --full-path "Protein/.+/fungi61.tsv" -X cat |
-    tsv-summarize --group-by 1 --count |
+    tva stats --group-by 1 --count |
     tsv-filter --invert --ge 2:20 --le 2:30 |
     cut -f 1 \
     > Protein/marker.omit.lst
