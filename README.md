@@ -1,31 +1,16 @@
 # Genomes
 
-<!-- TOC -->
-* [Genomes](#genomes)
-  * [`date`](#date)
-  * [Software](#software)
-    * [Install `nwr` and initiate local databases](#install-nwr-and-initiate-local-databases)
-    * [Packages managed by Homebrew](#packages-managed-by-homebrew)
-    * [Other Packages](#other-packages)
-  * [Strain info](#strain-info)
-    * [NCBI statistics](#ncbi-statistics)
-  * [Download all valid Bacteria and Archaea genomes](#download-all-valid-bacteria-and-archaea-genomes)
-  * [Prokaryote groups](#prokaryote-groups)
-  * [Eukaryote groups](#eukaryote-groups)
-<!-- TOC -->
-
 ## `date`
 
-The date of executing `nwr download` is `Fri Nov 15 15:51:01 CST 2024`
+The date `date --utc` of executing `nwr download` is `Sun Apr  5 15:59:45 UTC 2026`
 
 ## Software
 
 ### Install `nwr` and initiate local databases
 
 ```shell
-brew install wang-q/tap/nwr # 0.5.4 or above
-brew install sqlite         # 3.34 or above
-#brew link sqlite --force
+cbp install nwr
+cbp install sqlite3 # 3.34 or above
 
 nwr download
 nwr txdb
@@ -41,6 +26,7 @@ tar cvfz ncbi.$(date +"%Y%m%d").tar.gz \
     assembly_summary_refseq.txt
 
 rm \
+    *.dmp \
     taxdump.tar.gz \
     taxdump.tar.gz.md5 \
     assembly_summary_genbank.txt \
@@ -48,47 +34,19 @@ rm \
 
 ```
 
-### Packages managed by Homebrew
+### Additional Packages
 
 ```shell
-brew install hmmer
-brew install brewsci/bio/easel
-brew install mafft
-brew install samtools
-brew install brewsci/bio/muscle
-brew install brewsci/bio/fasttree
-brew install brewsci/bio/iqtree2
-brew install brewsci/bio/newick-utils
-brew install brewsci/bio/trimal
-brew install brewsci/bio/mash
-brew install mmseqs2
+cbp install hmmer easel
+cbp install mafft muscle trimal
+cbp install samtools
+cbp install fasttree iqtree2
+cbp install mash mmseqs
 
-brew install datamash
-brew install wang-q/tap/tsv-utils
-brew install wang-q/tap/faops
-brew install wang-q/tap/hnsm
-
-cargo install fd-find
-cargo install qsv --locked --features feature_capable,apply,lens,luau,polars
-
-brew install jq
-brew install pup
-brew install pigz
-
-curl -LO https://github.com/soedinglab/hh-suite/releases/download/v3.3.0/hhsuite-3.3.0-AVX2-Linux.tar.gz
-
-curl -LO https://github.com/soedinglab/spacedust/releases/download/1-babc6f8/spacedust-linux-avx2.tar.gz
-
-curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh
-mv tectonic ~/bin/
-
-# dN/dS
-brew install brewsci/bio/clustal-w
-brew install brewsci/bio/paml
-
-cpanm Bio::Tools::Run::Alignment::Clustalw
-cpanm https://github.com/wang-q/Bio-Tools-Phylo-PAML.git
-
+cbp install fd pigz
+cbp install jq tectonic
+cbp install tva 
+cbp install pgr
 ```
 
 ### Other Packages
@@ -107,25 +65,24 @@ cpanm https://github.com/wang-q/Bio-Tools-Phylo-PAML.git
 ### NCBI statistics
 
 ```shell
-curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=statistics&uncultured=hide&unspecified=hide" |
-    pup 'table[bgcolor=#CCCCFF] tr td text{}' |
+curl -L "https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=statistics&?&unclassified=hide&uncultured=hide" |
+    tva from html -q 'table[bgcolor="#CCCCFF"] table[bgcolor="#FFFFFF"] tr td text{}' |
     grep '\S' |
     paste -d $'\t' - - - - - - |
-    head -n 9 |
-    rgr md stdin --right 2-6
+    tva to md --right 2-6
 
 ```
 
-| Ranks:        | higher taxa |   genus | species | lower taxa |   total |
-|---------------|------------:|--------:|--------:|-----------:|--------:|
-| Archaea       |         742 |     314 |   1,046 |          0 |   2,102 |
-| Bacteria      |       7,192 |   5,435 |  27,084 |        972 |  40,683 |
-| Eukaryota     |      71,173 | 102,113 | 551,181 |     39,017 | 763,484 |
-| Fungi         |       6,810 |   7,842 |  61,751 |      1,619 |  78,022 |
-| Metazoa       |      51,179 |  73,101 | 287,542 |     19,570 | 431,392 |
-| Viridiplantae |       8,825 |  17,071 | 186,365 |     17,424 | 229,685 |
-| Viruses       |       2,328 |   2,853 |   5,815 |        963 |  11,959 |
-| All taxa      |      81,466 | 110,716 | 585,112 |     40,952 | 818,246 |
+| Ranks:        | higher taxa |   genus | species | lower taxa |     total |
+| ------------- | ----------: | ------: | ------: | ---------: | --------: |
+| Archaea       |           0 |     340 |   1,200 |      2,290 |     2,290 |
+| Bacteria      |           0 |   5,782 |  33,615 |     90,218 |    90,218 |
+| Eukaryota     |           0 | 104,261 | 631,437 |    804,447 |   804,447 |
+| Fungi         |           0 |   8,095 |  74,507 |     88,460 |    88,460 |
+| Metazoa       |           0 |  75,546 | 340,416 |    453,240 |   453,240 |
+| Viridiplantae |           0 |  16,338 | 198,532 |    237,280 |   237,280 |
+| Viruses       |          36 |   3,493 |  14,612 |    200,795 |   201,328 |
+| All taxa      |          54 | 113,878 | 700,762 |  1,097,758 | 1,118,224 |
 
 ## Download all valid Bacteria and Archaea genomes
 
