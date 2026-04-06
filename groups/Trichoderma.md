@@ -341,23 +341,23 @@ cat Count/genus.before.tsv |
 ```
 
 | item    | count |
-|---------|------:|
-| strain  |   172 |
-| species |    44 |
+| ------- | ----: |
+| strain  |   249 |
+| species |    66 |
 | genus   |     7 |
 | family  |     2 |
 | order   |     2 |
 | class   |     2 |
 
 | genus            | #species | #strains |
-|------------------|---------:|---------:|
-| Cladobotryum     |        2 |        3 |
+| ---------------- | -------: | -------: |
+| Cladobotryum     |        3 |        4 |
 | Escovopsis       |        2 |        7 |
-| Hypomyces        |        2 |        2 |
+| Hypomyces        |        4 |        4 |
 | Mycogone         |        1 |        1 |
 | Saccharomyces    |        1 |        1 |
 | Sphaerostilbella |        1 |        1 |
-| Trichoderma      |       35 |      157 |
+| Trichoderma      |       54 |      231 |
 
 ### Download and check
 
@@ -381,11 +381,11 @@ cat Count/genus.before.tsv |
 ```shell
 cd ~/data/Trichoderma
 
-nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --ass
 
 # Run
-bash ASSEMBLY/rsync.sh
+bash ASSEMBLY/aria2.sh
 
 # Check md5; create check.lst
 # rm ASSEMBLY/check.lst
@@ -409,20 +409,20 @@ bash ASSEMBLY/n50.sh 100000 1000 1000000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
-    tsv-filter -H --str-in-fld "name:_GCF_" |
+    tva filter -H --str-in-fld "name:_GCF_" |
     tva stats -H --min "N50" --max "C" --min "S"
 #N50_min C_max   S_min
 #579860  533     33215161
 
 cat ASSEMBLY/n50.tsv |
     tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
-    datamash transpose
-#N50_pct10       103504.6
-#N50_pct50       1412965.5
-#C_pct50 157
-#C_pct90 1044.8
-#S_pct10 32206756.6
-#S_pct50 37298829.5
+    tva transpose
+# N50_quantile_0.1        142282
+# N50_quantile_0.5        1289709
+# C_quantile_0.5  147
+# C_quantile_0.9  883.4
+# S_quantile_0.1  32277792.2
+# S_quantile_0.5  37210882
 
 # After the above steps are completed, run the following commands.
 
@@ -440,17 +440,17 @@ cat ASSEMBLY/counts.tsv |
 ```
 
 | #item            | fields | lines |
-|------------------|-------:|------:|
-| url.tsv          |      3 |   172 |
-| check.lst        |      1 |   172 |
-| collect.tsv      |     20 |   173 |
-| n50.tsv          |      4 |   173 |
-| n50.pass.tsv     |      4 |   151 |
-| collect.pass.tsv |     23 |   151 |
-| pass.lst         |      1 |   150 |
-| omit.lst         |      1 |   128 |
-| rep.lst          |      1 |    48 |
-| sp.lst           |      1 |    15 |
+| ---------------- | -----: | ----: |
+| url.tsv          |      3 |   249 |
+| check.lst        |      1 |   249 |
+| collect.tsv      |     20 |   250 |
+| n50.tsv          |      4 |   250 |
+| n50.pass.tsv     |      4 |   225 |
+| collect.pass.tsv |     23 |   225 |
+| pass.lst         |      1 |   224 |
+| omit.lst         |      1 |   178 |
+| rep.lst          |      1 |    51 |
+| sp.lst           |      1 |    29 |
 
 ### Rsync to hpcc
 
