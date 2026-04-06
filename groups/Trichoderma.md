@@ -479,7 +479,7 @@ cd ~/data/Trichoderma
 
 ulimit -n `ulimit -Hn`
 
-nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --bs
 
 bash BioSample/download.sh
@@ -487,8 +487,8 @@ bash BioSample/download.sh
 # Ignore rare attributes
 bash BioSample/collect.sh 10
 
-datamash check < BioSample/biosample.tsv
-#170 lines, 39 fields
+tva check < BioSample/biosample.tsv
+# 247 lines, 42 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -523,7 +523,7 @@ Estimate nucleotide divergences among strains.
 ```shell
 cd ~/data/Trichoderma
 
-nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --mh \
     --parallel 8 \
     --in ASSEMBLY/pass.lst \
@@ -547,19 +547,19 @@ find MinHash -name "redundant.lst" |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#  80 summary/NR.lst
-#  51 summary/redundant.lst
+#  118 summary/NR.lst
+#   68 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#13
+#24
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Trichoderma/
 
-nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --mh \
     --parallel 8 \
     --not-in summary/redundant.lst \
@@ -605,7 +605,7 @@ tectonic Trichoderma.minhash.tex
 ```shell
 cd ~/data/Trichoderma/
 
-nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --count \
     --in ASSEMBLY/pass.lst \
     --not-in MinHash/abnormal.lst \
@@ -698,7 +698,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 ```shell
 cd ~/data/Trichoderma/
 
-nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --count \
     --in ASSEMBLY/pass.lst \
     --not-in MinHash/abnormal.lst \
@@ -743,7 +743,7 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 ```shell
 cd ~/data/Trichoderma/
 
-nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --pro \
     --in ASSEMBLY/pass.lst \
     --not-in ASSEMBLY/omit.lst
