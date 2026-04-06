@@ -55,12 +55,12 @@ nwr member Trichoderma |
     tva to md --num
 
 nwr lineage Trichoderma |
-    tva filter --str-ne 1:clade |
-    tva filter --str-ne "1:no rank" |
-    sed -n '/kingdom\tFungi/,$p' |
+    tva filter --str-ne 1:clade | # Filter out clade ranks
+    tva filter --str-ne "1:no rank" | # Filter out no-rank entries
+    sed -n '/kingdom\tFungi/,$p' | # Keep only lines from kingdom Fungi onward
     sed -E "s/\b(genus)\b/*\1*/"| # Highlight genus
-    (echo -e '#rank\tsci_name\ttax_id' && cat) |
-    tva to md
+    (echo -e '#rank\tsci_name\ttax_id' && cat) | # Add header row
+    tva to md # Convert to markdown table
 
 ```
 
@@ -101,9 +101,9 @@ nwr member Hypocreaceae -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#18 genus.list
+#19 genus.list
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -120,10 +120,10 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > RS1.tsv
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -140,12 +140,12 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#   9 RS1.tsv
-#  57 GB1.tsv
+#   10 RS1.tsv
+#   91 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -156,8 +156,8 @@ for C in RS GB; do
         fi
     done
 done
-#RS1     9
-#GB1     172
+# RS1     10
+# GB1     248
 
 ```
 
@@ -167,7 +167,7 @@ done
 
 This step is pretty important
 
-* `nwr kb formats` will give the requirements for `.assembly.tsv`.
+* `nwr template --help` will give the requirements for `.assembly.tsv`.
 
 * The naming of assemblies has two aspects:
     * for program operation they are unique identifiers;
@@ -189,13 +189,13 @@ echo "
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
+    tva select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
 # RS
 SPECIES=$(
     cat RS1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -232,13 +232,13 @@ echo "
 
 # Preference for refseq
 cat raw.tsv |
-    tsv-select -H -f "assembly_accession" \
+    tva select -H -f "assembly_accession" \
     > rs.acc.tsv
 
 # GB
 SPECIES=$(
     cat GB1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -256,7 +256,7 @@ echo "
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 echo "
@@ -272,51 +272,41 @@ echo "
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 cat raw.tsv |
-    rgr dedup stdin |
-    datamash check
-#174 lines, 7 fields
+    tva uniq |
+    tva check
+#250 lines, 7 fields
 
 # Create abbr.
-nwr kb abbr > abbr.pl
 cat raw.tsv |
     grep -v '^#' |
-    rgr dedup stdin |
-    tsv-select -f 1-6 |
-    perl abbr.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    tva uniq |
+    tva select -f 1-6 |
+    nwr abbr -c "1,2,3" -m 3 --shortsub | # The 7th field is the abbr_name
+    tva uniq -H -f ftp_path |
+    tva uniq -H -f 7 |
+    sed '1d' |
+    tva select -f 7,4,5,2,6 |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
-    perl -nl -a -F"," -e '
-        BEGIN{my %seen};
-        /^#/ and print and next;
-        /^organism_name/i and next;
-        $seen{$F[3]}++; # ftp_path
-        $seen{$F[3]} > 1 and next;
-        $seen{$F[6]}++; # abbr_name
-        $seen{$F[6]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
-        ' |
-    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
-    keep-header -- tsv-sort -k4,4 -k1,1 \
+    tva filter -H --or --str-in-fld 2:ftp --str-in-fld 2:http |
+    tva sort -H -k 4,1 \
     > Trichoderma.assembly.tsv
 
-datamash check < Trichoderma.assembly.tsv
-#173 lines, 5 fields
+tva check < Trichoderma.assembly.tsv
+#250 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Trichoderma.assembly.tsv |
-    tsv-uniq -f 1 --repeated
+    tva uniq -f 1 --repeated
 
 cat Trichoderma.assembly.tsv |
-    tsv-filter --str-not-in-fld 2:ftp
+    tva filter --str-not-in-fld 2:ftp
 
 # Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Trichoderma.assembly.tsv
-#
-# Save the file to another directory to prevent accidentally changing it
-# cp Trichoderma.assembly.tsv ~/Scripts/genomes/assembly
 
 # Cleaning
 rm raw*.*sv
@@ -330,7 +320,7 @@ rm raw*.*sv
 ```shell
 cd ~/data/Trichoderma
 
-nwr template ~/Scripts/genomes/assembly/Trichoderma.assembly.tsv \
+nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --count \
     --rank genus
 
