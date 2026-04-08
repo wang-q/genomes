@@ -2,33 +2,7 @@
 
 Genus *Trichoderma* as an example.
 
-<!-- TOC -->
-* [Build alignments across a eukaryotic taxonomy rank](#build-alignments-across-a-eukaryotic-taxonomy-rank)
-  * [Taxon info](#taxon-info)
-    * [List all ranks](#list-all-ranks)
-    * [Species with assemblies](#species-with-assemblies)
-  * [Download all assemblies](#download-all-assemblies)
-    * [Create .assembly.tsv](#create-assemblytsv)
-    * [Count before download](#count-before-download)
-    * [Download and check](#download-and-check)
-    * [Rsync to hpcc](#rsync-to-hpcc)
-  * [BioSample](#biosample)
-  * [MinHash](#minhash)
-    * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-  * [Count valid species and strains](#count-valid-species-and-strains)
-    * [For *genomic alignments*](#for-genomic-alignments)
-    * [For *protein families*](#for-protein-families)
-  * [Collect proteins](#collect-proteins)
-  * [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
-  * [Phylogenetics with BUSCO](#phylogenetics-with-busco)
-    * [Find corresponding representative proteins by `hmmsearch`](#find-corresponding-representative-proteins-by-hmmsearch)
-    * [Domain related protein sequences](#domain-related-protein-sequences)
-    * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-    * [The protein tree](#the-protein-tree)
-  * [Groups and targets](#groups-and-targets)
-  * [Prepare sequences for `egaz`](#prepare-sequences-for-egaz)
-  * [Generate alignments](#generate-alignments)
-<!-- TOC -->
+[TOC levels=2-4]: #
 
 ## Taxon info
 
