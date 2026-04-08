@@ -4,18 +4,42 @@ Genus *Trichoderma* as an example.
 
 [TOC levels=2-4]: #
 
+- [Taxon info](#taxon-info)
+  - [List all ranks](#list-all-ranks)
+  - [Species with assemblies](#species-with-assemblies)
+- [Download all assemblies](#download-all-assemblies)
+  - [Create .assembly.tsv](#create-assemblytsv)
+  - [Count before download](#count-before-download)
+  - [Download and check](#download-and-check)
+  - [Rsync to hpcc](#rsync-to-hpcc)
+- [BioSample](#biosample)
+- [MinHash](#minhash)
+  - [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+- [Count valid species and strains](#count-valid-species-and-strains)
+  - [For genomic alignments](#for-genomic-alignments)
+  - [For protein families](#for-protein-families)
+- [Collect proteins](#collect-proteins)
+- [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
+- [Phylogenetics with BUSCO](#phylogenetics-with-busco)
+  - [Find corresponding representative proteins by ](#find-corresponding-representative-proteins-by-)
+  - [Domain related protein sequences](#domain-related-protein-sequences)
+  - [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+  - [The protein tree](#the-protein-tree)
+- [Groups and targets](#groups-and-targets)
+- [Prepare sequences for ](#prepare-sequences-for-)
+- [Generate alignments](#generate-alignments)
+
 ## Taxon info
 
-* [Trichoderma](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=5543)
-* [Entrez records](http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=5543)
-* [WGS](https://www.ncbi.nlm.nih.gov/Traces/wgs/?view=wgs&search=Trichoderma) is now useless and can
-  be ignored.
+- [Trichoderma](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=5543)
+- [Entrez records](http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=5543)
+- [WGS](https://www.ncbi.nlm.nih.gov/Traces/wgs/?view=wgs&search=Trichoderma) is
+  now useless and can be ignored.
 
 A nice review article about Trichoderma:
 
-Woo, S.L. et al.
-Trichoderma: a multipurpose, plant-beneficial microorganism for eco-sustainable agriculture.
-Nat Rev Microbiol 21, 312–326 (2023).
+Woo, S.L. et al. Trichoderma: a multipurpose, plant-beneficial microorganism for
+eco-sustainable agriculture. Nat Rev Microbiol 21, 312–326 (2023).
 https://doi.org/10.1038/s41579-022-00819-5
 
 ### List all ranks
@@ -35,7 +59,6 @@ nwr lineage Trichoderma |
     sed -E "s/\b(genus)\b/*\1*/"| # Highlight genus
     (echo -e '#rank\tsci_name\ttax_id' && cat) | # Add header row
     tva to md # Convert to markdown table
-
 ```
 
 | rank     | count |
@@ -132,7 +155,6 @@ for C in RS GB; do
 done
 # RS1     10
 # GB1     248
-
 ```
 
 ## Download all assemblies
@@ -141,13 +163,13 @@ done
 
 This step is pretty important
 
-* `nwr template --help` will give the requirements for `.assembly.tsv`.
+- `nwr template --help` will give the requirements for `.assembly.tsv`.
+- The naming of assemblies has two aspects:
+    - for program operation they are unique identifiers;
+    - for researchers, they should provide taxonomic information.
 
-* The naming of assemblies has two aspects:
-    * for program operation they are unique identifiers;
-    * for researchers, they should provide taxonomic information.
-
-If a RefSeq assembly is available, the corresponding GenBank one will not be listed
+If a RefSeq assembly is available, the corresponding GenBank one will not be
+listed
 
 ```shell
 cd ~/data/Trichoderma/summary
@@ -284,12 +306,11 @@ cat Trichoderma.assembly.tsv |
 
 # Cleaning
 rm raw*.*sv
-
 ```
 
 ### Count before download
 
-* `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
+- `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
 
 ```shell
 cd ~/data/Trichoderma
@@ -311,7 +332,6 @@ mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
     tva to md --num
-
 ```
 
 | item    | count |
@@ -335,22 +355,24 @@ cat Count/genus.before.tsv |
 
 ### Download and check
 
-* When `rsync.sh` is interrupted, run `check.sh` before restarting
-* For projects that have finished downloading, but have renamed strains, you can run `reorder.sh` to
-  avoid re-downloading
-    * `misplaced.tsv`
-    * `remove.list`
-* The parameters of `n50.sh` should be determined by the distribution of the description statistics
-* `collect.sh` generates a file of type `.tsv`, which is intended to be opened by spreadsheet
-  software.
-    * Information of assemblies are collected from *_assembly_report.txt *after* downloading
-    * **Note**: `*_assembly_report.txt` have `CRLF` at the end of the line.
-* `finish.sh` generates the following files
-    * `omit.lst` - no annotations
-    * `collect.pass.tsv` - passes the n50 check
-    * `pass.lst` - passes the n50 check
-    * `rep.lst` - representative or reference strains
-    * `counts.tsv`
+- When `rsync.sh` is interrupted, run `check.sh` before restarting
+- For projects that have finished downloading, but have renamed strains, you can
+  run `reorder.sh` to avoid re-downloading
+    - `misplaced.tsv`
+    - `remove.list`
+- The parameters of `n50.sh` should be determined by the distribution of the
+  description statistics
+- `collect.sh` generates a file of type `.tsv`, which is
+  intended to be opened by spreadsheet software.
+    - Information of assemblies are collected from *_assembly_report.txt *after*
+      downloading
+    - **Note**: `*_assembly_report.txt` have `CRLF` at the end of the line.
+- `finish.sh` generates the following files
+    - `omit.lst` - no annotations
+    - `collect.pass.tsv` - passes the n50 check
+    - `pass.lst` - passes the n50 check
+    - `rep.lst` - representative or reference strains
+    - `counts.tsv`
 
 ```shell
 cd ~/data/Trichoderma
@@ -410,7 +432,6 @@ cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
     tva to md --fmt
-
 ```
 
 | #item            | fields | lines |
@@ -441,7 +462,6 @@ rsync -avP \
 # rsync -avP wangq@202.119.37.251:data/Trichoderma/ ~/data/Trichoderma
 
 # rsync -avP -e 'ssh -p 8804' wangq@58.213.64.36:data/Trichoderma/ ~/data/Trichoderma
-
 ```
 
 ## BioSample
@@ -466,33 +486,31 @@ tva check < BioSample/biosample.tsv
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
-
 ```
 
 ## MinHash
 
 Estimate nucleotide divergences among strains.
 
-* Abnormal strains
-    * This [paper](https://doi.org/10.1038/s41467-018-07641-9) showed that >95% intra-species and
-      and <83% inter-species ANI values.
-    * If the maximum value of ANI between strains within a species is greater than *0.05*, the
-      median and maximum value will be reported. Strains that cannot be linked by the median
-      ANI, e.g., have no similar strains in the species, will be considered as abnormal strains.
-    * It may consist of two scenarios:
+- Abnormal strains
+    - This [paper](https://doi.org/10.1038/s41467-018-07641-9) showed that >95%
+      intra-species and and <83% inter-species ANI values.
+    - If the maximum value of ANI between strains within a species is greater
+      than *0.05*, the median and maximum value will be reported. Strains
+      that cannot be linked by the median ANI, e.g., have no similar strains
+      in the species, will be considered as abnormal strains.
+    - It may consist of two scenarios:
         1. Wrong species identification
         2. Poor assembly quality
-
-* Non-redundant strains
-    * If the ANI value between two strains within a species is less than *0.005*, the two strains
-      are considered to be redundant.
-    * Need these files:  representative.lst and omit.lst
-
-* MinHash tree
-    * A rough tree is generated by k-mean clustering.
-
-* These abnormal strains should be manually checked to determine whether to include them in the
-  subsequent steps.
+- Non-redundant strains
+    - If the ANI value between two strains within a species is less than *0.005*,
+      the
+      two strains are considered to be redundant.
+    - Need these files: representative.lst and omit.lst
+- MinHash tree
+    - A rough tree is generated by k-mean clustering.
+- These abnormal strains should be manually checked to determine whether to
+  include them in the subsequent steps.
 
 ```shell
 cd ~/data/Trichoderma
@@ -540,14 +558,13 @@ nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --height 0.4
 
 bash MinHash/dist.sh
-
 ```
 
 ### Condense branches in the minhash tree
 
-* This phylo-tree is not really formal/correct, and shouldn't be used to interpret phylogenetic
-  relationships
-* It is just used to find more abnormal strains
+- This phylo-tree is not really formal/correct, and shouldn't be used to
+  interpret phylogenetic relationships
+- It is just used to find more abnormal strains
 
 ```shell
 mkdir -p ~/data/Trichoderma/tree
@@ -569,7 +586,6 @@ mv condensed.tsv minhash.condensed.tsv
 nwr tex minhash.condensed.newick --bl -o Trichoderma.minhash.tex
 
 tectonic Trichoderma.minhash.tex
-
 ```
 
 ## Count valid species and strains
@@ -606,11 +622,10 @@ cat Count/lineage.count.tsv |
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
-
 ```
 
 | item    | count |
-|---------|------:|
+| ------- | ----: |
 | strain  |   137 |
 | species |    38 |
 | genus   |     5 |
@@ -619,7 +634,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | class   |     2 |
 
 | genus         | #species | #strains |
-|---------------|---------:|---------:|
+| ------------- | -------: | -------: |
 | Cladobotryum  |        2 |        3 |
 | Escovopsis    |        2 |        7 |
 | Hypomyces     |        2 |        2 |
@@ -627,7 +642,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Trichoderma   |       31 |      124 |
 
 | #family            | genus         | species                     | count |
-|--------------------|---------------|-----------------------------|------:|
+| ------------------ | ------------- | --------------------------- | ----: |
 | Hypocreaceae       | Cladobotryum  | Cladobotryum mycophilum     |     2 |
 |                    |               | Cladobotryum protrusum      |     1 |
 |                    | Escovopsis    | Escovopsis sp.              |     5 |
@@ -693,11 +708,10 @@ cat Count/genus.count.tsv |
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
-
 ```
 
 | item    | count |
-|---------|------:|
+| ------- | ----: |
 | strain  |    35 |
 | species |    20 |
 | genus   |     4 |
@@ -706,7 +720,7 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | class   |     2 |
 
 | genus         | #species | #strains |
-|---------------|---------:|---------:|
+| ------------- | -------: | -------: |
 | Cladobotryum  |        1 |        1 |
 | Escovopsis    |        1 |        1 |
 | Saccharomyces |        1 |        1 |
@@ -743,11 +757,10 @@ cat Protein/counts.tsv |
     datamash transpose |
     (echo -e "#item\tcount" && cat) |
     tva to md --fmt
-
 ```
 
 | #item      |   count |
-|------------|--------:|
+| ---------- | ------: |
 | species    |      21 |
 | strain_sum |      39 |
 | total_sum  | 363,402 |
@@ -766,7 +779,6 @@ mkdir -p HMM
 # The Fungi HMM set
 tar xvfz ~/data/HMM/fungi61/fungi61.tar.gz --directory=HMM
 cp HMM/fungi61.lst HMM/marker.lst
-
 ```
 
 ## Phylogenetics with BUSCO
@@ -783,7 +795,6 @@ mv fungi_odb10/ BUSCO
 #curl -L https://busco-data.ezlab.org/v5/data/lineages/ascomycota_odb10.2024-01-08.tar.gz |
 #    tar xvz
 #mv ascomycota_odb10/ BUSCO
-
 ```
 
 ### Find corresponding representative proteins by `hmmsearch`
@@ -864,7 +875,6 @@ while read SPECIES; do
     nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/busco.sc.tsv
 
 done
-
 ```
 
 ### Domain related protein sequences
@@ -918,7 +928,6 @@ fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
 cat Domain/seq_asm_f3.tsv |
     tsv-join -e -d 2 -f summary/redundant.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
-
 ```
 
 ### Align and concat marker genes to create species tree
@@ -1016,7 +1025,6 @@ hnsm size Domain/busco.*.fa |
 
 # To make it faster
 FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick
-
 ```
 
 ### The protein tree
@@ -1040,22 +1048,21 @@ mv condensed.tsv busco.condense.tsv
 nwr tex minhash.condensed.newick --bl -o Trichoderma.busco.tex
 
 tectonic Trichoderma.busco.tex
-
 ```
 
 ## Groups and targets
 
 Grouping criteria:
 
-* The mash tree and the marker protein tree
-* `MinHash/groups.tsv`
+- The mash tree and the marker protein tree
+- `MinHash/groups.tsv`
 
 Target selecting criteria:
 
-* `ASSEMBLY/collect.pass.tsv`
-* Prefer Sanger sequenced assemblies
-* RefSeq_category with `Representative Genome`
-* Assembly_level with `Complete Genome` or `Chromosome`
+- `ASSEMBLY/collect.pass.tsv`
+- Prefer Sanger sequenced assemblies
+- RefSeq_category with `Representative Genome`
+- Assembly_level with `Complete Genome` or `Chromosome`
 
 Create a Bash `ARRAY` manually with a format of `group::target`.
 
@@ -1161,11 +1168,10 @@ done
 
 cat group_target.tsv |
     rar md stdin --right 4
-
 ```
 
 | #Serial | Group                  | Target                             | Count |
-|---------|------------------------|------------------------------------|------:|
+| ------- | ---------------------- | ---------------------------------- | ----: |
 | 1       | C_E_H                  | E_web_GCA_001278495_1              |     5 |
 | 3       | T_afr_har              | T_har_CGMCC_20739_GCA_019097725_1  |    20 |
 | 5       | T_asperello_asperellum | T_asperellum_FT101_GCA_020647865_1 |    16 |
@@ -1181,8 +1187,8 @@ cat group_target.tsv |
 
 ## Prepare sequences for `egaz`
 
-* `--perseq` for Chromosome-level assemblies and targets
-    * means split fasta by names, targets or good assembles should set it
+- `--perseq` for Chromosome-level assemblies and targets
+    - means split fasta by names, targets or good assembles should set it
 
 ```shell
 cd ~/data/Trichoderma
@@ -1218,7 +1224,6 @@ for n in \
 
     gzip -dc ${FILE_GFF} > Genome/${n}/chr.gff
 done
-
 ```
 
 ## Generate alignments
@@ -1246,5 +1251,5 @@ cat taxon/group_target.tsv |
 find groups -mindepth 1 -maxdepth 3 -type d -name "*_raw" | parallel -r rm -fr
 find groups -mindepth 1 -maxdepth 3 -type d -name "*_fasta" | parallel -r rm -fr
 find . -mindepth 1 -maxdepth 3 -type f -name "output.*" | parallel -r rm
-
 ```
+
