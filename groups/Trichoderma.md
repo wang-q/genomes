@@ -46,6 +46,7 @@ agriculture. Nat Rev Microbiol 21, 312–326 (2023). https://doi.org/10.1038/s41
 There are no noteworthy classification ranks other than species.
 
 ```shell
+# Count the number of different ranks in Trichoderma
 nwr member Trichoderma |
     grep -v " sp." |
     tva stats -H -g rank --count |
