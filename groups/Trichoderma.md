@@ -47,10 +47,10 @@ There are no noteworthy classification ranks other than species.
 
 ```shell
 # Count the number of different ranks in Trichoderma
-nwr member Trichoderma |
-    grep -v " sp." |
-    tva stats -H -g rank --count |
-    tva to md --num
+nwr member Trichoderma | # List all the members of Trichoderma and its subgroups
+    grep -v " sp." | # Exclude unidentified species
+    tva stats -H -g rank --count | # Group by rank
+    tva to md --num # Convert to markdown table，right-align numeric columns
 
 nwr lineage Trichoderma |
     tva filter --str-ne 1:clade | # Filter out clade ranks
@@ -92,7 +92,7 @@ cd ~/data/Trichoderma/summary
 
 # should have a valid name of genus
 nwr member Hypocreaceae -r genus |
-    grep -v " x " |
+    grep -v " x " | # Exclude hybrid varieties
     sed '1d' |
     sort -n -k1,1 \
     > genus.list.tsv
@@ -100,14 +100,15 @@ nwr member Hypocreaceae -r genus |
 wc -l genus.list.tsv
 #19 genus.list
 
-cat genus.list.tsv | tva select -f 1 |
+# From the NCBI RefSeq database, select the species within each genus of Hypocreaceae that have high-quality genomes
+cat genus.list.tsv | tva select -f 1 | # Extract the first column (tax_id)
 while read RANK_ID; do
     echo "
         SELECT
             species_id,
             species,
             COUNT(*) AS count
-        FROM ar
+        FROM ar 
         WHERE 1=1
             AND genus_id = ${RANK_ID}
             AND species NOT LIKE '% x %' -- Crossbreeding of two species
@@ -117,9 +118,11 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
+# Sort by the second column (species name)
     tva sort -k 2 \
     > RS1.tsv
 
+# From Genebank database
 cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
@@ -144,12 +147,13 @@ wc -l RS*.tsv GB*.tsv
 #   10 RS1.tsv
 #   91 GB1.tsv
 
+# Calculate the total number of genome assemblies for all species in each file
 for C in RS GB; do
     for N in $(seq 1 1 10); do
         if [ -e "${C}${N}.tsv" ]; then
             printf "${C}${N}\t"
             cat ${C}${N}.tsv |
-                tva stats --sum 3
+                tva stats --sum 3 # Calculate sum of column 3
         fi
     done
 done
@@ -173,7 +177,7 @@ If a RefSeq assembly is available, the corresponding GenBank one will not be lis
 ```shell
 cd ~/data/Trichoderma/summary
 
-# Reference genome
+# Export the reference genome of Saccharomyces cerevisiae,including organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession
 echo "
 .headers ON
     SELECT
@@ -188,6 +192,7 @@ echo "
     > raw.tsv
 
 # RS
+# Write all the TaxIDs from `RS1.tsv` in one line, separated by ",", and assign it to SPECIES
 SPECIES=$(
     cat RS1.tsv |
         tva select -f 1 |
