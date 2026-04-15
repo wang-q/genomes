@@ -191,15 +191,16 @@ echo "
     tva select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
-# RS
-# Write all the TaxIDs from `RS1.tsv` in one line, separated by ",", and assign it to SPECIES
+# refseq
+# Write all the TaxIDs from RS1.tsv in one line, separated by ",", and assign it to SPECIES
 SPECIES=$(
     cat RS1.tsv |
         tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
-
+# Based on the filtered RS1.tsv, extract all the assembly version information of the species with high-quality from the database, and store it in raw.tsv
+# extract the samples from Trichoderma that have not been identified as species (sp. samples)
 echo "
     SELECT
         species || ' ' || infraspecific_name || ' ' || assembly_accession AS name,
@@ -230,12 +231,13 @@ echo "
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
 
-# Preference for refseq
+# Extract the selected RefSeq genome number (assembly_accession) to prevent duplication when adding GenBank data in the next step
 cat raw.tsv |
     tva select -H -f "assembly_accession" \
     > rs.acc.tsv
 
-# GB
+# genbank
+# gbrs_paired_asm:A "pairing pointer" in NCBI. If a GenBank assembly version (GCA) has a corresponding RefSeq assembly version (GCF), this field will record the number of GCF. If it does not have a corresponding RefSeq assembly version, this field is usually empty or points to itself
 SPECIES=$(
     cat GB1.tsv |
         tva select -f 1 |
@@ -256,6 +258,7 @@ echo "
         AND genome_rep IN ('Full')
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+# Remove the duplicate contents in gbrs_paired_asm and rs.acc.tsv
     tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
@@ -275,23 +278,24 @@ echo "
     tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
+# Deduplicate and check TSV table structure for consistent field counts
 cat raw.tsv |
     tva uniq |
     tva check
 #250 lines, 7 fields
 
-# Create abbr.
+# From the raw.tsv, filter, remove duplicates, and standardize the genomic assembly data related to Trichoderma → generate the abbreviation name → remove duplicates (ensuring the FTP path and abbreviation name are unique) → filter valid FTP/HTTP links → sort by species + abbreviation name → finally output Trichoderma.assembly.tsv
 cat raw.tsv |
     grep -v '^#' |
     tva uniq |
     tva select -f 1-6 |
-    nwr abbr -c "1,2,3" -m 3 --shortsub | # The 7th field is the abbr_name
+    nwr abbr -c "1,2,3" -m 3 --shortsub | # Abbreviate the 1,2,3 columns, the genus name retain at least 3 characters, the 7th field is the abbr_name
     tva uniq -H -f ftp_path |
     tva uniq -H -f 7 |
     sed '1d' |
     tva select -f 7,4,5,2,6 |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
-    tva filter -H --or --str-in-fld 2:ftp --str-in-fld 2:http |
+    tva filter -H --or --str-in-fld 2:ftp --str-in-fld 2:http | # The 2 column contains download links (ftp or http)
     tva sort -H -k 4,1 \
     > Trichoderma.assembly.tsv
 
