@@ -63,12 +63,12 @@ nwr lineage Trichoderma |
 
 | rank     | count |
 | -------- | ----: |
-| forma    |     2 |
 | genus    |     1 |
+| species  |   501 |
 | no rank  |     1 |
-| species  |   548 |
-| strain   |    14 |
 | varietas |     2 |
+| strain   |    14 |
+| forma    |     2 |
 
 | #rank      | sci_name          | tax_id |
 | ---------- | ----------------- | ------ |
@@ -300,7 +300,7 @@ cat raw.tsv |
     > Trichoderma.assembly.tsv
 
 tva check < Trichoderma.assembly.tsv
-#250 lines, 5 fields
+#248 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Trichoderma.assembly.tsv |
@@ -323,17 +323,24 @@ rm raw*.*sv
 ```shell
 cd ~/data/Trichoderma
 
+# Generate three bash scripts named strains.sh, rank.sh and lineage.sh
+# strains.sh - strains.taxon.tsv, species, genus, family, order, and class
+# rank.sh - count species and strains
+# lineage.sh - count strains
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --count \
     --rank genus
 
 # strains.taxon.tsv and taxa.tsv
+# Generate the above two files, which respectively trace back from the species name to its genus, family, order, class and count the number of strain, specie, genus, family, order, and class
 bash Count/strains.sh
 
+# Convert to Markdown table format
 cat Count/taxa.tsv |
     tva to md --fmt
 
 # .lst and .count.tsv
+# Generate the above two files, which respectively list all the genera and the number of species and the number of strains for each genus
 bash Count/rank.sh
 
 mv Count/genus.count.tsv Count/genus.before.tsv
@@ -344,8 +351,8 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 | ------- | ----: |
-| strain  |   249 |
-| species |    66 |
+| strain  |   247 |
+| species |    65 |
 | genus   |     7 |
 | family  |     2 |
 | order   |     2 |
@@ -359,34 +366,33 @@ cat Count/genus.before.tsv |
 | Mycogone         |        1 |        1 |
 | Saccharomyces    |        1 |        1 |
 | Sphaerostilbella |        1 |        1 |
-| Trichoderma      |       54 |      231 |
+| Trichoderma      |       53 |      229 |
 
 ### Download and check
 
-- When `rsync.sh` is interrupted, run `check.sh` before restarting
-- For projects that have finished downloading, but have renamed strains, you can run `reorder.sh` to
-  avoid re-downloading
-    - `misplaced.tsv`
-    - `remove.list`
+- When `aria2.sh` is interrupted, run `check.sh` before restarting
+- For projects that have finished downloading, but have renamed strains, you can run `reorder.sh` to avoid re-downloading
+    - The error placement information is recorded in `misplaced.tsv`
+    - The list of files to be deleted is recorded in `remove.list`
 - The parameters of `n50.sh` should be determined by the distribution of the description statistics
-- `collect.sh` generates a file of type `.tsv`, which is
-  intended to be opened by spreadsheet software.
-    - Information of assemblies are collected from *_assembly_report.txt *after* downloading
-    - **Note**: `*_assembly_report.txt` have `CRLF` at the end of the line.
-- `finish.sh` generates the following files
-    - `omit.lst` - no annotations
-    - `collect.pass.tsv` - passes the n50 check
-    - `pass.lst` - passes the n50 check
+- `collect.sh` generates a file of type `.tsv`, which is intended to be opened by spreadsheet software.
+    - Information of assemblies is collected from `*_assembly_report.txt` after downloading
+    - **Note**: `*_assembly_report.txt` have `CRLF` at the end of the line
+- `finish.sh` generates the following files:
+    - `omit.lst` - no annotations - species that are excluded due to the absence of annotation information
+    - `collect.pass.tsv` - Detailed information of the species that pass the N50 check
+    - `pass.lst` - species that pass the n50 check
     - `rep.lst` - representative or reference strains
     - `counts.tsv`
 
 ```shell
 cd ~/data/Trichoderma
 
+# Generate six bash scripts named aria2.sh, check.sh, reorder.sh, n50.sh, collect.sh and finish.sh, and url.tsv
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --ass
 
-# Run
+# Run:download the genomic files
 bash ASSEMBLY/aria2.sh
 
 # Check md5; create check.lst
@@ -405,8 +411,9 @@ bash ASSEMBLY/check.sh
 #        fi
 #    '
 
-# N50 C S; create n50.tsv and n50.pass.tsv
-# LEN_N50   N_CONTIG    LEN_SUM
+# N50 C S (The default values are 100000, 1000, and 1000000, you can also input manually)
+# LEN_N50:N50 value   N_CONTIG:contig number(C)    LEN_SUM:genomic length(S)
+# create n50.tsv and n50.pass.tsv (N50 > 100000, C < 1000, S > 1000000)
 bash ASSEMBLY/n50.sh 100000 1000 1000000
 
 # Adjust parameters passed to `n50.sh`
@@ -414,17 +421,18 @@ cat ASSEMBLY/n50.tsv |
     tva filter -H --str-in-fld "name:_GCF_" |
     tva stats -H --min "N50" --max "C" --min "S"
 #N50_min C_max   S_min
-#579860  533     33215161
+#579860  533     31700302
 
+# Calculate the median, 10% and 90% thresholds of N50, C, S
 cat ASSEMBLY/n50.tsv |
     tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
-    tva transpose
-# N50_quantile_0.1        142282
-# N50_quantile_0.5        1289709
-# C_quantile_0.5  147
-# C_quantile_0.9  883.4
-# S_quantile_0.1  32277792.2
-# S_quantile_0.5  37210882
+    tva transpose # swap rows and columns
+#N50_pct10       139491
+#N50_pct50       1289709
+#C_pct50 147
+#C_pct90 883.8
+#S_pct10 32267925.4
+#S_pct50 37251948
 
 # After the above steps are completed, run the following commands.
 
@@ -442,14 +450,14 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields | lines |
 | ---------------- | -----: | ----: |
-| url.tsv          |      3 |   249 |
-| check.lst        |      1 |   249 |
-| collect.tsv      |     20 |   250 |
-| n50.tsv          |      4 |   250 |
-| n50.pass.tsv     |      4 |   225 |
-| collect.pass.tsv |     23 |   225 |
-| pass.lst         |      1 |   224 |
-| omit.lst         |      1 |   178 |
+| url.tsv          |      3 |   247 |
+| check.lst        |      1 |   247 |
+| collect.tsv      |     20 |   248 |
+| n50.tsv          |      4 |   248 |
+| n50.pass.tsv     |      4 |   223 |
+| collect.pass.tsv |     23 |   223 |
+| pass.lst         |      1 |   222 |
+| omit.lst         |      1 |   176 |
 | rep.lst          |      1 |    51 |
 | sp.lst           |      1 |    29 |
 
@@ -472,23 +480,26 @@ rsync -avP \
 
 ## BioSample
 
-ENA's BioSample missed many strains, so NCBI's was used.
+Collect some sample data. ENA's BioSample missed many strains, so NCBI's was used.
 
 ```shell
 cd ~/data/Trichoderma
 
+# Check the system's maximum allowed number of files, and increase the current permission to that maximum value
 ulimit -n `ulimit -Hn`
 
+# Generate two bash scripts named download.sh and collect.sh, and sample.tsv
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --bs
 
+# Download background information
 bash BioSample/download.sh
 
-# Ignore rare attributes
+# Generate a TSV table - biosample.tsv(header - attributes.lst), ignore rare attributes
 bash BioSample/collect.sh 10
 
 tva check < BioSample/biosample.tsv
-# 247 lines, 42 fields
+# 245 lines, 42 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -519,6 +530,7 @@ Estimate nucleotide divergences among strains.
 ```shell
 cd ~/data/Trichoderma
 
+# Generate four bash scripts named abnormal.sh, compute.sh, dist.sh and nr.sh, and species.tsv.
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --mh \
     --parallel 8 \
@@ -526,12 +538,13 @@ nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --ani-ab 0.05 \
     --ani-nr 0.005
 
-# Compute assembly sketches
+# For the strains in pass.lst, based on the k-mer length of 21 nt, compute assembly sketches(.msh)
 bash MinHash/compute.sh
 
-# Non-redundant strains within species
+# Generate a list of non-redundant assembly IDs for each species, named NR.lst, and a list of redundant assembly IDs, named redundant.lst
 bash MinHash/nr.sh
 
+# Combine all NR.lst and redundant.lst files, remove duplicates and sort
 find MinHash -name "NR.lst" |
     xargs cat |
     sort |
@@ -543,52 +556,58 @@ find MinHash -name "redundant.lst" |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#  118 summary/NR.lst
-#   68 summary/redundant.lst
+#  117 summary/NR.lst
+#  68 summary/redundant.lst
 
-# Abnormal strains
+# Abnormal strains: select the strains within the species whose maximum ANI difference between them is greater than 0.05
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#24
+# 22
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Trichoderma/
 
+# Cluster according to the mash distance of 0.4
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --mh \
     --parallel 8 \
     --not-in summary/redundant.lst \
     --height 0.4
 
+# Filter out non-redundant genome Mash index files, calculate the Mash distance matrix for all genomes, cluster the genomes using R, and divide the clusters according to the distance threshold. Output the phylogenetic tree (tree.nwk) and the clustering results (groups.tsv).
 bash MinHash/dist.sh
 ```
 
 ### Condense branches in the minhash tree
 
-- This phylo-tree is not really formal/correct, and shouldn't be used to interpret phylogenetic
-  relationships
+- This phylo-tree is not really formal/correct, and shouldn't be used to interpret phylogenetic relationships
 - It is just used to find more abnormal strains
 
 ```shell
 mkdir -p ~/data/Trichoderma/tree
 cd ~/data/Trichoderma/tree
 
+# nw_reroot: Set the root of the tree on Sa_cer_S288C
+# nwr order: Sort the nodes of the evolutionary tree. --nd: sort them in ascending order based on the "number of descendants" of each node (the branch with fewer descendants appears earlier). --an: sort them in ascending order according to the alphabetical and numerical order of the node labels.
 nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
-    nwr order stdin --nd --an \
+    nwr ops order stdin --nd --an \
     > minhash.reroot.newick
 
+# Map the species names onto the tree, merge the tree branches according to the species hierarchy, and clean up the annotation information of the tree
 nwr pl-condense --map -r species \
     minhash.reroot.newick ../MinHash/species.tsv |
-    nwr comment stdin -r "(S|member)=" |
-    nwr comment stdin -r "^\d+$" |
-    nwr order stdin --nd --an \
+    nwr viz comment stdin -r "(S|member)=" |
+    nwr viz comment stdin -r "^\d+$" |
+    nwr ops order stdin --nd --an \ 
     > minhash.condensed.newick
 
 mv condensed.tsv minhash.condensed.tsv
 
-nwr tex minhash.condensed.newick --bl -o Trichoderma.minhash.tex
+# Convert to LaTeX format
+nwr viz tex minhash.condensed.newick --bl -o Trichoderma.minhash.tex
 
+# Compile the LaTeX file to generate a PDF
 tectonic Trichoderma.minhash.tex
 ```
 
@@ -599,6 +618,7 @@ tectonic Trichoderma.minhash.tex
 ```shell
 cd ~/data/Trichoderma/
 
+# Based on the NCBI Taxonomy information, the selected genomes of Trichoderma are subjected to hierarchical statistics and organization.
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --count \
     --in ASSEMBLY/pass.lst \
@@ -606,19 +626,19 @@ nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --rank genus \
     --lineage family --lineage genus
 
-# strains.taxon.tsv and taxa.tsv
+# Generate strains.taxon.tsv(record the complete classification path of each strain) and taxa.tsv(record the quantity of each classification level)
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
     tva to md --num
 
-# .lst and .count.tsv
+# Generate genus.lst(record all genus names) and genus.count.tsv(record the number of unique species and unique strains contained in each genus)
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
     tva to md --num
 
-# Can accept N_COUNT
+# Count the number of strains by the hierarchy of "genus → family → species", and select the species that meet the quantity requirement (≥ the input quantity)
 bash Count/lineage.sh 1
 
 cat Count/lineage.count.tsv |
@@ -630,8 +650,8 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | item    | count |
 | ------- | ----: |
-| strain  |   137 |
-| species |    38 |
+| strain  |   200 |
+| species |    58 |
 | genus   |     5 |
 | family  |     2 |
 | order   |     2 |
@@ -639,51 +659,71 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | genus         | #species | #strains |
 | ------------- | -------: | -------: |
-| Cladobotryum  |        2 |        3 |
+| Cladobotryum  |        3 |        4 |
 | Escovopsis    |        2 |        7 |
-| Hypomyces     |        2 |        2 |
+| Hypomyces     |        4 |        4 |
 | Saccharomyces |        1 |        1 |
-| Trichoderma   |       31 |      124 |
+| Trichoderma   |       48 |      184 |
 
 | #family            | genus         | species                     | count |
 | ------------------ | ------------- | --------------------------- | ----: |
 | Hypocreaceae       | Cladobotryum  | Cladobotryum mycophilum     |     2 |
 |                    |               | Cladobotryum protrusum      |     1 |
+|                    |               | Cladobotryum sp.            |     1 |
 |                    | Escovopsis    | Escovopsis sp.              |     5 |
 |                    |               | Escovopsis weberi           |     2 |
-|                    | Hypomyces     | Hypomyces perniciosus       |     1 |
+|                    | Hypomyces     | Hypomyces aurantius         |     1 |
+|                    |               | Hypomyces perniciosus       |     1 |
 |                    |               | Hypomyces rosellus          |     1 |
-|                    | Trichoderma   | Trichoderma afroharzianum   |     5 |
+|                    |               | Hypomyces semicircularis    |     1 |
+|                    | Trichoderma   | Trichoderma aethiopicum     |     1 |
+|                    |               | Trichoderma afarasin        |     1 |
+|                    |               | Trichoderma afroharzianum   |     5 |
 |                    |               | Trichoderma aggressivum     |     1 |
 |                    |               | Trichoderma arundinaceum    |     4 |
-|                    |               | Trichoderma asperelloides   |     3 |
-|                    |               | Trichoderma asperellum      |    18 |
+|                    |               | Trichoderma asperelloides   |     4 |
+|                    |               | Trichoderma asperellum      |    22 |
 |                    |               | Trichoderma atrobrunneum    |     1 |
-|                    |               | Trichoderma atroviride      |    10 |
+|                    |               | Trichoderma atroviride      |    12 |
+|                    |               | Trichoderma austrokoningii  |     1 |
+|                    |               | Trichoderma barbatum        |     1 |
 |                    |               | Trichoderma breve           |     1 |
 |                    |               | Trichoderma brevicrassum    |     1 |
-|                    |               | Trichoderma citrinoviride   |     4 |
+|                    |               | Trichoderma camerunense     |     1 |
+|                    |               | Trichoderma caribbaeum      |     1 |
+|                    |               | Trichoderma ceciliae        |     1 |
+|                    |               | Trichoderma cf. simile WF8  |     1 |
+|                    |               | Trichoderma chlorosporum    |     1 |
+|                    |               | Trichoderma citrinoviride   |     6 |
+|                    |               | Trichoderma compactum       |     1 |
 |                    |               | Trichoderma cornu-damae     |     1 |
 |                    |               | Trichoderma endophyticum    |     4 |
 |                    |               | Trichoderma erinaceum       |     2 |
-|                    |               | Trichoderma gamsii          |     2 |
-|                    |               | Trichoderma gracile         |     1 |
+|                    |               | Trichoderma evansii         |     1 |
+|                    |               | Trichoderma gamsii          |     4 |
+|                    |               | Trichoderma ghanense        |     1 |
+|                    |               | Trichoderma gracile         |     2 |
 |                    |               | Trichoderma guizhouense     |     1 |
-|                    |               | Trichoderma hamatum         |     1 |
-|                    |               | Trichoderma harzianum       |    10 |
+|                    |               | Trichoderma hamatum         |     5 |
+|                    |               | Trichoderma harzianum       |    16 |
 |                    |               | Trichoderma koningii        |     1 |
-|                    |               | Trichoderma koningiopsis    |     5 |
+|                    |               | Trichoderma koningiopsis    |     8 |
 |                    |               | Trichoderma lentiforme      |     1 |
 |                    |               | Trichoderma lixii           |     1 |
-|                    |               | Trichoderma longibrachiatum |     7 |
+|                    |               | Trichoderma longibrachiatum |    11 |
+|                    |               | Trichoderma novae-zelandiae |     1 |
 |                    |               | Trichoderma orchidacearum   |     1 |
+|                    |               | Trichoderma pleuroticola    |     1 |
 |                    |               | Trichoderma polysporum      |     1 |
-|                    |               | Trichoderma reesei          |    19 |
+|                    |               | Trichoderma reesei          |    25 |
 |                    |               | Trichoderma semiorbis       |     1 |
 |                    |               | Trichoderma simmonsii       |     1 |
-|                    |               | Trichoderma sp.             |     4 |
+|                    |               | Trichoderma sp.             |    11 |
+|                    |               | Trichoderma velutinum       |     1 |
 |                    |               | Trichoderma virens          |     9 |
-|                    |               | Trichoderma viride          |     3 |
+|                    |               | Trichoderma viride          |     4 |
+|                    |               | Trichoderma virilente       |     1 |
+|                    |               | Trichoderma yunnanense      |     1 |
 | Saccharomycetaceae | Saccharomyces | Saccharomyces cerevisiae    |     1 |
 
 ### For *protein families*
@@ -691,6 +731,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 ```shell
 cd ~/data/Trichoderma/
 
+# Excluded the strains listed in omit.lst
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --count \
     --in ASSEMBLY/pass.lst \
@@ -704,7 +745,7 @@ bash Count/strains.sh
 cat Count/taxa.tsv |
     tva to md --num
 
-# .lst and .count.tsv
+# genus.lst and genus.count.tsv
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
@@ -716,8 +757,8 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 | item    | count |
 | ------- | ----: |
-| strain  |    35 |
-| species |    20 |
+| strain  |    59 |
+| species |    36 |
 | genus   |     4 |
 | family  |     2 |
 | order   |     2 |
@@ -728,7 +769,7 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | Cladobotryum  |        1 |        1 |
 | Escovopsis    |        1 |        1 |
 | Saccharomyces |        1 |        1 |
-| Trichoderma   |       17 |       32 |
+| Trichoderma   |       33 |       56 |
 
 ## Collect proteins
 
@@ -740,40 +781,40 @@ nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --in ASSEMBLY/pass.lst \
     --not-in ASSEMBLY/omit.lst
 
-# collect proteins
+# Build a standardized protein sequence resource library for each species: First, filter the list of strains of the target species based on the input parameters, then batch extract the protein sequences (*_protein.faa.gz) of all strains of each species, remove duplicates to generate the non-redundant protein library of that species, and simultaneously organize the protein annotations and assembly association information and compress and save it.
 bash Protein/collect.sh
 
-# clustering
+# Clustering:First, remove redundant proteins of the species (strain-level redundancy removal → species-level representative sequences) (95% similarity rep_seq.fa.gz), then divide them into functional families based on 80% similarity (species-level representative sequences → protein families) (fam88_cluster.tsv), and then divide them into evolutionary families based on 30% similarity (divergent protein family clustering) (fam38_cluster.tsv). Finally, obtain protein classification results at different levels
 # It may need to be run several times
 bash Protein/cluster.sh
 
 rm -fr Protein/tmp/
 
-# info.tsv
+# First, select the list of filtered strains for each species, and then integrate the protein sequences, annotations, clustering results, etc. of each species into the SQLite database (seq.sqlite).
 bash Protein/info.sh
 
-# counts
+# First, select the list of filtered strains for each species, and then extract the statistical indicators(species, strain_sum......) from the seq.sqlite database of each species
 bash Protein/count.sh
 
 cat Protein/counts.tsv |
-    tva stats -H --count --sum 2-7 |
+    tva stats -H --count --sum 2-7 | # Calculate the sum of the values in columns 2 to 7
     sed 's/^count/species/' |
-    datamash transpose |
+    tva transpose |
     (echo -e "#item\tcount" && cat) |
     tva to md --fmt
 ```
 
 | #item      |   count |
 | ---------- | ------: |
-| species    |      21 |
-| strain_sum |      39 |
-| total_sum  | 363,402 |
-| dedup_sum  | 363,402 |
-| rep_sum    | 284,914 |
-| fam88_sum  | 258,055 |
-| fam38_sum  | 219,984 |
+| species    |      36 |
+| strain_sum |      67 |
+| total_sum  | 687,394 |
+| dedup_sum  | 687,394 |
+| rep_sum    | 529,592 |
+| fam88_sum  | 466,019 |
+| fam38_sum  | 390,874 |
 
-## Phylogenetics with fungi61
+## Phylogenetics with fungi61(database 1)
 
 ```shell
 cd ~/data/Trichoderma/
@@ -785,13 +826,14 @@ tar xvfz ~/data/HMM/fungi61/fungi61.tar.gz --directory=HMM
 cp HMM/fungi61.lst HMM/marker.lst
 ```
 
-## Phylogenetics with BUSCO
+## Phylogenetics with BUSCO(database 2)
 
 ```shell
 cd ~/data/Trichoderma/
 
 rm -fr BUSCO
 
+# download busco database
 curl -L https://busco-data.ezlab.org/v5/data/lineages/fungi_odb10.2024-01-08.tar.gz |
     tar xvz
 mv fungi_odb10/ BUSCO
@@ -806,13 +848,15 @@ mv fungi_odb10/ BUSCO
 ```shell
 cd ~/data/Trichoderma
 
+# Only take the species from pass.lst and exclude those species in omit.lst that have no annotations
 cat Protein/species.tsv |
-    tsv-join -f ASSEMBLY/pass.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    tva join -f ASSEMBLY/pass.lst -k 1 |
+    tva join -e -f ASSEMBLY/omit.lst -k 1 \
     > Protein/species-f.tsv
 
 #fd --full-path "Protein/.+/busco.tsv" -X rm
 
+# In the protein sequences of each species, find the sequences that match with BUSCO, and format the output as a BUSCO marker - protein ID mapping table
 cat Protein/species-f.tsv |
     tsv-select -f 2 |
     rgr dedup stdin |
@@ -836,18 +880,21 @@ while read SPECIES; do
         > Protein/${SPECIES}/busco.tsv
 done
 
-fd --full-path "Protein/.+/busco.tsv" -X cat |
+# Count the number of occurrences of each BUSCO marker, and calculate the quartiles, median, and upper quartile
+fd --full-path "Protein/.+/busco.tsv" -X cat | # Integrate all busco.tsv
     tva stats --group-by 1 --count |
     tva stats --quantile 2:0.25,0.5,0.75
-#23      24      26
+#40      42      45
 
-# There are 21 species and 39 strains
-fd --full-path "Protein/.+/fungi61.tsv" -X cat |
+# There are 36 species and 67 strains
+# Modify based on the actual situation, keep the Markers whose occurrence frequency is between 40 and 75 times, and discard those with fewer than 40 occurrences or more than 75 occurrences (in marker.omit.lst)
+fd --full-path "Protein/.+/busco.tsv" -X cat |
     tva stats --group-by 1 --count |
-    tsv-filter --invert --ge 2:20 --le 2:30 |
+    tva filter --invert --ge 2:40 --le 2:75 |
     cut -f 1 \
     > Protein/marker.omit.lst
 
+# Extract the entire list of BUSCO markers
 cat BUSCO/scores_cutoff |
     parallel --colsep '\s+' --no-run-if-empty --linebuffer -k -j 1 "
         echo {1}
@@ -856,11 +903,13 @@ cat BUSCO/scores_cutoff |
 
 wc -l Protein/marker.lst Protein/marker.omit.lst
 # 758 Protein/marker.lst
-#   0 Protein/marker.omit.lst
+#   186 Protein/marker.omit.lst
 
+# Remove the markers that need to be removed and generate a list of single-copy genes
+# In the local SQLite database, establish an index between the IDs of BUSCO Markers and the actual protein sequences
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ ! -s Protein/"${SPECIES}"/busco.tsv ]]; then
         continue
@@ -888,10 +937,10 @@ cd ~/data/Trichoderma
 
 mkdir -p Domain
 
-# each assembly
+# From the local database of 36 species, extract the protein sequences corresponding to the single-copy BUSCO genes through SQL queries
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
         continue
@@ -917,10 +966,10 @@ while read SPECIES; do
         " |
         sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
         > Protein/${SPECIES}/seq_asm_f3.tsv
-
+    # Extract specific sequences from pro.fa.gz
     hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
-            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
-                rgr dedup stdin
+            tva select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+                tva uniq
         )
 done |
     hnsm dedup stdin |
@@ -929,8 +978,9 @@ done |
 fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
 
+# redundancy removal
 cat Domain/seq_asm_f3.tsv |
-    tsv-join -e -d 2 -f summary/redundant.lst -k 1 \
+    tva join -e -d 2 -f summary/redundant.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
 ```
 
@@ -939,7 +989,7 @@ cat Domain/seq_asm_f3.tsv |
 ```shell
 cd ~/data/Trichoderma
 
-# Extract proteins
+# For each BUSCO Marker, create a directory and extract the corresponding protein sequence
 cat Protein/marker.lst |
     grep -v -Fw -f Protein/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -949,14 +999,14 @@ cat Protein/marker.lst |
 
         hnsm some Domain/busco.fa.gz <(
             cat Domain/seq_asm_f3.tsv |
-                tsv-filter --str-eq "3:{}" |
-                tsv-select -f 1 |
-                rgr dedup stdin
+                tva filter --str-eq "3:{}" |
+                tva select -f 1 |
+                tva uniq
             ) \
             > Domain/{}/{}.pro.fa
     '
 
-# Align each marker
+# Use Mafft to perform sequence alignment for each BUSCO Marker
 cat Protein/marker.lst |
     grep -v -Fw -f Protein/marker.omit.lst |
     parallel --no-run-if-empty --linebuffer -k -j 4 '
@@ -972,6 +1022,7 @@ cat Protein/marker.lst |
         mafft --auto Domain/{}/{}.pro.fa > Domain/{}/{}.aln.fa
     '
 
+# Change protein names in align file to strain names
 cat Protein/marker.lst |
     grep -v -Fw -f Protein/marker.omit.lst |
 while read marker; do
@@ -988,13 +1039,13 @@ while read marker; do
     # Only NR strains
     # 1 name to many names
     cat Domain/seq_asm_f3.NR.tsv |
-        tsv-filter --str-eq "3:${marker}" |
-        tsv-select -f 1-2 |
+        tva filter --str-eq "3:${marker}" |
+        tva select -f 1-2 |
         hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
         > Domain/${marker}/${marker}.replace.fa
 done
 
-# Concat marker genes
+# Merge all the align results into one file(Domain/busco.aln.fas)
 cat Protein/marker.lst |
     grep -v -Fw -f Protein/marker.omit.lst |
 while read marker; do
@@ -1012,22 +1063,24 @@ while read marker; do
 done \
     > Domain/busco.aln.fas
 
+# Concatenate all the Busco Markers by strain name
 cat Domain/seq_asm_f3.NR.tsv |
     cut -f 2 |
-    rgr dedup stdin |
+    tva uniq |
     sort |
     fasops concat Domain/busco.aln.fas stdin -o Domain/busco.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in Domain/busco.aln.fa -out Domain/busco.trim.fa -automated1
 
+# Count total bases (top: original concatenated length, bottom: trimmed length)
 hnsm size Domain/busco.*.fa |
-    rgr dedup stdin -f 2 |
+    tva uniq -f 2 |
     cut -f 2
 #762750
 #399438
 
-# To make it faster
+# Informal tree, remove -fastest -noml to build a formal ML tree
 FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick
 ```
 
@@ -1036,20 +1089,21 @@ FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick
 ```shell
 cd ~/data/Trichoderma/tree
 
+# (Similar to MinHash)
 nwr reroot  ../Domain/busco.trim.newick -n Sa_cer_S288C |
-    nwr order stdin --nd --an \
+    nwr ops order stdin --nd --an \
     > busco.reroot.newick
 
 nwr pl-condense --map -r species \
     busco.reroot.newick ../Count/species.tsv |
-    nwr comment stdin -r "(S|member)=" |
-    nwr comment stdin -r "^\d+$" |
-    nwr order stdin --nd --an \
+    nwr viz comment stdin -r "(S|member)=" |
+    nwr viz comment stdin -r "^\d+$" |
+    nwr ops order stdin --nd --an \
     > busco.condensed.newick
 
 mv condensed.tsv busco.condense.tsv
 
-nwr tex minhash.condensed.newick --bl -o Trichoderma.busco.tex
+nwr viz tex minhash.condensed.newick --bl -o Trichoderma.busco.tex
 
 tectonic Trichoderma.busco.tex
 ```
@@ -1112,7 +1166,7 @@ for item in "${ARRAY[@]}" ; do
     cat ../MinHash/groups.tsv |
         tsv-filter --str-eq 1:${SERIAL} |
         tsv-select -f 2 |
-        tsv-join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
+        tva join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
         > ${GROUP_NAME}
 
     COUNT=$(cat ${GROUP_NAME} | wc -l )
@@ -1152,7 +1206,7 @@ for item in "${ARRAY[@]}" ; do
         echo "H_ros_CCMJ2808_GCA_011799845_1" >> T.tmp
         cat T.tmp |
             rgr dedup stdin |
-            tsv-join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
+            tva join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
             > ${GROUP_NAME}
 
     else
@@ -1160,7 +1214,7 @@ for item in "${ARRAY[@]}" ; do
             tsv-select -f 1,2 |
             grep "${GROUP_NAME_2}" |
             tsv-select -f 1 |
-            tsv-join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
+            tva join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
             > ${GROUP_NAME}
     fi
 
