@@ -1128,21 +1128,26 @@ Create a Bash `ARRAY` manually with a format of `group::target`.
 mkdir -p ~/data/Trichoderma/taxon
 cd ~/data/Trichoderma/taxon
 
+# Select the strains with annotations and contig counts less than 100
 cat ../ASSEMBLY/collect.pass.tsv |
-    tsv-filter -H --str-eq annotations:Yes --le C:100 |
-    tsv-select -H -f name,Assembly_level,Genome_coverage,Sequencing_technology,N50,C \
+    sed '1s/^#//' |
+    tva filter -H --str-eq annotations:Yes --le C:100 |
+    tva select -H -f name,Assembly_level,Genome_coverage,Sequencing_technology,N50,C \
     > potential-target.tsv
 
+# Select the strains which assembly_level is Complete Genome or Chromosome, and contig counts less than 50
 cat ../ASSEMBLY/collect.pass.tsv |
-    tsv-filter -H --or \
+    tva filter -H --or \
         --str-eq Assembly_level:"Complete Genome" \
         --str-eq Assembly_level:"Chromosome" \
         --le C:50 |
-    tsv-select -H -f name,Assembly_level,Genome_coverage,Sequencing_technology,N50,C \
+        sed '1s/^#//' |
+    tva select -H -f name,Assembly_level,Genome_coverage,Sequencing_technology,N50,C \
     > complete-genome.tsv
 
 echo -e "#Serial\tGroup\tTarget\tCount" > group_target.tsv
 
+# Based on the preset representative strains, identify the entire family to which they belong in the MinHash clustering, and associate their URLs
 # groups according `groups.tsv`
 ARRAY=(
     'C_E_H::E_web_GCA_001278495_1' # 1
@@ -1154,18 +1159,21 @@ ARRAY=(
 )
 
 for item in "${ARRAY[@]}" ; do
+# GROUP_NAME refers to the content before "::" in ARRAY
     GROUP_NAME="${item%%::*}"
+# TARGET_NAME refers to the content after "::" in ARRAY
     TARGET_NAME="${item##*::}"
 
+# SERIAL represents the group number of the TARGET_NAME strain in groups.tsv
     SERIAL=$(
         cat ../MinHash/groups.tsv |
-            tsv-filter --str-eq 2:${TARGET_NAME} |
-            tsv-select -f 1
+            tva filter --str-eq 2:${TARGET_NAME} |
+            tva select -f 1
     )
-
+# GROUP_NAME represents the URLs of all strains in the group "SERIAL"
     cat ../MinHash/groups.tsv |
-        tsv-filter --str-eq 1:${SERIAL} |
-        tsv-select -f 2 |
+        tva filter --str-eq 1:${SERIAL} |
+        tva select -f 2 |
         tva join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
         > ${GROUP_NAME}
 
@@ -1191,13 +1199,14 @@ for item in "${ARRAY[@]}" ; do
     TARGET_NAME="${item##*::}"
 
     SERIAL=$((SERIAL + 1))
-    GROUP_NAME_2=$(echo $GROUP_NAME | tr "_" " ")
+    GROUP_NAME_2=$(echo $GROUP_NAME | tr "_" " ") # change "_" to " "
 
+# When GROUP_NAME is Trichoderma, collect the URLs for the "reference genome" or "representative genome" strains
     if [ "$GROUP_NAME" = "Trichoderma" ]; then
         cat ../ASSEMBLY/collect.pass.tsv |
-            tsv-filter -H --not-blank RefSeq_category |
+            tva filter -H --not-blank RefSeq_category | # Extract all the strains that have been labeled as "reference genome" or "representative genome" by NCBI
             sed '1d' |
-            tsv-select -f 1 \
+            tva select -f 1 \
             > T.tmp
         echo "C_pro_CCMJ2080_GCA_004303015_1" >> T.tmp
         echo "E_web_EWB_GCA_003055145_1" >> T.tmp
@@ -1205,15 +1214,16 @@ for item in "${ARRAY[@]}" ; do
         echo "H_perniciosus_HP10_GCA_008477525_1" >> T.tmp
         echo "H_ros_CCMJ2808_GCA_011799845_1" >> T.tmp
         cat T.tmp |
-            rgr dedup stdin |
+            tva uniq |
             tva join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
             > ${GROUP_NAME}
 
+# otherwise, collect the URLs of all the strains of the mentioned species
     else
         cat ../ASSEMBLY/collect.pass.tsv |
-            tsv-select -f 1,2 |
+            tva select -f 1,2 |
             grep "${GROUP_NAME_2}" |
-            tsv-select -f 1 |
+            tva select -f 1 |
             tva join -f ../ASSEMBLY/url.tsv -k 1 -a 3 \
             > ${GROUP_NAME}
     fi
@@ -1225,7 +1235,7 @@ for item in "${ARRAY[@]}" ; do
 done
 
 cat group_target.tsv |
-    rar md stdin --right 4
+    tva to md --right 4 # Set the content in 4 column to be right-aligned
 ```
 
 | #Serial | Group                  | Target                             | Count |
@@ -1255,7 +1265,7 @@ cd ~/data/Trichoderma
 #   -i /share/home/wangq/homebrew/Cellar/repeatmasker@4.1.1/4.1.1/libexec/Libraries/RepeatMaskerLib.h5 \
 #   lineage Fungi
 
-# prep
+# prep:before alignment, standardize the format, eliminate duplicate sequences, and split the long sequences into approximately 5 Mb segments
 egaz template \
     ASSEMBLY \
     --prep -o Genome \
@@ -1272,7 +1282,7 @@ egaz template \
 
 bash Genome/0_prep.sh
 
-# gff
+# gff:Search for the annotation files of the strains in group_target.tsv and potential-target.tsv, and rename them uniformly as chr.gff
 for n in \
     $(cat taxon/group_target.tsv | sed -e '1d' | cut -f 3 ) \
     $( cat taxon/potential-target.tsv | sed -e '1d' | cut -f 1 ) \
@@ -1289,6 +1299,8 @@ done
 ```shell
 cd ~/data/Trichoderma
 
+# In each group, all the strains are compared pairwise with the target strain
+# Merge all the pairwise comparison results into a multi-sequence alignment matrix based on the MinHash tree
 cat taxon/group_target.tsv |
     sed -e '1d' |
     parallel --colsep '\t' --no-run-if-empty --linebuffer -k -j 1 '
