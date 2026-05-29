@@ -2,50 +2,49 @@
 
 Download all genomes and analyze representative strains.
 
-<!-- TOC -->
+[TOC levels=2-4]: #
 
-* [Fungi](#fungi)
-    * [Taxon info](#taxon-info)
-        * [List all ranks](#list-all-ranks)
-        * [Species with assemblies](#species-with-assemblies)
-        * [Model organisms](#model-organisms)
-    * [Download all assemblies](#download-all-assemblies)
-        * [Create assembly.tsv](#create-assemblytsv)
-        * [Count before download](#count-before-download)
-        * [Download and check](#download-and-check)
-        * [Rsync to hpcc](#rsync-to-hpcc)
-    * [BioSample](#biosample)
-    * [Divergence of Fungi](#divergence-of-fungi)
-        * [ReRoot](#reroot)
-    * [MinHash](#minhash)
-        * [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
-    * [Count valid species and strains](#count-valid-species-and-strains)
-        * [For *genomic alignments*](#for-genomic-alignments)
-        * [For *protein families*](#for-protein-families)
-    * [Collect proteins](#collect-proteins)
-    * [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
-        * [Find corresponding proteins by `hmmsearch`](#find-corresponding-proteins-by-hmmsearch)
-        * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
-        * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
-    * [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
-    * [Groups and targets](#groups-and-targets)
-
-<!-- TOC -->
+- [Taxon info](#taxon-info)
+  - [List all ranks](#list-all-ranks)
+  - [Species with assemblies](#species-with-assemblies)
+  - [Model organisms](#model-organisms)
+- [Download all assemblies](#download-all-assemblies)
+  - [Create assembly.tsv](#create-assemblytsv)
+  - [Count before download](#count-before-download)
+  - [Download and check](#download-and-check)
+  - [Rsync to hpcc](#rsync-to-hpcc)
+- [BioSample](#biosample)
+- [Divergence of Fungi](#divergence-of-fungi)
+  - [ReRoot](#reroot)
+- [MinHash](#minhash)
+  - [Condense branches in the minhash tree](#condense-branches-in-the-minhash-tree)
+- [Count valid species and strains](#count-valid-species-and-strains)
+  - [For genomic alignments](#for-genomic-alignments)
+  - [For protein families](#for-protein-families)
+- [Collect proteins](#collect-proteins)
+- [Phylogenetics with fungi61](#phylogenetics-with-fungi61)
+  - [Find corresponding proteins by ](#find-corresponding-proteins-by-)
+  - [Find corresponding representative proteins by ](#find-corresponding-representative-proteins-by-)
+  - [Domain related protein sequences](#domain-related-protein-sequences)
+  - [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
+  - [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
+- [InterProScan on all proteins of representative and typical strains](#interproscan-on-all-proteins-of-representative-and-typical-strains)
+- [Groups and targets](#groups-and-targets)
 
 ## Taxon info
 
-* [Fungi](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=4751)
+- [Fungi](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=4751)
 
 Open nomenclature (开放命名法)
 
-* Sp. (pl. spp.; short for "species") indicates potentially new species
-* Sp. aff. or aff. (short for "species affinis") indicates a potentially new and undescribed species
-  has an affinity to, but is not identical to, the named species
-* Cf. (short for the Latin: confer, "compare with") or a question mark (?, also inc., species
+- Sp. (pl. spp.; short for "species") indicates potentially new species
+- Sp. aff. or aff. (short for "species affinis") indicates a potentially new and undescribed
+  species has an affinity to, but is not identical to, the named species
+- Cf. (short for the Latin: confer, "compare with") or a question mark (?, also inc., species
   incerta) signify varying degrees or types of uncertainty
-* Candidatus, a candidate taxon proposed from metagenomics or other incomplete information
-* Incertae sedis, a taxon of uncertain position in a classification
-* Nomen invalidum, a name that is not validly published
+- Candidatus, a candidate taxon proposed from metagenomics or other incomplete information
+- Incertae sedis, a taxon of uncertain position in a classification
+- Nomen invalidum, a name that is not validly published
 
 ### List all ranks
 
@@ -55,8 +54,8 @@ nwr member Fungi |
     grep -v " aff." |
     grep -v " cf." |
     grep -v " x " |
-    tsv-summarize -H -g rank --count |
-    rgr md stdin --fmt
+    tva stats -H -g rank --count |
+    tva to md --num
 
 nwr member Fungi | grep " sp\."
 nwr member Fungi | grep " aff\."
@@ -64,43 +63,42 @@ nwr member Fungi | grep " cf\."
 nwr member Fungi -r species | grep "\." | grep -v " sp\." | grep -v " aff\." | grep -v " cf\."
 
 nwr member Fungi | grep " x "
-
 ```
 
 | rank          | count |
-|---------------|------:|
-| kingdom       |     1 |
-| no rank       |  5335 |
-| species       | 62460 |
-| subkingdom    |     1 |
+| ------------- | ----: |
+| clade         |    27 |
 | class         |    71 |
-| order         |   256 |
-| family        |   927 |
-| genus         |  7855 |
-| phylum        |    10 |
-| subphylum     |    14 |
-| strain        |  2256 |
-| varietas      |  1045 |
-| forma         |   226 |
+| family        |   985 |
+| forma         |   255 |
+| genus         |  8095 |
 | isolate       |     5 |
-| subspecies    |   144 |
-| subclass      |    19 |
-| suborder      |    24 |
+| kingdom       |     1 |
+| morph         |     2 |
+| no rank       |  5768 |
+| order         |   273 |
+| phylum        |    10 |
+| section       |    39 |
+| species       | 66685 |
+| species group |     1 |
+| strain        |  2228 |
+| subclass      |    18 |
 | subfamily     |    19 |
 | subgenus      |    10 |
-| clade         |    28 |
-| section       |    38 |
-| species group |     1 |
-| tribe         |     3 |
+| subkingdom    |     1 |
+| suborder      |    25 |
+| subphylum     |    14 |
+| subspecies    |   143 |
 | superfamily   |     1 |
-| morph         |     2 |
+| tribe         |     3 |
+| varietas      |  1115 |
 
 ### Species with assemblies
 
 In the vast majority of fungal species, only one genome was selected for refseq.
 
-* 'RefSeq'
-* 'Genbank'
+- 'RefSeq'
+- 'Genbank'
 
 ```shell
 mkdir -p ~/data/Fungi/summary
@@ -114,9 +112,9 @@ nwr member Fungi -r genus |
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#7855 genus.list
+#8095 genus.list
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -133,10 +131,10 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > RS1.tsv
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -153,49 +151,47 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#   639 RS1.tsv
-#  4953 GB1.tsv
+#    661 RS1.tsv
+#   5448 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
         if [ -e "${C}${N}.tsv" ]; then
             printf "${C}${N}\t"
             cat ${C}${N}.tsv |
-                tsv-summarize --sum 3
+                tva stats --sum 3
         fi
     done
 done
-#RS1     644
-#GB1     18029
-
+# RS1     705
+# GB1     22016
 ```
 
-* The names of some genera are abnormal
+- The names of some genera are abnormal
 
 ```shell
 cd ~/data/Fungi/summary
 
 cat RS*.tsv GB*.tsv |
-    cut -f 1,2 |
-    rgr dedup stdin |
+    tva select -f 1,2 |
+    tva uniq |
     grep "\[" |
     nwr append stdin -r genus |
     head
-#561895  [Candida] subhashii     Spathaspora
-#566037  [Ashbya] aceris (nom. inval.)   Eremothecium
-#45518   [Candida] aaseri        Yamadazyma
-#1171601 [Candida] adriatica     Cyberlindnera
-#456249  [Candida] andamanensis (nom. inval.)    Yamadazyma
-#148631  [Candida] anglica       Kurtzmaniella
-#130810  [Candida] arabinofermentans     Ogataea
-#391823  [Candida] ascalaphidarum        Yamadazyma
-#45521   [Candida] atlantica     Yamadazyma
-#45522   [Candida] atmosphaerica Yamadazyma
-
+# 561895  [Candida] subhashii     Spathaspora
+# 566037  [Ashbya] aceris (nom. inval.)   Eremothecium
+# 45518   [Candida] aaseri        Yamadazyma
+# 1171601 [Candida] adriatica     Cyberlindnera
+# 456249  [Candida] andamanensis (nom. inval.)    Yamadazyma
+# 148631  [Candida] anglica       Kurtzmaniella
+# 130810  [Candida] arabinofermentans     Ogataea
+# 391823  [Candida] ascalaphidarum        Yamadazyma
+# 224031  [Candida] aurita        Kurtzmaniella
+# 551772  [Candida] awuae Pichia
 ```
 
 ### Model organisms
@@ -226,7 +222,6 @@ echo "
 #refseq_category count
 #na      5
 #reference genome        639
-
 ```
 
 ## Download all assemblies
@@ -358,12 +353,11 @@ cat Fungi.assembly.tsv |
 
 # Cleaning
 rm raw*.*sv
-
 ```
 
 ### Count before download
 
-* `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
+- `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
 
 ```shell
 cd ~/data/Fungi
@@ -387,7 +381,6 @@ cat Count/genus.before.tsv |
     keep-header -- tsv-sort -k1,1 |
     tsv-filter -H --ge 3:100 |
     rgr md stdin --num
-
 ```
 
 | item    |  count |
@@ -493,7 +486,6 @@ cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
     rgr md stdin --fmt
-
 ```
 
 | #item            | fields |  lines |
@@ -517,7 +509,6 @@ rsync -avP \
     wangq@202.119.37.251:data/Fungi
 
 # rsync -avP wangq@202.119.37.251:data/Fungi/ ~/data/Fungi
-
 ```
 
 ## BioSample
@@ -541,27 +532,24 @@ datamash check < BioSample/biosample.tsv
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
-
 ```
 
 ## Divergence of Fungi
 
 Ref.:
 
-1. A genome-scale phylogeny of the kingdom Fungi. Cur Biology, 2021.
-   https://doi.org/10.1016/j.cub.2021.01.074
+1. A genome-scale phylogeny of the kingdom Fungi. Cur Biology, 2021. 
+   doi.org/10.1016/j.cub.2021.01.074
 
 ![1-s2.0-S0960982221001391-fx1_lrg.jpg](images/1-s2.0-S0960982221001391-fx1_lrg.jpg)
 
 ### ReRoot
 
-* 小孢子虫 (Microsporidia) 可以当作真菌的基部类群, 也可以当作真菌的姊妹类群
-
-* 芽枝霉门 (Blastocladiomycota) 是真菌的基部类群
-
-* For the latter steps, use the following two as the outgroups
-    * Enc_hellem_ATCC_50504_GCF_000277815_2
-    * Nematoc_ausu_ERTm6_GCF_000738915_1
+- 小孢子虫 (Microsporidia) 可以当作真菌的基部类群, 也可以当作真菌的姊妹类群
+- 芽枝霉门 (Blastocladiomycota) 是真菌的基部类群
+- For the latter steps, use the following two as the outgroups
+    - Enc_hellem_ATCC_50504_GCF_000277815_2
+    - Nematoc_ausu_ERTm6_GCF_000738915_1
 
 ```shell
 cd ~/data/Fungi
@@ -611,7 +599,6 @@ cat summary/collect.pass.tsv |
         --str-in-fld "2:Nematocida" |
     grep -v -Fw -f ASSEMBLY/omit.lst |
     tsv-select -H -f "#name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
-
 ```
 
 ## MinHash
@@ -665,7 +652,6 @@ nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --height 0.4
 
 bash MinHash/dist.sh
-
 ```
 
 ### Condense branches in the minhash tree
@@ -689,7 +675,6 @@ mv condensed.tsv minhash.condensed.tsv
 nwr topo --bl minhash.condensed.newick | # remove comments
     nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
     > Fungi.minhash.svg
-
 ```
 
 ## Count valid species and strains
@@ -730,7 +715,6 @@ cat Count/lineage.count.tsv |
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
-
 ```
 
 | item    | count |
@@ -842,7 +826,6 @@ cat Count/genus.count.tsv |
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
-
 ```
 
 | item    | count |
@@ -902,7 +885,6 @@ cat Protein/counts.tsv |
     datamash transpose |
     (echo -e "#item\tcount" && cat) |
     rgr md stdin --fmt
-
 ```
 
 | #item      |      count |
@@ -927,7 +909,6 @@ mkdir -p HMM
 # The Fungi HMM set
 tar xvfz ~/data/HMM/fungi61/fungi61.tar.gz --directory=HMM
 cp HMM/fungi61.lst HMM/marker.lst
-
 ```
 
 ### Find corresponding representative proteins by `hmmsearch`
@@ -1005,7 +986,6 @@ while read SPECIES; do
     nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/fungi61.sc.tsv
 
 done
-
 ```
 
 ### Domain related protein sequences
@@ -1059,7 +1039,6 @@ fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
 cat Domain/seq_asm_f3.tsv |
     tsv-join -e -d 2 -f summary/redundant.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
-
 ```
 
 ### Align and concat marker genes to create species tree
@@ -1157,7 +1136,6 @@ hnsm size Domain/fungi61.*.fa |
 
 # To make it faster
 FastTree -fastest -noml Domain/fungi61.trim.fa > Domain/fungi61.trim.newick
-
 ```
 
 ### Condense branches in the protein tree
@@ -1181,7 +1159,6 @@ nwr topo --bl fungi61.condensed.newick | # remove comments
     nwr tex stdin --bl -o Fungi.fungi61.tex
 
 tectonic Fungi.fungi61.tex
-
 ```
 
 ## InterProScan on all proteins of representative and typical strains
@@ -1190,9 +1167,9 @@ To be filled by other projects
 
 ```shell
 mkdir -p ~/data/Fungi/STRAINS
-
 ```
 
 ## Groups and targets
 
 Review `summary/collect.pass.tsv` and `tree/groups.tsv`
+
