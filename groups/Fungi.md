@@ -203,7 +203,7 @@ cd ~/data/Fungi/summary
 
 GENUS=$(
     cat genus.list.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -219,9 +219,9 @@ echo "
     GROUP BY refseq_category
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
-#refseq_category count
-#na      5
-#reference genome        639
+# refseq_category count
+# na      5
+# reference genome        700
 ```
 
 ## Download all assemblies
@@ -238,7 +238,7 @@ cd ~/data/Fungi/summary
 # RS
 SPECIES=$(
     cat RS1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -260,13 +260,13 @@ echo "
 
 # Preference for refseq
 cat raw.tsv |
-    tsv-select -H -f "assembly_accession" \
+    tva select -H -f "assembly_accession" \
     > rs.acc.tsv
 
 # GB
 SPECIES=$(
     cat GB1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -286,7 +286,7 @@ echo "
         AND species NOT LIKE '% x %'
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 echo "
@@ -306,44 +306,38 @@ echo "
         AND species NOT LIKE '% x %'
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 cat raw.tsv |
-    rgr dedup stdin |
-    datamash check
-#17956 lines, 7 fields
+    tva uniq |
+    tva check
+# 21941 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
-    rgr dedup stdin |
-    tsv-select -f 1-6 |
-    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    tva uniq |
+    tva select -f 1-6 |
+    nwr abbr -c "1,2,3" -m 3 --shortsub |
+    tva uniq -H -f ftp_path |
+    tva uniq -H -f 7 |
+    sed '1d' |
+    tva select -f 7,4,5,2,6 |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
-    perl -nl -a -F"," -e '
-        BEGIN{my %seen};
-        /^#/ and print and next;
-        /^organism_name/i and next;
-        $seen{$F[3]}++; # ftp_path
-        $seen{$F[3]} > 1 and next;
-        $seen{$F[6]}++; # abbr_name
-        $seen{$F[6]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
-        ' |
-    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
-    keep-header -- tsv-sort -k4,4 -k1,1 \
+    tva filter -H --or --str-in-fld 2:ftp --str-in-fld 2:http |
+    tva sort -H -k 4,1 \
     > Fungi.assembly.tsv
 
-datamash check < Fungi.assembly.tsv
-#17642 lines, 5 fields
+tva check < Fungi.assembly.tsv
+# 21933 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Fungi.assembly.tsv |
-    tsv-uniq -f 1 --repeated
+    tva uniq -f 1 --repeated
 
 cat Fungi.assembly.tsv |
-    tsv-filter --str-not-in-fld 2:ftp
+    tva filter --str-not-in-fld 2:ftp
 
 # Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Fungi.assembly.tsv
@@ -370,7 +364,7 @@ nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --fmt
+    tva to md --fmt
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -378,47 +372,58 @@ bash Count/rank.sh
 mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
-    keep-header -- tsv-sort -k1,1 |
-    tsv-filter -H --ge 3:100 |
-    rgr md stdin --num
+    tva sort -H -k 1 |
+    tva filter -H --ge 3:100 |
+    tva to md --fmt
 ```
 
 | item    |  count |
-|---------|-------:|
-| strain  | 17,636 |
-| species |  4,871 |
-| genus   |  1,397 |
-| family  |    485 |
-| order   |    176 |
+| ------- | -----: |
+| strain  | 21,925 |
+| species |  5,396 |
+| genus   |  1,514 |
+| family  |    503 |
+| order   |    184 |
 | class   |     61 |
 
 | genus             | #species | #strains |
-|-------------------|---------:|---------:|
-| Alternaria        |       35 |      180 |
-| Aspergillus       |      150 |     1296 |
-| Aureobasidium     |       12 |      167 |
-| Beauveria         |       11 |      331 |
-| Botryosphaeria    |        3 |      141 |
-| Candida           |       34 |      280 |
-| Candidozyma       |        9 |      223 |
-| Colletotrichum    |       81 |      278 |
-| Cryphonectria     |        7 |      110 |
-| Cryptococcus      |       12 |      217 |
+| ----------------- | -------: | -------: |
+| Alternaria        |       38 |      247 |
+| Aspergillus       |      183 |    1,440 |
+| Aureobasidium     |       14 |      177 |
+| Beauveria         |       15 |      375 |
+| Botryosphaeria    |        3 |      142 |
+| Candida           |       34 |      384 |
+| Candidozyma       |       10 |      705 |
+| Clavispora        |        9 |      103 |
+| Colletotrichum    |       84 |      328 |
+| Cryphonectria     |        7 |      115 |
+| Cryptococcus      |       12 |      233 |
 | Exophiala         |       13 |      102 |
-| Fusarium          |      195 |     1610 |
-| Komagataella      |        7 |      189 |
-| Metschnikowia     |       63 |      145 |
-| Ogataea           |       55 |      146 |
-| Parastagonospora  |        2 |      189 |
-| Penicillium       |      110 |      486 |
-| Pichia            |       30 |      135 |
-| Psilocybe         |       12 |      141 |
-| Pyricularia       |        5 |      410 |
-| Rhodotorula       |       10 |      178 |
-| Saccharomyces     |       11 |     1836 |
-| Torulaspora       |        8 |      115 |
-| Trichoderma       |       34 |      146 |
-| Zygosaccharomyces |       12 |      146 |
+| Fusarium          |      204 |    1,895 |
+| Komagataella      |        7 |      193 |
+| Lachancea         |       11 |      131 |
+| Macrophomina      |        4 |      491 |
+| Malassezia        |       18 |      102 |
+| Metschnikowia     |       64 |      151 |
+| Neurospora        |       11 |      124 |
+| Ogataea           |       56 |      149 |
+| Parastagonospora  |        2 |      190 |
+| Penicillium       |      117 |      614 |
+| Pichia            |       32 |      176 |
+| Psilocybe         |       15 |      144 |
+| Pyricularia       |        5 |      606 |
+| Rhizopus          |        5 |      107 |
+| Rhodotorula       |       13 |      206 |
+| Saccharomyces     |       10 |    1,924 |
+| Scheffersomyces   |       20 |      142 |
+| Torulaspora       |       20 |      153 |
+| Trichoderma       |       53 |      208 |
+| Trichophyton      |       15 |      184 |
+| Venturia          |        8 |      107 |
+| Verticillium      |       10 |      126 |
+| Yamadazyma        |       55 |      104 |
+| Zygosaccharomyces |       14 |      159 |
 
 ### Download and check
 
@@ -507,6 +512,11 @@ cat ASSEMBLY/counts.tsv |
 rsync -avP \
     ~/data/Fungi/ \
     wangq@202.119.37.251:data/Fungi
+
+rsync -avP \
+    /Volumes/data-1/Fungi/ \
+    ~/data/Fungi
+
 
 # rsync -avP wangq@202.119.37.251:data/Fungi/ ~/data/Fungi
 ```
