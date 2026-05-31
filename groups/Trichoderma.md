@@ -63,12 +63,12 @@ nwr lineage Trichoderma |
 
 | rank     | count |
 | -------- | ----: |
-| genus    |     1 |
-| species  |   501 |
-| no rank  |     1 |
-| varietas |     2 |
-| strain   |    14 |
 | forma    |     2 |
+| genus    |     1 |
+| no rank  |     1 |
+| species  |   548 |
+| strain   |    14 |
+| varietas |     2 |
 
 | #rank      | sci_name          | tax_id |
 | ---------- | ----------------- | ------ |
@@ -94,7 +94,7 @@ cd ~/data/Trichoderma/summary
 nwr member Hypocreaceae -r genus |
     grep -v " x " | # Exclude hybrid varieties
     sed '1d' |
-    sort -n -k1,1 \
+    tva sort -n -k 1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
@@ -300,7 +300,7 @@ cat raw.tsv |
     > Trichoderma.assembly.tsv
 
 tva check < Trichoderma.assembly.tsv
-#248 lines, 5 fields
+#250 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Trichoderma.assembly.tsv |
@@ -351,8 +351,8 @@ cat Count/genus.before.tsv |
 
 | item    | count |
 | ------- | ----: |
-| strain  |   247 |
-| species |    65 |
+| strain  |   249 |
+| species |    66 |
 | genus   |     7 |
 | family  |     2 |
 | order   |     2 |
@@ -366,7 +366,7 @@ cat Count/genus.before.tsv |
 | Mycogone         |        1 |        1 |
 | Saccharomyces    |        1 |        1 |
 | Sphaerostilbella |        1 |        1 |
-| Trichoderma      |       53 |      229 |
+| Trichoderma      |       54 |      231 |
 
 ### Download and check
 
@@ -427,12 +427,12 @@ cat ASSEMBLY/n50.tsv |
 cat ASSEMBLY/n50.tsv |
     tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
     tva transpose # swap rows and columns
-#N50_pct10       139491
-#N50_pct50       1289709
-#C_pct50 147
-#C_pct90 883.8
-#S_pct10 32267925.4
-#S_pct50 37251948
+# N50_quantile_0.1        142282
+# N50_quantile_0.5        1289709
+# C_quantile_0.5  147
+# C_quantile_0.9  883.4
+# S_quantile_0.1  32277792.2
+# S_quantile_0.5  37210882
 
 # After the above steps are completed, run the following commands.
 
@@ -443,6 +443,10 @@ bash ASSEMBLY/collect.sh
 bash ASSEMBLY/finish.sh
 
 cp ASSEMBLY/collect.pass.tsv summary/
+cp ASSEMBLY/omit.lst summary/
+cp ASSEMBLY/pass.lst summary/
+cp ASSEMBLY/sp.lst summary/
+cp ASSEMBLY/rep.lst summary/
 
 cat ASSEMBLY/counts.tsv |
     tva to md --fmt
@@ -450,14 +454,14 @@ cat ASSEMBLY/counts.tsv |
 
 | #item            | fields | lines |
 | ---------------- | -----: | ----: |
-| url.tsv          |      3 |   247 |
-| check.lst        |      1 |   247 |
-| collect.tsv      |     20 |   248 |
-| n50.tsv          |      4 |   248 |
-| n50.pass.tsv     |      4 |   223 |
-| collect.pass.tsv |     23 |   223 |
-| pass.lst         |      1 |   222 |
-| omit.lst         |      1 |   176 |
+| url.tsv          |      3 |   249 |
+| check.lst        |      1 |   249 |
+| collect.tsv      |     20 |   250 |
+| n50.tsv          |      4 |   250 |
+| n50.pass.tsv     |      4 |   225 |
+| collect.pass.tsv |     23 |   225 |
+| pass.lst         |      1 |   224 |
+| omit.lst         |      1 |   178 |
 | rep.lst          |      1 |    51 |
 | sp.lst           |      1 |    29 |
 
@@ -499,7 +503,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 10
 
 tva check < BioSample/biosample.tsv
-# 245 lines, 42 fields
+# 247 lines, 42 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -556,7 +560,7 @@ find MinHash -name "redundant.lst" |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#  117 summary/NR.lst
+#  118 summary/NR.lst
 #  68 summary/redundant.lst
 
 # Abnormal strains: select the strains within the species whose maximum ANI difference between them is greater than 0.05
@@ -858,8 +862,8 @@ cat Protein/species.tsv |
 
 # In the protein sequences of each species, find the sequences that match with BUSCO, and format the output as a BUSCO marker - protein ID mapping table
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ -s Protein/"${SPECIES}"/busco.tsv ]]; then
         continue

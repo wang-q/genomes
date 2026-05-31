@@ -500,6 +500,10 @@ bash ASSEMBLY/collect.sh
 bash ASSEMBLY/finish.sh
 
 cp ASSEMBLY/collect.pass.tsv summary/
+cp ASSEMBLY/omit.lst summary/
+cp ASSEMBLY/pass.lst summary/
+cp ASSEMBLY/sp.lst summary/
+cp ASSEMBLY/rep.lst summary/
 
 cat ASSEMBLY/counts.tsv |
     tva to md --fmt
@@ -578,38 +582,43 @@ cd ~/data/Fungi
 cat summary/collect.pass.tsv |
     tva select -f 1,3 |
     sed '1d' |
-    grep -v -Fw -f ASSEMBLY/omit.lst |
+    grep -v -Fw -f summary/omit.lst |
     nwr append stdin -c 2 -r species -r phylum -r subkingdom |
     tva filter --str-ne "5:Dikarya" | # 双核亚界
     tva filter --str-ne "4:Mucoromycota" | # 毛霉门
     tva filter --str-ne "4:Zoopagomycota" | #
     tva filter --str-ne "4:Chytridiomycota" | # 壶菌门
     tva select -f 1,3,4 |
-    tva sort -k3,3 -k1,1 |
+    tva sort -k 3,1 |
     tva stats -g 3,2 --count
-#Blastocladiomycota      Allomyces arbusculus    1
-#Blastocladiomycota      Allomyces javanicus     1
-#Blastocladiomycota      Allomyces macrogynus    1
-#Blastocladiomycota      Blastocladiella emersonii       1
-#Blastocladiomycota      Catenaria anguillulae   1
-#Blastocladiomycota      Paraphysoderma sedebokerense    1
-#Microsporidia   Edhazardia aedis        1
-#Microsporidia   Encephalitozoon cuniculi        3
-#Microsporidia   Encephalitozoon hellem  4
-#Microsporidia   Encephalitozoon intestinalis    2
-#Microsporidia   Encephalitozoon romaleae        1
-#Microsporidia   Enterocytozoon hepatopenaei     1
-#Microsporidia   Hamiltosporidium tvaerminnensis 1
-#Microsporidia   Nematocida ausubeli     2
-#Microsporidia   Nematocida displodere   1
-#Microsporidia   Nematocida major        1
-#Microsporidia   Nematocida parisii      2
-#Microsporidia   Ordospora colligata     4
-#Microsporidia   Ordospora pajunii       1
-#Microsporidia   Vairimorpha bombi       1
-#Microsporidia   Vairimorpha ceranae     1
-#Microsporidia   Vairimorpha necatrix    1
-#Microsporidia   Vittaforma corneae      1
+# Blastocladiomycota      Allomyces arbusculus    1
+# Blastocladiomycota      Allomyces javanicus     1
+# Blastocladiomycota      Allomyces macrogynus    1
+# Blastocladiomycota      Blastocladiella emersonii       1
+# Blastocladiomycota      Catenaria anguillulae   1
+# Blastocladiomycota      Paraphysoderma sedebokerense    1
+# Blastocladiomycota      Sorochytrium milnesiophthora    1
+# Microsporidia   Binucleata daphniae     1
+# Microsporidia   Ecytonucleospora hepatopenaei   1
+# Microsporidia   Edhazardia aedis        1
+# Microsporidia   Encephalitozoon cuniculi        3
+# Microsporidia   Encephalitozoon hellem  4
+# Microsporidia   Encephalitozoon intestinalis    5
+# Microsporidia   Encephalitozoon romaleae        1
+# Microsporidia   Glugoides intestinalis  1
+# Microsporidia   Gurleya vavrai  1
+# Microsporidia   Hamiltosporidium tvaerminnensis 1
+# Microsporidia   Mitosporidium daphniae  1
+# Microsporidia   Nematocida ausubeli     2
+# Microsporidia   Nematocida displodere   1
+# Microsporidia   Nematocida major        1
+# Microsporidia   Nematocida parisii      2
+# Microsporidia   Ordospora colligata     5
+# Microsporidia   Ordospora pajunii       1
+# Microsporidia   Vairimorpha bombi       1
+# Microsporidia   Vairimorpha ceranae     1
+# Microsporidia   Vairimorpha necatrix    1
+# Microsporidia   Vittaforma corneae      1
 
 cat summary/collect.pass.tsv |
     tva filter -H --not-blank RefSeq_category |
@@ -618,7 +627,7 @@ cat summary/collect.pass.tsv |
         --str-in-fld "2:Blastocladiella" \
         --str-in-fld "2:Encephalitozoon" \
         --str-in-fld "2:Nematocida" |
-    grep -v -Fw -f ASSEMBLY/omit.lst |
+    grep -v -Fw -f summary/omit.lst |
     tva select -H -f "#name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
 ```
 
@@ -630,7 +639,7 @@ cd ~/data/Fungi/
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --mh \
     --parallel 8 \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005
 
@@ -666,8 +675,8 @@ cd ~/data/Fungi/
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --mh \
     --parallel 8 \
-    --not-in ASSEMBLY/sp.lst \
-    --not-in ASSEMBLY/omit.lst \
+    --not-in summary/sp.lst \
+    --not-in summary/omit.lst \
     --not-in MinHash/abnormal.lst \
     --not-in summary/redundant.lst \
     --height 0.4
@@ -707,7 +716,7 @@ cd ~/data/Fungi/
 
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --count \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --rank order --rank genus \
     --lineage family --lineage genus
 
@@ -715,24 +724,24 @@ nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/order.count.tsv |
-    tsv-filter -H --ge "3:100" |
-    rgr md stdin --num
+    tva filter -H --ge "3:100" |
+    tva to md --num
 
 cat Count/genus.count.tsv |
-    tsv-filter -H --ge "3:100" |
-    rgr md stdin --num
+    tva filter -H --ge "3:100" |
+    tva to md --num
 
 # Can accept N_COUNT
 bash Count/lineage.sh 50
 
 cat Count/lineage.count.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
@@ -827,9 +836,9 @@ cd ~/data/Fungi/
 
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --count \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --not-in MinHash/abnormal.lst \
-    --not-in ASSEMBLY/omit.lst \
+    --not-in summary/omit.lst \
     --rank genus
 
 # strains.taxon.tsv and taxa.tsv
@@ -842,8 +851,8 @@ cat Count/taxa.tsv |
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
-    tsv-filter -H --ge "3:50" |
-    rgr md stdin --num
+    tva filter -H --ge "3:50" |
+    tva to md --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
@@ -882,8 +891,8 @@ ulimit -n `ulimit -Hn`
 nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --pro \
     --parallel 8 \
-    --in ASSEMBLY/pass.lst \
-    --not-in ASSEMBLY/omit.lst
+    --in summary/pass.lst \
+    --not-in summary/omit.lst
 
 # collect proteins
 bash Protein/collect.sh
@@ -901,11 +910,11 @@ bash Protein/info.sh
 bash Protein/count.sh
 
 cat Protein/counts.tsv |
-    tsv-summarize -H --count --sum 2-7 |
+    tva stats -H --count --sum 2-7 |
     sed 's/^count/species/' |
     datamash transpose |
     (echo -e "#item\tcount" && cat) |
-    rgr md stdin --fmt
+    tva to md --fmt
 ```
 
 | #item      |      count |
@@ -940,16 +949,16 @@ cd ~/data/Fungi
 E_VALUE=1e-20
 
 cat Protein/species.tsv |
-    tsv-join -f ASSEMBLY/pass.lst -k 1 |
-    tsv-join -f ASSEMBLY/rep.lst -k 1 |
-    tsv-join -f summary/NR.lst -k 1 |
-    tsv-join -e -f MinHash/abnormal.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    tva join -f summary/pass.lst -k 1 |
+    tva join -f summary/rep.lst -k 1 |
+    tva join -f summary/NR.lst -k 1 |
+    tva join -e -f MinHash/abnormal.lst -k 1 |
+    tva join -e -f summary/omit.lst -k 1 \
     > Protein/species-f.tsv
 
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva to dedup |
 while read SPECIES; do
     if [[ -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
         continue
@@ -971,14 +980,14 @@ while read SPECIES; do
 done
 
 fd --full-path "Protein/.+/fungi61.tsv" -X cat |
-    tsv-summarize --group-by 1 --count |
-    tsv-summarize --quantile 2:0.25,0.5,0.75
+    tva stats --group-by 1 --count |
+    tva stats --quantile 2:0.25,0.5,0.75
 #628     664     1659
 
 # There are 461 species and 616 strains
 fd --full-path "Protein/.+/fungi61.tsv" -X cat |
-    tsv-summarize --group-by 1 --count |
-    tsv-filter --invert --ge 2:600 --le 2:750 |
+    tva stats --group-by 1 --count |
+    tva filter --invert --ge 2:600 --le 2:750 |
     cut -f 1 \
     > Protein/marker.omit.lst
 
@@ -987,8 +996,8 @@ wc -l HMM/marker.lst Protein/marker.omit.lst
 # 33 Protein/marker.omit.lst
 
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ ! -s Protein/"${SPECIES}"/fungi61.tsv ]]; then
         continue
@@ -1018,8 +1027,8 @@ mkdir -p Domain
 
 # each assembly
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
         continue
@@ -1047,8 +1056,8 @@ while read SPECIES; do
         > Protein/${SPECIES}/seq_asm_f3.tsv
 
     hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
-            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
-            rgr dedup stdin
+            tva select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+            tva uniq
         )
 done |
     hnsm dedup stdin |
@@ -1058,7 +1067,7 @@ fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
 
 cat Domain/seq_asm_f3.tsv |
-    tsv-join -e -d 2 -f summary/redundant.lst -k 1 \
+    tva join -e -d 2 -f summary/redundant.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
 ```
 
@@ -1077,9 +1086,9 @@ cat HMM/marker.lst |
 
         hnsm some Domain/fungi61.fa.gz <(
             cat Domain/seq_asm_f3.tsv |
-                tsv-filter --str-eq "3:{}" |
-                tsv-select -f 1 |
-                rgr dedup stdin
+                tva filter --str-eq "3:{}" |
+                tva select -f 1 |
+                tva uniq
             ) \
             > Domain/{}/{}.pro.fa
     '
@@ -1116,8 +1125,8 @@ while read marker; do
     # Only NR strains
     # 1 name to many names
     cat Domain/seq_asm_f3.NR.tsv |
-        tsv-filter --str-eq "3:${marker}" |
-        tsv-select -f 1-2 |
+        tva filter --str-eq "3:${marker}" |
+        tva select -f 1-2 |
         hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
         > Domain/${marker}/${marker}.replace.fa
 done
