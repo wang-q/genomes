@@ -502,7 +502,7 @@ bash ASSEMBLY/finish.sh
 cp ASSEMBLY/collect.pass.tsv summary/
 
 cat ASSEMBLY/counts.tsv |
-    rgr md stdin --fmt
+    tva to md --fmt
 ```
 
 | #item            | fields |  lines |
