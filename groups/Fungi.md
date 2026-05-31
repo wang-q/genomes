@@ -436,11 +436,23 @@ nwr template ~/Scripts/genomes/assembly/Fungi.assembly.tsv \
     --ass
 
 # Run
-bash ASSEMBLY/rsync.sh
+bash ASSEMBLY/aria2.sh
 
 # Check md5; create check.lst
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
+
+# Remove failed directories and re-download
+bash ASSEMBLY/check.sh 2>&1 |
+    grep "checksum failed" |
+    sed 's/.*==> //;s/ checksum failed <==//' |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        dir=$(cat ASSEMBLY/url.tsv | tva filter --str-eq "1:{}" | tva select -f 3,1 | tr "\t" "/")
+        if [[ -n "$dir" && -e "ASSEMBLY/$dir" ]]; then
+            echo Remove ASSEMBLY/$dir
+            rm -fr "ASSEMBLY/$dir"
+        fi
+    '
 
 ## Put the misplaced directory into the right place
 #bash ASSEMBLY/reorder.sh
@@ -457,27 +469,27 @@ bash ASSEMBLY/check.sh
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
-#17640
+#21930
 
 # N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 100000 2000 1000000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
-    tsv-filter -H --str-in-fld "name:_GCF_" |
-    tsv-summarize -H --min "N50" --max "C" --min "S"
+    tva filter -H --str-in-fld "name:_GCF_" |
+    tva stats -H --min "N50" --max "C" --min "S"
 #N50_min C_max   S_min
 #32179   2016    2187595
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
-    datamash transpose
-#N50_pct10       20382.7
-#N50_pct50       329305
-#C_pct50 349.5
-#C_pct90 4884
-#S_pct10 11659193.7
-#S_pct50 32321861
+    tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
+    tva transpose
+# N50_quantile_0.1        24176.5
+# N50_quantile_0.5        321544.5
+# C_quantile_0.5  350
+# C_quantile_0.9  5084.5
+# S_quantile_0.1  11665362.4
+# S_quantile_0.5  32559599.5
 
 # After the above steps are completed, run the following commands.
 
@@ -494,17 +506,16 @@ cat ASSEMBLY/counts.tsv |
 ```
 
 | #item            | fields |  lines |
-|------------------|-------:|-------:|
-| url.tsv          |      3 | 17,640 |
-| check.lst        |      1 | 17,640 |
-| collect.tsv      |     20 | 17,641 |
-| n50.tsv          |      4 | 17,641 |
-| n50.pass.tsv     |      4 | 12,190 |
-| collect.pass.tsv |     23 | 12,190 |
-| pass.lst         |      1 | 12,189 |
-| omit.lst         |      1 | 12,910 |
-| rep.lst          |      1 |  3,430 |
-| sp.lst           |      1 |    160 |
+| ---------------- | -----: | -----: |
+| url.tsv          |      3 | 21,932 |
+| check.lst        |      1 | 21,932 |
+| collect.tsv      |     20 | 21,933 |
+| n50.pass.tsv     |      4 | 14,971 |
+| collect.pass.tsv |     23 | 14,971 |
+| pass.lst         |      1 | 14,970 |
+| omit.lst         |      1 | 16,573 |
+| rep.lst          |      1 |  3,976 |
+| sp.lst           |      1 |    216 |
 
 ### Rsync to hpcc
 
