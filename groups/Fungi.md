@@ -548,8 +548,8 @@ bash BioSample/download.sh
 # Ignore rare attributes
 bash BioSample/collect.sh 10
 
-datamash check < BioSample/biosample.tsv
-#17313 lines, 209 fields
+tva check < BioSample/biosample.tsv
+#21555 lines, 239 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -576,17 +576,17 @@ Ref.:
 cd ~/data/Fungi
 
 cat summary/collect.pass.tsv |
-    tsv-select -f 1,3 |
+    tva select -f 1,3 |
     sed '1d' |
     grep -v -Fw -f ASSEMBLY/omit.lst |
     nwr append stdin -c 2 -r species -r phylum -r subkingdom |
-    tsv-filter --str-ne "5:Dikarya" | # 双核亚界
-    tsv-filter --str-ne "4:Mucoromycota" | # 毛霉门
-    tsv-filter --str-ne "4:Zoopagomycota" | #
-    tsv-filter --str-ne "4:Chytridiomycota" | # 壶菌门
-    tsv-select -f 1,3,4 |
-    tsv-sort -k3,3 -k1,1 |
-    tsv-summarize -g 3,2 --count
+    tva filter --str-ne "5:Dikarya" | # 双核亚界
+    tva filter --str-ne "4:Mucoromycota" | # 毛霉门
+    tva filter --str-ne "4:Zoopagomycota" | #
+    tva filter --str-ne "4:Chytridiomycota" | # 壶菌门
+    tva select -f 1,3,4 |
+    tva sort -k3,3 -k1,1 |
+    tva stats -g 3,2 --count
 #Blastocladiomycota      Allomyces arbusculus    1
 #Blastocladiomycota      Allomyces javanicus     1
 #Blastocladiomycota      Allomyces macrogynus    1
@@ -612,14 +612,14 @@ cat summary/collect.pass.tsv |
 #Microsporidia   Vittaforma corneae      1
 
 cat summary/collect.pass.tsv |
-    tsv-filter -H --not-blank RefSeq_category |
-    tsv-filter -H --or \
+    tva filter -H --not-blank RefSeq_category |
+    tva filter -H --or \
         --str-in-fld "2:Allomyces" \
         --str-in-fld "2:Blastocladiella" \
         --str-in-fld "2:Encephalitozoon" \
         --str-in-fld "2:Nematocida" |
     grep -v -Fw -f ASSEMBLY/omit.lst |
-    tsv-select -H -f "#name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
+    tva select -H -f "#name,Assembly_level,Assembly_method,Genome_coverage,Sequencing_technology"
 ```
 
 ## MinHash
