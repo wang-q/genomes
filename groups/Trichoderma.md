@@ -538,7 +538,7 @@ cd ~/data/Trichoderma
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --mh \
     --parallel 8 \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005
 
@@ -594,25 +594,18 @@ cd ~/data/Trichoderma/tree
 
 # nw_reroot: Set the root of the tree on Sa_cer_S288C
 # nwr order: Sort the nodes of the evolutionary tree. --nd: sort them in ascending order based on the "number of descendants" of each node (the branch with fewer descendants appears earlier). --an: sort them in ascending order according to the alphabetical and numerical order of the node labels.
-nw_reroot ../MinHash/tree.nwk Sa_cer_S288C |
-    nwr ops order stdin --nd --an \
+pgr nwk reroot ../MinHash/tree.nwk -n Sa_cer_S288C |
+    pgr nwk order stdin --nd --an \
     > minhash.reroot.newick
 
 # Map the species names onto the tree, merge the tree branches according to the species hierarchy, and clean up the annotation information of the tree
-nwr pl-condense --map -r species \
-    minhash.reroot.newick ../MinHash/species.tsv |
-    nwr viz comment stdin -r "(S|member)=" |
-    nwr viz comment stdin -r "^\d+$" |
-    nwr ops order stdin --nd --an \ 
+pgr pl condense --map -t ../Count/strains.taxon.tsv -r 2 minhash.reroot.newick \
     > minhash.condensed.newick
 
-mv condensed.tsv minhash.condensed.tsv
-
-# Convert to LaTeX format
-nwr viz tex minhash.condensed.newick --bl -o Trichoderma.minhash.tex
-
 # Compile the LaTeX file to generate a PDF
-tectonic Trichoderma.minhash.tex
+pgr nwk to-tex minhash.condensed.newick --bl |
+    tectonic - &&
+    mv texput.pdf Trichoderma.minhash.pdf
 ```
 
 ## Count valid species and strains
@@ -654,8 +647,8 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 
 | item    | count |
 | ------- | ----: |
-| strain  |   200 |
-| species |    58 |
+| strain  |   202 |
+| species |    59 |
 | genus   |     5 |
 | family  |     2 |
 | order   |     2 |
@@ -667,7 +660,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 | Escovopsis    |        2 |        7 |
 | Hypomyces     |        4 |        4 |
 | Saccharomyces |        1 |        1 |
-| Trichoderma   |       48 |      184 |
+| Trichoderma   |       49 |      186 |
 
 | #family            | genus         | species                     | count |
 | ------------------ | ------------- | --------------------------- | ----: |
@@ -688,7 +681,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |                    |               | Trichoderma asperelloides   |     4 |
 |                    |               | Trichoderma asperellum      |    22 |
 |                    |               | Trichoderma atrobrunneum    |     1 |
-|                    |               | Trichoderma atroviride      |    12 |
+|                    |               | Trichoderma atroviride      |    13 |
 |                    |               | Trichoderma austrokoningii  |     1 |
 |                    |               | Trichoderma barbatum        |     1 |
 |                    |               | Trichoderma breve           |     1 |
@@ -701,6 +694,7 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 |                    |               | Trichoderma citrinoviride   |     6 |
 |                    |               | Trichoderma compactum       |     1 |
 |                    |               | Trichoderma cornu-damae     |     1 |
+|                    |               | Trichoderma deliquescens    |     1 |
 |                    |               | Trichoderma endophyticum    |     4 |
 |                    |               | Trichoderma erinaceum       |     2 |
 |                    |               | Trichoderma evansii         |     1 |
@@ -810,13 +804,13 @@ cat Protein/counts.tsv |
 
 | #item      |   count |
 | ---------- | ------: |
-| species    |      36 |
-| strain_sum |      67 |
-| total_sum  | 687,394 |
-| dedup_sum  | 687,394 |
-| rep_sum    | 529,592 |
-| fam88_sum  | 466,019 |
-| fam38_sum  | 390,874 |
+| species    |      35 |
+| strain_sum |      66 |
+| total_sum  | 680,524 |
+| dedup_sum  | 680,524 |
+| rep_sum    | 522,723 |
+| fam88_sum  | 459,148 |
+| fam38_sum  | 384,372 |
 
 ## Phylogenetics with fungi61(database 1)
 
@@ -854,8 +848,8 @@ cd ~/data/Trichoderma
 
 # Only take the species from pass.lst and exclude those species in omit.lst that have no annotations
 cat Protein/species.tsv |
-    tva join -f ASSEMBLY/pass.lst -k 1 |
-    tva join -e -f ASSEMBLY/omit.lst -k 1 \
+    tva join -f summary/pass.lst -k 1 |
+    tva join -e -f summary/omit.lst -k 1 \
     > Protein/species-f.tsv
 
 #fd --full-path "Protein/.+/busco.tsv" -X rm
