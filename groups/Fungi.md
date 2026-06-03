@@ -754,57 +754,67 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 ```
 
 | item    | count |
-|---------|------:|
-| strain  | 12188 |
-| species |  3445 |
-| genus   |  1030 |
-| family  |   392 |
-| order   |   154 |
-| class   |    54 |
+| ------- | ----: |
+| strain  | 14968 |
+| species |  3903 |
+| genus   |  1134 |
+| family  |   418 |
+| order   |   163 |
+| class   |    55 |
 
 | order             | #species | #strains |
-|-------------------|---------:|---------:|
-| Agaricales        |      179 |      291 |
-| Botryosphaeriales |       27 |      188 |
-| Chaetothyriales   |       49 |      154 |
-| Diaporthales      |       48 |      154 |
-| Dipodascales      |      138 |      250 |
-| Eurotiales        |      285 |     1728 |
-| Glomerellales     |       84 |      243 |
-| Helotiales        |       92 |      142 |
-| Hypocreales       |      314 |     1571 |
-| Magnaporthales    |       10 |      192 |
-| Mycosphaerellales |       66 |      201 |
-| Onygenales        |       42 |      183 |
-| Phaffomycetales   |       79 |      110 |
-| Pichiales         |      131 |      480 |
-| Pleosporales      |      150 |      594 |
-| Polyporales       |       72 |      109 |
-| Saccharomycetales |      114 |     1946 |
-| Serinales         |      332 |      934 |
-| Sordariales       |       73 |      133 |
-| Sporidiobolales   |       16 |      178 |
-| Tremellales       |       42 |      307 |
-| Xylariales        |      109 |      197 |
+| ----------------- | -------: | -------: |
+| Agaricales        |      221 |      389 |
+| Botryosphaeriales |       31 |      257 |
+| Chaetothyriales   |       59 |      170 |
+| Diaporthales      |       57 |      181 |
+| Dipodascales      |      145 |      268 |
+| Dothideales       |       20 |      110 |
+| Eurotiales        |      327 |     1991 |
+| Glomerellales     |       87 |      325 |
+| Helotiales        |      101 |      170 |
+| Hypocreales       |      373 |     1912 |
+| Magnaporthales    |       13 |      363 |
+| Mucorales         |       61 |      112 |
+| Mycosphaerellales |       75 |      214 |
+| Onygenales        |       46 |      267 |
+| Phaffomycetales   |       81 |      139 |
+| Pichiales         |      134 |      505 |
+| Pleosporales      |      174 |      723 |
+| Polyporales       |       81 |      130 |
+| Saccharomycetales |      129 |     2239 |
+| Serinales         |      339 |     1492 |
+| Sordariales       |       76 |      160 |
+| Sporidiobolales   |       28 |      221 |
+| Tremellales       |       47 |      335 |
+| Ustilaginales     |       38 |      102 |
+| Xylariales        |       82 |      160 |
 
 | genus            | #species | #strains |
-|------------------|---------:|---------:|
-| Alternaria       |       35 |      176 |
-| Aspergillus      |      133 |     1107 |
-| Candida          |       23 |      173 |
-| Candidozyma      |        9 |      206 |
-| Colletotrichum   |       67 |      177 |
-| Cryptococcus     |       12 |      210 |
-| Fusarium         |      128 |     1073 |
-| Komagataella     |        7 |      186 |
-| Ogataea          |       54 |      133 |
-| Parastagonospora |        2 |      168 |
-| Penicillium      |      106 |      456 |
-| Pyricularia      |        4 |      185 |
-| Rhodotorula      |       10 |      171 |
-| Saccharomyces    |       11 |     1576 |
-| Torulaspora      |        8 |      103 |
-| Trichoderma      |       30 |      130 |
+| ---------------- | -------: | -------: |
+| Alternaria       |       38 |      233 |
+| Aspergillus      |      165 |     1240 |
+| Aureobasidium    |       14 |      101 |
+| Candida          |       24 |      220 |
+| Candidozyma      |       10 |      528 |
+| Clavispora       |        9 |      100 |
+| Colletotrichum   |       70 |      207 |
+| Cryptococcus     |       12 |      226 |
+| Fusarium         |      136 |     1233 |
+| Komagataella     |        7 |      190 |
+| Lachancea        |       10 |      128 |
+| Ogataea          |       55 |      136 |
+| Parastagonospora |        2 |      169 |
+| Penicillium      |      114 |      574 |
+| Pyricularia      |        4 |      346 |
+| Rhodotorula      |       11 |      197 |
+| Saccharomyces    |       10 |     1661 |
+| Scheffersomyces  |       19 |      115 |
+| Torulaspora      |       20 |      140 |
+| Trichoderma      |       48 |      191 |
+| Trichophyton     |       14 |      111 |
+| Verticillium     |       10 |      107 |
+| Yamadazyma       |       55 |      103 |
 
 | #family                  | genus               | species                   | count |
 |--------------------------|---------------------|---------------------------|------:|
