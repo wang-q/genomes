@@ -694,17 +694,23 @@ pgr nwk reroot ../MinHash/tree.nwk -n Enc_hellem_ATCC_50504_GCF_000277815_2 -n N
     pgr nwk order stdin --nd --an \
     > minhash.reroot.newick
 
-pgr pl condense --map -t ../Count/strains.taxon.tsv -r 5 -r 4 \
+pgr pl condense --map -t ../Count/strains.taxon.tsv -r 5 -r 4 -r 3 \
     minhash.reroot.newick |
     pgr nwk order stdin --nd --an \
     > minhash.condensed.newick
 
 mv condensed.tsv minhash.condensed.tsv
 
-# pdf
-pgr nwk to-tex minhash.condensed.newick --bl |
-    tectonic - &&
-    mv texput.pdf Fungi.minhash.pdf
+# # pdf
+# pgr nwk to-tex minhash.condensed.newick --bl |
+#     tectonic - &&
+#     mv texput.pdf Fungi.minhash.pdf
+
+# svg
+pgr nwk topo --bl minhash.condensed.newick | # remove comments
+    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+    > Fungi.minhash.svg
+
 ```
 
 ## Count valid species and strains
