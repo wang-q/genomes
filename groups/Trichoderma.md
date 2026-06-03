@@ -965,13 +965,13 @@ while read SPECIES; do
         sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
         > Protein/${SPECIES}/seq_asm_f3.tsv
     # Extract specific sequences from pro.fa.gz
-    hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
+    pgr fa some Protein/"${SPECIES}"/pro.fa.gz <(
             tva select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
                 tva uniq
         )
 done |
-    hnsm dedup stdin |
-    hnsm gz stdin -o Domain/busco.fa
+    pgr fa dedup stdin |
+    pgr fa gz stdin -o Domain/busco.fa.gz
 
 fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
@@ -995,7 +995,7 @@ cat Protein/marker.lst |
 
         mkdir -p Domain/{}
 
-        hnsm some Domain/busco.fa.gz <(
+        pgr fa some Domain/busco.fa.gz <(
             cat Domain/seq_asm_f3.tsv |
                 tva filter --str-eq "3:{}" |
                 tva select -f 1 |
@@ -1039,7 +1039,7 @@ while read marker; do
     cat Domain/seq_asm_f3.NR.tsv |
         tva filter --str-eq "3:${marker}" |
         tva select -f 1-2 |
-        hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
+        pgr fa replace -s Domain/${marker}/${marker}.aln.fa stdin \
         > Domain/${marker}/${marker}.replace.fa
 done
 
@@ -1072,7 +1072,7 @@ cat Domain/seq_asm_f3.NR.tsv |
 trimal -in Domain/busco.aln.fa -out Domain/busco.trim.fa -automated1
 
 # Count total bases (top: original concatenated length, bottom: trimmed length)
-hnsm size Domain/busco.*.fa |
+pgr fa size Domain/busco.*.fa |
     tva uniq -f 2 |
     cut -f 2
 #762750
@@ -1088,8 +1088,8 @@ FastTree -fastest -noml Domain/busco.trim.fa > Domain/busco.trim.newick
 cd ~/data/Trichoderma/tree
 
 # (Similar to MinHash)
-nwr reroot  ../Domain/busco.trim.newick -n Sa_cer_S288C |
-    nwr ops order stdin --nd --an \
+pgr nwk reroot ../Domain/busco.trim.newick -n Sa_cer_S288C |
+    pgr nwk order stdin --nd --an \
     > busco.reroot.newick
 
 nwr pl-condense --map -r species \
