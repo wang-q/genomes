@@ -660,14 +660,14 @@ find MinHash -name "redundant.lst" |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#  3287 summary/NR.lst
-#  6640 summary/redundant.lst
+    # 3757 summary/NR.lst
+    # 6946 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#194
+#  203
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Fungi/
@@ -690,21 +690,21 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Fungi/tree
 cd ~/data/Fungi/tree
 
-nw_reroot ../MinHash/tree.nwk Enc_hellem_ATCC_50504_GCF_000277815_2 Nematoc_ausu_ERTm6_GCF_000738915_1 |
-    nwr order stdin --nd --an \
+pgr nwk reroot ../MinHash/tree.nwk -n Enc_hellem_ATCC_50504_GCF_000277815_2 -n Nematoc_ausu_ERTm6_GCF_000738915_1 |
+    pgr nwk order stdin --nd --an \
     > minhash.reroot.newick
 
-nwr pl-condense --map -r order -r family -r genus \
-    minhash.reroot.newick ../MinHash/species.tsv |
-    nwr order stdin --nd --an \
+pgr pl condense --map -t ../Count/strains.taxon.tsv -r 5 -r 4 \
+    minhash.reroot.newick |
+    pgr nwk order stdin --nd --an \
     > minhash.condensed.newick
 
 mv condensed.tsv minhash.condensed.tsv
 
-# svg
-nwr topo --bl minhash.condensed.newick | # remove comments
-    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
-    > Fungi.minhash.svg
+# pdf
+pgr nwk to-tex minhash.condensed.newick --bl |
+    tectonic - &&
+    mv texput.pdf Fungi.minhash.pdf
 ```
 
 ## Count valid species and strains
