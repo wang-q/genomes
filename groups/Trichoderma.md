@@ -732,9 +732,9 @@ cd ~/data/Trichoderma/
 # Excluded the strains listed in omit.lst
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --count \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --not-in MinHash/abnormal.lst \
-    --not-in ASSEMBLY/omit.lst \
+    --not-in summary/omit.lst \
     --rank genus
 
 # strains.taxon.tsv and taxa.tsv
