@@ -133,12 +133,12 @@ cat ~/data/Fungi/summary/genome.taxon.tsv |
 | Cryptococcus     |       12 |      226 | 隐球菌属 (脑膜炎)             |
 
 | #species               | #strains | comment      |
-| ---------------------- | -------- | ------------ |
-| Candida albicans       | 70       | 白色念珠菌   |
-| Candida parapsilosis   | 80       | 近平滑念珠菌 |
-| Candida tropicalis     | 29       | 热带念珠菌   |
-| Candidozyma auris      | 507      | 耳念珠菌     |
-| Nakaseomyces glabratus | 76       | 光滑念珠菌   |
+| ---------------------- | -------: | ------------ |
+| Candida albicans       |       70 | 白色念珠菌   |
+| Candida parapsilosis   |       80 | 近平滑念珠菌 |
+| Candida tropicalis     |       29 | 热带念珠菌   |
+| Candidozyma auris      |      507 | 耳念珠菌     |
+| Nakaseomyces glabratus |       76 | 光滑念珠菌   |
 
 ### List strains within families of target genara
 
@@ -341,20 +341,26 @@ mkdir -p summary
 # Target families
 FAMILY=(
     # Ascomycota
-    # Pezizomycotina
+    # Pezizomycotina 盘菌亚门
+    # Eurotiomycetes 散囊菌纲
     Aspergillaceae
+    # Sordariomycetes 粪壳菌纲
+    Ophiostomataceae
 
-    # Saccharomycotina
-    # All families inside Saccharomycetales...
+    # Saccharomycotina 酵母亚门
+    # Pichiomycetes 毕赤酵母纲
+    Debaryomycetaceae
+    Metschnikowiaceae
+    # Saccharomycetes 酵母纲
+    Saccharomycetaceae
 
-    # Taphrinomycotina
+    # Taphrinomycotina 外囊菌亚门
     Pneumocystidaceae
 
     # Basidiomycota
+    # Tremellomycetes 银耳纲
     Cryptococcaceae
 )
-FAMILY+=( $(nwr member Saccharomycetales -r family | sed 1d | cut -f 2) )
-#FAMILY=$(IFS=, ; echo "${FAMILY[*]}")
 
 FAMILY_ID=$(
     for G in "${FAMILY[@]}"; do echo $G; done |
