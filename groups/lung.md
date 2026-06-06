@@ -34,12 +34,12 @@ mkdir -p ~/data/lung
 cd ~/data/lung
 
 rm -fr ASSEMBLY
-rm -fr NR
-rm -fr STRAINS
+# rm -fr NR
+# rm -fr STRAINS
 
 ln -s ../Fungi/ASSEMBLY ASSEMBLY
-ln -s ../Fungi/NR NR
-ln -s ../Fungi/STRAINS STRAINS
+# ln -s ../Fungi/NR NR
+# ln -s ../Fungi/STRAINS STRAINS
 
 ```
 
@@ -59,7 +59,7 @@ cat <<EOF | grep -v '^#' > summary/infections.csv
 Aspergillus,曲霉菌属
 #Blastomyces,芽生菌属 (lung)
 Candida,念珠菌属
-Candida/Metschnikowiaceae, ([Candida] auris 耳念珠菌)
+Candidozyma, (Candidozyma auris 耳念珠菌)
 Coccidioides,球孢子菌属 (lung)
 #Colletotrichum,刺盘孢属 (炭疽)
 #Epichloe,
@@ -75,7 +75,7 @@ Paracoccidioides,副球孢子菌属 (lung)
 #Pichia,毕赤酵母属
 Pneumocystis,肺孢子菌属 (lung)
 #Pyricularia,梨孢属 (稻瘟病)
-#Sporothrix,孢子丝菌属 (skin)
+Sporothrix,孢子丝菌属 (skin)
 #Talaromyces,踝节菌属 (lung)
 #Trichoderma,木霉属
 #Trichophyton,毛癣菌属
@@ -95,235 +95,239 @@ Candida albicans,白色念珠菌
 Nakaseomyces glabratus,光滑念珠菌
 Candida tropicalis,热带念珠菌
 Candida parapsilosis,近平滑念珠菌
-[Candida] auris,耳念珠菌
+Candidozyma auris,耳念珠菌
 EOF
 
 cat summary/infections.csv |
     tr ',' '\t' |
-    tsv-join -f ~/data/Fungi/summary/genus.count.tsv -k 2 -d 1 --append-fields 1,3,4 |
-    tsv-select -f 3,1,4,5,2 |
-    (echo -e '#tax_id\tgenus\t#species\t#strains\tcomment' && cat) |
-    mlr --itsv --omd cat
+    tva join -f ~/data/Fungi/summary/genus.genome.tsv -k 1 -d 1 --append-fields 2,3 |
+    tva select -f 1,3,4,2 |
+    (echo -e '#genus\t#species\t#strains\tcomment' && cat) |
+    tva to md --num
 
-cat ~/data/Fungi/summary/strains.taxon.tsv |
-    tsv-summarize -g 3 --count |
-    tsv-join -k 1 -f <(
+cat ~/data/Fungi/summary/genome.taxon.tsv |
+    tva stats -g 2 --count |
+    tva join -k 1 -f <(
         cat summary/infections.csv |
             tr ',' '\t'
         ) \
         -a 2 |
     (echo -e '#species\t#strains\tcomment' && cat) |
-    mlr --itsv --omd cat
+    tva to md --num
 
 ```
 
-| #tax_id | genus                     | #species | #strains | comment                  |
-|---------|---------------------------|----------|----------|--------------------------|
-| 5052    | Aspergillus               | 70       | 468      | 曲霉菌属                     |
-| 5475    | Candida                   | 55       | 150      | 念珠菌属                     |
-| 2964429 | Candida/Metschnikowiaceae | 6        | 55       | ([Candida] auris 耳念珠菌)   |
-| 5500    | Coccidioides              | 11       | 12       | 球孢子菌属 (lung)             |
-| 27320   | Metschnikowia             | 10       | 61       | 梅奇酵母属                    |
-| 374468  | Nakaseomyces              | 2        | 42       | (Candida glabrata 光滑念珠菌) |
-| 38946   | Paracoccidioides          | 2        | 2        | 副球孢子菌属 (lung)            |
-| 4753    | Pneumocystis              | 8        | 11       | 肺孢子菌属 (lung)             |
-| 4951    | Yarrowia                  | 4        | 23       | 耶氏酵母                     |
-| 5206    | Cryptococcus              | 27       | 55       | 隐球菌属 (脑膜炎)               |
+| #genus           | #species | #strains | comment                       |
+| ---------------- | -------: | -------: | ----------------------------- |
+| Aspergillus      |      165 |     1240 | 曲霉菌属                      |
+| Candida          |       24 |      220 | 念珠菌属                      |
+| Candidozyma      |       10 |      528 | (Candidozyma auris 耳念珠菌)  |
+| Coccidioides     |        2 |       12 | 球孢子菌属 (lung)             |
+| Hanseniaspora    |       17 |       47 | 有孢汉逊酵母                  |
+| Metschnikowia    |       36 |       77 | 梅奇酵母属                    |
+| Nakaseomyces     |        5 |       87 | (Candida glabrata 光滑念珠菌) |
+| Paracoccidioides |        4 |       13 | 副球孢子菌属 (lung)           |
+| Pneumocystis     |        6 |        9 | 肺孢子菌属 (lung)             |
+| Sporothrix       |       18 |       37 | 孢子丝菌属 (skin)             |
+| Yarrowia         |       13 |       72 | 耶氏酵母                      |
+| Cryptococcus     |       12 |      226 | 隐球菌属 (脑膜炎)             |
 
-| #species               | #strains | comment |
-|------------------------|----------|---------|
-| Candida albicans       | 53       | 白色念珠菌   |
-| Candida parapsilosis   | 21       | 近平滑念珠菌  |
-| Candida tropicalis     | 9        | 热带念珠菌   |
-| [Candida] auris        | 46       | 耳念珠菌    |
-| Nakaseomyces glabratus | 42       | 光滑念珠菌   |
+| #species               | #strains | comment      |
+| ---------------------- | -------- | ------------ |
+| Candida albicans       | 70       | 白色念珠菌   |
+| Candida parapsilosis   | 80       | 近平滑念珠菌 |
+| Candida tropicalis     | 29       | 热带念珠菌   |
+| Candidozyma auris      | 507      | 耳念珠菌     |
+| Nakaseomyces glabratus | 76       | 光滑念珠菌   |
 
 ### List strains within families of target genara
 
 ```shell
 cd ~/data/lung/
 
-cat ../Fungi/summary/collect.pass.csv |
+# Families of target genara
+cat summary/infections.csv |
+    tr ',' '\t' |
+    cut -f 1 |
+    nwr append stdin -r family |
+    cut -f 2 |
+    grep -v "NA" |
+    sort |
+    tva uniq
+# Ajellomycetaceae
+# Aspergillaceae
+# Cryptococcaceae
+# Debaryomycetaceae
+# Metschnikowiaceae
+# Onygenaceae
+# Ophiostomataceae
+# Pneumocystaceae
+# Saccharomycetaceae
+# Saccharomycodaceae
+
+cat ../Fungi/summary/collect.pass.tsv |
     sed -e '1d' |
-    tr "," "\t" |
-    tsv-select -f 1,3 |
+    tva select -f 1,3 |
     nwr append stdin -c 2 -r species -r genus -r family -r order |
-    grep -Fw -f <( # Families of target genara
-        cat summary/infections.csv |
-            tr ',' '\t' |
-            cut -f 1 |
-            nwr append stdin -r family |
-            cut -f 2 |
-            grep -v "NA" |
-            rgr dedup stdin
-        ) \
+    nwr restrict -c 2 Cryptococcaceae Debaryomycetaceae Metschnikowiaceae Onygenaceae Ophiostomataceae Pneumocystaceae \
     > summary/strains.taxon.tsv
 
 cat summary/strains.taxon.tsv |
-    tsv-select -f 5,4,3 |
-    tsv-sort -k1,1 -k2,2 -k3,3 |
-    tsv-summarize -g 1,2,3 --count |
-    tsv-filter --gt 4:1 |
-    perl -nla -F'\t' -e '
-            BEGIN { our $family = q(); our $genus = q(); }
-
-            # record the current family
-            if ($F[0] eq $family) {
-                printf qq(\t);
-            } else {
-                $family = $F[0];
-                printf qq($family\t);
-            }
-            # record the current genus
-            if ($F[1] eq $genus) {
-                printf qq(\t);
-            } else {
-                $genus = $F[1];
-                printf qq($genus\t);
-            }
-
-            print join qq(\t), ($F[2], $F[3]);
-        ' |
+    tva select -f 5,4,3 |
+    tva sort -k 1,2,3 |
+    tva stats -g 1,2,3 --count |
+    tva filter --ge 4:3 |
+    tva blank -f 1 -f 2 |
     (echo -e '#family\tgenus\tspecies\tcount' && cat) |
-    mlr --itsv --omd cat
+    tva to md --num
 
 ```
 
-| #family            | genus                     | species                               | count |
-|--------------------|---------------------------|---------------------------------------|-------|
-| Aspergillaceae     | Aspergillus               | Aspergillus chevalieri                | 4     |
-|                    |                           | Aspergillus felis                     | 3     |
-|                    |                           | Aspergillus flavus                    | 136   |
-|                    |                           | Aspergillus fumigatus                 | 74    |
-|                    |                           | Aspergillus luchuensis                | 12    |
-|                    |                           | Aspergillus nidulans                  | 3     |
-|                    |                           | Aspergillus niger                     | 94    |
-|                    |                           | Aspergillus oryzae                    | 90    |
-|                    |                           | Aspergillus puulaauensis              | 2     |
-|                    |                           | Aspergillus sojae                     | 5     |
-|                    | Monascus                  | Monascus purpureus                    | 6     |
-|                    | Penicillium               | Penicillium chrysogenum               | 77    |
-|                    |                           | Penicillium citrinum                  | 23    |
-|                    |                           | Penicillium digitatum                 | 5     |
-|                    |                           | Penicillium nalgiovense               | 29    |
-|                    |                           | Penicillium oxalicum                  | 10    |
-|                    |                           | Penicillium polonicum                 | 8     |
-|                    |                           | Penicillium roqueforti                | 36    |
-|                    |                           | Penicillium salamii                   | 21    |
-| Cryptococcaceae    | Cryptococcus              | Cryptococcus floricola                | 2     |
-|                    |                           | Cryptococcus gattii VGI               | 7     |
-|                    |                           | Cryptococcus gattii VGII              | 10    |
-|                    |                           | Cryptococcus neoformans               | 32    |
-|                    |                           | Cryptococcus wingfieldii              | 2     |
-| Debaryomycetaceae  | Candida                   | Candida albicans                      | 53    |
-|                    |                           | Candida orthopsilosis                 | 4     |
-|                    |                           | Candida parapsilosis                  | 21    |
-|                    |                           | Candida tropicalis                    | 9     |
-|                    | Debaryomyces              | Debaryomyces hansenii                 | 11    |
-|                    | Hyphopichia               | Hyphopichia burtonii                  | 3     |
-|                    | Scheffersomyces           | Scheffersomyces stipitis              | 2     |
-| Dipodascaceae      | Geotrichum                | Geotrichum candidum                   | 17    |
-|                    | Yarrowia                  | Yarrowia lipolytica                   | 23    |
-| Metschnikowiaceae  | Candida/Metschnikowiaceae | [Candida] auris                       | 46    |
-|                    |                           | [Candida] haemuloni                   | 4     |
-|                    |                           | [Candida] intermedia                  | 3     |
-|                    | Clavispora                | Clavispora lusitaniae                 | 32    |
-|                    | Metschnikowia             | Metschnikowia reukaufii               | 2     |
-|                    |                           | Metschnikowia zobellii                | 2     |
-| Onygenaceae        | Coccidioides              | Coccidioides posadasii                | 11    |
-|                    | Ophidiomyces              | Ophidiomyces ophidiicola              | 63    |
-| Pneumocystidaceae  | Pneumocystis              | Pneumocystis canis                    | 3     |
-|                    |                           | Pneumocystis jirovecii                | 3     |
-| Saccharomycetaceae | Eremothecium              | Eremothecium gossypii                 | 2     |
-|                    | Kluyveromyces             | Kluyveromyces lactis                  | 3     |
-|                    |                           | Kluyveromyces marxianus               | 15    |
-|                    | Lachancea                 | Lachancea fermentati                  | 2     |
-|                    |                           | Lachancea thermotolerans              | 4     |
-|                    | Nakaseomyces              | Nakaseomyces glabratus                | 42    |
-|                    | Naumovozyma               | Naumovozyma castellii                 | 7     |
-|                    | Saccharomyces             | Saccharomyces arboricola              | 2     |
-|                    |                           | Saccharomyces bayanus                 | 5     |
-|                    |                           | Saccharomyces boulardii (nom. inval.) | 7     |
-|                    |                           | Saccharomyces cerevisiae              | 111   |
-|                    |                           | Saccharomyces eubayanus               | 13    |
-|                    |                           | Saccharomyces kudriavzevii            | 9     |
-|                    |                           | Saccharomyces mikatae                 | 3     |
-|                    |                           | Saccharomyces paradoxus               | 25    |
-|                    |                           | Saccharomyces pastorianus             | 18    |
-|                    |                           | Saccharomyces uvarum                  | 20    |
-|                    | Torulaspora               | Torulaspora delbrueckii               | 23    |
-|                    | Zygosaccharomyces         | Zygosaccharomyces rouxii              | 4     |
-|                    | Zygotorulaspora           | Zygotorulaspora mrakii                | 2     |
-| Saccharomycodaceae | Saccharomycodes           | Saccharomycodes ludwigii              | 3     |
+| #family           | genus           | species                     | count |
+| ----------------- | --------------- | --------------------------- | ----: |
+| Cryptococcaceae   | Cryptococcus    | Cryptococcus deneoformans   |     5 |
+|                   |                 | Cryptococcus deuterogattii  |    11 |
+|                   |                 | Cryptococcus gattii         |     8 |
+|                   |                 | Cryptococcus neoformans     |   188 |
+|                   | Kwoniella       | Kwoniella mangrovensis      |     3 |
+| Debaryomycetaceae | Candida         | Candida albicans            |    70 |
+|                   |                 | Candida metapsilosis        |     9 |
+|                   |                 | Candida orthopsilosis       |     6 |
+|                   |                 | Candida parapsilosis        |    80 |
+|                   |                 | Candida tropicalis          |    29 |
+|                   | Debaryomyces    | Debaryomyces fabryi         |     3 |
+|                   |                 | Debaryomyces hansenii       |    37 |
+|                   |                 | Debaryomyces robertsiae     |     3 |
+|                   | Diutina         | Diutina catenulata          |    12 |
+|                   |                 | Diutina rugosa              |     4 |
+|                   | Hyphopichia     | Hyphopichia burtonii        |     6 |
+|                   | Kodamaea        | Kodamaea ohmeri             |     9 |
+|                   | Kurtzmaniella   | [Candida] anglica           |     6 |
+|                   |                 | [Candida] zeylanoides       |     3 |
+|                   | Lodderomyces    | Lodderomyces elongisporus   |     4 |
+|                   | Meyerozyma      | Meyerozyma caribbica        |     9 |
+|                   |                 | Meyerozyma carpophila       |     3 |
+|                   |                 | Meyerozyma guilliermondii   |    21 |
+|                   | Millerozyma     | Millerozyma farinosa        |     3 |
+|                   | Scheffersomyces | Scheffersomyces shehatae    |     3 |
+|                   |                 | Scheffersomyces spartinae   |    85 |
+|                   |                 | Scheffersomyces stipitis    |     6 |
+|                   | Schwanniomyces  | Schwanniomyces etchellsii   |     5 |
+|                   |                 | Schwanniomyces occidentalis |     3 |
+|                   |                 | Schwanniomyces polymorphus  |     5 |
+|                   |                 | Schwanniomyces vanrijiae    |     4 |
+|                   | Spathaspora     | Spathaspora passalidarum    |     3 |
+|                   |                 | [Candida] sake              |     7 |
+|                   | Yamadazyma      | Yamadazyma tenuis           |     3 |
+|                   |                 | [Candida] aaseri            |     4 |
+|                   |                 | [Candida] diddensiae        |    27 |
+|                   |                 | [Candida] nonsorbophila     |    11 |
+| Metschnikowiaceae | Candidozyma     | Candidozyma auris           |   507 |
+|                   |                 | Candidozyma duobushaemuli   |     3 |
+|                   |                 | Candidozyma haemuli         |     4 |
+|                   |                 | Candidozyma molenica        |     4 |
+|                   |                 | Candidozyma pseudohaemuli   |     3 |
+|                   |                 | Candidozyma vulturna        |     3 |
+|                   | Clavispora      | Clavispora lusitaniae       |    88 |
+|                   |                 | Clavispora santaluciae      |     5 |
+|                   | Metschnikowia   | Metschnikowia aberdeeniae   |     3 |
+|                   |                 | Metschnikowia agaves        |     4 |
+|                   |                 | Metschnikowia australis     |     3 |
+|                   |                 | Metschnikowia bicuspidata   |     4 |
+|                   |                 | Metschnikowia caudata       |     3 |
+|                   |                 | Metschnikowia dekortorum    |     3 |
+|                   |                 | Metschnikowia drosophilae   |     3 |
+|                   |                 | Metschnikowia hawaiiana     |     3 |
+|                   |                 | Metschnikowia hibisci       |     3 |
+|                   |                 | Metschnikowia orientalis    |     3 |
+|                   |                 | Metschnikowia pulcherrima   |     7 |
+|                   |                 | Metschnikowia shivogae      |     3 |
+|                   |                 | Metschnikowia zobellii      |     3 |
+|                   | Sungouiella     | Sungouiella intermedia      |     5 |
+| Onygenaceae       | Coccidioides    | Coccidioides immitis        |     5 |
+|                   |                 | Coccidioides posadasii      |     7 |
+|                   | Ophidiomyces    | Ophidiomyces ophidiicola    |    73 |
+| Ophiostomataceae  | Harringtonia    | Harringtonia lauricola      |     4 |
+|                   | Ophiostoma      | Ophiostoma novo-ulmi        |     7 |
+|                   | Sporothrix      | Sporothrix globosa          |     9 |
+|                   |                 | Sporothrix schenckii        |     4 |
+|                   |                 | Sporothrix stenoceras       |     3 |
+| Pneumocystaceae   | Pneumocystis    | Pneumocystis canis          |     3 |
 
 ### List all ranks within the genus of interest
 
-下面 6 个属是这次研究的主要目标
+下面 7 个属是这次研究的主要目标
 
 There are no noteworthy classification ranks other than species.
 
 ```shell
 
-nwr member Aspergillus Candida "Candida/Metschnikowiaceae" Nakaseomyces Pneumocystis Cryptococcus |
+nwr member Aspergillus Sporothrix Candida Candidozyma Nakaseomyces Pneumocystis  Cryptococcus  |
     grep -v " sp." |
-    tsv-summarize -H -g 3 --count |
-    mlr --itsv --omd cat
+    tva stats -H -g 3 --count |
+    tva to md --num
 
-for N in Aspergillus Candida "Candida/Metschnikowiaceae" Nakaseomyces Pneumocystis Cryptococcus; do
+for N in Aspergillus Sporothrix Candida Candidozyma Nakaseomyces Pneumocystis Cryptococcus ; do
     nwr lineage "${N}" |
-        tsv-filter --str-ne 1:clade |
-        tsv-filter --str-ne "1:no rank" |
+        tva filter --str-ne 1:clade |
+        tva filter --str-ne "1:no rank" |
         sed -n '/kingdom\tFungi/,$p'
 done |
-    rgr dedup stdin |
-    sed -E "s/\b(genus)\b/*\1*/"| # Highlight genus
+    sed -E "s/\b(genus)\b/*\1*/" | # Highlight genus
+    tva uniq |
     (echo -e '#rank\tsci_name\ttax_id' && cat) |
-    mlr --itsv --omd cat
+    tva to md --num
 
 ```
 
-| rank       | count |
-|------------|-------|
-| genus      | 6     |
-| species    | 738   |
-| subgenus   | 6     |
-| strain     | 730   |
-| no rank    | 7     |
-| varietas   | 43    |
-| subspecies | 1     |
-| isolate    | 4     |
+| rank     | count |
+| -------- | ----: |
+| genus    |     7 |
+| species  |   846 |
+| subgenus |     6 |
+| strain   |   724 |
+| no rank  |     8 |
+| varietas |    41 |
+| forma    |     1 |
 
-| #rank      | sci_name                  | tax_id  |
-|------------|---------------------------|---------|
-| kingdom    | Fungi                     | 4751    |
-| subkingdom | Dikarya                   | 451864  |
-| phylum     | Ascomycota                | 4890    |
-| subphylum  | Pezizomycotina            | 147538  |
-| class      | Eurotiomycetes            | 147545  |
-| subclass   | Eurotiomycetidae          | 451871  |
-| order      | Eurotiales                | 5042    |
-| family     | Aspergillaceae            | 1131492 |
-| *genus*    | Aspergillus               | 5052    |
-| subphylum  | Saccharomycotina          | 147537  |
-| class      | Saccharomycetes           | 4891    |
-| order      | Saccharomycetales         | 4892    |
-| family     | Debaryomycetaceae         | 766764  |
-| *genus*    | Candida                   | 5475    |
-| family     | Metschnikowiaceae         | 27319   |
-| *genus*    | Candida/Metschnikowiaceae | 2964429 |
-| family     | Saccharomycetaceae        | 4893    |
-| *genus*    | Nakaseomyces              | 374468  |
-| subphylum  | Taphrinomycotina          | 451866  |
-| class      | Pneumocystidomycetes      | 147553  |
-| order      | Pneumocystidales          | 37987   |
-| family     | Pneumocystidaceae         | 44281   |
-| *genus*    | Pneumocystis              | 4753    |
-| phylum     | Basidiomycota             | 5204    |
-| subphylum  | Agaricomycotina           | 5302    |
-| class      | Tremellomycetes           | 155616  |
-| order      | Tremellales               | 5234    |
-| family     | Cryptococcaceae           | 1884633 |
-| *genus*    | Cryptococcus              | 5206    |
+| #rank      | sci_name           |  tax_id |
+| ---------- | ------------------ | ------: |
+| kingdom    | Fungi              |    4751 |
+| subkingdom | Dikarya            |  451864 |
+| phylum     | Ascomycota         |    4890 |
+| subphylum  | Pezizomycotina     |  147538 |
+| class      | Eurotiomycetes     |  147545 |
+| subclass   | Eurotiomycetidae   |  451871 |
+| order      | Eurotiales         |    5042 |
+| family     | Aspergillaceae     | 1131492 |
+| *genus*    | Aspergillus        |    5052 |
+| class      | Sordariomycetes    |  147550 |
+| subclass   | Sordariomycetidae  |  222544 |
+| order      | Ophiostomatales    |    5151 |
+| family     | Ophiostomataceae   |    5152 |
+| *genus*    | Sporothrix         |   29907 |
+| subphylum  | Saccharomycotina   |  147537 |
+| class      | Pichiomycetes      | 3239874 |
+| order      | Serinales          | 2916678 |
+| family     | Debaryomycetaceae  |  766764 |
+| *genus*    | Candida            |    5475 |
+| family     | Metschnikowiaceae  |   27319 |
+| *genus*    | Candidozyma        | 3303203 |
+| class      | Saccharomycetes    |    4891 |
+| order      | Saccharomycetales  |    4892 |
+| family     | Saccharomycetaceae |    4893 |
+| *genus*    | Nakaseomyces       |  374468 |
+| subphylum  | Taphrinomycotina   |  451866 |
+| class      | Pneumocystomycetes |  147553 |
+| order      | Pneumocystales     |   37987 |
+| family     | Pneumocystaceae    |   44281 |
+| *genus*    | Pneumocystis       |    4753 |
+| phylum     | Basidiomycota      |    5204 |
+| subphylum  | Agaricomycotina    |    5302 |
+| class      | Tremellomycetes    |  155616 |
+| order      | Tremellales        |    5234 |
+| family     | Cryptococcaceae    | 1884633 |
+| *genus*    | Cryptococcus       |    5206 |
 
 ## All assemblies
 
@@ -658,27 +662,3 @@ rsync -avP \
     wangq@58.213.64.36:data/lung
 
 ```
-
-## Collect proteins
-
-Call the pipeline script.
-
-```shell
-cd ~/data/lung
-
-bash ~/Scripts/genomes/bin/pl_collect_protein.sh
-
-cat PROTEINS/counts.tsv |
-    mlr --itsv --omd cat
-
-```
-
-| #item                          | count     |
-|--------------------------------|-----------|
-| Proteins                       | 4,398,679 |
-| Unique headers and annotations | 4,398,679 |
-| Unique proteins                | 4,398,679 |
-| all.replace.fa                 | 4,398,679 |
-| all.annotation.tsv             | 4,398,680 |
-| all.info.tsv                   | 4,398,680 |
-
