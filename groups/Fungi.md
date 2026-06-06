@@ -751,6 +751,7 @@ cat Count/lineage.count.tsv |
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
+cp Count/genus.count.tsv summary/genus.genome.tsv
 ```
 
 | item    | count |
