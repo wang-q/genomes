@@ -108,7 +108,7 @@ cd ~/data/Fungi/summary
 nwr member Fungi -r genus |
     grep -v " x " |
     sed '1d' |
-    sort -n -k1,1 \
+    tva sort -n -k 1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
@@ -144,7 +144,7 @@ while read RANK_ID; do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
+            AND species NOT LIKE '% x %'
             AND genome_rep IN ('Full')
         GROUP BY species_id
         HAVING count >= 1

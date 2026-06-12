@@ -2,8 +2,7 @@
 
 Eukaryota other than Plants, Metazoa, and Fungi
 
-<!-- TOC -->
-* [Various genera from Protists](#various-genera-from-protists)
+[TOC levels=2-4]: #
   * [Taxon info](#taxon-info)
     * [Species with assemblies](#species-with-assemblies)
   * [Download all assemblies](#download-all-assemblies)
@@ -24,7 +23,7 @@ Eukaryota other than Plants, Metazoa, and Fungi
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
     * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
   * [Groups and targets](#groups-and-targets)
-<!-- TOC -->
+
 
 ## Taxon info
 
@@ -61,7 +60,7 @@ Eukaryota other than Plants, Metazoa, and Fungi
     * Parabasalia (parabasalids) 副基体门
         * Trichomonas 毛滴虫属
     * Preaxostyla
-* Opisthokonta
+* Opisthokonta 后鞭毛生物
     * Choanoflagellata
     * Filasterea
     * Fungi
@@ -74,7 +73,7 @@ Eukaryota other than Plants, Metazoa, and Fungi
         * Cyanidioschyzon
         * Neoporphyra
     * Florideophyceae
-* Sar
+* SAR
     * Alveolata (alveolates) 囊泡虫类
         * Apicomplexa 顶复门
         * Aconoidasida 孢子虫纲
@@ -133,13 +132,13 @@ nwr member Eukaryota -r genus |
     nwr restrict -e Metazoa |
     nwr restrict -e Fungi |
     sed '1d' |
-    sort -n -k1,1 \
+    tva sort -n -k 1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#4099 genus.list
+#4282 genus.list.tsv
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -149,17 +148,17 @@ while read RANK_ID; do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% x %' -- Crossbreeding of two species
+            AND species NOT LIKE '% x %'
             AND genome_rep IN ('Full')
         GROUP BY species_id
         HAVING count >= 1
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > RS1.tsv
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -176,7 +175,7 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
@@ -188,7 +187,7 @@ for C in RS GB; do
         if [ -e "${C}${N}.tsv" ]; then
             printf "${C}${N}\t"
             cat ${C}${N}.tsv |
-                tsv-summarize --sum 3
+                tva stats --sum 3
         fi
     done
 done
@@ -215,13 +214,13 @@ echo "
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
+    tva select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
 # RS
 SPECIES=$(
     cat RS1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -258,13 +257,13 @@ echo "
 
 # Preference for refseq
 cat raw.tsv |
-    tsv-select -H -f "assembly_accession" \
+    tva select -H -f "assembly_accession" \
     > rs.acc.tsv
 
 # GB
 SPECIES=$(
     cat GB1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )

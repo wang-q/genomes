@@ -108,7 +108,7 @@ while read RANK_ID; do
             species_id,
             species,
             COUNT(*) AS count
-        FROM ar 
+        FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
             AND species NOT LIKE '% x %' -- Crossbreeding of two species
