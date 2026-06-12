@@ -618,7 +618,7 @@ cd ~/data/Trichoderma/
 # Based on the NCBI Taxonomy information, the selected genomes of Trichoderma are subjected to hierarchical statistics and organization.
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --count \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --not-in MinHash/abnormal.lst \
     --rank genus \
     --lineage family --lineage genus
@@ -732,9 +732,9 @@ cd ~/data/Trichoderma/
 # Excluded the strains listed in omit.lst
 nwr template ~/data/Trichoderma/summary/Trichoderma.assembly.tsv \
     --count \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --not-in MinHash/abnormal.lst \
-    --not-in ASSEMBLY/omit.lst \
+    --not-in summary/omit.lst \
     --rank genus
 
 # strains.taxon.tsv and taxa.tsv
