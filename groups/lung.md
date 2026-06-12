@@ -395,12 +395,11 @@ echo "
     >> tmp.lst
 
 # all.taxon.tsv
-cat ../Fungi/summary/collect.pass.csv |
+cat ../Fungi/summary/collect.pass.tsv |
     grep -Fw -f tmp.lst |
-    tsv-select -d, -f 1,3 |
-    tr "," "\t" |
+    tva select -f 1,3 |
     sort |
-    rgr dedup stdin |
+    tva uniq |
     nwr append stdin -c 2 -r species -r genus -r family -r order \
     > summary/all.taxon.tsv
 
