@@ -2,8 +2,8 @@
 
 All genomes of *Archaea*
 
-<!-- TOC -->
-* [Archaea](#archaea)
+[TOC levels=2-4]: #
+
   * [Strain info](#strain-info)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
@@ -24,7 +24,7 @@ All genomes of *Archaea*
     * [Domain related protein sequences](#domain-related-protein-sequences)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
     * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
-<!-- TOC -->
+
 
 ## Strain info
 
@@ -36,23 +36,23 @@ All genomes of *Archaea*
 nwr member Archaea |
     grep -v " sp." |
     grep -v " x " |
-    tsv-summarize -H -g rank --count |
-    rgr md stdin --fmt
+    tva stats -H -g rank --count |
+    tva to md --num
 
 ```
 
 | rank          | count |
-|---------------|------:|
-| superkingdom  |     1 |
+| ------------- | ----: |
+| domain        |     1 |
 | kingdom       |     4 |
-| phylum        |    46 |
-| class         |    47 |
-| no rank       |   413 |
-| species       |  3654 |
-| order         |    79 |
-| genus         |   314 |
-| family        |   112 |
-| clade         |    40 |
+| phylum        |    43 |
+| class         |    55 |
+| order         |    93 |
+| no rank       |   495 |
+| species       |  3796 |
+| genus         |   340 |
+| family        |   132 |
+| clade         |    39 |
 | strain        |   352 |
 | species group |     2 |
 | isolate       |     6 |
@@ -70,14 +70,15 @@ cd ~/data/Archaea/summary
 
 # should have a valid name of genus
 nwr member Archaea -r genus |
+    grep -v " x " |
     sed '1d' |
-    sort -n -k1,1 \
+    tva sort -n -k 1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#314 genus.list
+#340 genus.list
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -87,7 +88,6 @@ while read RANK_ID; do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %'
             AND genome_rep IN ('Full')
         GROUP BY species_id
@@ -95,10 +95,10 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > RS1.tsv
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -108,7 +108,6 @@ while read RANK_ID; do
         FROM ar
         WHERE 1=1
             AND genus_id = ${RANK_ID}
-            AND species NOT LIKE '% sp.%'
             AND species NOT LIKE '% x %'
             AND genome_rep IN ('Full')
         GROUP BY species_id
@@ -116,24 +115,24 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#  735 RS1.tsv
-#  900 GB1.tsv
+# 1334 RS1.tsv
+# 1996 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
         if [ -e "${C}${N}.tsv" ]; then
             printf "${C}${N}\t"
             cat ${C}${N}.tsv |
-                tsv-summarize --sum 3
+                tva stats --sum 3
         fi
     done
 done
-#RS1     1571
-#GB1     2437
+# RS1	2871
+# GB1	8559
 
 ```
 
@@ -152,17 +151,17 @@ echo "
         *
     FROM ar
     WHERE 1=1
-        AND genus IN ('Saccharomyces')
+        AND species IN ('Saccharomyces cerevisiae')
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
+    tva select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
 # RS
 SPECIES=$(
     cat RS1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -175,22 +174,24 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND species NOT LIKE '% sp.%'
-        AND species NOT LIKE '% x %'
         AND genome_rep IN ('Full')
+        AND species NOT LIKE '% x %'
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% aff.%'
+        AND species NOT LIKE '% cf.%'
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
 
 # Preference for refseq
 cat raw.tsv |
-    tsv-select -H -f "assembly_accession" \
+    tva select -H -f "assembly_accession" \
     > rs.acc.tsv
 
 # GB
 SPECIES=$(
     cat GB1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -203,49 +204,65 @@ echo "
     FROM ar
     WHERE 1=1
         AND species_id IN ($SPECIES)
-        AND species NOT LIKE '% sp.%'
-        AND species NOT LIKE '% x %'
         AND genome_rep IN ('Full')
+        AND species NOT LIKE '% x %'
+        AND species NOT LIKE '% sp.%'
+        AND species NOT LIKE '% aff.%'
+        AND species NOT LIKE '% cf.%'
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
+    >> raw.tsv
+
+echo "
+    SELECT
+        genus || ' sp. ' || infraspecific_name || ' ' || assembly_accession AS name,
+        genus || ' sp.', genus, ftp_path, biosample, assembly_level,
+        gbrs_paired_asm
+    FROM ar
+    WHERE 1=1
+        AND species_id IN ($SPECIES)
+        AND genome_rep IN ('Full')
+        AND species NOT LIKE '% x %'
+        AND (
+            species LIKE '% sp.%'
+            OR species LIKE '% aff.%'
+            OR species LIKE '% cf.%'
+        )
+    " |
+    sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 cat raw.tsv |
-    rgr dedup stdin |
-    datamash check
-#2443 lines, 7 fields
+    tva uniq |
+    tva check
+#8561 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
-    rgr dedup stdin |
-    tsv-select -f 1-6 |
-    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    tva uniq |
+    tva select -f 1-6 |
+    nwr abbr -c "1,2,3" -m 3 --shortsub |
+    tva uniq -H -f ftp_path |
+    tva uniq -H -f 7 |
+    sed '1d' |
+    tva select -f 7,4,5,2,6 |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
-    perl -nl -a -F"," -e '
-        BEGIN{my %seen};
-        /^#/ and print and next;
-        /^organism_name/i and next;
-        $seen{$F[3]}++; # ftp_path
-        $seen{$F[3]} > 1 and next;
-        $seen{$F[6]}++; # abbr_name
-        $seen{$F[6]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
-        ' |
-    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
-    keep-header -- tsv-sort -k4,4 -k1,1 \
+    tva filter -H --or --str-in-fld 2:ftp --str-in-fld 2:http |
+    tva sort -H -k 4,1 \
     > Archaea.assembly.tsv
 
-datamash check < Archaea.assembly.tsv
-#2440 lines, 5 fields
+tva check < Archaea.assembly.tsv
+#8561 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Archaea.assembly.tsv |
-    tsv-uniq -f 1 --repeated
+    tva uniq -f 1 --repeated
 
 cat Archaea.assembly.tsv |
-    tsv-filter --str-not-in-fld 2:ftp
+    tva filter --str-not-in-fld 2:ftp
 
 # Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Archaea.assembly.tsv
@@ -255,7 +272,6 @@ cat Archaea.assembly.tsv |
 
 # Cleaning
 rm raw*.*sv
-
 ```
 
 ### Count before download
@@ -273,7 +289,7 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --fmt
+    tva to md --fmt
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -281,44 +297,37 @@ bash Count/rank.sh
 mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
-    keep-header -- tsv-sort -k1,1 |
-    tsv-filter -H --ge 3:20 |
-    rgr md stdin --num
-
+    tva sort -H -k 1 |
+    tva filter -H --ge 3:100 |
+    tva to md --fmt
 ```
 
 | item    | count |
-|---------|------:|
-| strain  |  2439 |
-| species |   904 |
-| genus   |   295 |
-| family  |   109 |
-| order   |    74 |
-| class   |    43 |
+| ------- | ----: |
+| strain  | 7,924 |
+| species | 1,201 |
+| genus   |   326 |
+| family  |   125 |
+| order   |    84 |
+| class   |    52 |
 
-| genus                 | #species | #strains |
-|-----------------------|---------:|---------:|
-| Ferroplasma           |        2 |       20 |
-| Haloarcula            |       32 |       59 |
-| Halobacterium         |       10 |       47 |
-| Haloferax             |       17 |       43 |
-| Halorubrum            |       44 |      112 |
-| Halorussus            |       17 |       21 |
-| Metallosphaera        |        8 |       21 |
-| Methanobacterium      |       14 |       38 |
-| Methanobrevibacter    |       14 |      289 |
-| Methanococcus         |        4 |       38 |
-| Methanoculleus        |       16 |       47 |
-| Methanomassiliicoccus |        2 |       25 |
-| Methanomethylophilus  |        1 |       66 |
-| Methanosarcina        |       11 |      121 |
-| Methanothermobacter   |        5 |       23 |
-| Methanothrix          |        3 |       69 |
-| Natrinema             |       23 |       38 |
-| Nitrosopumilus        |       11 |       24 |
-| Saccharolobus         |        3 |       20 |
-| Sulfolobus            |        3 |       85 |
-| Thermococcus          |       35 |       50 |
+| genus                | #species | #strains |
+| -------------------- | -------: | -------: |
+| Haloarcula           |       34 |      105 |
+| Halorubrum           |       44 |      188 |
+| Ignisphaera          |        3 |      117 |
+| Metallosphaera       |        8 |      114 |
+| Methanobacterium     |       21 |      212 |
+| Methanobrevibacter   |       17 |      666 |
+| Methanocorpusculum   |        8 |      303 |
+| Methanoculleus       |       19 |      191 |
+| Methanomethylophilus |        2 |      100 |
+| Methanoregula        |        3 |      177 |
+| Methanosarcina       |       18 |      240 |
+| Methanothrix         |        4 |      321 |
+| Nitrososphaera       |        5 |      157 |
+| Saccharolobus        |        5 |      117 |
+| Thermococcus         |       42 |      219 |
 
 ### Download and check
 
@@ -331,13 +340,25 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --ass
 
 # Run
-bash ASSEMBLY/rsync.sh
+bash ASSEMBLY/aria2.sh
 
 # Check md5; create check.lst
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-## Put the misplaced directories into the right ones
+# Remove failed directories and re-download
+bash ASSEMBLY/check.sh 2>&1 |
+    grep "checksum failed" |
+    sed 's/.*==> //;s/ checksum failed <==//' |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        dir=$(cat ASSEMBLY/url.tsv | tva filter --str-eq "1:{}" | tva select -f 3,1 | tr "\t" "/")
+        if [[ -n "$dir" && -e "ASSEMBLY/$dir" ]]; then
+            echo Remove ASSEMBLY/$dir
+            rm -fr "ASSEMBLY/$dir"
+        fi
+    '
+
+## Put the misplaced directory into the right place
 #bash ASSEMBLY/reorder.sh
 #
 ## This operation will delete some files in the directory, so please be careful
@@ -349,21 +370,30 @@ bash ASSEMBLY/check.sh
 #        fi
 #    '
 
+find ASSEMBLY/ -name "*_genomic.fna.gz" |
+    grep -v "_from_" |
+    wc -l
+#7443
+
 # N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 100000 500 500000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
-    tsv-filter -H --str-in-fld "name:_GCF_" |
-    tsv-summarize -H --min "N50" --max "C" --min "S"
-#N50_min C_max   S_min
-#5302    848     449376
+    tva filter -H --str-in-fld "name:_GCF_" |
+    tva stats -H --min "N50" --max "C" --min "S"
+# N50_min	C_max	S_min
+# 5163	967	449376
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
-    datamash transpose
-#N50_pct10       N50_pct50       C_pct50 C_pct90 S_pct10 S_pct50
-#10367   197197  29      231     1227726.4       2191533
+    tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
+    tva transpose
+# N50_quantile_0.1	5226.4
+# N50_quantile_0.5	33717
+# C_quantile_0.5	86
+# C_quantile_0.9	322
+# S_quantile_0.1	949067.8
+# S_quantile_0.5	1750667
 
 # After the above steps are completed, run the following commands.
 
@@ -374,24 +404,26 @@ bash ASSEMBLY/collect.sh
 bash ASSEMBLY/finish.sh
 
 cp ASSEMBLY/collect.pass.tsv summary/
+cp ASSEMBLY/omit.lst summary/
+cp ASSEMBLY/pass.lst summary/
+cp ASSEMBLY/sp.lst summary/
+cp ASSEMBLY/rep.lst summary/
 
 cat ASSEMBLY/counts.tsv |
-    rgr md stdin --fmt
-
+    tva to md --fmt
 ```
 
 | #item            | fields | lines |
-|------------------|-------:|------:|
-| url.tsv          |      3 | 2,439 |
-| check.lst        |      1 | 2,439 |
-| collect.tsv      |     20 | 2,440 |
-| n50.tsv          |      4 | 2,440 |
-| n50.pass.tsv     |      4 | 1,461 |
-| collect.pass.tsv |     23 | 1,461 |
-| pass.lst         |      1 | 1,460 |
-| omit.lst         |      1 |   429 |
-| rep.lst          |      1 |   660 |
-| sp.lst           |      1 |     6 |
+| ---------------- | -----: | ----: |
+| url.tsv          |      3 | 8,560 |
+| check.lst        |      1 | 8,560 |
+| collect.tsv      |     20 | 8,561 |
+| n50.pass.tsv     |      4 | 2,426 |
+| collect.pass.tsv |     23 | 2,426 |
+| pass.lst         |      1 | 2,425 |
+| omit.lst         |      1 | 3,364 |
+| rep.lst          |      1 |   738 |
+| sp.lst           |      1 |   786 |
 
 ### Rsync to hpcc
 
@@ -427,8 +459,8 @@ bash BioSample/download.sh
 # Ignore rare attributes
 bash BioSample/collect.sh 50
 
-datamash check < BioSample/biosample.tsv
-#2434 lines, 56 fields
+tva check < BioSample/biosample.tsv
+#8548 lines, 112 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -443,7 +475,7 @@ cd ~/data/Archaea
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --mh \
     --parallel 8 \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005
 
@@ -484,7 +516,6 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --height 0.4
 
 bash MinHash/dist.sh
-
 ```
 
 ### Condense branches in the minhash tree
