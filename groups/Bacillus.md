@@ -1,7 +1,7 @@
 # *Bacillus*
 
-<!-- TOC -->
-* [*Bacillus*](#bacillus)
+[TOC levels=2-4]: #
+
   * [Strain info](#strain-info)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
@@ -22,37 +22,44 @@
     * [Domain related protein sequences](#domain-related-protein-sequences)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
     * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
-<!-- TOC -->
 
 ## Strain info
 
 * [Bacillus](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=1386)
 * [Paenibacillus](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=44249)
 
-A recent phylogenomics [study](https://doi.org/10.1016/j.syapm.2018.10.007) has altered our
-understanding of the order Bacillales.
+De Maayer et al. (2019) re-evaluated the taxonomy of the order Bacillales using phylogenomic analysis of 80 representative genomes ([Syst. Appl. Microbiol.](https://doi.org/10.1016/j.syapm.2018.10.007)). Key findings include: (1) the families Bacillaceae and Paenibacillaceae are polyphyletic, forming four and two distinct clades respectively; and (2) Staphylococcaceae and Listeriaceae cluster within the sister order Lactobacillales rather than Bacillales.
 
-![The order Bacillales](../images/1-s2.0-S0723202018303291-gr3.png)
+![Consensus phylogenomic tree of Bacillales from De Maayer et al. (2019)](../images/1-s2.0-S0723202018303291-gr3.png)
 
-We include the following families:
+Bello et al. (2023) subsequently reorganized the Staphylococcaceae complex (now placed in Lactobacillales), proposing an emended Staphylococcaceae alongside three new families: Abyssicoccaceae, Salinicoccaceae, and Gemellaceae ([Antonie van Leeuwenhoek](https://doi.org/10.1007/s10482-023-01857-6)).
 
-* *Bacillaceae*
-* *Paenibacillaceae*
-* *Sporolactobacillaceae*
-* *Thermoactinomycetaceae*
-* *Alicyclobacillaceae*
-* *Planococcaceae*
-* *Pasteuriaceae*
+More recently, Li et al. (2024) performed a comprehensive reclassification of the order (whose correct name under nomenclatural priority is Caryophanales) based on 1,080 genome sequences, establishing 41 families including 12 newly proposed ones ([IJSEM](https://doi.org/10.1099/ijsem.0.006539)).
 
-* *Desulfuribacillaceae* as closet outgroups
+![Core-genome phylogenomic tree of Caryophanales from Li et al. (2024)](../images/Bacilli.png)
 
-According to a recent [publication](https://doi.org/10.1007/s10482-023-01857-6), the families below
-are found to be more closely related to *Staphylococcaceae*:
+We include the following families within Caryophanales:
 
-- *Abyssicoccaceae*
-- *Gemellaceae*
-- *Listeriaceae*
-- *Salinicoccaceae*
+* Bacillaceae 芽孢杆菌科
+* Paenibacillaceae 类芽孢杆菌科
+* Sporolactobacillaceae 芽孢乳杆菌科
+* Thermoactinomycetaceae 高温放线菌科
+* Alicyclobacillaceae 脂环酸芽孢杆菌科
+* Caryophanaceae (Planococcaceae)
+* Pasteuriaceae
+* Domibacillaceae
+* Fictibacillaceae
+* Guptibacillaceae
+
+* Desulfuribacillaceae as closest outgroup
+
+Exclude the following families from the analysis:
+
+* Listeriaceae
+- Gemellaceae
+* Staphylococcaceae
+* Abyssicoccaceae
+* Salinicoccaceae
 
 ### List all ranks
 
@@ -61,69 +68,74 @@ mkdir -p ~/data/Bacillus
 cd ~/data/Bacillus
 
 nwr member Bacillales -r family |
-    keep-header -- tsv-sort -k2,2 |
-    rgr md stdin --num
+    tva sort -H -k 2 |
+    tva to md --num
 
-nwr member \
-    Bacillaceae Paenibacillaceae \
-    Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
-    Planococcaceae Pasteuriaceae \
-    Desulfuribacillaceae |
-    tsv-summarize -H -g 3 --count |
-    rgr md stdin --fmt
+nwr member Bacillales |
+    nwr restrict -e Listeriaceae |
+    nwr restrict -e Gemellaceae |
+    nwr restrict -e Staphylococcaceae |
+    nwr restrict -e Abyssicoccaceae |
+    nwr restrict -e Salinicoccaceae |
+    tva stats -H -g 3 --count |
+    tva to md --num
 
-nwr member \
-    Bacillaceae Paenibacillaceae \
-    Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
-    Planococcaceae Pasteuriaceae \
-    Desulfuribacillaceae \
+nwr member Bacillales \
     -r "species group" -r "species subgroup" |
-    tsv-select -f 1-3 |
-    keep-header -- tsv-sort -k3,3 -k2,2 |
-    rgr md stdin --num
+    tva select -f 1-3 |
+    tva sort -H -k 3,2 |
+    tva to md --num
 
 ```
 
 | #tax_id | sci_name                            | rank   | division |
-|--------:|-------------------------------------|--------|----------|
+| ------: | ----------------------------------- | ------ | -------- |
 | 3076164 | Abyssicoccaceae                     | family | Bacteria |
 |  186823 | Alicyclobacillaceae                 | family | Bacteria |
 | 3120669 | Anoxybacillaceae                    | family | Bacteria |
 |  186817 | Bacillaceae                         | family | Bacteria |
 |  539003 | Bacillales Family X. Incertae Sedis | family | Bacteria |
+|  186818 | Caryophanaceae                      | family | Bacteria |
+| 3383080 | Domibacillaceae                     | family | Bacteria |
+| 3120697 | Fictibacillaceae                    | family | Bacteria |
 |  539738 | Gemellaceae                         | family | Bacteria |
+| 3421337 | Guptibacillaceae                    | family | Bacteria |
 |  186820 | Listeriaceae                        | family | Bacteria |
 |  186822 | Paenibacillaceae                    | family | Bacteria |
 |  538998 | Pasteuriaceae                       | family | Bacteria |
-|  186818 | Planococcaceae                      | family | Bacteria |
 | 3076165 | Salinicoccaceae                     | family | Bacteria |
 |  186821 | Sporolactobacillaceae               | family | Bacteria |
 |   90964 | Staphylococcaceae                   | family | Bacteria |
 |  186824 | Thermoactinomycetaceae              | family | Bacteria |
 
-| rank             |  count |
-|------------------|-------:|
-| family           |      8 |
-| genus            |    212 |
-| species          | 47,021 |
-| subspecies       |     42 |
-| no rank          |    279 |
-| strain           |    769 |
-| species group    |      5 |
-| species subgroup |      2 |
-| biotype          |      1 |
+| rank             | count |
+| ---------------- | ----: |
+| order            |     1 |
+| family           |    12 |
+| genus            |   233 |
+| species          | 50431 |
+| no rank          |   303 |
+| strain           |   789 |
+| subspecies       |    43 |
+| species group    |     5 |
+| species subgroup |     2 |
+| biotype          |     1 |
 
-| #tax_id | sci_name                          | rank             |
-|--------:|-----------------------------------|------------------|
-| 1792192 | Bacillus altitudinis complex      | species group    |
-|   86661 | Bacillus cereus group             | species group    |
-|  653685 | Bacillus subtilis group           | species group    |
-| 1505648 | Geobacillus thermoleovorans group | species group    |
-| 2044880 | Paenibacillus sonchi group        | species group    |
-| 1938374 | Bacillus amyloliquefaciens group  | species subgroup |
-|  653388 | Bacillus mojavensis subgroup      | species subgroup |
+| #tax_id | sci_name                              | rank             |
+| ------: | ------------------------------------- | ---------------- |
+| 1792192 | Bacillus altitudinis complex          | species group    |
+|   86661 | Bacillus cereus group                 | species group    |
+|  653685 | Bacillus subtilis group               | species group    |
+| 1505648 | Geobacillus thermoleovorans group     | species group    |
+| 2044880 | Paenibacillus sonchi group            | species group    |
+| 3239053 | Staphylococcus cohnii species complex | species group    |
+| 2815305 | Staphylococcus intermedius group      | species group    |
+| 1938374 | Bacillus amyloliquefaciens group      | species subgroup |
+|  653388 | Bacillus mojavensis subgroup          | species subgroup |
 
 ### Species with assemblies
+
+Incomplete genomes are retained here for gene cluster mining.
 
 * 'RefSeq'
 * 'Genbank'
@@ -133,20 +145,20 @@ mkdir -p ~/data/Bacillus/summary
 cd ~/data/Bacillus/summary
 
 # should have a valid name of genus
-nwr member \
-    Bacillaceae Paenibacillaceae \
-    Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
-    Planococcaceae Pasteuriaceae \
-    Desulfuribacillaceae \
-    -r genus |
+nwr member Bacillales -r genus |
+    nwr restrict -e Listeriaceae |
+    nwr restrict -e Gemellaceae |
+    nwr restrict -e Staphylococcaceae |
+    nwr restrict -e Abyssicoccaceae |
+    nwr restrict -e Salinicoccaceae |
     sed '1d' |
-    sort -n -k1,1 \
+    tva sort -n -k 1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#212 genus.list.tsv
+#233 genus.list.tsv
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -161,10 +173,10 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > RS1.tsv
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -179,24 +191,24 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#  3940 RS1.tsv
-#  4332 GB1.tsv
+# 5411 RS1.tsv
+# 5883 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
         if [ -e "${C}${N}.tsv" ]; then
             printf "${C}${N}\t"
             cat ${C}${N}.tsv |
-                tsv-summarize --sum 3
+                tva stats --sum 3
         fi
     done
 done
-#RS1     15147
-#GB1     20472
+# RS1	20748
+# GB1	26827
 
 ```
 
@@ -215,18 +227,17 @@ echo "
         *
     FROM ar
     WHERE 1=1
-        AND genus IN ('Bacillus', 'Staphylococcus', 'Listeria')
+        AND species IN ('Bacillus subtilis', 'Bacillus thuringiensis', 'Staphylococcus aureus', 'Listeria monocytogenes')
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-join -H -d assembly_accession -f ~/Scripts/genomes/assembly/Bacteria.reference.tsv -k assembly_accession |
-    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
+    tva select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
 # RS
 SPECIES=$(
     cat RS1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -240,7 +251,6 @@ echo "
     WHERE 1=1
         AND species_id IN ($SPECIES)
         AND species NOT LIKE '% sp.%'
-        AND species NOT LIKE '% x %'
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
@@ -260,13 +270,13 @@ echo "
 
 # Preference for refseq
 cat raw.tsv |
-    tsv-select -H -f "assembly_accession" \
+    tva select -H -f "assembly_accession" \
     > rs.acc.tsv
 
 # GB
 SPECIES=$(
     cat GB1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -280,10 +290,9 @@ echo "
     WHERE 1=1
         AND species_id IN ($SPECIES)
         AND species NOT LIKE '% sp.%'
-        AND species NOT LIKE '% x %'
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 echo "
@@ -297,44 +306,38 @@ echo "
         AND species LIKE '% sp.%'
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 cat raw.tsv |
-    rgr dedup stdin |
-    datamash check
-#20478 lines, 7 fields
+    tva uniq |
+    tva check
+#26832 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
-    rgr dedup stdin |
-    tsv-select -f 1-6 |
-    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    tva uniq |
+    tva select -f 1-6 |
+    nwr abbr -c "1,2,3" -m 3 --shortsub |
+    tva uniq -H -f ftp_path |
+    tva uniq -H -f 7 |
+    sed '1d' |
+    tva select -f 7,4,5,2,6 |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
-    perl -nl -a -F"," -e '
-        BEGIN{my %seen};
-        /^#/ and print and next;
-        /^organism_name/i and next;
-        $seen{$F[3]}++; # ftp_path
-        $seen{$F[3]} > 1 and next;
-        $seen{$F[6]}++; # abbr_name
-        $seen{$F[6]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
-        ' |
-    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
-    keep-header -- tsv-sort -k4,4 -k1,1 \
+    tva filter -H --or --str-in-fld 2:ftp --str-in-fld 2:http |
+    tva sort -H -k 4,1 \
     > Bacillus.assembly.tsv
 
-datamash check < Bacillus.assembly.tsv
-#20466 lines, 5 fields
+tva check < Bacillus.assembly.tsv
+#26830 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacillus.assembly.tsv |
-    tsv-uniq -f 1 --repeated
+    tva uniq -f 1 --repeated
 
 cat Bacillus.assembly.tsv |
-    tsv-filter --str-not-in-fld 2:ftp
+    tva filter --str-not-in-fld 2:ftp
 
 # Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Bacillus.assembly.tsv
@@ -344,7 +347,6 @@ cat Bacillus.assembly.tsv |
 
 # Cleaning
 rm raw*.*sv
-
 ```
 
 ### Count before download
@@ -362,7 +364,7 @@ nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --fmt
+    tva to md --fmt
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -370,49 +372,39 @@ bash Count/rank.sh
 mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
-    keep-header -- tsv-sort -k1,1 |
-    tsv-filter -H --ge 3:50 |
-    rgr md stdin --num
-
+    tva sort -H -k 1 |
+    tva filter -H --ge 3:100 |
+    tva to md --fmt
 ```
 
 | item    |  count |
-|---------|-------:|
-| strain  | 18,912 |
-| species |  1,541 |
-| genus   |    199 |
-| family  |     10 |
-| order   |      2 |
-| class   |      2 |
+| ------- | -----: |
+| strain  | 24,436 |
+| species |  1,677 |
+| genus   |    217 |
+| family  |     14 |
+| order   |      1 |
+| class   |      1 |
 
-| genus            | #species | #strains |
-|------------------|---------:|---------:|
-| Alicyclobacillus |       28 |       72 |
-| Anoxybacillus    |       18 |      113 |
-| Bacillus         |      136 |    12019 |
-| Brevibacillus    |       30 |      270 |
-| Cohnella         |       37 |       66 |
-| Cytobacillus     |       19 |      154 |
-| Fictibacillus    |       16 |       56 |
-| Geobacillus      |       17 |      187 |
-| Halobacillus     |       25 |       62 |
-| Heyndrickxia     |       13 |      196 |
-| Kurthia          |       10 |       52 |
-| Lysinibacillus   |       28 |      438 |
-| Metabacillus     |       22 |       62 |
-| Neobacillus      |       27 |      127 |
-| Niallia          |        8 |       77 |
-| Oceanobacillus   |       35 |      105 |
-| Paenibacillus    |      316 |     1975 |
-| Peribacillus     |       19 |      259 |
-| Planococcus      |       29 |       81 |
-| Priestia         |       10 |      654 |
-| Psychrobacillus  |       10 |       56 |
-| Rossellomorea    |        7 |       78 |
-| Shouchella       |       12 |       77 |
-| Solibacillus     |       10 |       52 |
-| Sporosarcina     |       27 |      133 |
-| Virgibacillus    |       34 |      124 |
+| genus           | #species | #strains |
+| --------------- | -------: | -------: |
+| Anoxybacillus   |       13 |      100 |
+| Bacillus        |      141 |   15,383 |
+| Brevibacillus   |       34 |      391 |
+| Cytobacillus    |       19 |      189 |
+| Exiguobacterium |       19 |      388 |
+| Geobacillus     |       17 |      241 |
+| Heyndrickxia    |       13 |      262 |
+| Lysinibacillus  |       29 |      557 |
+| Neobacillus     |       33 |      155 |
+| Niallia         |        9 |      100 |
+| Oceanobacillus  |       36 |      118 |
+| Paenibacillus   |      336 |    2,336 |
+| Peribacillus    |       21 |      359 |
+| Priestia        |       11 |      910 |
+| Rossellomorea   |       11 |      120 |
+| Sporosarcina    |       27 |      150 |
+| Virgibacillus   |       36 |      141 |
 
 ### Download and check
 
@@ -425,17 +417,29 @@ nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --ass
 
 # Run
-bash ASSEMBLY/rsync.sh
+bash ASSEMBLY/aria2.sh
 
 # Check md5; create check.lst
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-## Put the misplaced directories into the right ones
-#bash ASSEMBLY/reorder.sh
-#
-## This operation will delete some files in the directory, so please be careful
-#cat ASSEMBLY/remove.lst |
+# Remove failed directories and re-download
+bash ASSEMBLY/check.sh 2>&1 |
+    grep "checksum failed" |
+    sed 's/.*==> //;s/ checksum failed <==//' |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        dir=$(cat ASSEMBLY/url.tsv | tva filter --str-eq "1:{}" | tva select -f 3,1 | tr "\t" "/")
+        if [[ -n "$dir" && -e "ASSEMBLY/$dir" ]]; then
+            echo Remove ASSEMBLY/$dir
+            rm -fr "ASSEMBLY/$dir"
+        fi
+    '
+
+# # Put the misplaced directory into the right place
+# bash ASSEMBLY/reorder.sh
+
+# # This operation will delete some files in the directory, so please be careful
+# cat ASSEMBLY/remove.lst |
 #    parallel --no-run-if-empty --linebuffer -k -j 1 '
 #        if [[ -e "ASSEMBLY/{}" ]]; then
 #            echo Remove {}
@@ -443,19 +447,24 @@ bash ASSEMBLY/check.sh
 #        fi
 #    '
 
+find ASSEMBLY/ -name "*_genomic.fna.gz" |
+    grep -v "_from_" |
+    wc -l
+#21930
+
 # N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 50000 500 500000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
-    tsv-filter -H --str-in-fld "name:_GCF_" |
-    tsv-summarize -H --min "N50" --max "C" --min "S"
+    tva filter -H --str-in-fld "name:_GCF_" |
+    tva stats -H --min "N50" --max "C" --min "S"
 #N50_min C_max   S_min
 #5966    1976    1073956
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
-    datamash transpose
+    tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
+    tva transpose
 #N50_pct10       55738
 #N50_pct50       313185
 #C_pct50 55
@@ -472,10 +481,13 @@ bash ASSEMBLY/collect.sh
 bash ASSEMBLY/finish.sh
 
 cp ASSEMBLY/collect.pass.tsv summary/
+cp ASSEMBLY/omit.lst summary/
+cp ASSEMBLY/pass.lst summary/
+cp ASSEMBLY/sp.lst summary/
+cp ASSEMBLY/rep.lst summary/
 
 cat ASSEMBLY/counts.tsv |
-    rgr md stdin --fmt
-
+    tva to md --fmt
 ```
 
 | #item            | fields |  lines |
@@ -523,7 +535,7 @@ bash BioSample/download.sh
 # Ignore rare attributes
 bash BioSample/collect.sh 50
 
-datamash check < BioSample/biosample.tsv
+tva check < BioSample/biosample.tsv
 #20439 lines, 102 fields
 
 cp BioSample/attributes.lst summary/
@@ -539,7 +551,7 @@ cd ~/data/Bacillus
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --mh \
     --parallel 8 \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005
 
