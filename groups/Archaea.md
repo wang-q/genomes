@@ -485,25 +485,23 @@ bash MinHash/compute.sh
 # Non-redundant strains within species
 bash MinHash/nr.sh
 
-find MinHash -name "NR.lst" |
-    xargs cat |
+fd --full-path "MinHash/.+/NR.lst" -X cat |
     sort |
     uniq \
     > summary/NR.lst
-find MinHash -name "redundant.lst" |
-    xargs cat |
+fd --full-path "MinHash/.+/redundant.lst" -X cat |
     sort |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#  561 summary/NR.lst
-#  370 summary/redundant.lst
+# 1186 summary/NR.lst
+#  629 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
 
 cat MinHash/abnormal.lst | wc -l
-#23
+#300
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Archaea/
@@ -511,6 +509,8 @@ cd ~/data/Archaea/
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --mh \
     --parallel 8 \
+    --not-in summary/sp.lst \
+    --not-in summary/omit.lst \
     --not-in MinHash/abnormal.lst \
     --not-in summary/redundant.lst \
     --height 0.4
@@ -524,19 +524,19 @@ bash MinHash/dist.sh
 mkdir -p ~/data/Archaea/tree
 cd ~/data/Archaea/tree
 
-nw_reroot ../MinHash/tree.nwk Saccharom_cere_S288C Saccharom_eub |
-    nwr order stdin --nd --an \
+pgr nwk reroot ../MinHash/tree.nwk -n Saccharom_cere_S288C |
+    pgr nwk order stdin --nd --an \
     > minhash.reroot.newick
 
-nwr pl-condense --map -r order -r family -r genus \
-    minhash.reroot.newick ../MinHash/species.tsv |
-    nwr order stdin --nd --an \
+pgr pl condense --map -t ../Count/strains.taxon.tsv -r 5 -r 4 -r 3 \
+    minhash.reroot.newick |
+    pgr nwk order stdin --nd --an \
     > minhash.condensed.newick
 
 mv condensed.tsv minhash.condensed.tsv
 
 # svg
-nwr topo --bl minhash.condensed.newick | # remove comments
+pgr nwk topo --bl minhash.condensed.newick | # remove comments
     nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
     > Archaea.minhash.svg
 
@@ -551,95 +551,100 @@ cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --count \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --not-in MinHash/abnormal.lst \
     --rank order --rank genus \
     --lineage family --lineage genus
 
-# strains.taxon.tsv and taxa.tsv
+# strains.taxon.tsv
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/order.count.tsv |
-    tsv-filter -H --ge "3:20" |
-    rgr md stdin --num
+    tva filter -H --ge "3:20" |
+    tva to md --num
 
 cat Count/genus.count.tsv |
-    tsv-filter -H --ge "3:20" |
-    rgr md stdin --num
+    tva filter -H --ge "3:20" |
+    tva to md --num
 
 # Can accept N_COUNT
-bash Count/lineage.sh 10
+bash Count/lineage.sh 15
 
 cat Count/lineage.count.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
-
+cp Count/genus.count.tsv summary/genus.genome.tsv
 ```
 
 | item    | count |
-|---------|------:|
-| strain  |  1437 |
-| species |   762 |
-| genus   |   237 |
-| family  |    79 |
-| order   |    52 |
-| class   |    28 |
+| ------- | ----: |
+| strain  |  2093 |
+| species |   944 |
+| genus   |   259 |
+| family  |    90 |
+| order   |    60 |
+| class   |    36 |
 
 | order                   | #species | #strains |
-|-------------------------|---------:|---------:|
-| Desulfurococcales       |       21 |       25 |
-| Halobacteriales         |      376 |      619 |
-| Methanobacteriales      |       34 |      137 |
-| Methanococcales         |       15 |       45 |
-| Methanomassiliicoccales |        7 |       53 |
-| Methanomicrobiales      |       48 |       56 |
-| Methanosarcinales       |       46 |       89 |
-| Sulfolobales            |       29 |      141 |
-| Thermococcales          |       41 |       61 |
+| ----------------------- | -------: | -------: |
+| Desulfurococcales       |       31 |       75 |
+| Halobacteriales         |      440 |      766 |
+| Methanobacteriales      |       47 |      226 |
+| Methanococcales         |       22 |       54 |
+| Methanomassiliicoccales |        9 |       61 |
+| Methanomicrobiales      |       64 |      111 |
+| Methanosarcinales       |       56 |      139 |
+| Sulfolobales            |       32 |      213 |
+| Thermococcales          |       45 |       75 |
+| Thermoproteales         |       20 |       39 |
 
 | genus                | #species | #strains |
-|----------------------|---------:|---------:|
-| Haloarcula           |       32 |       57 |
-| Halobacterium        |        9 |       30 |
-| Haloferax            |       16 |       41 |
-| Halorubrum           |       32 |       84 |
-| Halorussus           |       16 |       20 |
-| Methanobacterium     |       14 |       25 |
-| Methanobrevibacter   |       11 |       90 |
-| Methanococcus        |        4 |       33 |
-| Methanoculleus       |       16 |       21 |
-| Methanomethylophilus |        1 |       25 |
-| Methanosarcina       |       10 |       37 |
-| Natrinema            |       22 |       33 |
-| Sulfolobus           |        3 |       81 |
-| Thermococcus         |       34 |       41 |
+| -------------------- | -------: | -------: |
+| Haloarcula           |       34 |       68 |
+| Halobacterium        |       10 |       36 |
+| Halobellus           |       13 |       20 |
+| Haloferax            |       17 |       52 |
+| Halorubrum           |       33 |       98 |
+| Halorussus           |       17 |       24 |
+| Ignisphaera          |        3 |       21 |
+| Metallosphaera       |        7 |       62 |
+| Methanobacterium     |       21 |       64 |
+| Methanobrevibacter   |       13 |      108 |
+| Methanococcus        |        5 |       34 |
+| Methanoculleus       |       19 |       34 |
+| Methanomethylophilus |        2 |       28 |
+| Methanosarcina       |       16 |       69 |
+| Methanothermobacter  |        7 |       38 |
+| Natrinema            |       23 |       39 |
+| Pyrococcus           |        7 |       23 |
+| Saccharolobus        |        5 |       66 |
+| Sulfolobus           |        2 |       60 |
+| Thermococcus         |       35 |       49 |
 
-| #family                         | genus                         | species                                       | count |
-|---------------------------------|-------------------------------|-----------------------------------------------|------:|
-| Candidatus Methanomethylicaceae | Candidatus Methanosuratincola | Candidatus Methanosuratincola petrocarbonis   |    10 |
-| Halobacteriaceae                | Halobacterium                 | Halobacterium salinarum                       |    12 |
-| Haloferacaceae                  | Haloferax                     | Haloferax volcanii                            |    15 |
-|                                 | Halorubrum                    | Halorubrum ezzemoulense                       |    38 |
-| Methanobacteriaceae             | Methanobrevibacter            | Methanobrevibacter smithii                    |    64 |
-| Methanococcaceae                | Methanococcus                 | Methanococcus maripaludis                     |    27 |
-| Methanomassiliicoccaceae        | Methanomassiliicoccus         | Candidatus Methanomassiliicoccus intestinalis |    11 |
-| Methanomethylophilaceae         | Methanomethylophilus          | Methanomethylophilus alvi                     |    25 |
-| Methanosarcinaceae              | Methanosarcina                | Methanosarcina mazei                          |    13 |
-|                                 |                               | Methanosarcina thermophila                    |    12 |
-| NA                              | Candidatus Methanarcanum      | Candidatus Methanarcanum hacksteinii          |    12 |
-| Sulfolobaceae                   | Metallosphaera                | Metallosphaera sedula                         |    11 |
-|                                 | Saccharolobus                 | Saccharolobus solfataricus                    |    14 |
-|                                 | Sulfolobus                    | Sulfolobus acidocaldarius                     |    58 |
-|                                 |                               | Sulfolobus islandicus                         |    21 |
-| Thermococcaceae                 | Pyrococcus                    | Pyrococcus kukulkanii                         |    11 |
+| #family                    | genus                   | species                     | count |
+| -------------------------- | ----------------------- | --------------------------- | ----: |
+| Candidatus Iainarchaeaceae | Candidatus Iainarchaeum | Candidatus Iainarchaeum sp. |    17 |
+| Desulfurococcaceae         | Ignisphaera             | Ignisphaera sp.             |    19 |
+| Haloferacaceae             | Haloferax               | Haloferax volcanii          |    15 |
+|                            | Halorubrum              | Halorubrum ezzemoulense     |    38 |
+| Methanobacteriaceae        | Methanobacterium        | Methanobacterium sp.        |    33 |
+|                            | Methanobrevibacter      | Methanobrevibacter smithii  |    74 |
+|                            | Methanothermobacter     | Methanothermobacter sp.     |    16 |
+| Methanococcaceae           | Methanococcus           | Methanococcus maripaludis   |    27 |
+| Methanomethylophilaceae    | Methanomethylophilus    | Methanomethylophilus alvi   |    25 |
+| Methanosarcinaceae         | Methanosarcina          | Methanosarcina sp.          |    15 |
+| Sulfolobaceae              | Metallosphaera          | Metallosphaera sp.          |    44 |
+|                            | Saccharolobus           | Saccharolobus islandicus    |    21 |
+|                            |                         | Saccharolobus sp.           |    26 |
+|                            | Sulfolobus              | Sulfolobus acidocaldarius   |    58 |
 
 ### For *protein families*
 
@@ -648,82 +653,60 @@ cd ~/data/Archaea/
 
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --count \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --not-in MinHash/abnormal.lst \
-    --not-in ASSEMBLY/omit.lst \
+    --not-in summary/omit.lst \
     --rank genus
 
 # strains.taxon.tsv and taxa.tsv
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --num
+    tva to md --num
 
 # .lst and .count.tsv
 bash Count/rank.sh
 
 cat Count/genus.count.tsv |
-    tsv-filter -H --ge "3:10" |
-    rgr md stdin --num
+    tva filter -H --ge "3:50" |
+    tva to md --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
-
 ```
 
 | item    | count |
-|---------|------:|
-| strain  |  1356 |
-| species |   743 |
-| genus   |   225 |
-| family  |    75 |
-| order   |    48 |
-| class   |    26 |
+| ------- | ----: |
+| strain  |  1858 |
+| species |   908 |
+| genus   |   246 |
+| family  |    85 |
+| order   |    56 |
+| class   |    34 |
 
-| genus                 | #species | #strains |
-|-----------------------|---------:|---------:|
-| Haladaptatus          |        7 |       11 |
-| Haloarcula            |       32 |       56 |
-| Halobacterium         |        9 |       30 |
-| Halobaculum           |       10 |       16 |
-| Halobellus            |       11 |       17 |
-| Haloferax             |       16 |       41 |
-| Halogeometricum       |        6 |       11 |
-| Halomarina            |        7 |       12 |
-| Haloplanus            |        9 |       14 |
-| Halorientalis         |        8 |       11 |
-| Halorubrum            |       32 |       84 |
-| Halorussus            |       16 |       20 |
-| Metallosphaera        |        7 |       18 |
-| Methanobacterium      |       14 |       24 |
-| Methanobrevibacter    |       11 |       63 |
-| Methanococcus         |        4 |       31 |
-| Methanoculleus        |       16 |       21 |
-| Methanohalophilus     |        6 |       14 |
-| Methanolobus          |       10 |       11 |
-| Methanomassiliicoccus |        2 |       12 |
-| Methanomethylophilus  |        1 |       22 |
-| Methanosarcina        |       10 |       35 |
-| Methanothermobacter   |        5 |       14 |
-| Natrinema             |       22 |       33 |
-| Natronomonas          |        8 |       10 |
-| Natronorubrum         |        9 |       13 |
-| Nitrosopumilus        |       10 |       12 |
-| Pyrococcus            |        5 |       18 |
-| Saccharolobus         |        3 |       19 |
-| Sulfolobus            |        3 |       80 |
-| Thermococcus          |       34 |       41 |
+| genus              | #species | #strains |
+| ------------------ | -------: | -------: |
+| Haloarcula         |       34 |       67 |
+| Haloferax          |       17 |       50 |
+| Halorubrum         |       33 |       98 |
+| Metallosphaera     |        7 |       62 |
+| Methanobrevibacter |       13 |       67 |
+| Methanosarcina     |       16 |       57 |
+| Saccharolobus      |        5 |       66 |
+| Sulfolobus         |        2 |       59 |
 
 ## Collect proteins
 
 ```shell
 cd ~/data/Archaea/
 
+ulimit -n `ulimit -Hn`
+
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --pro \
     --parallel 8 \
-    --in ASSEMBLY/pass.lst \
-    --not-in ASSEMBLY/omit.lst
+    --in summary/pass.lst \
+    --not-in summary/omit.lst
 
 # collect proteins
 bash Protein/collect.sh
@@ -741,23 +724,22 @@ bash Protein/info.sh
 bash Protein/count.sh
 
 cat Protein/counts.tsv |
-    tsv-summarize -H --count --sum 2-7 |
+    tva stats -H --count --sum 2-7 |
     sed 's/^count/species/' |
-    datamash transpose |
+    tva transpose |
     (echo -e "#item\tcount" && cat) |
-    rgr md stdin --fmt
-
+    tva to md --fmt
 ```
 
 | #item      |     count |
-|------------|----------:|
-| species    |       743 |
-| strain_sum |     1,375 |
-| total_sum  | 3,926,365 |
-| dedup_sum  | 2,793,143 |
-| rep_sum    | 2,426,768 |
-| fam88_sum  | 2,330,424 |
-| fam38_sum  | 1,960,961 |
+| ---------- | --------: |
+| species    |       915 |
+| strain_sum |     1,994 |
+| total_sum  | 5,386,858 |
+| dedup_sum  | 4,235,285 |
+| rep_sum    | 3,361,076 |
+| fam88_sum  | 3,069,764 |
+| fam38_sum  | 2,459,388 |
 
 ## Phylogenetics with ar53
 
@@ -776,13 +758,13 @@ cp HMM/ar53.lst HMM/marker.lst
 cd ~/data/Archaea
 
 cat Protein/species.tsv |
-    tsv-join -f ASSEMBLY/pass.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    tva join -f summary/pass.lst -k 1 |
+    tva join -e -f summary/omit.lst -k 1 \
     > Protein/species-f.tsv
 
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ -s Protein/"${SPECIES}"/ar53.tsv ]]; then
         continue
@@ -804,8 +786,8 @@ while read SPECIES; do
 done
 
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ ! -s Protein/"${SPECIES}"/ar53.tsv ]]; then
         continue
@@ -819,7 +801,6 @@ while read SPECIES; do
     nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/ar53.tsv
 
 done
-
 ```
 
 ### Domain related protein sequences
@@ -831,8 +812,8 @@ mkdir -p Domain
 
 # each assembly
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
         continue
@@ -859,21 +840,20 @@ while read SPECIES; do
         sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
         > Protein/${SPECIES}/seq_asm_f3.tsv
 
-    hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
-            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
-            rgr dedup stdin
+    pgr fa some Protein/"${SPECIES}"/pro.fa.gz <(
+            tva select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+            tva uniq
         )
 done |
-    hnsm dedup stdin |
-    hnsm gz stdin -o Domain/ar53.fa
+    pgr fa dedup stdin |
+    pgr fa gz stdin -o Domain/ar53.fa.gz
 
 fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
 
 cat Domain/seq_asm_f3.tsv |
-    tsv-join -e -d 2 -f summary/redundant.lst -k 1 \
+    tva join -e -d 2 -f summary/redundant.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
-
 ```
 
 ### Align and concat marker genes to create species tree
@@ -888,11 +868,11 @@ cat HMM/marker.lst |
 
         mkdir -p Domain/{}
 
-        hnsm some Domain/ar53.fa.gz <(
+        pgr fa some Domain/ar53.fa.gz <(
             cat Domain/seq_asm_f3.tsv |
-                tsv-filter --str-eq "3:{}" |
-                tsv-select -f 1 |
-                rgr dedup stdin
+                tva filter --str-eq "3:{}" |
+                tva select -f 1 |
+                tva uniq
             ) \
             > Domain/{}/{}.pro.fa
     '
@@ -927,9 +907,9 @@ while read marker; do
     # Only NR strains
     # 1 name to many names
     cat Domain/seq_asm_f3.NR.tsv |
-        tsv-filter --str-eq "3:${marker}" |
-        tsv-select -f 1-2 |
-        hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
+        tva filter --str-eq "3:${marker}" |
+        tva select -f 1-2 |
+        pgr fa replace -s Domain/${marker}/${marker}.aln.fa stdin \
         > Domain/${marker}/${marker}.replace.fa
 done
 
@@ -952,22 +932,21 @@ done \
 
 cat Domain/seq_asm_f3.NR.tsv |
     cut -f 2 |
-    rgr dedup stdin |
+    tva uniq |
     sort |
     fasops concat Domain/ar53.aln.fas stdin -o Domain/ar53.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in Domain/ar53.aln.fa -out Domain/ar53.trim.fa -automated1
 
-hnsm size Domain/ar53.*.fa |
-    rgr dedup stdin -f 2 |
+pgr fa size Domain/ar53.*.fa |
+    tva uniq -f 2 |
     cut -f 2
-#45483
-#12216
+# 45483
+# 11499
 
 # To make it faster
 FastTree -fastest -noml Domain/ar53.trim.fa > Domain/ar53.trim.newick
-
 ```
 
 ### Condense branches in the protein tree
@@ -975,22 +954,20 @@ FastTree -fastest -noml Domain/ar53.trim.fa > Domain/ar53.trim.newick
 ```shell
 cd ~/data/Archaea/tree
 
-nw_reroot  ../Domain/ar53.trim.newick Saccharom_cere_S288C Saccharom_eub |
-    nwr order stdin --nd --an \
+pgr nwk reroot ../Domain/ar53.trim.newick -n Saccharom_cere_S288C |
+    pgr nwk order stdin --nd --an \
     > ar53.reroot.newick
 
-nwr pl-condense --map -r order -r family -r genus -r species \
-    ar53.reroot.newick ../Count/species.tsv |
-    nwr order stdin --nd --an \
+pgr pl condense --map -t ../Count/strains.taxon.tsv -r 5 -r 4 -r 3 -r 2 \
+    ar53.reroot.newick |
+    pgr nwk order stdin --nd --an \
     > ar53.condensed.newick
 
 mv condensed.tsv ar53.condense.tsv
 
 # pdf
-nwr topo --bl ar53.condensed.newick | # remove comments
-    nwr tex stdin --bl -o Archaea.ar53.tex
+pgr nwk topo --bl ar53.condensed.newick | # remove comments
+    pgr nwk to-tex stdin --bl -o Archaea.ar53.tex
 
 tectonic Archaea.ar53.tex
-
 ```
-
