@@ -1,7 +1,7 @@
 # *Bacillus*
 
-<!-- TOC -->
-* [*Bacillus*](#bacillus)
+[TOC levels=2-4]: #
+
   * [Strain info](#strain-info)
     * [List all ranks](#list-all-ranks)
     * [Species with assemblies](#species-with-assemblies)
@@ -22,37 +22,44 @@
     * [Domain related protein sequences](#domain-related-protein-sequences)
     * [Align and concat marker genes to create species tree](#align-and-concat-marker-genes-to-create-species-tree)
     * [Condense branches in the protein tree](#condense-branches-in-the-protein-tree)
-<!-- TOC -->
 
 ## Strain info
 
 * [Bacillus](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=1386)
 * [Paenibacillus](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=44249)
 
-A recent phylogenomics [study](https://doi.org/10.1016/j.syapm.2018.10.007) has altered our
-understanding of the order Bacillales.
+De Maayer et al. (2019) re-evaluated the taxonomy of the order Bacillales using phylogenomic analysis of 80 representative genomes ([Syst. Appl. Microbiol.](https://doi.org/10.1016/j.syapm.2018.10.007)). Key findings include: (1) the families Bacillaceae and Paenibacillaceae are polyphyletic, forming four and two distinct clades respectively; and (2) Staphylococcaceae and Listeriaceae cluster within the sister order Lactobacillales rather than Bacillales.
 
-![The order Bacillales](../images/1-s2.0-S0723202018303291-gr3.png)
+![Consensus phylogenomic tree of Bacillales from De Maayer et al. (2019)](../images/1-s2.0-S0723202018303291-gr3.png)
 
-We include the following families:
+Bello et al. (2023) subsequently reorganized the Staphylococcaceae complex (now placed in Lactobacillales), proposing an emended Staphylococcaceae alongside three new families: Abyssicoccaceae, Salinicoccaceae, and Gemellaceae ([Antonie van Leeuwenhoek](https://doi.org/10.1007/s10482-023-01857-6)).
 
-* *Bacillaceae*
-* *Paenibacillaceae*
-* *Sporolactobacillaceae*
-* *Thermoactinomycetaceae*
-* *Alicyclobacillaceae*
-* *Planococcaceae*
-* *Pasteuriaceae*
+More recently, Li et al. (2024) performed a comprehensive reclassification of the order (whose correct name under nomenclatural priority is Caryophanales) based on 1,080 genome sequences, establishing 41 families including 12 newly proposed ones ([IJSEM](https://doi.org/10.1099/ijsem.0.006539)).
 
-* *Desulfuribacillaceae* as closet outgroups
+![Core-genome phylogenomic tree of Caryophanales from Li et al. (2024)](../images/Bacilli.png)
 
-According to a recent [publication](https://doi.org/10.1007/s10482-023-01857-6), the families below
-are found to be more closely related to *Staphylococcaceae*:
+We include the following families within Caryophanales:
 
-- *Abyssicoccaceae*
-- *Gemellaceae*
-- *Listeriaceae*
-- *Salinicoccaceae*
+* Bacillaceae 芽孢杆菌科
+* Paenibacillaceae 类芽孢杆菌科
+* Sporolactobacillaceae 芽孢乳杆菌科
+* Thermoactinomycetaceae 高温放线菌科
+* Alicyclobacillaceae 脂环酸芽孢杆菌科
+* Caryophanaceae (Planococcaceae)
+* Pasteuriaceae
+* Domibacillaceae
+* Fictibacillaceae
+* Guptibacillaceae
+
+* Desulfuribacillaceae as closest outgroup
+
+Exclude the following families from the analysis:
+
+* Listeriaceae
+- Gemellaceae
+* Staphylococcaceae
+* Abyssicoccaceae
+* Salinicoccaceae
 
 ### List all ranks
 
@@ -61,67 +68,70 @@ mkdir -p ~/data/Bacillus
 cd ~/data/Bacillus
 
 nwr member Bacillales -r family |
-    keep-header -- tsv-sort -k2,2 |
-    rgr md stdin --num
+    tva sort -H -k 2 |
+    tva to md --num
 
-nwr member \
-    Bacillaceae Paenibacillaceae \
-    Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
-    Planococcaceae Pasteuriaceae \
-    Desulfuribacillaceae |
-    tsv-summarize -H -g 3 --count |
-    rgr md stdin --fmt
+nwr member Bacillales |
+    nwr restrict -e Listeriaceae |
+    nwr restrict -e Gemellaceae |
+    nwr restrict -e Staphylococcaceae |
+    nwr restrict -e Abyssicoccaceae |
+    nwr restrict -e Salinicoccaceae |
+    tva stats -H -g 3 --count |
+    tva to md --num
 
-nwr member \
-    Bacillaceae Paenibacillaceae \
-    Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
-    Planococcaceae Pasteuriaceae \
-    Desulfuribacillaceae \
+nwr member Bacillales \
     -r "species group" -r "species subgroup" |
-    tsv-select -f 1-3 |
-    keep-header -- tsv-sort -k3,3 -k2,2 |
-    rgr md stdin --num
+    tva select -f 1-3 |
+    tva sort -H -k 3,2 |
+    tva to md --num
 
 ```
 
 | #tax_id | sci_name                            | rank   | division |
-|--------:|-------------------------------------|--------|----------|
+| ------: | ----------------------------------- | ------ | -------- |
 | 3076164 | Abyssicoccaceae                     | family | Bacteria |
 |  186823 | Alicyclobacillaceae                 | family | Bacteria |
 | 3120669 | Anoxybacillaceae                    | family | Bacteria |
 |  186817 | Bacillaceae                         | family | Bacteria |
 |  539003 | Bacillales Family X. Incertae Sedis | family | Bacteria |
+|  186818 | Caryophanaceae                      | family | Bacteria |
+| 3383080 | Domibacillaceae                     | family | Bacteria |
+| 3120697 | Fictibacillaceae                    | family | Bacteria |
 |  539738 | Gemellaceae                         | family | Bacteria |
+| 3421337 | Guptibacillaceae                    | family | Bacteria |
 |  186820 | Listeriaceae                        | family | Bacteria |
 |  186822 | Paenibacillaceae                    | family | Bacteria |
 |  538998 | Pasteuriaceae                       | family | Bacteria |
-|  186818 | Planococcaceae                      | family | Bacteria |
 | 3076165 | Salinicoccaceae                     | family | Bacteria |
 |  186821 | Sporolactobacillaceae               | family | Bacteria |
 |   90964 | Staphylococcaceae                   | family | Bacteria |
 |  186824 | Thermoactinomycetaceae              | family | Bacteria |
 
-| rank             |  count |
-|------------------|-------:|
-| family           |      8 |
-| genus            |    212 |
-| species          | 47,021 |
-| subspecies       |     42 |
-| no rank          |    279 |
-| strain           |    769 |
-| species group    |      5 |
-| species subgroup |      2 |
-| biotype          |      1 |
+| rank             | count |
+| ---------------- | ----: |
+| order            |     1 |
+| family           |    12 |
+| genus            |   233 |
+| species          | 50431 |
+| no rank          |   303 |
+| strain           |   789 |
+| subspecies       |    43 |
+| species group    |     5 |
+| species subgroup |     2 |
+| biotype          |     1 |
 
-| #tax_id | sci_name                          | rank             |
-|--------:|-----------------------------------|------------------|
-| 1792192 | Bacillus altitudinis complex      | species group    |
-|   86661 | Bacillus cereus group             | species group    |
-|  653685 | Bacillus subtilis group           | species group    |
-| 1505648 | Geobacillus thermoleovorans group | species group    |
-| 2044880 | Paenibacillus sonchi group        | species group    |
-| 1938374 | Bacillus amyloliquefaciens group  | species subgroup |
-|  653388 | Bacillus mojavensis subgroup      | species subgroup |
+| #tax_id | sci_name                              | rank             |
+| ------: | ------------------------------------- | ---------------- |
+| 1792192 | Bacillus altitudinis complex          | species group    |
+|   86661 | Bacillus cereus group                 | species group    |
+|  653685 | Bacillus subtilis group               | species group    |
+| 1505648 | Geobacillus thermoleovorans group     | species group    |
+| 2044880 | Paenibacillus sonchi group            | species group    |
+| 3239053 | Staphylococcus cohnii species complex | species group    |
+| 2815305 | Staphylococcus intermedius group      | species group    |
+| 1938374 | Bacillus amyloliquefaciens group      | species subgroup |
+|  653388 | Bacillus mojavensis subgroup          | species subgroup |
 
 ### Species with assemblies
 
