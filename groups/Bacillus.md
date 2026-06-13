@@ -135,6 +135,8 @@ nwr member Bacillales \
 
 ### Species with assemblies
 
+Incomplete genomes are retained here for gene cluster mining.
+
 * 'RefSeq'
 * 'Genbank'
 
@@ -143,20 +145,20 @@ mkdir -p ~/data/Bacillus/summary
 cd ~/data/Bacillus/summary
 
 # should have a valid name of genus
-nwr member \
-    Bacillaceae Paenibacillaceae \
-    Sporolactobacillaceae Thermoactinomycetaceae Alicyclobacillaceae \
-    Planococcaceae Pasteuriaceae \
-    Desulfuribacillaceae \
-    -r genus |
+nwr member Bacillales -r genus |
+    nwr restrict -e Listeriaceae |
+    nwr restrict -e Gemellaceae |
+    nwr restrict -e Staphylococcaceae |
+    nwr restrict -e Abyssicoccaceae |
+    nwr restrict -e Salinicoccaceae |
     sed '1d' |
-    sort -n -k1,1 \
+    tva sort -n -k 1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#212 genus.list.tsv
+#233 genus.list.tsv
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -171,10 +173,10 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_refseq.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > RS1.tsv
 
-cat genus.list.tsv | cut -f 1 |
+cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
     echo "
         SELECT
@@ -189,24 +191,24 @@ while read RANK_ID; do
         " |
         sqlite3 -tabs ~/.nwr/ar_genbank.sqlite
 done |
-    tsv-sort -k2,2 \
+    tva sort -k 2 \
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-#  3940 RS1.tsv
-#  4332 GB1.tsv
+# 5411 RS1.tsv
+# 5883 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
         if [ -e "${C}${N}.tsv" ]; then
             printf "${C}${N}\t"
             cat ${C}${N}.tsv |
-                tsv-summarize --sum 3
+                tva stats --sum 3
         fi
     done
 done
-#RS1     15147
-#GB1     20472
+# RS1	20748
+# GB1	26827
 
 ```
 
@@ -225,18 +227,17 @@ echo "
         *
     FROM ar
     WHERE 1=1
-        AND genus IN ('Bacillus', 'Staphylococcus', 'Listeria')
+        AND species IN ('Bacillus subtilis', 'Bacillus thuringiensis', 'Staphylococcus aureus', 'Listeria monocytogenes')
         AND refseq_category IN ('reference genome')
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite |
-    tsv-join -H -d assembly_accession -f ~/Scripts/genomes/assembly/Bacteria.reference.tsv -k assembly_accession |
-    tsv-select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
+    tva select -H -f organism_name,species,genus,ftp_path,biosample,assembly_level,assembly_accession \
     > raw.tsv
 
 # RS
 SPECIES=$(
     cat RS1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -250,7 +251,6 @@ echo "
     WHERE 1=1
         AND species_id IN ($SPECIES)
         AND species NOT LIKE '% sp.%'
-        AND species NOT LIKE '% x %'
     " |
     sqlite3 -tabs ~/.nwr/ar_refseq.sqlite \
     >> raw.tsv
@@ -270,13 +270,13 @@ echo "
 
 # Preference for refseq
 cat raw.tsv |
-    tsv-select -H -f "assembly_accession" \
+    tva select -H -f "assembly_accession" \
     > rs.acc.tsv
 
 # GB
 SPECIES=$(
     cat GB1.tsv |
-        cut -f 1 |
+        tva select -f 1 |
         tr "\n" "," |
         sed 's/,$//'
 )
@@ -290,10 +290,9 @@ echo "
     WHERE 1=1
         AND species_id IN ($SPECIES)
         AND species NOT LIKE '% sp.%'
-        AND species NOT LIKE '% x %'
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 echo "
@@ -307,44 +306,38 @@ echo "
         AND species LIKE '% sp.%'
     " |
     sqlite3 -tabs ~/.nwr/ar_genbank.sqlite |
-    tsv-join -f rs.acc.tsv -k 1 -d 7 -e \
+    tva join -f rs.acc.tsv -k 1 -d 7 -e \
     >> raw.tsv
 
 cat raw.tsv |
-    rgr dedup stdin |
-    datamash check
-#20478 lines, 7 fields
+    tva uniq |
+    tva check
+#26832 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
     grep -v '^#' |
-    rgr dedup stdin |
-    tsv-select -f 1-6 |
-    perl ~/Scripts/genomes/bin/abbr_name.pl -c "1,2,3" -s '\t' -m 3 --shortsub |
+    tva uniq |
+    tva select -f 1-6 |
+    nwr abbr -c "1,2,3" -m 3 --shortsub |
+    tva uniq -H -f ftp_path |
+    tva uniq -H -f 7 |
+    sed '1d' |
+    tva select -f 7,4,5,2,6 |
     (echo -e '#name\tftp_path\tbiosample\tspecies\tassembly_level' && cat ) |
-    perl -nl -a -F"," -e '
-        BEGIN{my %seen};
-        /^#/ and print and next;
-        /^organism_name/i and next;
-        $seen{$F[3]}++; # ftp_path
-        $seen{$F[3]} > 1 and next;
-        $seen{$F[6]}++; # abbr_name
-        $seen{$F[6]} > 1 and next;
-        printf qq{%s\t%s\t%s\t%s\t%s\n}, $F[6], $F[3], $F[4], $F[1], $F[5];
-        ' |
-    tsv-filter --or --str-in-fld 2:ftp --str-in-fld 2:http |
-    keep-header -- tsv-sort -k4,4 -k1,1 \
+    tva filter -H --or --str-in-fld 2:ftp --str-in-fld 2:http |
+    tva sort -H -k 4,1 \
     > Bacillus.assembly.tsv
 
-datamash check < Bacillus.assembly.tsv
-#20466 lines, 5 fields
+tva check < Bacillus.assembly.tsv
+#26830 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacillus.assembly.tsv |
-    tsv-uniq -f 1 --repeated
+    tva uniq -f 1 --repeated
 
 cat Bacillus.assembly.tsv |
-    tsv-filter --str-not-in-fld 2:ftp
+    tva filter --str-not-in-fld 2:ftp
 
 # Edit .assembly.tsv, remove unnecessary strains, check strain names and comment out poor assemblies.
 # vim Bacillus.assembly.tsv
@@ -354,7 +347,6 @@ cat Bacillus.assembly.tsv |
 
 # Cleaning
 rm raw*.*sv
-
 ```
 
 ### Count before download
@@ -372,7 +364,7 @@ nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
 bash Count/strains.sh
 
 cat Count/taxa.tsv |
-    rgr md stdin --fmt
+    tva to md --fmt
 
 # .lst and .count.tsv
 bash Count/rank.sh
@@ -380,49 +372,39 @@ bash Count/rank.sh
 mv Count/genus.count.tsv Count/genus.before.tsv
 
 cat Count/genus.before.tsv |
-    keep-header -- tsv-sort -k1,1 |
-    tsv-filter -H --ge 3:50 |
-    rgr md stdin --num
-
+    tva sort -H -k 1 |
+    tva filter -H --ge 3:100 |
+    tva to md --fmt
 ```
 
 | item    |  count |
-|---------|-------:|
-| strain  | 18,912 |
-| species |  1,541 |
-| genus   |    199 |
-| family  |     10 |
-| order   |      2 |
-| class   |      2 |
+| ------- | -----: |
+| strain  | 24,436 |
+| species |  1,677 |
+| genus   |    217 |
+| family  |     14 |
+| order   |      1 |
+| class   |      1 |
 
-| genus            | #species | #strains |
-|------------------|---------:|---------:|
-| Alicyclobacillus |       28 |       72 |
-| Anoxybacillus    |       18 |      113 |
-| Bacillus         |      136 |    12019 |
-| Brevibacillus    |       30 |      270 |
-| Cohnella         |       37 |       66 |
-| Cytobacillus     |       19 |      154 |
-| Fictibacillus    |       16 |       56 |
-| Geobacillus      |       17 |      187 |
-| Halobacillus     |       25 |       62 |
-| Heyndrickxia     |       13 |      196 |
-| Kurthia          |       10 |       52 |
-| Lysinibacillus   |       28 |      438 |
-| Metabacillus     |       22 |       62 |
-| Neobacillus      |       27 |      127 |
-| Niallia          |        8 |       77 |
-| Oceanobacillus   |       35 |      105 |
-| Paenibacillus    |      316 |     1975 |
-| Peribacillus     |       19 |      259 |
-| Planococcus      |       29 |       81 |
-| Priestia         |       10 |      654 |
-| Psychrobacillus  |       10 |       56 |
-| Rossellomorea    |        7 |       78 |
-| Shouchella       |       12 |       77 |
-| Solibacillus     |       10 |       52 |
-| Sporosarcina     |       27 |      133 |
-| Virgibacillus    |       34 |      124 |
+| genus           | #species | #strains |
+| --------------- | -------: | -------: |
+| Anoxybacillus   |       13 |      100 |
+| Bacillus        |      141 |   15,383 |
+| Brevibacillus   |       34 |      391 |
+| Cytobacillus    |       19 |      189 |
+| Exiguobacterium |       19 |      388 |
+| Geobacillus     |       17 |      241 |
+| Heyndrickxia    |       13 |      262 |
+| Lysinibacillus  |       29 |      557 |
+| Neobacillus     |       33 |      155 |
+| Niallia         |        9 |      100 |
+| Oceanobacillus  |       36 |      118 |
+| Paenibacillus   |      336 |    2,336 |
+| Peribacillus    |       21 |      359 |
+| Priestia        |       11 |      910 |
+| Rossellomorea   |       11 |      120 |
+| Sporosarcina    |       27 |      150 |
+| Virgibacillus   |       36 |      141 |
 
 ### Download and check
 
@@ -435,17 +417,29 @@ nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --ass
 
 # Run
-bash ASSEMBLY/rsync.sh
+bash ASSEMBLY/aria2.sh
 
 # Check md5; create check.lst
 # rm ASSEMBLY/check.lst
 bash ASSEMBLY/check.sh
 
-## Put the misplaced directories into the right ones
-#bash ASSEMBLY/reorder.sh
-#
-## This operation will delete some files in the directory, so please be careful
-#cat ASSEMBLY/remove.lst |
+# Remove failed directories and re-download
+bash ASSEMBLY/check.sh 2>&1 |
+    grep "checksum failed" |
+    sed 's/.*==> //;s/ checksum failed <==//' |
+    parallel --no-run-if-empty --linebuffer -k -j 1 '
+        dir=$(cat ASSEMBLY/url.tsv | tva filter --str-eq "1:{}" | tva select -f 3,1 | tr "\t" "/")
+        if [[ -n "$dir" && -e "ASSEMBLY/$dir" ]]; then
+            echo Remove ASSEMBLY/$dir
+            rm -fr "ASSEMBLY/$dir"
+        fi
+    '
+
+# # Put the misplaced directory into the right place
+# bash ASSEMBLY/reorder.sh
+
+# # This operation will delete some files in the directory, so please be careful
+# cat ASSEMBLY/remove.lst |
 #    parallel --no-run-if-empty --linebuffer -k -j 1 '
 #        if [[ -e "ASSEMBLY/{}" ]]; then
 #            echo Remove {}
@@ -453,19 +447,24 @@ bash ASSEMBLY/check.sh
 #        fi
 #    '
 
+find ASSEMBLY/ -name "*_genomic.fna.gz" |
+    grep -v "_from_" |
+    wc -l
+#21930
+
 # N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 50000 500 500000
 
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
-    tsv-filter -H --str-in-fld "name:_GCF_" |
-    tsv-summarize -H --min "N50" --max "C" --min "S"
+    tva filter -H --str-in-fld "name:_GCF_" |
+    tva stats -H --min "N50" --max "C" --min "S"
 #N50_min C_max   S_min
 #5966    1976    1073956
 
 cat ASSEMBLY/n50.tsv |
-    tsv-summarize -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
-    datamash transpose
+    tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
+    tva transpose
 #N50_pct10       55738
 #N50_pct50       313185
 #C_pct50 55
@@ -482,10 +481,13 @@ bash ASSEMBLY/collect.sh
 bash ASSEMBLY/finish.sh
 
 cp ASSEMBLY/collect.pass.tsv summary/
+cp ASSEMBLY/omit.lst summary/
+cp ASSEMBLY/pass.lst summary/
+cp ASSEMBLY/sp.lst summary/
+cp ASSEMBLY/rep.lst summary/
 
 cat ASSEMBLY/counts.tsv |
-    rgr md stdin --fmt
-
+    tva to md --fmt
 ```
 
 | #item            | fields |  lines |
@@ -533,7 +535,7 @@ bash BioSample/download.sh
 # Ignore rare attributes
 bash BioSample/collect.sh 50
 
-datamash check < BioSample/biosample.tsv
+tva check < BioSample/biosample.tsv
 #20439 lines, 102 fields
 
 cp BioSample/attributes.lst summary/
@@ -549,7 +551,7 @@ cd ~/data/Bacillus
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --mh \
     --parallel 8 \
-    --in ASSEMBLY/pass.lst \
+    --in summary/pass.lst \
     --ani-ab 0.05 \
     --ani-nr 0.005
 
