@@ -36,7 +36,7 @@ cbp install pgr
 * [Trichoderma](./groups/Trichoderma.md) is a good example of familiarizing yourself with the
   processing steps.
 
-* [Bacteria](./Bacteria.md): All genomes of **Bacteria** and **Archaea**, species by species
+* [Bacteria](./groups/Bacteria.md): All genomes of **Bacteria** and **Archaea**, species by species
 
 * [Fungi](./groups/Fungi.md): All genomes of **Fungi**, species by species
 
