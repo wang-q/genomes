@@ -606,6 +606,10 @@ pgr pl condense --map -t ../Count/strains.taxon.tsv -r 2 minhash.reroot.newick \
 pgr nwk to-tex minhash.condensed.newick --bl |
     tectonic - &&
     mv texput.pdf Trichoderma.minhash.pdf
+
+# svg
+pgr nwk to-svg minhash.condensed.newick \
+    > Trichoderma.minhash.svg
 ```
 
 ## Count valid species and strains

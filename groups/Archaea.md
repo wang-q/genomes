@@ -500,8 +500,14 @@ wc -l summary/NR.lst summary/redundant.lst
 # Abnormal strains
 bash MinHash/abnormal.sh
 
-cat MinHash/abnormal.lst | wc -l
-#300
+cat MinHash/abnormal.lst |
+    tva join -e -f summary/sp.lst \
+    > MinHash/tmp.lst
+mv MinHash/tmp.lst summary/abnormal.lst
+
+wc -l MinHash/abnormal.lst summary/abnormal.lst
+# 1429 MinHash/abnormal.lst
+#  467 summary/abnormal.lst
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Archaea/
@@ -511,7 +517,7 @@ nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --parallel 8 \
     --not-in summary/sp.lst \
     --not-in summary/omit.lst \
-    --not-in MinHash/abnormal.lst \
+    --not-in summary/abnormal.lst \
     --not-in summary/redundant.lst \
     --height 0.4
 
@@ -539,7 +545,6 @@ mv condensed.tsv minhash.condensed.tsv
 pgr nwk topo --bl minhash.condensed.newick | # remove comments
     nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
     > Archaea.minhash.svg
-
 ```
 
 ## Count valid species and strains
@@ -552,7 +557,7 @@ cd ~/data/Archaea/
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --count \
     --in summary/pass.lst \
-    --not-in MinHash/abnormal.lst \
+    --not-in summary/abnormal.lst \
     --rank order --rank genus \
     --lineage family --lineage genus
 
@@ -654,7 +659,7 @@ cd ~/data/Archaea/
 nwr template ~/Scripts/genomes/assembly/Archaea.assembly.tsv \
     --count \
     --in summary/pass.lst \
-    --not-in MinHash/abnormal.lst \
+    --not-in summary/abnormal.lst \
     --not-in summary/omit.lst \
     --rank genus
 
