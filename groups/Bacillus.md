@@ -886,9 +886,9 @@ cp HMM/bac120.lst HMM/marker.lst
 cd ~/data/Bacillus
 
 cat Protein/species.tsv |
-    tsv-join -f summary/pass.lst -k 1 |
-    tsv-join -e -f summary/sp.lst -k 1 |
-    tsv-join -e -f summary/omit.lst -k 1 \
+    tva join -f summary/pass.lst -k 1 |
+    tva join -e -f summary/sp.lst -k 1 |
+    tva join -e -f summary/omit.lst -k 1 \
     > Protein/species-f.tsv
 
 cat Protein/species-f.tsv |
@@ -930,7 +930,6 @@ while read SPECIES; do
     nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/bac120.tsv
 
 done
-
 ```
 
 ### Domain related protein sequences

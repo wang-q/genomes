@@ -133,7 +133,6 @@ for C in RS GB; do
 done
 # RS1	2871
 # GB1	8559
-
 ```
 
 ## Download all assemblies
@@ -381,7 +380,8 @@ bash ASSEMBLY/n50.sh 100000 500 500000
 # Adjust parameters passed to `n50.sh`
 cat ASSEMBLY/n50.tsv |
     tva filter -H --str-in-fld "name:_GCF_" |
-    tva stats -H --min "N50" --max "C" --min "S"
+    tva stats -H --min "N50" --max "C" --min "S" |
+    tva transpose
 # N50_min	C_max	S_min
 # 5163	967	449376
 
@@ -464,7 +464,6 @@ tva check < BioSample/biosample.tsv
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
-
 ```
 
 ## MinHash
@@ -542,8 +541,7 @@ pgr pl condense --map -t ../Count/strains.taxon.tsv -r 5 -r 4 -r 3 \
 mv condensed.tsv minhash.condensed.tsv
 
 # svg
-pgr nwk topo --bl minhash.condensed.newick | # remove comments
-    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
+pgr nwk to-svg minhash.condensed.newick \
     > Archaea.minhash.svg
 ```
 
@@ -970,9 +968,7 @@ pgr pl condense --map -t ../Count/strains.taxon.tsv -r 5 -r 4 -r 3 -r 2 \
 
 mv condensed.tsv ar53.condense.tsv
 
-# pdf
-pgr nwk topo --bl ar53.condensed.newick | # remove comments
-    pgr nwk to-tex stdin --bl -o Archaea.ar53.tex
-
-tectonic Archaea.ar53.tex
+# svg
+pgr nwk to-svg ar53.condensed.newick \
+    > Archaea.ar53.svg
 ```
