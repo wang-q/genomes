@@ -859,15 +859,15 @@ cat Protein/counts.tsv |
     tva to md --fmt
 ```
 
-| #item      |      count |
-|------------|-----------:|
-| species    |      1,504 |
-| strain_sum |     18,102 |
-| total_sum  | 87,106,072 |
-| dedup_sum  | 42,320,155 |
-| rep_sum    | 13,931,528 |
-| fam88_sum  | 10,662,583 |
-| fam38_sum  |  7,306,809 |
+| #item      |       count |
+| ---------- | ----------: |
+| species    |       1,642 |
+| strain_sum |      23,829 |
+| total_sum  | 114,069,070 |
+| dedup_sum  |  51,575,432 |
+| rep_sum    |  16,013,513 |
+| fam88_sum  |  12,019,971 |
+| fam38_sum  |   8,171,355 |
 
 ## Phylogenetics with bac120
 
@@ -982,7 +982,7 @@ fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
 
 cat Domain/seq_asm_f3.tsv |
-    tva join -e -d 2 -f summary/redundant.lst -k 1 \
+    tva join -e -d 2 -f summary/redundant.lst -k 1 |
     tva join -e -d 2 -f summary/sp.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
 ```
@@ -1073,8 +1073,8 @@ trimal -in Domain/bac120.aln.fa -out Domain/bac120.trim.fa -automated1
 pgr fa size Domain/bac120.*.fa |
     tva uniq -f 2 |
     cut -f 2
-#98638
-#43956
+# 93634
+# 29829
 
 # To make it faster
 FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
@@ -1085,7 +1085,7 @@ FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
 ```shell
 cd ~/data/Bacillus/tree
 
-pgr nwk reroot  ../Domain/bac120.trim.newick -n Desu_alkalia_AHT28_GCF_001730225_1 -n Desu_stib_MLFW_2_GCF_001742305_1 |
+pgr nwk reroot ../Domain/bac120.trim.newick -n Desu_alkalia_AHT28_GCF_001730225_1 -n Desu_stib_MLFW_2_GCF_001742305_1 |
     pgr nwk order stdin --nd --an \
     > bac120.reroot.newick
 
