@@ -146,17 +146,12 @@ cd ~/data/Bacillus/summary
 
 # should have a valid name of genus
 nwr member Bacillales Desulfuribacillales -r genus |
-    nwr restrict -e Listeriaceae |
-    nwr restrict -e Gemellaceae |
-    nwr restrict -e Staphylococcaceae |
-    nwr restrict -e Abyssicoccaceae |
-    nwr restrict -e Salinicoccaceae |
     sed '1d' |
     tva sort -n -k 1 \
     > genus.list.tsv
 
 wc -l genus.list.tsv
-#234 genus.list.tsv
+#251 genus.list.tsv
 
 cat genus.list.tsv | tva select -f 1 |
 while read RANK_ID; do
@@ -195,8 +190,8 @@ done |
     > GB1.tsv
 
 wc -l RS*.tsv GB*.tsv
-# 5413 RS1.tsv
-# 5885 GB1.tsv
+# 6099 RS1.tsv
+# 6741 GB1.tsv
 
 for C in RS GB; do
     for N in $(seq 1 1 10); do
@@ -207,8 +202,8 @@ for C in RS GB; do
         fi
     done
 done
-# RS1	20750
-# GB1	26829
+# RS1	57371
+# GB1	244321
 ```
 
 ## Download all assemblies
@@ -311,7 +306,7 @@ echo "
 cat raw.tsv |
     tva uniq |
     tva check
-#26834 lines, 7 fields
+#244327 lines, 7 fields
 
 # Create abbr.
 cat raw.tsv |
@@ -329,7 +324,7 @@ cat raw.tsv |
     > Bacillus.assembly.tsv
 
 tva check < Bacillus.assembly.tsv
-#26832 lines, 5 fields
+#244322 lines, 5 fields
 
 # find potential duplicate strains or assemblies
 cat Bacillus.assembly.tsv |
@@ -376,14 +371,14 @@ cat Count/genus.before.tsv |
     tva to md --fmt
 ```
 
-| item    |  count |
-| ------- | -----: |
-| strain  | 24,438 |
-| species |  1,679 |
-| genus   |    218 |
-| family  |     15 |
-| order   |      2 |
-| class   |      2 |
+| item    |   count |
+| ------- | ------: |
+| strain  | 241,927 |
+| species |   1,862 |
+| genus   |     233 |
+| family  |      18 |
+| order   |       2 |
+| class   |       2 |
 
 | genus           | #species | #strains |
 | --------------- | -------: | -------: |
@@ -392,9 +387,13 @@ cat Count/genus.before.tsv |
 | Brevibacillus   |       34 |      391 |
 | Cytobacillus    |       19 |      189 |
 | Exiguobacterium |       19 |      388 |
+| Gemella         |        9 |      157 |
 | Geobacillus     |       17 |      241 |
 | Heyndrickxia    |       13 |      262 |
+| Listeria        |       25 |   75,462 |
 | Lysinibacillus  |       29 |      557 |
+| Macrococcoides  |        4 |      114 |
+| Mammaliicoccus  |        6 |      609 |
 | Neobacillus     |       33 |      155 |
 | Niallia         |        9 |      100 |
 | Oceanobacillus  |       36 |      118 |
@@ -403,6 +402,7 @@ cat Count/genus.before.tsv |
 | Priestia        |       11 |      910 |
 | Rossellomorea   |       11 |      120 |
 | Sporosarcina    |       27 |      150 |
+| Staphylococcus  |       77 |  140,877 |
 | Virgibacillus   |       36 |      141 |
 
 ### Download and check
