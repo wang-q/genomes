@@ -419,7 +419,6 @@ cat Count/genus.before.tsv |
 | Xenorhabdus     |       37 |      213 |
 | Yersinia        |       27 |    2,197 |
 
-
 ### Download and check
 
 ```shell
@@ -506,6 +505,29 @@ cat ASSEMBLY/counts.tsv |
     tva to md --fmt
 ```
 
+## BioSample
+
+```shell
+cd ~/data/Bacillus
+
+ulimit -n `ulimit -Hn`
+
+nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
+    --bs
+
+# Run this script twice and it will re-download the failed files
+bash BioSample/download.sh
+
+# Ignore rare attributes
+bash BioSample/collect.sh 50
+
+tva check < BioSample/biosample.tsv
+#26805 lines, 136 fields
+
+cp BioSample/attributes.lst summary/
+cp BioSample/biosample.tsv summary/
+```
+
 ## MinHash
 
 ```bash
@@ -524,13 +546,11 @@ bash MinHash/compute.sh
 # Non-redundant strains within species
 bash MinHash/nr.sh
 
-find MinHash -name "NR.lst" |
-    xargs cat |
+fd --full-path "MinHash/.+/NR.lst" -X cat |
     sort |
     uniq \
     > summary/NR.lst
-find MinHash -name "redundant.lst" |
-    xargs cat |
+fd --full-path "MinHash/.+/redundant.lst" -X cat |
     sort |
     uniq \
     > summary/redundant.lst
@@ -786,12 +806,11 @@ bash Protein/info.sh
 bash Protein/count.sh
 
 cat Protein/counts.tsv |
-    tsv-summarize -H --count --sum 2-7 |
+    tva stats -H --count --sum 2-7 |
     sed 's/^count/species/' |
-    datamash transpose |
+    tva transpose |
     (echo -e "#item\tcount" && cat) |
-    rgr md stdin --fmt
-
+    tva to md --fmt
 ```
 
 | #item      |       count |
@@ -821,13 +840,13 @@ cp HMM/bac120.lst HMM/marker.lst
 cd ~/data/Escherichia
 
 cat Protein/species.tsv |
-    tsv-join -f ASSEMBLY/pass.lst -k 1 |
-    tsv-join -e -f ASSEMBLY/omit.lst -k 1 \
+    tva join -f summary/pass.lst -k 1 |
+    tva join -e -f summary/omit.lst -k 1 \
     > Protein/species-f.tsv
 
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ -s Protein/"${SPECIES}"/bac120.tsv ]]; then
         continue
@@ -849,8 +868,8 @@ while read SPECIES; do
 done
 
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ ! -s Protein/"${SPECIES}"/bac120.tsv ]]; then
         continue
@@ -864,7 +883,6 @@ while read SPECIES; do
     nwr seqdb -d Protein/${SPECIES} --rep f3=Protein/${SPECIES}/bac120.tsv
 
 done
-
 ```
 
 ### Domain related protein sequences
@@ -876,8 +894,8 @@ mkdir -p Domain
 
 # each assembly
 cat Protein/species-f.tsv |
-    tsv-select -f 2 |
-    rgr dedup stdin |
+    tva select -f 2 |
+    tva uniq |
 while read SPECIES; do
     if [[ ! -f Protein/"${SPECIES}"/seq.sqlite ]]; then
         continue
@@ -909,17 +927,16 @@ while read SPECIES; do
             rgr dedup stdin
         )
 done |
-    hnsm dedup stdin |
-    hnsm gz stdin -o Domain/bac120.fa
+    pgr fa dedup stdin |
+    pgr fa gz stdin -o Domain/bac120.fa
 
 fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
 
 cat Domain/seq_asm_f3.tsv |
-    tsv-join -e -d 2 -f summary/redundant.lst -k 1 |
-    tsv-join -e -d 2 -f ASSEMBLY/sp.lst -k 1 \
+    tva join -e -d 2 -f summary/redundant.lst -k 1 |
+    tva join -e -d 2 -f summary/sp.lst -k 1 \
     > Domain/seq_asm_f3.NR.tsv
-
 ```
 
 ### Align and concat marker genes to create species tree
@@ -934,11 +951,11 @@ cat HMM/marker.lst |
 
         mkdir -p Domain/{}
 
-        hnsm some Domain/bac120.fa.gz <(
+        pgr fa some Domain/bac120.fa.gz <(
             cat Domain/seq_asm_f3.tsv |
-                tsv-filter --str-eq "3:{}" |
-                tsv-select -f 1 |
-                rgr dedup stdin
+                tva filter --str-eq "3:{}" |
+                tva select -f 1 |
+                tva uniq
             ) \
             > Domain/{}/{}.pro.fa
     '
@@ -973,9 +990,9 @@ while read marker; do
     # Only NR strains
     # 1 name to many names
     cat Domain/seq_asm_f3.NR.tsv |
-        tsv-filter --str-eq "3:${marker}" |
-        tsv-select -f 1-2 |
-        hnsm replace -s Domain/${marker}/${marker}.aln.fa stdin \
+        tva filter --str-eq "3:${marker}" |
+        tva select -f 1-2 |
+        pgr fa replace -s Domain/${marker}/${marker}.aln.fa stdin \
         > Domain/${marker}/${marker}.replace.fa
 done
 
@@ -998,22 +1015,21 @@ done \
 
 cat Domain/seq_asm_f3.NR.tsv |
     cut -f 2 |
-    rgr dedup stdin |
+    tva uniq |
     sort |
     fasops concat Domain/bac120.aln.fas stdin -o Domain/bac120.aln.fa
 
 # Trim poorly aligned regions with `TrimAl`
 trimal -in Domain/bac120.aln.fa -out Domain/bac120.trim.fa -automated1
 
-hnsm size Domain/bac120.*.fa |
-    rgr dedup stdin -f 2 |
+pgr fa size Domain/bac120.*.fa |
+    tva uniq -f 2 |
     cut -f 2
 #71124
 #46096
 
 # To make it faster
 FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
-
 ```
 
 ### Condense branches in the protein tree
