@@ -473,19 +473,19 @@ cat ASSEMBLY/n50.tsv |
     tva filter -H --str-in-fld "name:_GCF_" |
     tva stats -H --min "N50" --max "C" --min "S" |
     tva transpose
-# N50_min	5622
-# C_max	1976
-# S_min	1879126
+# N50_min	5041
+# C_max	1987
+# S_min	231767
 
 cat ASSEMBLY/n50.tsv |
     tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
     tva transpose
-# N50_quantile_0.1	57651.3
-# N50_quantile_0.5	334497
-# C_quantile_0.5	51
-# C_quantile_0.9	252
-# S_quantile_0.1	3666503.7
-# S_quantile_0.5	5067627.5
+# N50_quantile_0.1	78792
+# N50_quantile_0.5	215003.5
+# C_quantile_0.5	91
+# C_quantile_0.9	271
+# S_quantile_0.1	4595768.6
+# S_quantile_0.5	5096136.5
 
 # After the above steps are completed, run the following commands.
 
@@ -505,14 +505,45 @@ cat ASSEMBLY/counts.tsv |
     tva to md --fmt
 ```
 
+| #item            | fields |   lines |
+| ---------------- | -----: | ------: |
+| url.tsv          |      3 | 142,106 |
+| check.lst        |      1 | 142,106 |
+| collect.tsv      |     20 | 142,107 |
+| n50.pass.tsv     |      4 | 132,573 |
+| collect.pass.tsv |     23 | 132,573 |
+| pass.lst         |      1 | 132,572 |
+| omit.lst         |      1 |      82 |
+| rep.lst          |      1 |     685 |
+| sp.lst           |      1 |   6,165 |
+
+### Rsync to hpcc
+
+```shell
+rsync -avP \
+    ~/data/Escherichia/ \
+    wangq@202.119.37.251:data/Escherichia
+
+rsync -avP \
+    -e 'ssh -p 8804' \
+    ~/data/Escherichia/ \
+    wangq@58.213.64.36:data/Escherichia
+
+rsync -avP \
+    ~/data/Escherichia/ \
+    ~/nfs/Escherichia
+
+# rsync -avP wangq@202.119.37.251:data/Escherichia/ ~/data/Escherichia
+```
+
 ## BioSample
 
 ```shell
-cd ~/data/Bacillus
+cd ~/data/Escherichia
 
 ulimit -n `ulimit -Hn`
 
-nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
+nwr template ~/Scripts/genomes/assembly/Escherichia.assembly.tsv \
     --bs
 
 # Run this script twice and it will re-download the failed files
@@ -522,7 +553,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 50
 
 tva check < BioSample/biosample.tsv
-#26805 lines, 136 fields
+#141734 lines, 240 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
@@ -534,11 +565,12 @@ cp BioSample/biosample.tsv summary/
 cd ~/data/Escherichia/
 
 # relaxed thresholds
-nwr template summary/assembly.tsv \
+nwr template ~/Scripts/genomes/assembly/Escherichia.assembly.tsv \
     --mh \
     --parallel 8 \
+    --in summary/pass.lst \
     --ani-ab 0.12 \
-    --ani-nr 0.01
+    --ani-nr 0.005
 
 # Compute assembly sketches
 bash MinHash/compute.sh
