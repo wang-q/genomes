@@ -587,15 +587,56 @@ fd --full-path "MinHash/.+/redundant.lst" -X cat |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#   2217 summary/NR.lst
-#  89115 summary/redundant.lst
+#    15574 summary/NR.lst
+#   116785 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
 
-cat MinHash/abnormal.lst | wc -l
-#2
+cat MinHash/abnormal.lst |
+    tva join -e -f summary/sp.lst \
+    > MinHash/tmp.lst
+mv MinHash/tmp.lst summary/abnormal.lst
 
+wc -l MinHash/abnormal.lst summary/abnormal.lst
+#  281 MinHash/abnormal.lst
+#  143 summary/abnormal.lst
+
+# Distances between all selected sketches, then hierarchical clustering
+cd ~/data/Escherichia/
+
+nwr template ~/Scripts/genomes/assembly/Escherichia.assembly.tsv \
+    --mh \
+    --parallel 8 \
+    --in summary/rep.lst \
+    --not-in summary/sp.lst \
+    --not-in summary/abnormal.lst \
+    --not-in summary/redundant.lst \
+    --height 0.4
+
+bash MinHash/dist.sh
+```
+
+### Condense branches in the minhash tree
+
+```shell
+mkdir -p ~/data/Escherichia/tree
+cd ~/data/Escherichia/tree
+
+pgr nwk reroot ../MinHash/tree.nwk -n Wig_glossinidia_GCF_000247565_1 -n Pas_multo_FDAARGOS_218_GCF_002073255_2 |
+    pgr nwk order stdin --nd --an \
+    > minhash.reroot.newick
+
+pgr pl condense --map -t ../Count/strains.taxon.tsv -r 4 -r 3 \
+    minhash.reroot.newick |
+    pgr nwk order stdin --nd --an \
+    > minhash.condensed.newick
+
+mv condensed.tsv minhash.condensed.tsv
+
+# svg
+pgr nwk to-svg minhash.condensed.newick \
+    > Escherichia.minhash.svg
 ```
 
 ## Count valid species and strains
@@ -605,10 +646,11 @@ cat MinHash/abnormal.lst | wc -l
 ```bash
 cd ~/data/Escherichia/
 
-nwr template summary/assembly.tsv \
+nwr template ~/Scripts/genomes/assembly/Escherichia.assembly.tsv \
     --count \
-    --not-in MinHash/abnormal.lst \
-    --rank order --rank genus \
+    --in summary/pass.lst \
+    --not-in summary/abnormal.lst \
+    --rank family --rank genus \
     --lineage genus
 
 # strains.taxon.tsv
@@ -622,7 +664,7 @@ cat Count/order.count.tsv |
     rgr md stdin --fmt
 
 cat Count/genus.count.tsv |
-    tsv-filter -H --ge "3:2" |
+    tsv-filter -H --ge "3:10" |
     rgr md stdin --fmt
 
 # Can accept N_COUNT
@@ -637,12 +679,9 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 ```
 
 | order            | #species | #strains |
-|------------------|---------:|---------:|
-| Bacillales       |        5 |        5 |
-| Bacteroidales    |        2 |        2 |
-| Enterobacterales |      150 |   91,334 |
-| Lactobacillales  |        3 |        3 |
-| Mycobacteriales  |        2 |        2 |
+| ---------------- | -------: | -------: |
+| Enterobacterales |      659 |  137,418 |
+| Pasteurellales   |      127 |    3,987 |
 
 | genus             | #species | #strains |
 |-------------------|---------:|---------:|
@@ -818,7 +857,7 @@ cd ~/data/Escherichia/
 
 ulimit -n `ulimit -Hn`
 
-nwr template summary/assembly.tsv \
+nwr template ~/Scripts/genomes/assembly/Escherichia.assembly.tsv \
     --pro \
     --parallel 8
 
