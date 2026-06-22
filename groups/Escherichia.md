@@ -656,199 +656,235 @@ nwr template ~/Scripts/genomes/assembly/Escherichia.assembly.tsv \
 # strains.taxon.tsv
 bash Count/strains.sh
 
+cat Count/taxa.tsv |
+    tva to md --num
+
 # .lst and .count.tsv
 bash Count/rank.sh
 
-cat Count/order.count.tsv |
-    tsv-filter -H --ge "3:2" |
-    rgr md stdin --fmt
+cat Count/family.count.tsv |
+    tva filter -H --ge "3:50" |
+    tva to md --num
 
 cat Count/genus.count.tsv |
-    tsv-filter -H --ge "3:10" |
-    rgr md stdin --fmt
+    tva filter -H --ge "3:50" |
+    tva to md --num
 
 # Can accept N_COUNT
-bash Count/lineage.sh 50
+bash Count/lineage.sh 100
 
 cat Count/lineage.count.tsv |
-    rgr md stdin --fmt
+    tva to md --num
 
 # copy to summary/
 cp Count/strains.taxon.tsv summary/genome.taxon.tsv
-
+cp Count/genus.count.tsv summary/genus.genome.tsv
 ```
 
-| order            | #species | #strains |
-| ---------------- | -------: | -------: |
-| Enterobacterales |      659 |  137,418 |
-| Pasteurellales   |      127 |    3,987 |
+| item    |  count |
+| ------- | -----: |
+| strain  | 132046 |
+| species |    764 |
+| genus   |    140 |
+| family  |     12 |
+| order   |      2 |
+| class   |      1 |
 
-| genus             | #species | #strains |
-|-------------------|---------:|---------:|
-| Atlantibacter     |        2 |      116 |
-| Bacillus          |        3 |        3 |
-| Buttiauxella      |        5 |       16 |
-| Cedecea           |        3 |       18 |
-| Citrobacter       |       18 |    2,031 |
-| Cronobacter       |        7 |      744 |
-| Cronobacter       |        7 |      744 |
-| Dryocola          |        1 |        3 |
-| Enterobacter      |       27 |    6,167 |
-| Escherichia       |        6 |   39,441 |
-| Franconibacter    |        3 |       14 |
-| Klebsiella        |       14 |   25,695 |
-| Kluyvera          |        6 |       53 |
-| Kosakonia         |        7 |       73 |
-| Leclercia         |        3 |       88 |
-| Lelliottia        |        4 |       41 |
-| Mangrovibacter    |        1 |        3 |
-| Phytobacter       |        3 |       23 |
-| Plesiomonas       |        1 |       48 |
-| Pluralibacter     |        2 |       30 |
-| Pseudenterobacter |        1 |        4 |
-| Pseudescherichia  |        1 |       11 |
-| Pseudocitrobacter |        1 |        2 |
-| Raoultella        |        4 |      311 |
-| Salmonella        |        2 |   14,009 |
-| Scandinavium      |        4 |        9 |
-| Shigella          |        4 |    2,291 |
-| Shimwellia        |        1 |        4 |
-| Siccibacter       |        2 |       10 |
-| Streptococcus     |        2 |        2 |
-| Superficieibacter |        1 |        2 |
-| Tenebrionicola    |        1 |        2 |
-| Trabulsiella      |        1 |        8 |
-| Yokenella         |        1 |       14 |
+| family             | #species | #strains |
+| ------------------ | -------: | -------: |
+| Enterobacteriaceae |      241 |   116714 |
+| Erwiniaceae        |      108 |     2047 |
+| Hafniaceae         |       11 |      377 |
+| Morganellaceae     |      108 |     3703 |
+| Pasteurellaceae    |      118 |     3542 |
+| Pectobacteriaceae  |       63 |     1091 |
+| Yersiniaceae       |       89 |     4520 |
 
-| #genus        | species                    |  count |
-|---------------|----------------------------|-------:|
-| Atlantibacter | Atlantibacter hermannii    |    104 |
-| Citrobacter   | Citrobacter amalonaticus   |     77 |
-|               | Citrobacter braakii        |    189 |
-|               | Citrobacter freundii       |  1,083 |
-|               | Citrobacter koseri         |    186 |
-|               | Citrobacter portucalensis  |    268 |
-|               | Citrobacter werkmanii      |     64 |
-| Cronobacter   | Cronobacter dublinensis    |     66 |
-|               | Cronobacter malonaticus    |     87 |
-|               | Cronobacter sakazakii      |    538 |
-| Enterobacter  | Enterobacter asburiae      |    468 |
-|               | Enterobacter bugandensis   |    220 |
-|               | Enterobacter cloacae       |    479 |
-|               | Enterobacter hormaechei    |  3,697 |
-|               | Enterobacter kobei         |    369 |
-|               | Enterobacter ludwigii      |    180 |
-|               | Enterobacter roggenkampii  |    506 |
-| Escherichia   | Escherichia albertii       |    275 |
-|               | Escherichia coli           | 38,841 |
-|               | Escherichia fergusonii     |    186 |
-|               | Escherichia marmotae       |    114 |
-| Klebsiella    | Klebsiella aerogenes       |    604 |
-|               | Klebsiella grimontii       |    210 |
-|               | Klebsiella michiganensis   |    622 |
-|               | Klebsiella oxytoca         |    447 |
-|               | Klebsiella pasteurii       |     53 |
-|               | Klebsiella pneumoniae      | 21,442 |
-|               | Klebsiella quasipneumoniae |  1,262 |
-|               | Klebsiella variicola       |    998 |
-| Leclercia     | Leclercia adecarboxylata   |     80 |
-| Raoultella    | Raoultella ornithinolytica |    179 |
-|               | Raoultella planticola      |     79 |
-|               | Raoultella terrigena       |     50 |
-| Salmonella    | Salmonella enterica        | 13,978 |
-| Shigella      | Shigella boydii            |     76 |
-|               | Shigella flexneri          |    722 |
-|               | Shigella sonnei            |  1,449 |
+| genus           | #species | #strains |
+| --------------- | -------: | -------: |
+| Actinobacillus  |       17 |      248 |
+| Aggregatibacter |        5 |      212 |
+| Atlantibacter   |        3 |      120 |
+| Avibacterium    |        6 |      195 |
+| Brenneria       |       13 |       54 |
+| Citrobacter     |       22 |     3342 |
+| Cronobacter     |        8 |      760 |
+| Dickeya         |       14 |      239 |
+| Edwardsiella    |        5 |      247 |
+| Enterobacter    |       31 |     9013 |
+| Erwinia         |       27 |      576 |
+| Escherichia     |        7 |    47911 |
+| Gallibacterium  |        8 |       98 |
+| Glaesserella    |        3 |      157 |
+| Haemophilus     |       13 |     1197 |
+| Hafnia          |        4 |      120 |
+| Histophilus     |        1 |       60 |
+| Klebsiella      |       20 |    35082 |
+| Kluyvera        |       11 |      102 |
+| Kosakonia       |       13 |      134 |
+| Leclercia       |        5 |      159 |
+| Lelliottia      |        6 |       94 |
+| Lonsdalea       |        4 |      109 |
+| Mannheimia      |       11 |      403 |
+| Morganella      |        2 |      512 |
+| Pantoea         |       49 |     1315 |
+| Pasteurella     |        8 |      783 |
+| Pectobacterium  |       25 |      675 |
+| Photorhabdus    |       25 |      153 |
+| Plesiomonas     |        2 |       61 |
+| Proteus         |       12 |     1625 |
+| Providencia     |       19 |     1200 |
+| Rahnella        |       16 |      115 |
+| Salmonella      |        3 |    19105 |
+| Serratia        |       25 |     2614 |
+| Shigella        |        5 |      439 |
+| Xenorhabdus     |       35 |      152 |
+| Yersinia        |       27 |     1703 |
 
-### Count strains - Genus
+| #genus          | species                               | count |
+| --------------- | ------------------------------------- | ----: |
+| Actinobacillus  | Actinobacillus pleuropneumoniae       |   179 |
+| Aggregatibacter | Aggregatibacter actinomycetemcomitans |   159 |
+| Avibacterium    | Avibacterium paragallinarum           |   115 |
+| Citrobacter     | Citrobacter amalonaticus              |   108 |
+|                 | Citrobacter braakii                   |   254 |
+|                 | Citrobacter freundii                  |  1628 |
+|                 | Citrobacter koseri                    |   225 |
+|                 | Citrobacter portucalensis             |   382 |
+|                 | Citrobacter sp.                       |   423 |
+| Cronobacter     | Cronobacter sakazakii                 |   541 |
+| Enterobacter    | Enterobacter asburiae                 |   605 |
+|                 | Enterobacter bugandensis              |   256 |
+|                 | Enterobacter cloacae                  |   599 |
+|                 | Enterobacter hormaechei               |  4828 |
+|                 | Enterobacter kobei                    |   512 |
+|                 | Enterobacter ludwigii                 |   339 |
+|                 | Enterobacter roggenkampii             |   683 |
+|                 | Enterobacter sp.                      |   768 |
+| Erwinia         | Erwinia amylovora                     |   325 |
+|                 | Erwinia aphidicola                    |   103 |
+| Escherichia     | Escherichia albertii                  |   297 |
+|                 | Escherichia coli                      | 46947 |
+|                 | Escherichia fergusonii                |   196 |
+|                 | Escherichia marmotae                  |   134 |
+|                 | Escherichia sp.                       |   306 |
+| Glaesserella    | Glaesserella parasuis                 |   150 |
+| Haemophilus     | Haemophilus influenzae                |   942 |
+| Klebsiella      | Klebsiella aerogenes                  |   766 |
+|                 | Klebsiella grimontii                  |   243 |
+|                 | Klebsiella michiganensis              |   778 |
+|                 | Klebsiella ornithinolytica            |   269 |
+|                 | Klebsiella oxytoca                    |   572 |
+|                 | Klebsiella planticola                 |   113 |
+|                 | Klebsiella pneumoniae                 | 28402 |
+|                 | Klebsiella quasipneumoniae            |  1767 |
+|                 | Klebsiella sp.                        |   760 |
+|                 | Klebsiella variicola                  |  1203 |
+| Mannheimia      | Mannheimia haemolytica                |   366 |
+| Morganella      | Morganella morganii                   |   504 |
+| Pantoea         | Pantoea agglomerans                   |   352 |
+|                 | Pantoea ananatis                      |   303 |
+|                 | Pantoea sp.                           |   266 |
+| Pasteurella     | Pasteurella multocida                 |   689 |
+| Pectobacterium  | Pectobacterium brasiliense            |   164 |
+|                 | Pectobacterium versatile              |   110 |
+| Proteus         | Proteus mirabilis                     |  1389 |
+| Providencia     | Providencia huaxiensis                |   102 |
+|                 | Providencia rettgeri                  |   200 |
+|                 | Providencia sp.                       |   422 |
+|                 | Providencia stuartii                  |   201 |
+| Salmonella      | Salmonella enterica                   | 16759 |
+|                 | Salmonella sp.                        |  2314 |
+| Serratia        | Serratia bockelmannii                 |   113 |
+|                 | Serratia fonticola                    |   155 |
+|                 | Serratia marcescens                   |  1477 |
+|                 | Serratia nevei                        |   188 |
+|                 | Serratia ureilytica                   |   207 |
+| Shigella        | Shigella flexneri                     |   201 |
+|                 | Shigella sonnei                       |   134 |
+| Yersinia        | Yersinia enterocolitica               |   692 |
+|                 | Yersinia pestis                       |   416 |
+|                 | Yersinia pseudotuberculosis           |   125 |
+|                 | Yersinia ruckeri                      |   169 |
 
-```bash
-cd ~/data/Escherichia
+### For *protein families*
 
-cat Count/genus.lst |
-    parallel --no-run-if-empty --linebuffer -k -j 4 '
-        n_species=$(
-            cat summary/collect.pass.tsv |
-                sed "1d" |
-                tsv-select -f 3 |
-                nwr append stdin -r genus -r species |
-                grep -w {} |
-                tsv-select -f 1,3 |
-                rgr dedup stdin |
-                wc -l
-        )
+```shell
+cd ~/data/Escherichia/
 
-        n_strains=$(
-            cat summary/collect.pass.tsv |
-                sed "1d" |
-                tsv-select -f 3 |
-                nwr append stdin -r genus |
-                grep -w {} |
-                wc -l
-        )
+nwr template ~/Scripts/genomes/assembly/Escherichia.assembly.tsv \
+    --count \
+    --in summary/pass.lst \
+    --not-in summary/abnormal.lst \
+    --not-in summary/omit.lst \
+    --rank genus
 
-        n_nr=$(
-            cat summary/collect.pass.tsv |
-                grep -Fw -f summary/NR.lst |
-                tsv-select -f 3 |
-                nwr append stdin -r genus |
-                grep -w {} |
-                wc -l
-        )
+# strains.taxon.tsv and taxa.tsv
+bash Count/strains.sh
 
-        printf "%s\t%d\t%d\t%d\n" {} ${n_species} ${n_strains} ${n_nr}
-    ' |
-    nwr append stdin --id |
-    tsv-select -f 6,5,2,3,4 |
-    tsv-sort -k2,2 |
-    tsv-filter --ge 4:2 |
-    (echo -e '#tax_id\tgenus\t#species\t#strains\t#NR' && cat) |
-    rgr md stdin
+cat Count/taxa.tsv |
+    tva to md --num
 
+# .lst and .count.tsv
+bash Count/rank.sh
+
+cat Count/genus.count.tsv |
+    tva filter -H --ge "3:50" |
+    tva to md --num
+
+# copy to summary/
+cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 ```
 
-| #tax_id | genus                     | #species | #strains | #NR |
-|---------|---------------------------|----------|----------|-----|
-| 1903434 | Atlantibacter             | 3        | 116      | 28  |
-| 1386    | Bacillus                  | 3        | 3        | 0   |
-| 82976   | Buttiauxella              | 10       | 16       | 12  |
-| 203804  | Candidatus Blochmanniella | 5        | 11       | 7   |
-| 568987  | Candidatus Hamiltonella   | 4        | 20       | 7   |
-| 1048757 | Candidatus Moranella      | 2        | 2        | 1   |
-| 472825  | Candidatus Purcelliella   | 1        | 5        | 2   |
-| 568988  | Candidatus Regiella       | 2        | 4        | 2   |
-| 401618  | Candidatus Riesia         | 4        | 6        | 3   |
-| 1081630 | Candidatus Schneideria    | 1        | 3        | 1   |
-| 158483  | Cedecea                   | 5        | 18       | 14  |
-| 544     | Citrobacter               | 30       | 2032     | 313 |
-| 413496  | Cronobacter               | 25       | 744      | 141 |
-| 3021684 | Dryocola                  | 1        | 3        | 1   |
-| 547     | Enterobacter              | 60       | 6168     | 643 |
-| 561     | Escherichia               | 2216     | 39443    | 392 |
-| 1649295 | Franconibacter            | 9        | 14       | 6   |
-| 570     | Klebsiella                | 397      | 25697    | 181 |
-| 579     | Kluyvera                  | 10       | 53       | 30  |
-| 1330547 | Kosakonia                 | 12       | 73       | 45  |
-| 83654   | Leclercia                 | 4        | 88       | 39  |
-| 1330545 | Lelliottia                | 5        | 41       | 26  |
-| 451512  | Mangrovibacter            | 1        | 3        | 1   |
-| 447792  | Phytobacter               | 4        | 23       | 14  |
-| 702     | Plesiomonas               | 2        | 48       | 38  |
-| 1330546 | Pluralibacter             | 4        | 30       | 16  |
-| 2994443 | Pseudenterobacter         | 1        | 4        | 3   |
-| 2055880 | Pseudescherichia          | 2        | 11       | 9   |
-| 1504576 | Pseudocitrobacter         | 1        | 2        | 2   |
-| 160674  | Raoultella                | 11       | 311      | 15  |
-| 590     | Salmonella                | 1389     | 14010    | 146 |
-| 2726810 | Scandinavium              | 4        | 9        | 7   |
-| 620     | Shigella                  | 123      | 2292     | 59  |
-| 1335483 | Shimwellia                | 2        | 4        | 1   |
-| 1649298 | Siccibacter               | 3        | 10       | 8   |
-| 1301    | Streptococcus             | 2        | 2        | 0   |
-| 2303321 | Superficieibacter         | 1        | 2        | 1   |
-| 2943312 | Tenebrionicola            | 1        | 2        | 1   |
-| 158851  | Trabulsiella              | 1        | 8        | 4   |
-| 158876  | Yokenella                 | 3        | 14       | 4   |
+| item    |  count |
+| ------- | -----: |
+| strain  | 132046 |
+| species |    764 |
+| genus   |    140 |
+| family  |     12 |
+| order   |      2 |
+| class   |      1 |
+
+| genus           | #species | #strains |
+| --------------- | -------: | -------: |
+| Actinobacillus  |       17 |      248 |
+| Aggregatibacter |        5 |      212 |
+| Atlantibacter   |        3 |      120 |
+| Avibacterium    |        6 |      195 |
+| Brenneria       |       13 |       54 |
+| Citrobacter     |       22 |     3342 |
+| Cronobacter     |        8 |      760 |
+| Dickeya         |       14 |      239 |
+| Edwardsiella    |        5 |      247 |
+| Enterobacter    |       31 |     9013 |
+| Erwinia         |       27 |      576 |
+| Escherichia     |        7 |    47911 |
+| Gallibacterium  |        8 |       98 |
+| Glaesserella    |        3 |      157 |
+| Haemophilus     |       13 |     1197 |
+| Hafnia          |        4 |      120 |
+| Histophilus     |        1 |       60 |
+| Klebsiella      |       20 |    35082 |
+| Kluyvera        |       11 |      102 |
+| Kosakonia       |       13 |      134 |
+| Leclercia       |        5 |      159 |
+| Lelliottia      |        6 |       94 |
+| Lonsdalea       |        4 |      109 |
+| Mannheimia      |       11 |      403 |
+| Morganella      |        2 |      512 |
+| Pantoea         |       49 |     1315 |
+| Pasteurella     |        8 |      783 |
+| Pectobacterium  |       25 |      675 |
+| Photorhabdus    |       25 |      153 |
+| Plesiomonas     |        2 |       61 |
+| Proteus         |       12 |     1625 |
+| Providencia     |       19 |     1200 |
+| Rahnella        |       16 |      115 |
+| Salmonella      |        3 |    19105 |
+| Serratia        |       25 |     2614 |
+| Shigella        |        5 |      439 |
+| Xenorhabdus     |       35 |      152 |
+| Yersinia        |       27 |     1703 |
 
 ## Collect proteins
 
@@ -859,7 +895,9 @@ ulimit -n `ulimit -Hn`
 
 nwr template ~/Scripts/genomes/assembly/Escherichia.assembly.tsv \
     --pro \
-    --parallel 8
+    --parallel 8 \
+    --in summary/pass.lst \
+    --not-in summary/omit.lst
 
 # collect proteins
 bash Protein/collect.sh
