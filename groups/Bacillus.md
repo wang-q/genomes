@@ -449,7 +449,7 @@ bash ASSEMBLY/check.sh 2>&1 |
 find ASSEMBLY/ -name "*_genomic.fna.gz" |
     grep -v "_from_" |
     wc -l
-#26830
+#244298
 
 # N50 C S; create n50.tsv and n50.pass.tsv
 bash ASSEMBLY/n50.sh 50000 500 500000

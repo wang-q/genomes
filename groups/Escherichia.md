@@ -1143,7 +1143,7 @@ FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
 
 ### Condense branches in the protein tree
 
-```bash
+```shell
 mkdir -p ~/data/Escherichia/tree
 cd ~/data/Escherichia/tree
 
