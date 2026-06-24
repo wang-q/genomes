@@ -923,14 +923,14 @@ cat Protein/counts.tsv |
 ```
 
 | #item      |       count |
-|------------|------------:|
-| species    |         170 |
-| strain_sum |      91,356 |
-| total_sum  | 440,702,715 |
-| dedup_sum  |  15,979,554 |
-| rep_sum    |   4,086,492 |
-| fam88_sum  |   2,453,485 |
-| fam38_sum  |   1,752,300 |
+| ---------- | ----------: |
+| species    |         773 |
+| strain_sum |     132,572 |
+| total_sum  | 624,968,214 |
+| dedup_sum  |  31,657,504 |
+| rep_sum    |   9,617,253 |
+| fam88_sum  |   6,502,920 |
+| fam38_sum  |   4,767,977 |
 
 ## Phylogenetics with bac120
 

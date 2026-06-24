@@ -459,19 +459,19 @@ cat ASSEMBLY/n50.tsv |
     tva filter -H --str-in-fld "name:_GCF_" |
     tva stats -H --min "N50" --max "C" --min "S" |
     tva transpose
-# N50_min	5622
+# N50_min	5028
 # C_max	1976
-# S_min	1879126
+# S_min	1289860
 
 cat ASSEMBLY/n50.tsv |
     tva stats -H --quantile "N50:0.1,0.5" --quantile "C:0.5,0.9" --quantile "S:0.1,0.5" |
     tva transpose
-# N50_quantile_0.1	57651.3
-# N50_quantile_0.5	334497
-# C_quantile_0.5	51
-# C_quantile_0.9	252
-# S_quantile_0.1	3666503.7
-# S_quantile_0.5	5067627.5
+# N50_quantile_0.1	69431
+# N50_quantile_0.5	222757
+# C_quantile_0.5	40
+# C_quantile_0.9	117
+# S_quantile_0.1	2730017.4
+# S_quantile_0.5	2921470.5
 
 # After the above steps are completed, run the following commands.
 
