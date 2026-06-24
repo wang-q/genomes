@@ -531,7 +531,7 @@ rsync -avP \
 
 rsync -avP \
     ~/data/Escherichia/ \
-    ~/nfs/Escherichia
+    wangq@192.168.31.209:/share/data/Escherichia
 
 # rsync -avP wangq@202.119.37.251:data/Escherichia/ ~/data/Escherichia
 ```
