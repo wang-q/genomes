@@ -33,23 +33,25 @@ cbp install pgr
 
 ## New Prokaryote Systematics Reference
 
-Göker and Oren (2024) validly published names for **two domains** and **seven kingdoms**
-of prokaryotes under the International Code of Nomenclature of Prokaryotes (ICNP)
-([IJSEM](https://www.microbiologyresearch.org/content/journal/ijsem/10.1099/ijsem.0.006242)). This
-established a formal higher-rank classification system for Bacteria and Archaea.
+Göker and Oren (2024) validly published names for
+**two domains** and **seven kingdoms**of prokaryotes under
+the International Code of Nomenclature of Prokaryotes (ICNP)(
+[IJSEM](https://www.microbiologyresearch.org/content/journal/ijsem/10.1099/ijsem.0.006242))
+. This established a formal higher-rank classification system for Bacteria and
+Archaea.
 
-| Domain   | Kingdom           | Former/Informal Name | Key Phyla                                                  |
-|----------|-------------------|----------------------|------------------------------------------------------------|
-| Bacteria | Bacillati         | Terrabacteria        | Bacillota (Firmicutes), Actinomycetota, Cyanobacteriota    |
-|          | Pseudomonadati    | Hydrobacteria        | Pseudomonadota (Proteobacteria), Bacteroidota, Chlorobiota |
-|          | Fusobacteriati    | —                    | Fusobacteriota                                             |
-|          | Thermotogati      | —                    | Thermotogota, Aquificota                                   |
-| Archaea  | Methanobacteriati | Euryarchaeota        | Methanobacteriota, Thermoplasmatota, Halobacteriota        |
-|          | Nanobdellati      | DPANN group          | Nanobdellota, Micrarchaeota                                |
-|          | Thermoproteati    | TACK group           | Thermoproteota, Nitrososphaerota, Asgardarchaeota          |
+| Domain   | Kingdom           | Former/Informal Name | Key Phyla                                  |
+|----------|-------------------|----------------------|--------------------------------------------|
+| Bacteria | Bacillati         | Terrabacteria        | Bacillota, Actinomycetota, Cyanobacteriota |
+|          | Pseudomonadati    | Hydrobacteria        | Pseudomonadota, Bacteroidota               |
+|          | Fusobacteriati    | —                    | Fusobacteriota                             |
+|          | Thermotogati      | —                    | Thermotogota, Aquificota                   |
+| Archaea  | Methanobacteriati | Euryarchaeota        | Methanobacteriota, Thermoplasmatota        |
+|          | Nanobdellati      | DPANN group          | Nanobdellota, Micrarchaeota                |
+|          | Thermoproteati    | TACK group           | Thermoproteota, Asgardarchaeota            |
 
-This classification was adopted by NCBI Taxonomy in October 2024, introducing the rank of kingdom
-for prokaryotes for the first time.
+This classification was adopted by NCBI Taxonomy in October 2024, introducing
+the rank of kingdom for prokaryotes for the first time.
 
 ### Count qualified assemblies of Prokaryote groups
 
@@ -117,11 +119,10 @@ nwr append groups.tsv -r domain -r kingdom |
     tva blank -f 1 -f 2 |
     (echo -e 'Domain\tKingdom\tPhylum\tComplete\tScaffold\tContig' && cat ) |
     tva to md --num
-
 ```
 
 | Domain   | Kingdom           | Phylum                  | Complete | Scaffold | Contig |
-| -------- | ----------------- | ----------------------- | -------: | -------: | -----: |
+|----------|-------------------|-------------------------|---------:|---------:|-------:|
 | Bacteria | Bacillati         | Actinomycetota          |     7026 |    26124 |  20668 |
 |          |                   | Armatimonadota          |        7 |        4 |      8 |
 |          |                   | Bacillota               |    15717 |    42966 |  69650 |
@@ -178,7 +179,6 @@ nwr append groups.tsv -r domain -r kingdom |
 |          | Thermoproteati    | Nitrososphaerota        |       24 |       12 |     26 |
 |          |                   | Thermoproteota          |      139 |      117 |    127 |
 
-
 ```bash
 echo "
     SELECT
@@ -202,7 +202,7 @@ echo "
 ```
 
 | Phylum            | Class                 | Order                | Family                 | Complete |
-| ----------------- | --------------------- | -------------------- | ---------------------- | -------: |
+|-------------------|-----------------------|----------------------|------------------------|---------:|
 | Actinomycetota    | Actinomycetes         | Actinomycetales      | Actinomycetaceae       |      157 |
 |                   |                       | Bifidobacteriales    | Bifidobacteriaceae     |      498 |
 |                   |                       | Kitasatosporales     | Streptomycetaceae      |     1599 |
@@ -285,9 +285,10 @@ echo "
 
 ## Download all valid Bacteria and Archaea genomes
 
-- [Trichoderma](./groups/Trichoderma.md) is a good example of familiarizing yourself with the
-  processing steps.
-- [Bacteria](./groups/Bacteria.md): All genomes of **Bacteria**, species by species
+- [Trichoderma](./groups/Trichoderma.md) is a good example of familiarizing
+  yourself with the processing steps.
+- [Bacteria](./groups/Bacteria.md): All genomes of **Bacteria**, species by
+  species
 - [Archaea](./groups/Archaea.md): All genomes of **Archaea**, species by species
 - [Fungi](./groups/Fungi.md): All genomes of **Fungi**, species by species
 
