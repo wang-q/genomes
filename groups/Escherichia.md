@@ -1031,13 +1031,13 @@ while read SPECIES; do
         sqlite3 -tabs Protein/${SPECIES}/seq.sqlite \
         > Protein/${SPECIES}/seq_asm_f3.tsv
 
-    hnsm some Protein/"${SPECIES}"/pro.fa.gz <(
-            tsv-select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
-            rgr dedup stdin
+    pgr fa some Protein/"${SPECIES}"/pro.fa.gz <(
+            tva select -f 1 Protein/"${SPECIES}"/seq_asm_f3.tsv |
+            tva uniq
         )
 done |
     pgr fa dedup stdin |
-    pgr fa gz stdin -o Domain/bac120.fa
+    pgr fa gz stdin -o Domain/bac120.fa.gz
 
 fd --full-path "Protein/.+/seq_asm_f3.tsv" -X cat \
     > Domain/seq_asm_f3.tsv
@@ -1050,7 +1050,7 @@ cat Domain/seq_asm_f3.tsv |
 
 ### Align and concat marker genes to create species tree
 
-```bash
+```shell
 cd ~/data/Escherichia
 
 # Extract proteins
@@ -1134,8 +1134,8 @@ trimal -in Domain/bac120.aln.fa -out Domain/bac120.trim.fa -automated1
 pgr fa size Domain/bac120.*.fa |
     tva uniq -f 2 |
     cut -f 2
-#71124
-#46096
+86896
+47754
 
 # To make it faster
 FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
@@ -1159,8 +1159,6 @@ nwr pl-condense --map -r species \
 mv condensed.tsv bac120.condense.tsv
 
 # svg
-nwr topo --bl bac120.condensed.newick | # remove comments
-    nw_display -s -b 'visibility:hidden' -w 1200 -v 20 - \
-    > Escherichia.bac120.svg
-
+pgr nwk to-svg bac120.condensed.newick \
+    > Bacillus.bac120.svg
 ```

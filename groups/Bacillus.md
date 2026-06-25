@@ -491,17 +491,17 @@ cat ASSEMBLY/counts.tsv |
     tva to md --fmt
 ```
 
-| #item            | fields |  lines |
-| ---------------- | -----: | -----: |
-| url.tsv          |      3 | 26,831 |
-| check.lst        |      1 | 26,831 |
-| collect.tsv      |     20 | 26,832 |
-| n50.pass.tsv     |      4 | 24,461 |
-| collect.pass.tsv |     23 | 24,461 |
-| pass.lst         |      1 | 24,460 |
-| omit.lst         |      1 |  1,085 |
-| rep.lst          |      1 |  1,494 |
-| sp.lst           |      1 |  4,260 |
+| #item            | fields |   lines |
+| ---------------- | -----: | ------: |
+| url.tsv          |      3 | 244,321 |
+| check.lst        |      1 | 244,321 |
+| collect.tsv      |     20 | 244,322 |
+| n50.pass.tsv     |      4 | 229,195 |
+| collect.pass.tsv |     23 | 229,195 |
+| pass.lst         |      1 | 229,194 |
+| omit.lst         |      1 |  12,119 |
+| rep.lst          |      1 |   1,649 |
+| sp.lst           |      1 |   4,932 |
 
 ### Rsync to hpcc
 
