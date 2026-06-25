@@ -515,6 +515,10 @@ rsync -avP \
     ~/data/Bacillus/ \
     wangq@58.213.64.36:data/Bacillus
 
+rsync -avP \
+    wangq@192.168.31.209:/share/data/Bacillus/ \
+    ~/data/Bacillus
+
 # rsync -avP wangq@202.119.37.251:data/Bacillus/ ~/data/Bacillus
 ```
 
