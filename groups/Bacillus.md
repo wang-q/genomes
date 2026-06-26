@@ -516,6 +516,10 @@ rsync -avP \
     wangq@58.213.64.36:data/Bacillus
 
 rsync -avP \
+    ~/data/Bacillus/ \
+    wangq@192.168.31.209:/share/data/Bacillus
+
+rsync -avP \
     wangq@192.168.31.209:/share/data/Bacillus/ \
     ~/data/Bacillus
 
@@ -539,7 +543,7 @@ bash BioSample/download.sh
 bash BioSample/collect.sh 50
 
 tva check < BioSample/biosample.tsv
-#26805 lines, 136 fields
+# 243055 lines, 321 fields
 
 cp BioSample/attributes.lst summary/
 cp BioSample/biosample.tsv summary/
