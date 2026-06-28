@@ -576,8 +576,8 @@ fd --full-path "MinHash/.+/redundant.lst" -X cat |
     uniq \
     > summary/redundant.lst
 wc -l summary/NR.lst summary/redundant.lst
-#    10161 summary/NR.lst
-#    13438 summary/redundant.lst
+#    14285 summary/NR.lst
+#   214003 summary/redundant.lst
 
 # Abnormal strains
 bash MinHash/abnormal.sh
@@ -588,8 +588,8 @@ cat MinHash/abnormal.lst |
 mv MinHash/tmp.lst summary/abnormal.lst
 
 wc -l MinHash/abnormal.lst summary/abnormal.lst
-# 1429 MinHash/abnormal.lst
-#  467 summary/abnormal.lst
+# 1578 MinHash/abnormal.lst
+#  542 summary/abnormal.lst
 
 # Distances between all selected sketches, then hierarchical clustering
 cd ~/data/Bacillus/
