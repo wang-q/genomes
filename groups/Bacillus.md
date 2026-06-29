@@ -660,7 +660,7 @@ cat Count/genus.count.tsv |
     tva to md --num
 
 # Can accept N_COUNT
-bash Count/lineage.sh 50
+bash Count/lineage.sh 100
 
 cat Count/lineage.count.tsv |
     tva to md --num
@@ -670,24 +670,27 @@ cp Count/strains.taxon.tsv summary/genome.taxon.tsv
 cp Count/genus.count.tsv summary/genus.genome.tsv
 ```
 
-| item    | count |
-| ------- | ----: |
-| strain  | 21835 |
-| species |  1642 |
-| genus   |   215 |
-| family  |    15 |
-| order   |     2 |
-| class   |     2 |
+| item    |  count |
+| ------- | -----: |
+| strain  | 226494 |
+| species |   1818 |
+| genus   |    230 |
+| family  |     18 |
+| order   |      2 |
+| class   |      2 |
 
 | family                 | #species | #strains |
 | ---------------------- | -------: | -------: |
-| Alicyclobacillaceae    |       47 |       86 |
+| Alicyclobacillaceae    |       47 |       84 |
 | Anoxybacillaceae       |       46 |      282 |
 | Bacillaceae            |      823 |    17844 |
 | Caryophanaceae         |      146 |      474 |
 | Fictibacillaceae       |       21 |       66 |
+| Gemellaceae            |       10 |       80 |
+| Listeriaceae           |       32 |    72559 |
 | Paenibacillaceae       |      447 |     2609 |
 | Sporolactobacillaceae  |       26 |       53 |
+| Staphylococcaceae      |      131 |   132012 |
 | Thermoactinomycetaceae |       45 |       88 |
 
 | genus           | #species | #strains |
@@ -699,10 +702,15 @@ cp Count/genus.count.tsv summary/genus.genome.tsv
 | Cytobacillus    |       19 |      155 |
 | Exiguobacterium |       18 |      277 |
 | Fictibacillus   |       16 |       55 |
+| Gemella         |        8 |       73 |
 | Geobacillus     |       17 |      147 |
 | Halobacillus    |       27 |       72 |
 | Heyndrickxia    |       13 |      183 |
+| Listeria        |       24 |    72497 |
 | Lysinibacillus  |       29 |      465 |
+| Macrococcoides  |        4 |       99 |
+| Macrococcus     |       13 |       51 |
+| Mammaliicoccus  |        6 |      537 |
 | Metabacillus    |       25 |       71 |
 | Neobacillus     |       32 |      113 |
 | Niallia         |        9 |       88 |
@@ -717,54 +725,67 @@ cp Count/genus.count.tsv summary/genus.genome.tsv
 | Shouchella      |       13 |       85 |
 | Solibacillus    |       10 |       50 |
 | Sporosarcina    |       27 |      135 |
+| Staphylococcus  |       77 |   131243 |
 | Virgibacillus   |       36 |      124 |
 
-| #family          | genus           | species                      | count |
-| ---------------- | --------------- | ---------------------------- | ----: |
-| Bacillaceae      | Bacillus        | Bacillus altitudinis         |   360 |
-|                  |                 | Bacillus amyloliquefaciens   |   302 |
-|                  |                 | Bacillus anthracis           |   968 |
-|                  |                 | Bacillus atrophaeus          |   192 |
-|                  |                 | Bacillus cereus              |  3112 |
-|                  |                 | Bacillus cytotoxicus         |   100 |
-|                  |                 | Bacillus halotolerans        |    95 |
-|                  |                 | Bacillus haynesii            |   138 |
-|                  |                 | Bacillus inaquosorum         |   171 |
-|                  |                 | Bacillus licheniformis       |   501 |
-|                  |                 | Bacillus mobilis             |   125 |
-|                  |                 | Bacillus mycoides            |   245 |
-|                  |                 | Bacillus pacificus           |   151 |
-|                  |                 | Bacillus paralicheniformis   |   261 |
-|                  |                 | Bacillus paranthracis        |   552 |
-|                  |                 | Bacillus pseudomycoides      |   127 |
-|                  |                 | Bacillus pumilus             |   368 |
-|                  |                 | Bacillus safensis            |   394 |
-|                  |                 | Bacillus spizizenii          |   215 |
-|                  |                 | Bacillus subtilis            |  1595 |
-|                  |                 | Bacillus thuringiensis       |  1301 |
-|                  |                 | Bacillus toyonensis          |   378 |
-|                  |                 | Bacillus tropicus            |   106 |
-|                  |                 | Bacillus velezensis          |  1582 |
-|                  |                 | Bacillus wiedmannii          |   288 |
-|                  | Heyndrickxia    | Heyndrickxia coagulans       |    75 |
-|                  | Lysinibacillus  | Lysinibacillus capsici       |    54 |
-|                  |                 | Lysinibacillus fusiformis    |   117 |
-|                  |                 | Lysinibacillus sp.           |   146 |
-|                  |                 | Lysinibacillus sphaericus    |    54 |
-|                  | Peribacillus    | Peribacillus frigoritolerans |   124 |
-|                  |                 | Peribacillus simplex         |    54 |
-|                  |                 | Peribacillus sp.             |    67 |
-|                  | Priestia        | Priestia aryabhattai         |   152 |
-|                  |                 | Priestia megaterium          |   525 |
-|                  |                 | Priestia sp.                 |    53 |
-|                  | Shouchella      | Shouchella clausii           |    64 |
-| Caryophanaceae   | Sporosarcina    | Sporosarcina sp.             |    80 |
-| NA               | Exiguobacterium | Exiguobacterium sp.          |   195 |
-| Paenibacillaceae | Brevibacillus   | Brevibacillus laterosporus   |    75 |
-|                  |                 | Brevibacillus sp.            |    66 |
-|                  | Paenibacillus   | Paenibacillus larvae         |   390 |
-|                  |                 | Paenibacillus polymyxa       |   127 |
-|                  |                 | Paenibacillus sp.            |   715 |
+| #family           | genus           | species                         |  count |
+| ----------------- | --------------- | ------------------------------- | -----: |
+| Bacillaceae       | Bacillus        | Bacillus altitudinis            |    360 |
+|                   |                 | Bacillus amyloliquefaciens      |    302 |
+|                   |                 | Bacillus anthracis              |    968 |
+|                   |                 | Bacillus atrophaeus             |    192 |
+|                   |                 | Bacillus cereus                 |   3112 |
+|                   |                 | Bacillus cytotoxicus            |    100 |
+|                   |                 | Bacillus haynesii               |    138 |
+|                   |                 | Bacillus inaquosorum            |    171 |
+|                   |                 | Bacillus licheniformis          |    501 |
+|                   |                 | Bacillus mobilis                |    125 |
+|                   |                 | Bacillus mycoides               |    245 |
+|                   |                 | Bacillus pacificus              |    151 |
+|                   |                 | Bacillus paralicheniformis      |    261 |
+|                   |                 | Bacillus paranthracis           |    552 |
+|                   |                 | Bacillus pseudomycoides         |    127 |
+|                   |                 | Bacillus pumilus                |    368 |
+|                   |                 | Bacillus safensis               |    394 |
+|                   |                 | Bacillus spizizenii             |    215 |
+|                   |                 | Bacillus subtilis               |   1595 |
+|                   |                 | Bacillus thuringiensis          |   1301 |
+|                   |                 | Bacillus toyonensis             |    378 |
+|                   |                 | Bacillus tropicus               |    106 |
+|                   |                 | Bacillus velezensis             |   1582 |
+|                   |                 | Bacillus wiedmannii             |    288 |
+|                   | Lysinibacillus  | Lysinibacillus fusiformis       |    117 |
+|                   |                 | Lysinibacillus sp.              |    146 |
+|                   | Peribacillus    | Peribacillus frigoritolerans    |    124 |
+|                   | Priestia        | Priestia aryabhattai            |    152 |
+|                   |                 | Priestia megaterium             |    525 |
+| Listeriaceae      | Listeria        | Listeria innocua                |   1840 |
+|                   |                 | Listeria monocytogenes          |  69883 |
+|                   |                 | Listeria seeligeri              |    257 |
+|                   |                 | Listeria welshimeri             |    209 |
+| NA                | Exiguobacterium | Exiguobacterium sp.             |    195 |
+| Paenibacillaceae  | Paenibacillus   | Paenibacillus larvae            |    390 |
+|                   |                 | Paenibacillus polymyxa          |    127 |
+|                   |                 | Paenibacillus sp.               |    715 |
+| Staphylococcaceae | Mammaliicoccus  | Mammaliicoccus sciuri           |    374 |
+|                   | Staphylococcus  | Staphylococcus argenteus        |    614 |
+|                   |                 | Staphylococcus aureus           | 115045 |
+|                   |                 | Staphylococcus capitis          |    444 |
+|                   |                 | Staphylococcus chromogenes      |    175 |
+|                   |                 | Staphylococcus coagulans        |    238 |
+|                   |                 | Staphylococcus cohnii           |    203 |
+|                   |                 | Staphylococcus epidermidis      |   5139 |
+|                   |                 | Staphylococcus equorum          |    142 |
+|                   |                 | Staphylococcus haemolyticus     |    862 |
+|                   |                 | Staphylococcus hominis          |    433 |
+|                   |                 | Staphylococcus lugdunensis      |    150 |
+|                   |                 | Staphylococcus pseudintermedius |   5004 |
+|                   |                 | Staphylococcus saprophyticus    |    604 |
+|                   |                 | Staphylococcus shinii           |    101 |
+|                   |                 | Staphylococcus simulans         |    104 |
+|                   |                 | Staphylococcus sp.              |    556 |
+|                   |                 | Staphylococcus warneri          |    241 |
+|                   |                 | Staphylococcus xylosus          |    249 |
 
 ### For *protein families*
 
@@ -795,14 +816,14 @@ cat Count/genus.count.tsv |
 cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 ```
 
-| item    | count |
-| ------- | ----: |
-| strain  | 21301 |
-| species |  1635 |
-| genus   |   214 |
-| family  |    15 |
-| order   |     2 |
-| class   |     2 |
+| item    |  count |
+| ------- | -----: |
+| strain  | 215745 |
+| species |   1808 |
+| genus   |    229 |
+| family  |     18 |
+| order   |      2 |
+| class   |      2 |
 
 | genus           | #species | #strains |
 | --------------- | -------: | -------: |
@@ -813,10 +834,15 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | Cytobacillus    |       19 |      151 |
 | Exiguobacterium |       18 |      273 |
 | Fictibacillus   |       16 |       53 |
+| Gemella         |        8 |       70 |
 | Geobacillus     |       17 |      144 |
 | Halobacillus    |       27 |       72 |
 | Heyndrickxia    |       13 |      171 |
+| Listeria        |       22 |    71137 |
 | Lysinibacillus  |       28 |      409 |
+| Macrococcoides  |        4 |       99 |
+| Macrococcus     |       13 |       51 |
+| Mammaliicoccus  |        6 |      525 |
 | Metabacillus    |       25 |       71 |
 | Neobacillus     |       32 |      112 |
 | Niallia         |        9 |       88 |
@@ -829,6 +855,7 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 | Rossellomorea   |       11 |       89 |
 | Shouchella      |       13 |       83 |
 | Sporosarcina    |       27 |      129 |
+| Staphylococcus  |       77 |   122410 |
 | Virgibacillus   |       36 |      122 |
 
 ## Collect proteins
@@ -840,7 +867,7 @@ ulimit -n `ulimit -Hn`
 
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
     --pro \
-    --parallel 8 \
+    --parallel 16 \
     --in summary/pass.lst \
     --not-in summary/omit.lst
 
