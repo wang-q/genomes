@@ -63,7 +63,7 @@ Exclude the following families from the analysis:
 
 ### List all ranks
 
-```shell
+```bash
 mkdir -p ~/data/Bacillus
 cd ~/data/Bacillus
 
@@ -140,7 +140,7 @@ Incomplete genomes are retained here for gene cluster mining.
 * 'RefSeq'
 * 'Genbank'
 
-```shell
+```bash
 mkdir -p ~/data/Bacillus/summary
 cd ~/data/Bacillus/summary
 
@@ -212,7 +212,7 @@ done
 
 If a refseq assembly is available, the corresponding genbank one is not downloaded
 
-```shell
+```bash
 cd ~/data/Bacillus/summary
 
 echo "
@@ -347,7 +347,7 @@ rm raw*.*sv
 
 * `strains.taxon.tsv` - taxonomy info: species, genus, family, order, and class
 
-```shell
+```bash
 cd ~/data/Bacillus
 
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
@@ -407,7 +407,7 @@ cat Count/genus.before.tsv |
 
 ### Download and check
 
-```shell
+```bash
 cd ~/data/Bacillus
 
 ulimit -n `ulimit -Hn`
@@ -505,7 +505,7 @@ cat ASSEMBLY/counts.tsv |
 
 ### Rsync to hpcc
 
-```shell
+```bash
 rsync -avP \
     ~/data/Bacillus/ \
     wangq@202.119.37.251:data/Bacillus
@@ -528,7 +528,7 @@ rsync -avP \
 
 ## BioSample
 
-```shell
+```bash
 cd ~/data/Bacillus
 
 ulimit -n `ulimit -Hn`
@@ -551,7 +551,7 @@ cp BioSample/biosample.tsv summary/
 
 ## MinHash
 
-```shell
+```bash
 cd ~/data/Bacillus
 
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
@@ -608,7 +608,7 @@ bash MinHash/dist.sh
 
 ### Condense branches in the minhash tree
 
-```shell
+```bash
 mkdir -p ~/data/Bacillus/tree
 cd ~/data/Bacillus/tree
 
@@ -632,7 +632,7 @@ pgr nwk to-svg minhash.condensed.newick \
 
 ### For *genomic alignments*
 
-```shell
+```bash
 cd ~/data/Bacillus/
 
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
@@ -789,7 +789,7 @@ cp Count/genus.count.tsv summary/genus.genome.tsv
 
 ### For *protein families*
 
-```shell
+```bash
 cd ~/data/Bacillus/
 
 nwr template ~/Scripts/genomes/assembly/Bacillus.assembly.tsv \
@@ -860,7 +860,7 @@ cp Count/strains.taxon.tsv summary/protein.taxon.tsv
 
 ## Collect proteins
 
-```shell
+```bash
 cd ~/data/Bacillus/
 
 ulimit -n `ulimit -Hn`
@@ -896,17 +896,17 @@ cat Protein/counts.tsv |
 
 | #item      |       count |
 | ---------- | ----------: |
-| species    |       1,642 |
-| strain_sum |      23,829 |
-| total_sum  | 114,069,070 |
-| dedup_sum  |  51,575,432 |
-| rep_sum    |  16,013,513 |
-| fam88_sum  |  12,019,971 |
-| fam38_sum  |   8,171,355 |
+| species    |       1,815 |
+| strain_sum |     218,335 |
+| total_sum  | 658,158,934 |
+| dedup_sum  | 509,657,828 |
+| rep_sum    |  18,045,941 |
+| fam88_sum  |  13,201,397 |
+| fam38_sum  |   9,046,037 |
 
 ## Phylogenetics with bac120
 
-```shell
+```bash
 cd ~/data/Bacillus/
 
 # The Bacteria HMM set
@@ -917,10 +917,11 @@ cp HMM/bac120.lst HMM/marker.lst
 
 ### Find corresponding representative proteins by `hmmsearch`
 
-```shell
+```bash
 cd ~/data/Bacillus
 
 cat Protein/species.tsv |
+    tva join -f summary/rep.lst -k 1 |
     tva join -f summary/pass.lst -k 1 |
     tva join -e -f summary/sp.lst -k 1 |
     tva join -e -f summary/omit.lst -k 1 \
@@ -969,7 +970,7 @@ done
 
 ### Domain related protein sequences
 
-```shell
+```bash
 cd ~/data/Bacillus
 
 mkdir -p Domain
@@ -1023,7 +1024,7 @@ cat Domain/seq_asm_f3.tsv |
 
 ### Align and concat marker genes to create species tree
 
-```shell
+```bash
 cd ~/data/Bacillus
 
 # Extract proteins
@@ -1116,7 +1117,7 @@ FastTree -fastest -noml Domain/bac120.trim.fa > Domain/bac120.trim.newick
 
 ### Condense branches in the protein tree
 
-```shell
+```bash
 cd ~/data/Bacillus/tree
 
 pgr nwk reroot ../Domain/bac120.trim.newick -n Desu_alkalia_AHT28_GCF_001730225_1 -n Desu_stib_MLFW_2_GCF_001742305_1 |
